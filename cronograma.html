@@ -1,0 +1,282 @@
+<html>
+<head>
+<script>
+	var objSelecionado;
+
+	function linhaDoTempo(){
+
+		var arrEventos;
+		
+		this.dataIncial;
+		this.dataFinal;
+
+		this.addEvento = function (evento){
+			arrEventos[evento.id] = evento;
+			euMesmo.renderizarEvento(evento);
+		}
+
+		this.renderizarEvento = function (evento){
+			str = '<g id="'  + evento.id; + '>';
+			str += '</g>';
+		}
+		
+		var euMesmo = this;
+	}
+
+	
+
+	function CEvento(){
+
+		var euMesmo = this;
+		
+		this.id;
+		this.dataInicio;
+		this.dataFim;
+		this.observacoes;
+		this.arrMaisContatos;
+		this.arrEnderecosDosLocais;
+		this.arrIdsDosDocumentosRelacionados;
+		this.arrPessoasOuOrganizacoesPromotoras;
+
+		this.__construct = function(){
+			alert();
+		}
+
+	}
+
+	CManifestacao = new CEvento();
+	CManifestacao = function(){
+		this.reinvindicacao;
+		this.arrMovimentosPromovedor;
+	}
+
+	CEncontro = new CEvento();
+	CEncontro = function(){
+		this.tema;
+	} 
+
+	CReuniao = new CEvento();
+	CReuniao = function(){
+		this.pauta;
+		this.arrIntegrantes;
+		this.arrConvidadosOpcionais;
+	}
+
+
+	lnTp = new linhaDoTempo();
+	evt = new CReuniao();
+	evt.pauta = "teste";
+	evt.id = 1;
+	lnTp.addEvento(evt);
+	
+	
+	
+	function teste(e) {
+
+		var event = window.event ? window.event : e;
+
+		//alert(event.keyCode);
+		a = eval(document.getElementById("tarefa").getAttributeNS(null, "x"));
+
+		//Tecla direita
+		if (event.keyCode == 39) {
+			a += 5;
+			document.getElementById("tarefa").setAttributeNS(null, "x", a);
+		}
+
+		//Tecla esquerda
+		if (event.keyCode == 37) {
+			a -= 5;
+			document.getElementById("tarefa").setAttributeNS(null, "x", a);
+		}
+
+		//Editar data (F2)
+		if (event.keyCode == 113) {
+			alert("Editar data");
+		}
+
+		//Tab (Alterna entre datas)
+		if (event.keyCode == 9) {
+			alert("Tab");
+		}
+
+		//Cancela algo
+		if (event.keyCode == 27) {
+			alert("Esc");
+		}
+	}
+
+	function teste2() {
+		var d = new Date();
+		var data = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds()
+				+ " - " + d.getDay() + "/" + d.getMonth() + "/"
+				+ d.getFullYear();
+
+		var larguraDoCalendario = 480;
+		var unidade = larguraDoCalendario / 24;
+
+		//a = eval(document.getElementById("linhaHoraAtual").getAttributeNS(null,"x"));
+		//b = eval(document.getElementById("linhaHoraAtualTexto").getAttributeNS(null,"y"));
+
+		a = unidade * (d.getHours() + (d.getMinutes() / 60));
+
+		//alert(a);
+		document.getElementById("linhaHoraAtual").setAttributeNS(null, "x",
+				a - 1);
+		document.getElementById("linhaHoraAtualTexto").setAttributeNS(null,
+				"y", -a - 3);
+		document.getElementById("linhaHoraAtualTexto").textContent = data;
+	}
+	setInterval("teste2()", 1000);
+</script>
+<style type="text/css">
+* {
+	margin: 0px;
+	padding: 0px;
+	border: 0px;
+}
+</style>
+</head>
+<body style="width: 100%">
+<svg style="width:80%; height: 600px">
+<g id="dataDiaGrafico" transform="scale(2,2)">
+<g>
+<rect height="600px" width="480px"
+	style="fill:#e3dbdb;fill-opacity:1;stroke:none" />
+<path d="m   0,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m  20,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m  40,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m  60,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m  80,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 100,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 120,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 140,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 160,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 180,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 200,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 220,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 240,20 0,300" style="stroke:#d45500;stroke-width:1" />
+
+<path d="m 260,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 280,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 300,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 320,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 340,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 360,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 380,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 400,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 420,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 440,20 0,300" style="stroke:#d45500;stroke-width:1" />
+<path d="m 460,25 0,295" style="stroke:#d45500;stroke-width:1" />
+<path d="m 480,20 0,300" style="stroke:#d45500;stroke-width:1" />
+
+<text style="font-size:9px;fill:#000000;font-family:Sans" x="0" y="18">00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="10" y="23">01:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="30" y="18">02:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="50" y="23">03:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="70" y="18">04:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="90" y="23">05:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="110" y="18">06:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="130" y="23">07:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="150" y="18">08:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="170" y="23">09:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="190" y="18">10:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="210" y="23">11:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="230" y="18">12:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="250" y="23">13:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="270" y="18">14:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="290" y="23">15:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="310" y="18">16:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="330" y="23">17:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="350" y="18">18:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="370" y="23">19:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="390" y="18">20:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="410" y="23">21:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="430" y="18">22:00</text>
+<text style="font-size:7px;fill:#000000;font-family:Sans" x="450" y="23">23:00</text>
+<text style="font-size:9px;fill:#000000;font-family:Sans" x="470" y="18">00:</text>
+<g>
+<rect ry="1.3760823" rx="1" y="3" x="165" height="8" width="150"
+	style="fill:#deaa87;fill-opacity:1;stroke:none" />
+<text id="dataDiaNumero" y="10" x="230"
+	style="font-size:8px;font-weight:bold;text-align:center;text-anchor:center;fill:#000000;font-family:Sans">--01--</text>
+</g>
+</g>
+<g>
+<rect id="tarefa"
+	style="fill:#5555ff;stroke:#000000;stroke-width:0.5;fill-opacity:0.8;"
+	height="30" width="20" ry="5" rx="5" y="30" x="40" />
+<text y="38" x="43"
+	style="font-size:7px;fill:#ffffff;font-family:Sans;fill-opacity:0.8;font-weight:bold">
+Teste
+</text>
+</g>
+<rect ry="0" rx="0" y="0" x="-5" height="315" width="2"
+	style="fill:#ff0000;fill-opacity:0.8;stroke:none;font-weight:bold;"
+	id="linhaHoraAtual" />
+<text
+	style="font-size:7px;fill:#000000;font-family:Sans;fill-opacity:0.8;font-weight:bold;"
+	x="115" y="1" id="linhaHoraAtualTexto" transform="rotate(90 0 0)">
+23:00
+</text>
+</g>
+</svg>
+<svg style="width:80%; height: 600px">
+    <g transform="scale(1.5,1.5)">
+      <text y="20" x="7" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">dom</text>
+      <text y="20" x="34" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">seg</text>
+      <text y="20" x="61" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">ter</text>
+      <text y="20" x="83" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">qua</text>
+      <text y="20" x="110" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">qui</text>
+      <text y="20" x="134" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">sex</text>
+      <text y="20" x="159" style="font-size:9px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans">sab</text>
+      
+      <path d="m 5,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 30,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 55,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 80,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 105,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 130,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 155,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 180,10 0,215" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+
+      <path d="m 5,10 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,25 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,50 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,75 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,100 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,125 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,150 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,175 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,200 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+      <path d="m 5,225 175,0" style="fill:none;stroke:#000000;stroke-width:1px;stroke-opacity:1" />
+    </g>	
+</svg>
+<script>
+	window.onkeypress = teste;
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

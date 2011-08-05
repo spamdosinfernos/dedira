@@ -1,0 +1,40 @@
+Militante marca reunião geral.
+Militante pode propor outra data para a reunião.
+Sistema cria uma entrada no cronograma e avisa todos os militantes da organização.
+Militante marca reunião especifica (frente).
+Para marcar esta reunião ele pode escolher um grupo criado anteriormente ou criar um na mesma hora.
+A este grupo podem ser adicionados ou retirados membros a qualquer hora.
+Para retirada de um membro do grupo o sistema deve pedir confirmação.
+Militante acessa o cronograma da organização.
+O cronograma mostra graaficamente todas as atividades referentes ao militante
+O militante pode alternar a visão do cronograma para visualizar todas as atividades da organização, ele verá as atividades de acordo com seu nível de organicidade.
+Sistema oferece um formulário para criação das atas e documentos da organização.
+O sistema permite que o militante mude a data do documento caso este seja um novo documento, caso contrário, o sistema pergunta a todos os militantes, ganha o consenso ou 70%.
+O sistema mostra no cronograma as metas gerais e específicas da organização alertando constantemente quanto as datas de vencimento.
+O sistema fornece um formulário no qual o militante deve fazer o relato de suas atividades. O relato pode ter textos, fotos e arquivos e deve ser vinculado a no mínimo uma atividade da organização usando o sistema de tags prédefinidas anteriormente.
+Uma nova tag pode ser adicionada caso o militante queira mas isto deve passar por aprovação por consenso ou 70% de votos a favor.
+Os assunto votados devem ter um tempo pré-definido para serem decididos, ao final do qual, os votantes e não votantes devem ser contabilizados. As porcentagens dos votos são calculadas com base nos votos dados.
+O sistema fornece um fórum a partir do qual podem ser tiradas alguma decisões.
+O sistema deve fornecer uma forma de adicionar, a partir do fórum, tarefas no cronograma.
+Esta adição depende da aprovação de 70% ou mais dos membros da organização.
+O sistema avisa o militante das votações abertas de acordo com seu nível de organicidade.
+Quando um militante abre uma votação, por padrão, esta votação é restrita ao seu nível de organicidade.
+O militante pode escolher níveis de organicidade abaixo do seu para propor uma votação, nunca acima.
+Os militantes dos níveis de organicidade inferiores pode ou não aceitar esta votação.
+Os militantes são agrupados por secretaria na organização.
+Na seção da secretaria dentro do sistema deve constar o trecho da carta orgânica lembrando as funções da secretaria.
+O sistema deve guardar todos os documentos da organização e suas respectivas modificações durante o tempo.
+O sistema deve usar um sistema de controle de versão para controlar as modificações dos documentos.
+O sistema tem um cadastro de organizações irmãs, neste cadastro devem constar nome, chave pgp, telefone e e-mail dos militantes com suas respectivas secretarias.
+Os militantes devem ser agrupados também pelas suas frentes de atuação tais como: Camponesa, Indígenas, etc.
+A organização irmã deve ter um e-mail de contato, afim de receber os relatórios e status da militância das frentes da organização.
+O sistema deve ler os e-mails da organização periódicamente afim de receber os relatórios de militância das organizações irmãs e colocá-las no banco de sistema.
+O sistema deve enviar os eventos da agenda da organização, marcados como compratilhados, para os e-mails das organizações irmãs
+O sistema deve ler os e-mails da organização periodicamente afim de receber as agendas das organizações irmãs e organiza-las no cronograma da organização.
+O sistema de prover um chat para reuniões on-line.
+O sistema deve prover um fórum para troca de idéias entre todas as organizações irmãs e entre organizações irmãs específicas.
+O sistema deve guardar todas as informações de forma criptografada.
+As mensagens trocadas entre as organizações irmãs devem ser criptografadas usando pgp.
+
+
+Base de dados: CounchDb e MySQL?

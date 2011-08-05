@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<text id="text1" x="300" y="200" font-size="60"	font-family="tempus sans itc" stroke="red" stroke-width="2"	onmouseover="changeText()" onmouseout="restoreText()">OMG</text>
+<script>
+
+var text, textnode
+
+textnode = document.getElementById("text1");
+
+function changeText(){
+	text = textnode.textContent;
+	textnode.textContent = "test";
+}
+
+function restoreText(){
+	textnode.textContent = text;
+}
+
+</script>
+</svg>

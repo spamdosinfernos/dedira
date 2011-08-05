@@ -1,0 +1,51 @@
+git show - Mostra o conteúdo de um blob ou tree
+git ls-tree mostra detalhe sobre uma tree
+git show -s --pretty=raw - Examina um commit
+git log - Examina o repositório
+git log --stat - Mostra as estatísticas dos arquivos (quanta vezes foram atualizados)
+git log --pretty=oneline - Mostra apenas as mensagens de commit
+git log --pretty=<opção> - Você pode usar também: 'medium', 'full', 'fuller', 'email' or 'raw'
+git log --pretty=format:<formato> - Exemplo: git log --pretty=format:'%h : %s', você pode usar a opção "--date-order" para ordenar por data
+git diff - Mostra a diferença o conteúdo que recebeu o commit e os arquivos atuais
+git diff --cached - Mostra a diferença o conteúdo que recebeu o commit e os conteúdo que receberá o commmit (os elementos que receberam "git add")
+git diff <nomeDaVertente> - Mostra a diferença entre os arquivos atuais e o último commit na vertente informada
+git diff HEAD - Mostra a diferença entre os arquivos atuais e o último commit
+git diff HEAD -- ./lib - Mostra a diferença entre os arquivos atuais e o último commit no diretório especificado (neste caso "./lib")
+git diff --stat - Mostra os arquivos que mudaram e quantas linhas mudaram em cada um
+
+git init - Inicia um novo repositório
+git add <files> - Adiciona/Atualiza os arquivos a lista de commits
+git commit - Efetiva a inclusão/atualização/mesclagem dos arquivos e pede uma mensagem de commit
+git commit -a <files>  - Adiciona/Atualiza os arquivos a lista de commits e efetiva a inclusão dos arquivos numa tacada
+
+git reset HEAD <file> - Remove os arquivos da lista de commits
+
+
+git config --global user.name "<nome>" - Seta o nome do usuário padrão para todos os projetos
+git config --global user.email "<email>" - Seta o endereço de e-mail padrão para todos os projetos
+
+git config user.name "<nome>" - Seta o nome do usuário apenas para o projeto atual
+git config user.email "<email>" - Seta o endereço de e-mail apenas para o projeto atual
+
+git branch <nomeDaVertente> - Cria uma nova vertente no desenvolvimento
+git checkout <nomeDaVertente> - Muda para a vertente especificada, a partir disto todas as modificações pertencerão a esta vertente
+git branch - Mostra todas as vertentes de desenvolvimento
+git merge <nomeDaVertente> - Mescla as modificações da vertente citada na vertente atual
+
+git branch -d <nomeDaVertente> - Apaga a vertente citada verificando se as modificações desta estão na principal
+git branch -D <nomeDaVertente> - Apaga a vertente citada sem verificação alguma
+git branch -a - Mostra todas as vertentes (inclusive as remotas)
+
+git reset --hard HEAD - Desiste da mesclagem que ainda não recebeu o commit
+git reset --hard ORIG_HEAD - Desfaz a mesclagem que já recebeu o commit (AVISO: nunca desfaça um commit de uma vertente que parcipou de uma mesclagem anterior isso pode bagunçar as próximas mesclagens)
+
+git clone <url> - Clona um repositório existente para o diretório atual
+git clone <usuário>@<domínio>:<caminhoDoRepositório> - Clona um repositório existente atravé de um túnel ssh
+
+git pull <caminhoDoRepositório> <nomeDaVertente> - Puxa as modificações da feitas no repositório clone
+git pull - Recupera as modifcações feitas pelo repositório original
+
+git remote add <apelidoDoRepositório> <caminhoDoRepositorioClonado> - Adiciona o repositório clonado como uma vertente com o mesmo nome <apelidoDoRepositório> porem escondida
+
+git config --get remote.origin.url - Retorna o caminho do repositório original
+git config -l - Mostra as configurações do repositório
