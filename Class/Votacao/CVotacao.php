@@ -1,5 +1,5 @@
 <?php
-class CVotacao{
+class CVotacao extends CCore{
 	
 	/**
 	 * Opções indexadas numericamente da votacao 
