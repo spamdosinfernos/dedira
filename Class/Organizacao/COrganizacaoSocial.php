@@ -6,8 +6,8 @@ class COrganizacaoSocial extends COrganizacao{
 	 * @example Camponesa, Sindical, Estudantil, etc
 	 * @var CTipoOrganizacao
 	 */
-	private $tipo;
+	protected $tipo;
 
-	private $arrCorrentesIdeologicas;
+	protected $arrCorrentesIdeologicas;
 }
 ?>

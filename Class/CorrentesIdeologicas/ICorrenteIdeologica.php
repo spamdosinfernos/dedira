@@ -1,12 +1,16 @@
-<?php 
+<?php
 interface ICorrenteIdeologica{
-	
-	private $nome;
-	
-	private $descricao;
-	
-	private $arrBibliografia;
-	
-}
 
+	public function getNome();
+
+	public function setNome($nome);
+
+	public function getDescricao();
+
+	public function setDescricao($descricao);
+
+	public function getArrBibliografia();
+
+	public function setArrBibliografia($arrBibliografia);
+}
 ?>

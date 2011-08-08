@@ -5,19 +5,19 @@ require_once 'IPessoa.php';
 
 class CPessoa extends CCore implements IPessoa{
 
-	private $id;
+	protected $id;
 
-	private $nome;
+	protected $nome;
 
-	private $sobrenome;
+	protected $sobrenome;
 
-	private $dataDeNascimento;
+	protected $dataDeNascimento;
 
-	private $sexo;
+	protected $sexo;
 
-	private $arrTelefone;
+	protected $arrTelefone;
 
-	private $nivelDeAcessoAoSitema;
+	protected $nivelDeAcessoAoSitema;
 
 	public function __construct(){
 

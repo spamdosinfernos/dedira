@@ -1,12 +1,35 @@
 <?php 
 class CCorrenteIdeologica extends CCore implements ICorrenteIdeologica{
 	
-	private $nome;
+	protected $nome;
 	
-	private $descricao;
+	protected $descricao;
 	
-	private $arrBibliografia;
-	
+	protected $arrBibliografia;
+
+	public function getNome(){
+	    return $this->nome;
+	}
+
+	public function setNome($nome){
+	    $this->nome = $nome;
+	}
+
+	public function getDescricao(){
+	    return $this->descricao;
+	}
+
+	public function setDescricao($descricao){
+	    $this->descricao = $descricao;
+	}
+
+	public function getArrBibliografia(){
+	    return $this->arrBibliografia;
+	}
+
+	public function setArrBibliografia($arrBibliografia){
+	    $this->arrBibliografia = $arrBibliografia;
+	}
 }
 
 ?>

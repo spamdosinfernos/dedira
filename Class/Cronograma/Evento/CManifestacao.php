@@ -1,8 +1,8 @@
 <?php
 class Manifestacao extends Evento{
 	
-	private $reinvindicacao;
+	protected $reinvindicacao;
 	
-	private $arrMovimentosPromovedor;
+	protected $arrMovimentosPromovedor;
 	
 }

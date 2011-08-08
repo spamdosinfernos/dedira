@@ -8,10 +8,7 @@ $r->setPauta("Pauta");
 $r->setObservacoes("teste de reunião");
 $r->salvar();
 $r->setPauta("Pauta");
-$r->setArrConvidadosOpcionais();
 $r->setObservacoes("teste de reunião ataualizada");
 $r->salvar();
 $r->apagar();
-
-
 ?>

@@ -1,11 +1,11 @@
 <?php 
 class CContribuicao{
 	
-	private $valor;
+	protected $valor;
 	
-	private $dataDeInicio;
+	protected $dataDeInicio;
 	
-	private $periodicidade;
+	protected $periodicidade;
 	
 	/**
 	 * Retorna as contribuiçoes vencidas

@@ -3,14 +3,14 @@ require_once 'CEvento.php';
 
 class CReuniao extends CEvento{
 
-	private $pauta;
+	protected $pauta;
 
 	/**
 	 * Pessoas da organização que devm participar da reunião 
 	 * @var Array : CMilitanteOrganico
 	 * @var Array : CAdministrador
 	 */
-	private $arrIntegrantes;
+	protected $arrIntegrantes;
 
 	/**
 	 *
@@ -18,7 +18,7 @@ class CReuniao extends CEvento{
 	 * @var Array : CPessoa
 	 * @var Array : CMilitanteDeApoio
 	 */
-	private $arrConvidadosOpcionais;
+	protected $arrConvidadosOpcionais;
 
 	public function getPauta(){
 		return $this->pauta;

@@ -1,27 +1,27 @@
 <?php
 class CObjeto{
 	
-	private $foto;
+	protected $foto;
 
-	private $descricaoCurta;
+	protected $descricaoCurta;
 	
-	private $descricaoLonga;
+	protected $descricaoLonga;
 
 	/**
 	 * Pessoa que tem a posse do objeto 
 	 * @var CPessoa
 	 * @var IOrganizacao
 	 */
-	private $possuidor;
+	protected $possuidor;
 	
 	/**
 	 * Pessoa que tem a posse do objeto 
 	 * @var CPessoa
 	 * @var IOrganizacao
 	 */
-	private $possuidorTemporario;
+	protected $possuidorTemporario;
 	
-	private $dataDeAquisicaoDoPossuidor;
+	protected $dataDeAquisicaoDoPossuidor;
 	
 	
 }

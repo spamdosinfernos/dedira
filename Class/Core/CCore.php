@@ -83,5 +83,26 @@ class CCore{
 		session_destroy();
 		$this->idDaSessao = '';
 	}
+
+	/**
+	 * Transforma as propriedades do objeto em um arranjo
+	 * @return array:mixed
+	 */
+	protected function toArray(){
+		return $this->paraArray($this);
+	}
+
+	private function paraArray($obj){
+
+		$arrSerial = get_object_vars($obj);
+
+		foreach ($arrSerial as $chave => $variable) {
+			if(is_object($variable)){
+				$arrSerial[$chave] = $this->paraArray($variable);
+			}
+		}
+		
+		return $arrSerial;
+	}
 }
 ?>

@@ -7,9 +7,9 @@ require_once 'CMilitante.php';
  */
 class CMilitanteOrganico extends CMilitante{
 
-	private $usuario;
+	protected $usuario;
 	
-	private $senha;
+	protected $senha;
 	
 	public function __construct(){
 		

@@ -1,17 +1,21 @@
 <?php
 class CPasso extends CCore{
 	
-	private $id;
+	protected $id;
 	
 	/**
 	 * Indica se o passo foi realizado ou não 
 	 * @var boolean
 	 */
-	private $completo;
+	protected $completo;
 
-	private $explicacaoDoPasso;
+	protected $explicacaoDoPasso;
 	
-	private $observacoesDeQuemFezOPasso;
+	protected $observacoesDeQuemFezOPasso;
+	
+	public function __construct(){
+		parent::__construct();
+	}
 	
 	public function isCompleto(){
 		return $this->completo;

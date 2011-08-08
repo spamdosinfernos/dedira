@@ -3,11 +3,11 @@ require_once 'CPessoa.php';
 
 class CMilitante extends CPessoa{
 
-	private $email;
+	protected $email;
 
-	private $idOrganizacao;
+	protected $idOrganizacao;
 
-	private $chavePgp;
+	protected $chavePgp;
 
 	public function __construct(){
 

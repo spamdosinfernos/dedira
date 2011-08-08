@@ -5,22 +5,22 @@ class CVotacao{
 	 * Opções indexadas numericamente da votacao 
 	 * @var Array : int => string
 	 */
-	private $arrOpcoes;
+	protected $arrOpcoes;
 	
-	private $descricao;
+	protected $descricao;
 
-	private $nomeDaVotacao;
+	protected $nomeDaVotacao;
 	
-	private $dataDeCriacao;
+	protected $dataDeCriacao;
 	
-	private $vigenciaEmSegundos;
+	protected $vigenciaEmSegundos;
 	
 	/**
 	 * 
 	 * Militantes organicos que votaram
 	 * @var Array : CMilitanteOrganico
 	 */
-	private $arrMilitantesVotantes;
+	protected $arrMilitantesVotantes;
 	
 }
 ?>

@@ -1,33 +1,45 @@
 <?php
 require_once 'CFluxoDeTrabalho.php';
 
+/**
+ * Descrevem tarefas que devem ser realizadas pelo usuário
+ *
+ * Uma tarefa tem que ter no mínimo um fluxo de trabalho
+ * @author andre
+ *
+ */
 class CTarefa extends CEvento{
-	
+
 	/**
 	 * Responsáveis pela tarefa 
 	 * @var Array : IPessoa
 	 */
-	private $arrResponsaveis;
-	
+	protected $arrResponsaveis;
+
 	/**
 	 * Descrição da tarefa 
 	 * @var string
 	 */
-	private $descricaoDaTarefa;
-	
+	protected $descricaoDaTarefa;
+
 	/**
-	 * Fluxo de trabalho da tarefa 
+	 * Fluxo de trabalho da tarefa
 	 * @var CFluxoDeTrabalho
 	 */
-	private $fluxoDeTrabalho;
-	
+	protected $fluxoDeTrabalho;
+
 	/**
 	 * Quantidade de segundos antes para avisar da data limite de conclusao da tarefa
 	 * @var int
 	 */
-	private $qtdeDeSegundosAntesParaAvisar;
-	
-	private function SetQtdeDeSegundosAntesParaAvisar($segundos){
+	protected $qtdeDeSegundosAntesParaAvisar;
+
+	public function __construct(CFluxoDeTrabalho $fluxoDeTrabalho){
+		parent::__construct();
+		$this->fluxoDeTrabalho = $fluxoDeTrabalho;
+	}
+
+	public function SetQtdeDeSegundosAntesParaAvisar($segundos){
 		$this->qtdeDeSegundosAntesParaAvisar = $segundos;
 	}
 }

@@ -6,13 +6,13 @@ class CVotante extends CMilitanteOrganico{
 	 * Identificação da votação ou da pesquisa
 	 * @var int
 	 */
-	private $IdDaVotacao;
+	protected $IdDaVotacao;
 	
 	/**
 	 * Voto dado 
 	 * @var mixed
 	 */
-	private $voto;
+	protected $voto;
 	
 	
 }

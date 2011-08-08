@@ -6,27 +6,27 @@ class COrganizacao extends CCore implements IOrganizacao {
 	 * @example Camponesa, Sindical, Estudantil, etc
 	 * @var CTipoOrganizacao
 	 */
-	private $tipo;
+	protected $tipo;
 
-	private $nome;
+	protected $nome;
 
-	private $descricao;
+	protected $descricao;
 
-	private $arrContatos;
+	protected $arrContatos;
 
-	private $arrFocosDeAtuacao;
+	protected $arrFocosDeAtuacao;
 
 	/**
 	 * SubOrganizações podem ser interpretadas como as frentes
 	 * @var Array : IOrganizacao
 	 */
-	private $arrSubOrganizacoes;
+	protected $arrSubOrganizacoes;
 
 	/**
 	 * Informa a organização pai da frente se for "null" é uma organização raíz
 	 * @var COrganizacaoPolitica
 	 */
-	private $organizacaoPai;
+	protected $organizacaoPai;
 
 	public function __construct(){
 		parent::__construct();

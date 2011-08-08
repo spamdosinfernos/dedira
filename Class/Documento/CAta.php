@@ -5,9 +5,9 @@ class CAta extends CDocumento{
 	 *  
 	 * @var Array : IPessoa
 	 */
-	private $arrPartcipantesDaReuniao;
+	protected $arrPartcipantesDaReuniao;
 	
-	private $arrDeliberacoes;
+	protected $arrDeliberacoes;
 	
 }
 

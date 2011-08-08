@@ -1,17 +1,19 @@
 <?php
-require_once 'CPasso';
+require_once 'CPasso.php';
 
 class CFluxoDeTrabalho extends CCore{
 	
-	private $id;
-	
-	private $descricao;
+	protected $descricao;
 	
 	/**
 	 * Passos do fluxo para resolver a tarefa 
 	 * @var Array : CPasso
 	 */
-	private $arrPassos;
+	protected $arrPassos;
+	
+	public function __construct(){
+		parent::__construct();
+	}
 	
 	public function addPasso(CPasso $passo){
 		$this->arrPassos[] = $passo;

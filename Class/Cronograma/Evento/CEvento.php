@@ -5,25 +5,25 @@ require_once 'Class/Core/BaseDeDados/CBaseDeDados.php';
 
 class CEvento extends CCore implements IEvento{
 
-	private $id;
+	protected $id;
 
-	private $rev;
+	protected $rev;
 
-	private $dataInicio;
+	protected $dataInicio;
 
-	private $dataFim;
+	protected $dataFim;
 
-	private $observacoes;
+	protected $observacoes;
 
-	private $arrMaisContatos;
+	protected $arrMaisContatos;
 
-	private $arrEnderecosDosLocais;
+	protected $arrEnderecosDosLocais;
 
 	/**
 	 * Lista das identificações dos documentos relacionados
 	 * @var int
 	 */
-	private $arrIdsDosDocumentosRelacionados;
+	protected $arrIdsDosDocumentosRelacionados;
 
 	/**
 	 * Pessoas ou organizações promotoras do evento 
@@ -31,7 +31,7 @@ class CEvento extends CCore implements IEvento{
 	 * @var CMilitante
 	 * @var IOrganizacao
 	 */
-	private $arrPessoasOuOrganizacoesPromotoras;
+	protected $arrPessoasOuOrganizacoesPromotoras;
 
 	private $operadorDeBancoDeDados;
 
@@ -48,7 +48,7 @@ class CEvento extends CCore implements IEvento{
 	public function salvar(){
 
 		if($this->id == ""){
-			$ok = $this->operadorDeBancoDeDados->inserirInformacao("", get_object_vars($this));
+			$ok = $this->operadorDeBancoDeDados->inserirInformacao("", $this->toArray());
 		}else{
 			$ok = $this->operadorDeBancoDeDados->atualizarInformacao($this->id, $this->rev, $this->toArray());
 		}
@@ -106,7 +106,6 @@ class CEvento extends CCore implements IEvento{
 
 		return true;
 	}
-
 
 	public function setId($id){
 		$this->id = $id;

@@ -26,7 +26,5 @@ interface IPessoa{
 	public function getNivelDeAcessoAoSitema();
 
 	public function setNivelDeAcessoAoSitema($nivelDeAcessoAoSitema);
-	
-	
 }
 ?>
