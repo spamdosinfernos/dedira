@@ -1,5 +1,5 @@
 <?php
-require_once 'Class/Core/CCore.php';
+require_once '../CCore.php';
 /**
  * XTemplate PHP templating engine
  *

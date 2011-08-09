@@ -1,4 +1,7 @@
 <?php
+require_once 'IOrganizacao.php';
+require_once '../Core/CCore.php';
+
 class COrganizacao extends CCore implements IOrganizacao {
 
 	/**

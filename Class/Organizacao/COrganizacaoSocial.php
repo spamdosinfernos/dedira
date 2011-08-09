@@ -1,4 +1,6 @@
 <?php
+require_once 'COrganizacao.php';
+
 class COrganizacaoSocial extends COrganizacao{
 
 	/**

@@ -1,5 +1,5 @@
 <?php 
-require_once 'Class/Cronograma/Evento/CReuniao.php';
+require_once '../Evento/CReuniao.php';
 
 $r = new CReuniao();
 

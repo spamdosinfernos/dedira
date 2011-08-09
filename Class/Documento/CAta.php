@@ -1,4 +1,6 @@
-<?php 
+<?php
+require_once 'CDocumento.php';
+
 class CAta extends CDocumento{
 	
 	/**

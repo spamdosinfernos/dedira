@@ -1,4 +1,6 @@
 <?php
+require_once '../../../Core/CCore.php';
+
 class CPasso extends CCore{
 	
 	protected $id;

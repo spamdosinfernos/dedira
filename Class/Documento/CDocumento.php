@@ -1,4 +1,7 @@
 <?php
+require_once 'IDocumento.php';
+require_once '../Core/CCore.php';
+
 class CDocumento extends CCore implements IDocumento{
 
 	protected $id;

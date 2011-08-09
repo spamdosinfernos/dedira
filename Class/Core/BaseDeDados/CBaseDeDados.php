@@ -1,7 +1,6 @@
 <?php
-require_once 'Class/Core/BaseDeDados/CouchDb/CCouchDB.php';
-require_once 'Class/Core/Configuracao/CConfiguracao.php';
-
+require_once 'CouchDb/CCouchDB.php';
+require_once '../../Core/Configuracao/CConfiguracao.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
  * @author andre

@@ -1,7 +1,6 @@
 <?php
-require_once 'Class/Core/CCore.php';
 require_once 'IPessoa.php';
-
+require_once '../Core/CCore.php';
 
 class CPessoa extends CCore implements IPessoa{
 

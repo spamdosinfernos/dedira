@@ -1,10 +1,10 @@
 <?php
-require_once 'Class/Core/Configuracao/CConfiguracao.php';
+require_once '../Core/Configuracao/CConfiguracao.php';
 
-require_once 'Class/Cronograma/Evento/CManifestacao.php';
-require_once 'Class/Cronograma/Evento/CEncontro.php';
-require_once 'Class/Cronograma/Evento/CReuniao.php';
-require_once 'Class/Cronograma/Evento/CEvento.php';
+require_once 'Evento/CManifestacao.php';
+require_once 'Evento/CEncontro.php';
+require_once 'Evento/CReuniao.php';
+require_once 'Evento/CEvento.php';
 
 class CCronograma extends CCore{
 	
