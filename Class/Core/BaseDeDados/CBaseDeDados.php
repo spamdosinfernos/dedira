@@ -110,7 +110,6 @@ class CBaseDeDados extends CCouchDB{
 		if(!isset($this->resposta->ok) && !$this->resposta->ok){
 			return false;
 		}
-
 		return true;
 	}
 

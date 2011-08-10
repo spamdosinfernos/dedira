@@ -1,8 +1,8 @@
 <?php
 require_once 'IOrganizacao.php';
-require_once '../Core/CCore.php';
+require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
 
-class COrganizacao extends CCore implements IOrganizacao {
+class COrganizacao extends CDocumentoDaBase implements IOrganizacao {
 
 	/**
 	 * Tipo da organização social
@@ -36,12 +36,55 @@ class COrganizacao extends CCore implements IOrganizacao {
 		$this->organizacaoPai = null;
 	}
 
-	public function setOrganizacaoPai(COrganizacaoPolitica $organizacaoPai){
-		$this->organizacaoPai = $organizacaoPai;
+	public function getTipo(){
+	    return $this->tipo;
 	}
 
-	public function getOrgnaizacaoPai(){
-		return $this->organizacaoPai;
+	public function setTipo(CTipoOrganizacao $tipo){
+	    $this->tipo = $tipo;
 	}
 
+	public function getNome(){
+	    return $this->nome;
+	}
+
+	public function setNome($nome){
+	    $this->nome = $nome;
+	}
+
+	public function getDescricao(){
+	    return $this->descricao;
+	}
+
+	public function setDescricao($descricao){
+	    $this->descricao = $descricao;
+	}
+
+	public function getArrContatos(){
+	    return $this->arrContatos;
+	}
+
+	public function setArrContatos($arrContatos){
+	    $this->arrContatos = $arrContatos;
+	}
+
+	public function getArrFocosDeAtuacao(){
+	    return $this->arrFocosDeAtuacao;
+	}
+
+	public function setArrFocosDeAtuacao($arrFocosDeAtuacao){
+	    $this->arrFocosDeAtuacao = $arrFocosDeAtuacao;
+	}
+
+	public function getArrSubOrganizacoes(){
+	    return $this->arrSubOrganizacoes;
+	}
+
+	public function setArrSubOrganizacoes($arrSubOrganizacoes){
+	    $this->arrSubOrganizacoes = $arrSubOrganizacoes;
+	}
+
+	public function getOrganizacaoPai(){
+	    return $this->organizacaoPai;
+	}
 }

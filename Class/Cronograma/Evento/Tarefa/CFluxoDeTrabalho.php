@@ -1,7 +1,7 @@
 <?php
 require_once 'CPasso.php';
 
-class CFluxoDeTrabalho extends CCore{
+class CFluxoDeTrabalho{
 	
 	protected $descricao;
 	

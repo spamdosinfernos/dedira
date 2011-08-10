@@ -3,7 +3,6 @@ require_once 'CMilitanteOrganico.php';
 
 class CAdministrador extends CMilitanteOrganico{
 
-
 	public function __construct(){
 
 		parent::__construct();

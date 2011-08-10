@@ -1,5 +1,7 @@
 <?php
-class CObjeto{
+require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
+
+class CObjeto extends CDocumentoDaBase{
 	
 	protected $foto;
 

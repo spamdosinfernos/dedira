@@ -1,10 +1,8 @@
 <?php
 require_once 'IPessoa.php';
-require_once '../Core/CCore.php';
+require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
 
-class CPessoa extends CCore implements IPessoa{
-
-	protected $id;
+class CPessoa extends CDocumentoDaBase implements IPessoa{
 
 	protected $nome;
 

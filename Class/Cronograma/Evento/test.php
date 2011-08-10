@@ -10,6 +10,7 @@ $r->carregar();
 
 $r->setPauta("Pauta");
 $r->setObservacoes("teste de reunião");
+$r->setTipoDeRecorrencia(1);
 $r->salvar();
 $r->setPauta("Pauta");
 $r->setObservacoes("teste de reunião ataualizada");

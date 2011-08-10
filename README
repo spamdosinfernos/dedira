@@ -1,0 +1,6 @@
+ARQUIVOS IMPORTANTES
+
+Nome: CDocumentoDaBase.php
+Descrição: Todos as classes que tiverem propriedades que se queira salvar deve extender esta classe, mas atenção: As propriedades salvas serão apenas aquelas cuja visibilidade for "protected" ou "public"  
+/MiliSystem/Class/Core/BaseDeDados/CDocumentoDaBase.php : Todos os documentos que se quiser salvar deve extender esta classe
+

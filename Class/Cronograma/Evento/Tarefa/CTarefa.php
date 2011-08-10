@@ -29,18 +29,46 @@ class CTarefa extends CEvento{
 	protected $fluxoDeTrabalho;
 
 	/**
-	 * Quantidade de segundos antes para avisar da data limite de conclusao da tarefa
-	 * @var int
+	 * Indica a data limite para realização da tarefa
+	 * @var DateTime
 	 */
-	protected $qtdeDeSegundosAntesParaAvisar;
-
+	protected $dataLimiteParaRealizacao;
+	
 	public function __construct(CFluxoDeTrabalho $fluxoDeTrabalho){
 		parent::__construct();
 		$this->fluxoDeTrabalho = $fluxoDeTrabalho;
 	}
 
-	public function SetQtdeDeSegundosAntesParaAvisar($segundos){
-		$this->qtdeDeSegundosAntesParaAvisar = $segundos;
+	public function getArrResponsaveis(){
+	    return $this->arrResponsaveis;
+	}
+
+	public function setArrResponsaveis($arrResponsaveis){
+	    $this->arrResponsaveis = $arrResponsaveis;
+	}
+
+	public function getDescricaoDaTarefa(){
+	    return $this->descricaoDaTarefa;
+	}
+
+	public function setDescricaoDaTarefa($descricaoDaTarefa){
+	    $this->descricaoDaTarefa = $descricaoDaTarefa;
+	}
+
+	public function getFluxoDeTrabalho(){
+	    return $this->fluxoDeTrabalho;
+	}
+
+	public function setFluxoDeTrabalho($fluxoDeTrabalho){
+	    $this->fluxoDeTrabalho = $fluxoDeTrabalho;
+	}
+
+	public function getDataLimiteParaRealizacao(){
+	    return $this->dataLimiteParaRealizacao;
+	}
+
+	public function setDataLimiteParaRealizacao($dataLimiteParaRealizacao){
+	    $this->dataLimiteParaRealizacao = $dataLimiteParaRealizacao;
 	}
 }
 ?>

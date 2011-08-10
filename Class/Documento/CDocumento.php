@@ -1,12 +1,8 @@
 <?php
 require_once 'IDocumento.php';
-require_once '../Core/CCore.php';
+require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
 
-class CDocumento extends CCore implements IDocumento{
-
-	protected $id;
-
-	protected $rev;
+class CDocumento extends CDocumentoDaBase implements IDocumento{
 
 	protected $autor;
 
@@ -17,22 +13,6 @@ class CDocumento extends CCore implements IDocumento{
 	protected $nomeDoDocumento;
 
 	protected $dataDeModificacao;
-
-	public function getId(){
-		return $this->id;
-	}
-
-	public function setId($id){
-		$this->id = $id;
-	}
-
-	public function setRev($rev){
-		$this->rev = $rev;
-	}
-
-	public function getRev(){
-		return $this->rev;
-	}
 
 	public function getAutor(){
 		return $this->autor;
@@ -54,7 +34,7 @@ class CDocumento extends CCore implements IDocumento{
 		return $this->dataDeCriacao;
 	}
 
-	public function setDataDeCriacao($dataDeCriacao){
+	public function setDataDeCriacao(DateTime $dataDeCriacao){
 		$this->dataDeCriacao = $dataDeCriacao;
 	}
 
@@ -70,7 +50,7 @@ class CDocumento extends CCore implements IDocumento{
 		return $this->dataDeModificacao;
 	}
 
-	public function setDataDeModificacao($dataDeModificacao){
+	public function setDataDeModificacao(DateTime $dataDeModificacao){
 		$this->dataDeModificacao = $dataDeModificacao;
 	}
 }
