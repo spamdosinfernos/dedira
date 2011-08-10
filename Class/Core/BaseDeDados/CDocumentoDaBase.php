@@ -17,13 +17,13 @@ class CDocumentoDaBase extends CCore{
 	 * Indentificação das informações na base de dados
 	 * @var mixed
 	 */
-	protected $id;
+	private $id;
 
 	/**
 	 * Série que identifica a versão das informações na base de dados
 	 * @var mixed
 	 */
-	protected $rev;
+	private $rev;
 
 	/**
 	 * Responsável por realizar as transações com o banco de dados
@@ -53,38 +53,104 @@ class CDocumentoDaBase extends CCore{
 
 		$objInfo = $this->operadorDeBancoDeDados->getResposta();
 
+		$expressao = $this->gerarExpressaoDeCargaDosDados($objInfo,"\$this");
+
+		if(eval($expressao) === false) return false;
+
+		//Se chegou até aqui deu tudo certo serialize(new CDocumentoDaBase())
+		return true;
+	}
+
+	private function gerarExpressaoDeCargaDosDados($objInfo, $raiz){
+
+		/*
+		 * Se o informação tratada é um objeto, tenta encontrar os
+		 * métodos que atualizam suas proriedades
+		 */
+		if(isset($objInfo->CLASSNAME)){
+				
+			//Opa! é um objeto! Devo gerar o código apenas no caso deste ser um sub-objeto de um objeto 
+			//if(get_class($this) != $objInfo->CLASSNAME){
+			if($raiz != "\$this"){
+
+
+				$str = "O:" . strlen($objInfo->CLASSNAME) . ":\"" . $objInfo->CLASSNAME . "\":";
+				
+				
+				foreach ($objInfo as $propriedade => $valor) {
+					//Pula a propriedade "CLASSNAME"
+					if($propriedade == "CLASSNAME") continue;
+					
+					if(is_numeric($valor)) $prefixo = "i";
+					if(is_string($valor)) $prefixo = "s";
+					
+					$arrStr[] = "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";$prefixo:" . strlen($valor) . ":\"" . $valor . "\";";     
+					
+				}
+				
+				$str .= count($arrStr) . ":{" . join("",$arrStr) . "}";
+
+				//Crio um novo objeto
+				$arrExpressao[] = "$raiz = new $objInfo->CLASSNAME();";
+
+
+				//Varrendo os métodos para encontrar um adequado
+				$arrMetodos = get_class_methods($objInfo->CLASSNAME);
+				foreach ($objInfo as $propriedade => $valor) {
+
+					//Pula a propriedade "CLASSNAME"
+					if($propriedade == "CLASSNAME") continue;
+
+					//Gera o código que seta a propriedade (caso encontre)
+					foreach ($arrMetodos as $indice => $metodo) {
+						if(is_numeric(stripos($metodo,$propriedade)) && is_numeric(stripos($metodo,"set"))){
+							$arrExpressao[] = $raiz . "->$metodo('$valor');";
+							unset($arrMetodos[$indice]);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		foreach ($objInfo as $propriedade => $valor) {
 
-			//Pula as propriedades "CLASSNAME" (não uso para as mesmas)
-			if(is_null($valor) || $propriedade == "CLASSNAME") continue;
+			if(is_null($valor)){
+				continue;
+			}
+
+			if($propriedade == "CLASSNAME"){
+				continue;
+			}
+
+			if(is_object($valor)){
+				$arrExpressao[] = $this->gerarExpressaoDeCargaDosDados($valor,$raiz . "->" .$propriedade);
+			}
 
 			//Traduz a id do banco para a id do sistema
 			if($propriedade == "_id"){
-				$this->id = $valor;
+				$arrExpressao[] = $raiz . "->id='$valor';";
 				continue;
 			}
 
 			//Traduz a série da revisão do banco para a revisão do sistema
 			if($propriedade == "_rev"){
-				$this->rev = $valor;
+				$arrExpressao[] = $raiz . "->rev='$valor';";
 				continue;
 			}
 
 			//Monta a expressão que setará as propriedades das classes
-			if(is_string($valor)) $expressao = "\$this->$propriedade = '$valor';";
-			if(is_numeric($valor)) $expressao = "\$this->$propriedade = $valor;";
-
-			if(is_object($valor) || is_array($valor)){
-				$valor = serialize($valor);
-				$expressao = "\$this->$propriedade = unserialize('$valor');";
+			if(is_string($valor)){
+				$arrExpressao[] = "$raiz->$propriedade = '$valor';";
+				continue;
 			}
 
-			//Se algum comando falhar retorna false
-			if(eval($expressao) == false) return false;;
+			if(is_numeric($valor)){
+				$arrExpressao[] = "$raiz->$propriedade = $valor;";
+				continue;
+			}
 		}
-
-		//Se chegou até aqui deu tudo certo
-		return true;
+		return join("",$arrExpressao);
 	}
 
 	/**

@@ -1,14 +1,14 @@
 <?php
 class CCore{
 
-	private $idDaSessao;
-
 	/**
 	 * Id do usuário logado, esta propriedade deve ser alterada exclusivamente
 	 * pelas classes CCore e por classes que implementem a interface IPessoa.
 	 * @var string
 	 */
 	//private $idDoUsuario;
+	
+	private $idDaSessao;
 
 	const CONST_NIVEL_ACESSO_ADMINISTRADOR = 0;
 
@@ -102,6 +102,7 @@ class CCore{
 			}
 		}
 		
+		if(is_object($obj))	$arrSerial["CLASSNAME"] = get_class($obj);
 		return $arrSerial;
 	}
 }

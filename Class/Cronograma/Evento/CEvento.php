@@ -13,6 +13,10 @@ class CEvento extends CDocumentoDaBase implements IEvento{
 
 	protected $dataFim;
 
+	/**
+	 * 
+	 * @var Datetime
+	 */
 	protected $dataInicio;
 
 	protected $observacoes;
