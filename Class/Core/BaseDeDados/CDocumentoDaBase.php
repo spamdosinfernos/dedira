@@ -63,55 +63,57 @@ class CDocumentoDaBase extends CCore{
 
 	private function gerarExpressaoDeCargaDosDados($objInfo, $raiz){
 
+		$strTemp = "";
+
 		/*
 		 * Se o informação tratada é um objeto, tenta encontrar os
 		 * métodos que atualizam suas proriedades
 		 */
 		if(isset($objInfo->CLASSNAME)){
-				
-			//Opa! é um objeto! Devo gerar o código apenas no caso deste ser um sub-objeto de um objeto 
-			//if(get_class($this) != $objInfo->CLASSNAME){
-			if($raiz != "\$this"){
 
+			$str = "O:" . strlen($objInfo->CLASSNAME) . ":\"" . $objInfo->CLASSNAME . "\":";
 
-				$str = "O:" . strlen($objInfo->CLASSNAME) . ":\"" . $objInfo->CLASSNAME . "\":";
-				
-				
-				foreach ($objInfo as $propriedade => $valor) {
-					//Pula a propriedade "CLASSNAME"
-					if($propriedade == "CLASSNAME") continue;
-					
-					if(is_numeric($valor)) $prefixo = "i";
-					if(is_string($valor)) $prefixo = "s";
-					
-					$arrStr[] = "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";$prefixo:" . strlen($valor) . ":\"" . $valor . "\";";     
-					
+			foreach ($objInfo as $propriedade => $valor) {
+
+				//Pula a propriedade "CLASSNAME"
+				if($propriedade == "CLASSNAME") continue;
+
+				if(is_object($valor)){
+					$strTemp .= "s:" . strlen($propriedade) . ":\"" . $propriedade . "\":" . count(get_object_vars($valor)) . ":{";
+					$strTemp .= $this->gerarExpressaoDeCargaDosDados($valor,$propriedade) . "}";
 				}
-				
-				$str .= count($arrStr) . ":{" . join("",$arrStr) . "}";
 
-				//Crio um novo objeto
-				$arrExpressao[] = "$raiz = new $objInfo->CLASSNAME();";
-
-
-				//Varrendo os métodos para encontrar um adequado
-				$arrMetodos = get_class_methods($objInfo->CLASSNAME);
-				foreach ($objInfo as $propriedade => $valor) {
-
-					//Pula a propriedade "CLASSNAME"
-					if($propriedade == "CLASSNAME") continue;
-
-					//Gera o código que seta a propriedade (caso encontre)
-					foreach ($arrMetodos as $indice => $metodo) {
-						if(is_numeric(stripos($metodo,$propriedade)) && is_numeric(stripos($metodo,"set"))){
-							$arrExpressao[] = $raiz . "->$metodo('$valor');";
-							unset($arrMetodos[$indice]);
-							break;
-						}
-					}
+				//Traduz a id do banco para a id do sistema
+				if($propriedade == "_id"){
+					$strTemp .= "s:2:\"id\";";
+					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+					continue;
 				}
+
+				//Traduz a série da revisão do banco para a revisão do sistema
+				if($propriedade == "_rev"){
+					$strTemp .= "s:3:\"rev\";";
+					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+					continue;
+				}
+
+				$strTemp .= "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";";
+
+				if(is_numeric($valor)){
+					$strTemp .= "i:" . $valor . ";";
+				}
+
+				if(is_string($valor)){
+					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+				}
+
+				$arrStr[] = $strTemp;
 			}
+
+			$str .= count($arrStr) . ":{" . join("",$arrStr) . "}";
 		}
+
+		return $str;
 
 		foreach ($objInfo as $propriedade => $valor) {
 
