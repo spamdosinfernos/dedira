@@ -19,7 +19,7 @@ class CReuniao extends CEvento{
 	 * @var Array : CMilitanteDeApoio
 	 */
 	protected $arrConvidadosOpcionais;
-
+	
 	public function getPauta(){
 		return $this->pauta;
 	}

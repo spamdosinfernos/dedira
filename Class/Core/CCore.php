@@ -7,7 +7,7 @@ class CCore{
 	 * @var string
 	 */
 	//private $idDoUsuario;
-	
+
 	private $idDaSessao;
 
 	const CONST_NIVEL_ACESSO_ADMINISTRADOR = 0;
@@ -94,14 +94,47 @@ class CCore{
 
 	private function paraArray($obj){
 
-		$arrSerial = get_object_vars($obj);
+		$arrSerial = array();
 
-		foreach ($arrSerial as $chave => $variable) {
-			if(is_object($variable)){
-				$arrSerial[$chave] = $this->paraArray($variable);
-			}
+		if(is_object($obj)){
+			$reflection = new ReflectionObject($obj);
+			$arrPropriedades = $reflection->getProperties();
+		}else{
+			$arrPropriedades = $obj;
 		}
-		
+
+		foreach ($arrPropriedades as $indice => $propriedade) {
+
+			$modificador = "";
+			$nomeDaPropriedade = "";
+			$valorDaPropriedade = "";
+				
+			if(is_object($obj)){
+				$nomeDaPropriedade = $propriedade->getName();
+				$modificador = $propriedade->getModifiers();
+				//Muda o valor do valor... hehe...
+				$valorDaPropriedade = $obj->$nomeDaPropriedade;
+			}
+
+			if(is_object($valorDaPropriedade)){
+				$arrSerial[$nomeDaPropriedade][$modificador] = $this->paraArray($valorDaPropriedade);
+				continue;
+			}
+
+			if(is_array($valorDaPropriedade)){
+				//PAREI AQUI
+				$arrSerial[$nomeDaPropriedade][$modificador] = $this->paraArray($valorDaPropriedade);
+				continue;
+			}
+
+			if($modificador == ""){
+				$arrSerial[$indice] = $propriedade;
+			}else{
+				$arrSerial[$nomeDaPropriedade][$modificador] = $obj->$nomeDaPropriedade;
+			}
+
+		}
+
 		if(is_object($obj))	$arrSerial["CLASSNAME"] = get_class($obj);
 		return $arrSerial;
 	}

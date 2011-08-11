@@ -30,129 +30,44 @@ class CDocumentoDaBase extends CCore{
 	 * @var CBaseDeDados
 	 */
 	private $operadorDeBancoDeDados;
+	
+	const CONST_TIPO_INFORMACAO_OBJETO = 0;
+	const CONST_TIPO_INFORMACAO_ARRAY = 1;
+	const CONST_TIPO_INFORMACAO_ORDINARIA = 2;
+	
+	//const CONST_PRO = "\0*\0";
+	//const CONST_PRO = "@";
+	const CONST_PRO = "@@@";
 
 	public function __construct(){
 		parent::__construct();
-
-		//Preparando para realizar as transações com o banco de dados
-		$this->operadorDeBancoDeDados = new CBaseDeDados();
-		$this->operadorDeBancoDeDados->selecionarBaseDeDados(CConfiguracao::CONST_BD_NOME_EVENTOS);
 	}
 
 	/**
 	 * Carrega uma informação da base dada sua identificação
-	 * @return boolean
+	 *
+	 * ATENÇÃO: Infelizmente não é possivel, de forma 
+	 * eficiente, um objeto por outro gerado por ele
+	 * mesmo de forma interna à classe
+	 * @return Object - O objeto carregado e gerado
 	 * @see setId()
 	 */
 	public function carregar(){
 
 		//A id te que estar setada
-		if($this->id == "") return false;
+		if($this->id == "") return null;
 
-		if(!$this->operadorDeBancoDeDados->carregarInformacao($this->id)) return false;
+		$this->abrirConexaoComObancoDeDados();
 
-		$objInfo = $this->operadorDeBancoDeDados->getResposta();
+		if(!$this->operadorDeBancoDeDados->carregarInformacao($this->id)) return null;
 
-		$expressao = $this->gerarExpressaoDeCargaDosDados($objInfo,"\$this");
+		$informacao = $this->operadorDeBancoDeDados->getResposta();
 
-		if(eval($expressao) === false) return false;
+		$expressao = $this->gerarExpressaoSerializada(null, $informacao);
+		
+		//$safe_object = str_replace("\0", "~~NULL_BYTE~~", $expressao); 
 
-		//Se chegou até aqui deu tudo certo serialize(new CDocumentoDaBase())
-		return true;
-	}
-
-	private function gerarExpressaoDeCargaDosDados($objInfo, $raiz){
-
-		$strTemp = "";
-
-		/*
-		 * Se o informação tratada é um objeto, tenta encontrar os
-		 * métodos que atualizam suas proriedades
-		 */
-		if(isset($objInfo->CLASSNAME)){
-
-			$str = "O:" . strlen($objInfo->CLASSNAME) . ":\"" . $objInfo->CLASSNAME . "\":";
-
-			foreach ($objInfo as $propriedade => $valor) {
-
-				//Pula a propriedade "CLASSNAME"
-				if($propriedade == "CLASSNAME") continue;
-
-				if(is_object($valor)){
-					$strTemp .= "s:" . strlen($propriedade) . ":\"" . $propriedade . "\":" . count(get_object_vars($valor)) . ":{";
-					$strTemp .= $this->gerarExpressaoDeCargaDosDados($valor,$propriedade) . "}";
-				}
-
-				//Traduz a id do banco para a id do sistema
-				if($propriedade == "_id"){
-					$strTemp .= "s:2:\"id\";";
-					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
-					continue;
-				}
-
-				//Traduz a série da revisão do banco para a revisão do sistema
-				if($propriedade == "_rev"){
-					$strTemp .= "s:3:\"rev\";";
-					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
-					continue;
-				}
-
-				$strTemp .= "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";";
-
-				if(is_numeric($valor)){
-					$strTemp .= "i:" . $valor . ";";
-				}
-
-				if(is_string($valor)){
-					$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
-				}
-
-				$arrStr[] = $strTemp;
-			}
-
-			$str .= count($arrStr) . ":{" . join("",$arrStr) . "}";
-		}
-
-		return $str;
-
-		foreach ($objInfo as $propriedade => $valor) {
-
-			if(is_null($valor)){
-				continue;
-			}
-
-			if($propriedade == "CLASSNAME"){
-				continue;
-			}
-
-			if(is_object($valor)){
-				$arrExpressao[] = $this->gerarExpressaoDeCargaDosDados($valor,$raiz . "->" .$propriedade);
-			}
-
-			//Traduz a id do banco para a id do sistema
-			if($propriedade == "_id"){
-				$arrExpressao[] = $raiz . "->id='$valor';";
-				continue;
-			}
-
-			//Traduz a série da revisão do banco para a revisão do sistema
-			if($propriedade == "_rev"){
-				$arrExpressao[] = $raiz . "->rev='$valor';";
-				continue;
-			}
-
-			//Monta a expressão que setará as propriedades das classes
-			if(is_string($valor)){
-				$arrExpressao[] = "$raiz->$propriedade = '$valor';";
-				continue;
-			}
-
-			if(is_numeric($valor)){
-				$arrExpressao[] = "$raiz->$propriedade = $valor;";
-				continue;
-			}
-		}
-		return join("",$arrExpressao);
+		return unserialize($expressao);
 	}
 
 	/**
@@ -160,6 +75,8 @@ class CDocumentoDaBase extends CCore{
 	 * @return boolean
 	 */
 	public function salvar(){
+
+		$this->abrirConexaoComObancoDeDados();
 
 		if($this->id == ""){
 			$ok = $this->operadorDeBancoDeDados->inserirInformacao("", $this->toArray());
@@ -182,6 +99,9 @@ class CDocumentoDaBase extends CCore{
 	 */
 	public function apagar(){
 		if($this->id == "") throw new Exception("Texto - Falha ao apagar informação: O evento não tem uma identificação.");
+
+		$this->abrirConexaoComObancoDeDados();
+
 		return $this->operadorDeBancoDeDados->apagarInformacao($this->id, $this->rev);
 	}
 
@@ -199,6 +119,109 @@ class CDocumentoDaBase extends CCore{
 
 	public function getRev(){
 		return $this->rev;
+	}
+
+	private function abrirConexaoComObancoDeDados(){
+		if(is_null($this->operadorDeBancoDeDados)){
+			//Preparando para realizar as transações com o banco de dados
+			$this->operadorDeBancoDeDados = new CBaseDeDados();
+			$this->operadorDeBancoDeDados->selecionarBaseDeDados(CConfiguracao::CONST_BD_NOME_EVENTOS);
+		}
+	}
+
+	private function getTipoDaInformacao($informacao){
+		
+		if(is_null($informacao)) return self::CONST_TIPO_INFORMACAO_ORDINARIA;
+		
+		if(is_string($informacao) || is_numeric($informacao)){
+			return self::CONST_TIPO_INFORMACAO_ORDINARIA;
+		}
+		
+		if(isset($informacao->CLASSNAME)){
+			if($informacao->CLASSNAME != "stdClass") return self::CONST_TIPO_INFORMACAO_OBJETO;
+		}
+		
+		return self::CONST_TIPO_INFORMACAO_ARRAY;
+	}
+
+	private function gerarExpressaoSerializada($propriedade, $valor){
+
+		$strTemp = "";
+		$tipo = $this->getTipoDaInformacao($valor);
+
+		if($tipo == self::CONST_TIPO_INFORMACAO_OBJETO){
+			
+			
+			if(is_null($propriedade)){
+				$strTemp = "O:" . strlen($valor->CLASSNAME) . ":\"" . $valor->CLASSNAME . "\":" . (count(get_object_vars($valor)) - 1) . ":{";
+			}else{
+				$propriedade = self::CONST_PRO . $propriedade;
+				$strTemp = "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";O:" . strlen($valor->CLASSNAME) . ":\"" . $valor->CLASSNAME . "\":" . (count(get_object_vars($valor)) - 1) . ":{";
+			}
+
+			foreach ($valor as $subPropriedade => $subValor) {
+
+				if($subPropriedade == "CLASSNAME") continue;
+				
+				$strTemp .= $this->gerarExpressaoSerializada($subPropriedade, $subValor);
+			}
+
+			$strTemp .= "}";
+
+			return $strTemp;
+		}
+
+		if($tipo == self::CONST_TIPO_INFORMACAO_ARRAY){
+
+			$valor = get_object_vars($valor);
+			
+			if(is_null($propriedade)){
+				$strTemp = "a:" . count($valor) . ":{";
+			}else{
+				$propriedade = self::CONST_PRO . $propriedade;
+				$strTemp = "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";a:" . count($valor) . ":{";
+			}
+
+			foreach ($valor as $subPropriedade => $subValor){
+				$strTemp .= $this->gerarExpressaoSerializada($subPropriedade, $subValor);
+			}
+
+			$strTemp .= "}";
+
+			return $strTemp;
+		}
+
+		//Traduz a id do banco para a id do sistema
+		if($propriedade === "_id"){
+			$strTemp .= "s:2:\"id\";";
+			$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+			return $strTemp;
+		}
+
+		//Traduz a série da revisão do banco para a revisão do sistema
+		if($propriedade === "_rev"){
+			$strTemp .= "s:3:\"rev\";";
+			$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+			return $strTemp;
+		}
+
+		$propriedade = self::CONST_PRO . $propriedade;
+		$strTemp .= "s:" . strlen($propriedade) . ":\"" . $propriedade . "\";";
+
+		if(trim($valor) == ""){
+			$strTemp .= "N;";
+			return $strTemp;
+		}
+
+		if(is_numeric($valor)){
+			$strTemp .= "i:" . $valor . ";";
+			return $strTemp;
+		}
+
+		if(is_string($valor)){
+			$strTemp .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
+			return $strTemp;
+		}
 	}
 }
 ?>
