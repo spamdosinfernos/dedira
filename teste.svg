@@ -15,5 +15,6 @@ function restoreText(){
 	textnode.textContent = text;
 }
 
+
 </script>
 </svg>
