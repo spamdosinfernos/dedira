@@ -92,50 +92,68 @@ class CCore{
 		return $this->paraArray($this);
 	}
 
-	private function paraArray($obj){
+	/**
+	 * Transforma as propriedades do objeto ou array em um arranjo
+	 * @return array:mixed
+	 */
+	private function paraArray($info){
 
 		$arrSerial = array();
 
-		if(is_object($obj)){
-			$reflection = new ReflectionObject($obj);
+		//Se a informação for um objeto 
+		if(is_object($info)){
+			//As propriedades são as propriedades do objeto
+			$reflection = new ReflectionObject($info);
 			$arrPropriedades = $reflection->getProperties();
 		}else{
-			$arrPropriedades = $obj;
+			//Senão as propridades são os itens do arranjo
+			$arrPropriedades = $info;
 		}
 
+		//Construindo a estrutura que será salva
 		foreach ($arrPropriedades as $indice => $propriedade) {
 
-			$modificador = "";
+			//Visibilidade da propriedade (caso o item varrido seja um objeto)
+			$visibilidade = "";
+			//Nome da propriedade
 			$nomeDaPropriedade = "";
+			//Valor da propriedade
 			$valorDaPropriedade = "";
-				
-			if(is_object($obj)){
+
+			//Recupera os dados da propridade do objeto
+			if(is_object($info)){
 				$nomeDaPropriedade = $propriedade->getName();
-				$modificador = $propriedade->getModifiers();
-				//Muda o valor do valor... hehe...
-				$valorDaPropriedade = $obj->$nomeDaPropriedade;
+				$visibilidade = $propriedade->getModifiers();
+				$valorDaPropriedade = $info->$nomeDaPropriedade;
+
+				//Correção de bug aparente: As vezes a visibilidade fica em 4096 sendo que o máximo é 102
+				$visibilidade = $visibilidade > ReflectionMethod::IS_PRIVATE ? ReflectionMethod::IS_PUBLIC : $visibilidade;
 			}
 
+			//Se o valor da propriedade é um objeto, chama recursivamente o método
 			if(is_object($valorDaPropriedade)){
-				$arrSerial[$nomeDaPropriedade][$modificador] = $this->paraArray($valorDaPropriedade);
+				$arrSerial[$nomeDaPropriedade][$visibilidade] = $this->paraArray($valorDaPropriedade);
 				continue;
 			}
 
+			//Se o valor da propriedade é um array, chama recursivamente o método
 			if(is_array($valorDaPropriedade)){
-				//PAREI AQUI
-				$arrSerial[$nomeDaPropriedade][$modificador] = $this->paraArray($valorDaPropriedade);
+				$arrSerial[$nomeDaPropriedade][$visibilidade] = $this->paraArray($valorDaPropriedade);
 				continue;
 			}
 
-			if($modificador == ""){
+			if($visibilidade == ""){
+				//Quando a visibilidade é vazia, isso significa que a propriedade é o item de um array
 				$arrSerial[$indice] = $propriedade;
 			}else{
-				$arrSerial[$nomeDaPropriedade][$modificador] = $obj->$nomeDaPropriedade;
+				//Quando a visibilidade não é vazia, isso significa que é uma propriedade de um objeto
+				$arrSerial[$nomeDaPropriedade][$visibilidade] = $info->$nomeDaPropriedade;
 			}
-
 		}
 
-		if(is_object($obj))	$arrSerial["CLASSNAME"] = get_class($obj);
+		//Se a informação tratada for um objeto, adiciona o nome da classe na estrura a ser salva
+		if(is_object($info)) $arrSerial["CLASSNAME"] = get_class($info);
+
 		return $arrSerial;
 	}
 }
