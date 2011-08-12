@@ -37,54 +37,58 @@ class COrganizacao extends CDocumentoDaBase implements IOrganizacao {
 	}
 
 	public function getTipo(){
-	    return $this->tipo;
+		return $this->tipo;
 	}
 
 	public function setTipo(CTipoOrganizacao $tipo){
-	    $this->tipo = $tipo;
+		$this->tipo = $tipo;
 	}
 
 	public function getNome(){
-	    return $this->nome;
+		return $this->nome;
 	}
 
 	public function setNome($nome){
-	    $this->nome = $nome;
+		$this->nome = $nome;
 	}
 
 	public function getDescricao(){
-	    return $this->descricao;
+		return $this->descricao;
 	}
 
 	public function setDescricao($descricao){
-	    $this->descricao = $descricao;
+		$this->descricao = $descricao;
 	}
 
 	public function getArrContatos(){
-	    return $this->arrContatos;
+		return $this->arrContatos;
 	}
 
 	public function setArrContatos($arrContatos){
-	    $this->arrContatos = $arrContatos;
+		$this->arrContatos = $arrContatos;
 	}
 
 	public function getArrFocosDeAtuacao(){
-	    return $this->arrFocosDeAtuacao;
+		return $this->arrFocosDeAtuacao;
 	}
 
 	public function setArrFocosDeAtuacao($arrFocosDeAtuacao){
-	    $this->arrFocosDeAtuacao = $arrFocosDeAtuacao;
+		$this->arrFocosDeAtuacao = $arrFocosDeAtuacao;
 	}
 
 	public function getArrSubOrganizacoes(){
-	    return $this->arrSubOrganizacoes;
+		return $this->arrSubOrganizacoes;
 	}
 
 	public function setArrSubOrganizacoes($arrSubOrganizacoes){
-	    $this->arrSubOrganizacoes = $arrSubOrganizacoes;
+		$this->arrSubOrganizacoes = $arrSubOrganizacoes;
 	}
 
 	public function getOrganizacaoPai(){
-	    return $this->organizacaoPai;
+		return $this->organizacaoPai;
+	}
+
+	public function setOrganizacaoPai(COrganizacaoPolitica $organizacaoPai){
+		$this->organizacaoPai = $organizacaoPai;
 	}
 }

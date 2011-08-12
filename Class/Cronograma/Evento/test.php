@@ -1,5 +1,6 @@
 <?php 
 require_once '../Evento/CReuniao.php';
+require_once '../Evento/CManifestacao.php';
 
 $r = new CReuniao();
 
@@ -18,5 +19,10 @@ $r->salvar();
 $r->setPauta("Pauta");
 $r->setObservacoes("teste de reunião ataualizada ALTERADA");
 $r->salvar();
-//$r->apagar();
+
+
+$a = new CManifestacao();
+$a->salvar();
+
+
 ?>

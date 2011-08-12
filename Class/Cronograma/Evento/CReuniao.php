@@ -3,6 +3,9 @@ require_once 'CEvento.php';
 
 class CReuniao extends CEvento{
 
+	/**
+	 * @var string
+	 */
 	protected $pauta;
 
 	/**

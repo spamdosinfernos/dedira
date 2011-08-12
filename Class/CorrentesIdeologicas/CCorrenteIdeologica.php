@@ -1,5 +1,5 @@
 <?php
-require_once '../CCore.php';
+require_once './../../Core/CCore.php';
 require_once 'ICorrenteIdeologica.php';
 
 class CCorrenteIdeologica extends CCore implements ICorrenteIdeologica{

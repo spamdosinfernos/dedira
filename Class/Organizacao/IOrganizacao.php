@@ -19,7 +19,7 @@ interface IOrganizacao{
 	public function getArrSubOrganizacoes();
 	public function setArrSubOrganizacoes($arrSubOrganizacoes);
 
-	public function getOrgnaizacaoPai();
+	public function getOrganizacaoPai();
 	public function setOrganizacaoPai(COrganizacaoPolitica $organizacaoPai);
 
 }

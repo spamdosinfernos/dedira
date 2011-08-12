@@ -11,10 +11,14 @@ require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
  */
 class CEvento extends CDocumentoDaBase implements IEvento{
 
+	/**
+	 *
+	 * @var Datetime
+	 */
 	protected $dataFim;
 
 	/**
-	 * 
+	 *
 	 * @var Datetime
 	 */
 	protected $dataInicio;
