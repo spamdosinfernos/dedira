@@ -1,6 +1,6 @@
 <?php
-require_once 'CouchDb/CCouchDB.php';
-require_once '../../Core/Configuracao/CConfiguracao.php';
+require_once __DIR__ . '/CouchDb/CCouchDB.php';
+require_once __DIR__ . '/../../Core/Configuracao/CConfiguracao.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
  * @author andre

@@ -1,5 +1,5 @@
 <?php 
-require_once 'CBaseDeDados.php';
+require_once __DIR__ . '/CBaseDeDados.php';
 
 $t = new CBaseDeDados();
 

@@ -1,5 +1,5 @@
 <?php
-require_once 'CPessoa.php';
+require_once __DIR__ . '/CPessoa.php';
 
 class CMilitante extends CPessoa{
 

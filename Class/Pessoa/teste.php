@@ -1,5 +1,5 @@
 <?php 
-require_once 'CAdministrador.php';
+require_once __DIR__ . '/CAdministrador.php';
 
 $p = new CAdministrador();
 ?>

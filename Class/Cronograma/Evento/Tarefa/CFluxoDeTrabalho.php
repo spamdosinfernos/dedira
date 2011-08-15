@@ -1,5 +1,5 @@
 <?php
-require_once 'CPasso.php';
+require_once __DIR__ . '/CPasso.php';
 
 class CFluxoDeTrabalho{
 	

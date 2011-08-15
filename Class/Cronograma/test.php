@@ -1,6 +1,6 @@
 <?php 
-require_once '../Evento/CReuniao.php';
-require_once '../Evento/CManifestacao.php';
+require_once __DIR__ . '/Evento/CReuniao.php';
+require_once __DIR__ . '/Evento/CManifestacao.php';
 
 $r = new CReuniao();
 

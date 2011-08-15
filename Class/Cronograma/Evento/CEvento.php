@@ -1,30 +1,38 @@
 <?php
-require_once 'IEvento.php';
-require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
+require_once __DIR__ .'/IEvento.php';
+require_once __DIR__ .'/../../Core/BaseDeDados/CDocumentoDaBase.php';
 
 /**
  * Define um evento no cronograma da organização, toda classe 
  * que determina um evento que deve entrar no cronograma
- * deve extender esta classe
+ * deve estender esta classe
  * @author andre
  *
  */
 class CEvento extends CDocumentoDaBase implements IEvento{
 
 	/**
-	 *
+	 * Data de fim do evento
 	 * @var Datetime
 	 */
 	protected $dataFim;
 
 	/**
-	 *
+	 * Data de início do evento
 	 * @var Datetime
 	 */
 	protected $dataInicio;
 
+	/**
+	 * Observação
+	 * @var string
+	 */
 	protected $observacoes;
 
+	/**
+	 * Contatos do evento
+	 * @var array : IPessoa
+	 */
 	protected $arrMaisContatos;
 
 	/**
@@ -63,6 +71,12 @@ class CEvento extends CDocumentoDaBase implements IEvento{
 	 * @var DateTime
 	 */
 	protected $dataDeLembrete;
+	
+	/**
+	 * Indica se o evento é particular
+	 * @var boolean
+	 */
+	protected $particular;
 
 	/*
 	 * Tipos de recorrências possíveis para um evento
@@ -136,6 +150,14 @@ class CEvento extends CDocumentoDaBase implements IEvento{
 
 	public function getArrEnderecosDosLocais(){
 		return $this->arrEnderecosDosLocais;
+	}
+	
+	public function getParticular(){
+	    return $this->particular;
+	}
+
+	public function setParticular($particular){
+	    $this->particular = $particular;
 	}
 
 	public function getArrPessoasOuOrganizacoesPromotoras(){

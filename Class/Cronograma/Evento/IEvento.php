@@ -1,6 +1,9 @@
 <?php
 interface IEvento{
 	
+	public function getParticular();
+	public function setParticular($particular);
+	
 	public function getDataFim();
 	public function setDataFim(DateTime $dataFim);
 	

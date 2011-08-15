@@ -1,5 +1,5 @@
 <?php
-require_once '../Log/CLog.php';
+require_once __DIR__ . '/../Log/CLog.php';
 
 /**
  * Responsável pelo tratamento e registros dos erros no sistema

@@ -1,6 +1,6 @@
 <?php
-require_once 'IOrganizacao.php';
-require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
+require_once __DIR__ . '/IOrganizacao.php';
+require_once __DIR__ . '/../Core/BaseDeDados/CDocumentoDaBase.php';
 
 class COrganizacao extends CDocumentoDaBase implements IOrganizacao {
 

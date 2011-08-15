@@ -1,5 +1,5 @@
 <?php
-require_once 'CMilitanteOrganico.php';
+require_once __DIR__ . '/CMilitanteOrganico.php';
 
 class CAdministrador extends CMilitanteOrganico{
 

@@ -1,5 +1,5 @@
 <?php
-require_once 'CEvento.php';
+require_once __DIR__ . '/CEvento.php';
 
 class CEncontro extends CEvento{
 	

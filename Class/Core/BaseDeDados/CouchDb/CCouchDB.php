@@ -1,6 +1,6 @@
 <?php
-require_once '../../Core/CCore.php';
-require_once '../../Core/Configuracao/CConfiguracao.php';
+require_once __DIR__ . '/../../CCore.php';
+require_once __DIR__ . '/../../Configuracao/CConfiguracao.php';
 
 class CCouchDB extends CCore{
 

@@ -1,5 +1,5 @@
 <?php
-require_once '../../../Core/CCore.php';
+require_once __DIR__ . '/../../../Core/CCore.php';
 
 class CPasso{
 	

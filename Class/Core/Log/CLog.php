@@ -1,6 +1,6 @@
 <?php
-require_once '../CCore.php';
-require_once '../Configuracao/CConfiguracao.php';
+require_once __DIR__ . '/../CCore.php';
+require_once __DIR__ . '/../Configuracao/CConfiguracao.php';
 
 /**
  * Grava o log de solicitações

@@ -1,6 +1,6 @@
 <?php
-require_once 'COrganizacao.php';
-require_once '../../CorrentesIdeologicas/CCorrenteIdeologica.php';
+require_once __DIR__ . '/COrganizacao.php';
+require_once __DIR__ . '/../CorrentesIdeologicas/CCorrenteIdeologica.php';
 
 class COrganizacaoSocial extends COrganizacao{
 

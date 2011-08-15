@@ -1,7 +1,7 @@
 <?php
-require_once '../../Core/CCore.php';
-require_once '../../Core/BaseDeDados/CBaseDeDados.php';
-require_once '../../Core/Configuracao/CConfiguracao.php';
+require_once __DIR__ . '/../../Core/CCore.php';
+require_once __DIR__ . '/../../Core/BaseDeDados/CBaseDeDados.php';
+require_once __DIR__ . '/../../Core/Configuracao/CConfiguracao.php';
 
 /**
  * Todos as classes que tiverem propriedades que se queira salvar

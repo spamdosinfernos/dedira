@@ -1,5 +1,5 @@
 <?php 
-require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
+require_once __DIR__ . '/../../Core/BaseDeDados/CDocumentoDaBase.php';
 
 /**
  * Representa uma contribuição financeira

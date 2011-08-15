@@ -1,6 +1,6 @@
 <?php
-require_once './../../Core/CCore.php';
-require_once 'ICorrenteIdeologica.php';
+require_once __DIR__ . '/../Core/CCore.php';
+require_once __DIR__ . '/ICorrenteIdeologica.php';
 
 class CCorrenteIdeologica extends CCore implements ICorrenteIdeologica{
 	

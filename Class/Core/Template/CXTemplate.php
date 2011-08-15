@@ -1,5 +1,5 @@
 <?php
-require_once '../CCore.php';
+require_once __DIR__ . '/../CCore.php';
 /**
  * XTemplate PHP templating engine
  *

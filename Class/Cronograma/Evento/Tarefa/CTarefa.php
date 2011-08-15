@@ -1,6 +1,6 @@
 <?php
-require_once 'CFluxoDeTrabalho.php';
-require_once '../CEvento.php';
+require_once __DIR__ . '/CFluxoDeTrabalho.php';
+require_once __DIR__ . '/../CEvento.php';
 /**
  * Descrevem tarefas que devem ser realizadas pelo usuário
  *

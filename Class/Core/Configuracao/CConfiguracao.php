@@ -1,5 +1,5 @@
 <?php
-require_once 'CMensagensDeErro.php';
+require_once __DIR__ . '/CMensagensDeErro.php';
 
 class CConfiguracao extends CMensagensDeErro {
 

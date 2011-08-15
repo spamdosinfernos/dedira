@@ -1,5 +1,5 @@
 <?php
-require_once 'CMilitante.php';
+require_once __DIR__ . '/CMilitante.php';
 
 /**
  * O militante orgânico tem direito a entrar no sistema

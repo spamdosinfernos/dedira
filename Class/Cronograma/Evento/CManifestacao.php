@@ -1,6 +1,6 @@
 <?php
-require_once 'CEvento.php';
-require_once '../../Organizacao/COrganizacaoSocial.php';
+require_once __DIR__ . '/CEvento.php';
+require_once __DIR__ . '/../../Organizacao/COrganizacaoSocial.php';
 
 class CManifestacao extends CEvento{
 	

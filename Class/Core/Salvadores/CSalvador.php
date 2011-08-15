@@ -1,5 +1,5 @@
 <?php
-require_once 'ISalvador.php';
+require_once __DIR__ . '/ISalvador.php';
 
 class CSalvador implements ISalvador {
 

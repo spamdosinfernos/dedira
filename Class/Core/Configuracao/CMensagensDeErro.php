@@ -1,5 +1,5 @@
 <?php
-require_once 'CNiveisDeAcesso.php';
+require_once __DIR__ . '/CNiveisDeAcesso.php';
 /**
  * Códigos de erro no sistema
  * @author tatupheba

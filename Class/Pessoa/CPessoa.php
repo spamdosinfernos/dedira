@@ -1,6 +1,6 @@
 <?php
-require_once 'IPessoa.php';
-require_once '../../Core/BaseDeDados/CDocumentoDaBase.php';
+require_once __DIR__ . '/IPessoa.php';
+require_once __DIR__ . '/../../Core/BaseDeDados/CDocumentoDaBase.php';
 
 class CPessoa extends CDocumentoDaBase implements IPessoa{
 
