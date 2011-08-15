@@ -35,6 +35,7 @@ O sistema de prover um chat para reuniões on-line.
 O sistema deve prover um fórum para troca de idéias entre todas as organizações irmãs e entre organizações irmãs específicas.
 O sistema deve guardar todas as informações de forma criptografada.
 As mensagens trocadas entre as organizações irmãs devem ser criptografadas usando pgp.
+O sistema provê um local para o militante colocar seu diário.
 
+Base de dados: CounchDb e MySQL? - CouchDB!!
 
-Base de dados: CounchDb e MySQL?
