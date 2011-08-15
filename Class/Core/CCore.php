@@ -24,6 +24,10 @@ class CCore{
 		$this->idDaSessao == '';
 	}
 
+	protected function getRootClassName(){
+		return __CLASS__;
+	}
+	
 	protected function SetIdDoUsuario($idDoUsuario){
 
 		$this->iniciarSessao();

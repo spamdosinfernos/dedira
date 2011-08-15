@@ -4,8 +4,7 @@ require_once '../Evento/CManifestacao.php';
 
 $r = new CReuniao();
 
-$r->setId("01c7b558ba8ff48f9966cf1151005c6a");
-
+$r->setId("4918c8130d75ec0beda8d60c39001c06");
 $r = $r->carregar();
 
 $r->setDataFim(new DateTime());

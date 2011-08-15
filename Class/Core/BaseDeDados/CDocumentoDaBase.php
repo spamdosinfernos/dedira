@@ -299,7 +299,7 @@ class CDocumentoDaBase extends CCore{
 
 		//Traduz a id do banco para a id do sistema
 		if($propriedade === "_id"){
-			$strId = self::CONST_PRI . get_class($this) . self::CONST_PRI . "id";
+			$strId = self::CONST_PRI . __CLASS__ . self::CONST_PRI . "id";
 			$conteudoSerializado .= "s:" . strlen($strId) . ":\"" . $strId . "\";";
 			$conteudoSerializado .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
 			return $conteudoSerializado;
@@ -307,7 +307,7 @@ class CDocumentoDaBase extends CCore{
 
 		//Traduz a série da revisão do banco para a revisão do sistema
 		if($propriedade === "_rev"){
-			$strRev = self::CONST_PRI . get_class($this) . self::CONST_PRI . "rev";
+			$strRev = self::CONST_PRI . __CLASS__ . self::CONST_PRI . "rev";
 			$conteudoSerializado .= "s:" . strlen($strRev) . ":\"" . $strRev . "\";";
 			$conteudoSerializado .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
 			return $conteudoSerializado;
