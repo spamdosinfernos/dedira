@@ -51,7 +51,7 @@ class CConfiguracao extends CMensagensDeErro {
 	 * @var string
 	 */
 	const CONST_LOG_FORMATO_DA_DATA = "Y-m-d H:i:s";
-
+	
 	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 * @var string
@@ -75,6 +75,22 @@ class CConfiguracao extends CMensagensDeErro {
 	 */
 	static public function getCaminhoDoLog(){
 		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
+	}
+	
+	/**
+	 * Retorna o intervalo de tempo padrão que o sistema adota
+	 * @return string - (um sinal [+ ou -] mais um número indicando a quantidade)
+	 */
+	static public function getQtdeDoIntevaloDeTempoPadrao(){
+		return array("+1");
+	}
+	
+		/**
+	 * Retorna o tipo intervalo de tempo padrão que o sistema adota
+	 * @return string - (year = ano, month = mês, day = dia, hour = hora, minute = minuto, segundo = second) 
+	 */
+	static public function getTipoDoIntevaloDeTempoPadrao(){
+		return "month";
 	}
 }
 
