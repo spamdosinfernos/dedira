@@ -47,8 +47,11 @@ class CCronograma extends CCore{
 	public function __construct(IPessoa $donoDoCronograma, $dataFinal = null, $dataInicial = null){
 
 		if(is_null($dataInicial)){
+			
+			//Data inicial, por padrão é hoje
 			$dataInicial = new DateTime();
 
+			//Seta a data final
 			$dataFinal = new DateTime();
 			$dataFinal->modify(CConfiguracao::getQtdeDoIntevaloDeTempoPadrao() . CConfiguracao::getTipoDoIntevaloDeTempoPadrao());
 		}

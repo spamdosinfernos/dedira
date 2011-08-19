@@ -317,23 +317,6 @@ class CXTemplate extends CCore{
 		$this->restart($file, $tpldir, $files, $mainblock, $autosetup, $this->tag_start_delim, $this->tag_end_delim);
 	}
 
-	/**
-     * PHP 4 Constructor - Instantiate the object
-     *
-     * @deprecated Use PHP 5 constructor instead
-     * @param string $file Template file to work on
-     * @param string/array $tpldir Location of template files (useful for keeping files outside web server root)
-     * @param array $files Filenames lookup
-     * @param string $mainblock Name of main block in the template
-     * @param boolean $autosetup If true, run setup() as part of constuctor
-     * @return XTemplate
-     */
-	public function XTemplate ($file, $tpldir = '', $files = null, $mainblock = 'main', $autosetup = true) {
-
-		assert('Deprecated - use PHP 5 constructor');
-	}
-
-
 	/***************************************************************************/
 	/***[ public stuff ]********************************************************/
 	/***************************************************************************/
@@ -401,7 +384,7 @@ class CXTemplate extends CCore{
      * @access public
      * @param boolean $add_outer If true is passed when called, it adds an outer main block to the file
      */
-	public function setup ($add_outer = false) {
+	public function setup($add_outer = false) {
 
 		$this->tag_start_delim = preg_quote($this->tag_start_delim);
 		$this->tag_end_delim = preg_quote($this->tag_end_delim);
@@ -651,10 +634,6 @@ class CXTemplate extends CCore{
 				$var = (!isset($var)) ? $nul : $var;
 
 				if ($var === '') {
-					// -----------------------------------------------------------
-					// Removed requriement for blocks to be at the start of string
-					// -----------------------------------------------------------
-					//                    $copy=preg_replace("|^\s*\{".$v." ?#?".$comments."\}\s*\n|m","",$copy);
 					$copy = preg_replace("|" . $this->tag_start_delim . $v . "( ?#" . $comments . ")?" . $this->tag_end_delim . "|m", '', $copy);
 				}
 

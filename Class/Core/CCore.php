@@ -21,7 +21,11 @@ class CCore{
 	const CONST_NIVEL_ACESSO_PESSOA = 4;
 
 	protected function __construct(){
-		$this->idDaSessao == '';
+		
+		if($this->isSessaoIniciada()) return;
+		
+		//Achar alguma forma de solicitar usuário e senha para o navegador
+		$this->autenticarUsuario();
 	}
 
 	protected function getRootClassName(){
@@ -70,14 +74,18 @@ class CCore{
 	 * Retorna uma chave identificando a sessão do sistema
 	 * @return string
 	 */
-	protected function iniciarSessao($idDoUsuario){
+	protected function iniciarSessao($idDoUsuario = null){
 
 		if($this->idDaSessao != '') return;
-
+		
 		session_start();
 		session_regenerate_id();
 		$this->idDaSessao = session_id();
 		$_SESSION['informacoesDoUsuario']['id'] = $idDoUsuario;
+	}
+	
+	private function isSessaoIniciada(){
+		return isset($_SESSION['informacoesDoUsuario']['id']);
 	}
 
 	/**
