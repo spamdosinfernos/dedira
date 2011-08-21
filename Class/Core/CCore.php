@@ -6,9 +6,11 @@ class CCore{
 	 * pelas classes CCore e por classes que implementem a interface IPessoa.
 	 * @var string
 	 */
-	//private $idDoUsuario;
+	private $idDoUsuario;
 
 	private $idDaSessao;
+	
+	private $arrUserModules;
 
 	const CONST_NIVEL_ACESSO_ADMINISTRADOR = 0;
 

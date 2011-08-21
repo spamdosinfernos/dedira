@@ -61,9 +61,17 @@ class CConfiguracao extends CMensagensDeErro {
 	static public function getDiretorioRaizDoSistema(){
 
 		if(self::$diretorioRaizDoSistema == ""){
-			self::$diretorioRaizDoSistema = dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "..";
+			self::$diretorioRaizDoSistema = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "..");
 		}
 		return self::$diretorioRaizDoSistema;
+	}
+	
+	static public function getDiretorioDosModulosDeUsuario(){
+		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "Modulos";
+	}
+	
+	static public function getDiretorioDeTesteDosModulosDeUsuario(){
+		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "Modulos" . DIRECTORY_SEPARATOR . "teste";
 	}
 
 	/**
