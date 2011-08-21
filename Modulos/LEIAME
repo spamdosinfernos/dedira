@@ -1,2 +1,3 @@
 Guarda os diretórios onde se encontram os módulos de usuário.
-O diretório "temp" é usado esclusivamente para os testes do sistema quando da instalação de novos módulos.
+O diretório "teste" é usado esclusivamente para os testes do 
+sistema quando da instalação de novos módulos.
