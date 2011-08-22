@@ -1,7 +1,7 @@
 <?php
 require_once  __DIR__ . '../../Class/Cronograma/CCronograma.php';
 
-class index {
+class index extends CXTemplate{
 	
 	/**
 	 * Guarda o gerenciador do cronograma
