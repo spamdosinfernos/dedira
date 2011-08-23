@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/IPessoa.php';
-require_once __DIR__ . '/../../Core/BaseDeDados/CDocumentoDaBase.php';
+require_once __DIR__ . '/../Core/BaseDeDados/CDocumentoDaBase.php';
 
 class CPessoa extends CDocumentoDaBase implements IPessoa{
 
@@ -17,9 +17,8 @@ class CPessoa extends CDocumentoDaBase implements IPessoa{
 	protected $nivelDeAcessoAoSitema;
 
 	public function __construct(){
-
 		parent::__construct();
-
+		$this->setNomeDaBaseDeDados(CConfiguracao::CONST_BD_NOME_PESSOAS);
 		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_PESSOA;
 	}
 

@@ -18,6 +18,22 @@ class CMilitanteOrganico extends CMilitante{
 
 		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_MILITANTE_ORGANICO;
 	}
+
+	public function getUsuario(){
+		return $this->usuario;
+	}
+
+	public function setUsuario($usuario){
+		$this->usuario = $usuario;
+	}
+
+	public function getSenha(){
+		return $this->senha;
+	}
+
+	public function setSenha($senha){
+		$this->senha = $senha;
+	}
 }
 
 ?>

@@ -8,6 +8,10 @@ require_once __DIR__ . '/../../Core/Configuracao/CConfiguracao.php';
  */
 class CBaseDeDados extends CCouchDB{
 
+	/**
+	 * Indica qual base de dados está selecionada 
+	 * @var string
+	 */
 	private $baseSelecionada;
 
 	private $resposta;
@@ -62,7 +66,7 @@ class CBaseDeDados extends CCouchDB{
 	 */
 	public function selecionarBaseDeDados($nomeDaBase){
 		$nomeDaBase = substr($nomeDaBase,-1,1) == "/" ? $nomeDaBase : "/" . $nomeDaBase;
-		
+
 		$this->baseSelecionada = $nomeDaBase;
 	}
 
@@ -71,7 +75,9 @@ class CBaseDeDados extends CCouchDB{
 	 * @param mixed $informacao
 	 * @return boolean
 	 */
-	public function inserirInformacao($idDoDocumento, $informacao){
+	public function gravarDocumento($idDoDocumento, $informacao){
+
+		if(!is_array($informacao)) throw new Exception("text - A informação fornecida deve ser um arranjo");
 
 		if($idDoDocumento == ""){
 			$this->enviar(self::CONST_OPERACAO_POST, $this->baseSelecionada, $idDoDocumento, $informacao);
@@ -88,7 +94,7 @@ class CBaseDeDados extends CCouchDB{
 		return true;
 	}
 
-	public function apagarInformacao($idDoDocumento, $revisao){
+	public function apagarDocumento($idDoDocumento, $revisao){
 
 		$this->enviar(self::CONST_OPERACAO_DEL, $this->baseSelecionada, $idDoDocumento, null, $revisao);
 
@@ -113,7 +119,7 @@ class CBaseDeDados extends CCouchDB{
 		return true;
 	}
 
-	public function carregarInformacao($idDoDocumento){
+	public function carregarDocumento($idDoDocumento){
 
 		$this->enviar(self::CONST_OPERACAO_GET, $this->baseSelecionada, $idDoDocumento);
 
@@ -123,6 +129,32 @@ class CBaseDeDados extends CCouchDB{
 			return false;
 		}
 
+		return true;
+	}
+
+	public function carregarTodasAsViews(){
+
+		$arrRespostaFinal = array();
+
+		$this->enviar(self::CONST_OPERACAO_GET, $this->baseSelecionada . "/_all_docs?descending=true&startkey=\"_design0\"&endkey=\"_design\"");
+
+		$this->resposta = $this->getResultadoDaConsulta();
+
+		if(isset($this->resposta->error)){
+			return false;
+		}
+
+		$arrViews = $this->resposta->rows;
+
+		foreach ($arrViews as $view) {
+			$this->enviar(self::CONST_OPERACAO_GET, $this->baseSelecionada . "/" . $view->id);
+			$this->resposta = $this->getResultadoDaConsulta();
+			if(isset($this->resposta->error)) return false;
+			
+			$arrRespostaFinal[] = $this->getResultadoDaConsulta();
+		}
+
+		$this->resposta = $arrRespostaFinal;
 		return true;
 	}
 

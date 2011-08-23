@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/Seguranca/CAutenticador.php';
+
 class CCore{
 
 	/**
@@ -9,7 +11,7 @@ class CCore{
 	private $idDoUsuario;
 
 	private $idDaSessao;
-	
+
 	private $arrUserModules;
 
 	const CONST_NIVEL_ACESSO_ADMINISTRADOR = 0;
@@ -23,9 +25,9 @@ class CCore{
 	const CONST_NIVEL_ACESSO_PESSOA = 4;
 
 	protected function __construct(){
-		
+
 		if($this->isSessaoIniciada()) return;
-		
+
 		//Achar alguma forma de solicitar usuário e senha para o navegador
 		$this->autenticarUsuario();
 	}
@@ -33,7 +35,7 @@ class CCore{
 	protected function getRootClassName(){
 		return __CLASS__;
 	}
-	
+
 	protected function SetIdDoUsuario($idDoUsuario){
 
 		$this->iniciarSessao();
@@ -45,7 +47,7 @@ class CCore{
 		return $_SESSION['informacoesDoUsuario']['id'];
 	}
 
-	protected function autenticarUsuario($login, $senha){
+	protected function autenticarUsuario($login = null, $senha = null){
 
 		$idDoUsuario = $this->validarUsuarioESenha($login, $senha);
 
@@ -69,8 +71,8 @@ class CCore{
 	 * @return string: Autenticado com sucesso | FALSE: Falha na autenticação
 	 */
 	private function validarUsuarioESenha($login, $senha){
-		//TODO IMPLEMENTAR
-		return "54g5fd4g5fd4";
+		//TODO Implementar de forma descente esta parte, aqui tem ser retornado a id do usuário ou FALSE
+		new CAutenticador();
 	}
 	/**
 	 * Retorna uma chave identificando a sessão do sistema
@@ -79,13 +81,13 @@ class CCore{
 	protected function iniciarSessao($idDoUsuario = null){
 
 		if($this->idDaSessao != '') return;
-		
+
 		session_start();
 		session_regenerate_id();
 		$this->idDaSessao = session_id();
 		$_SESSION['informacoesDoUsuario']['id'] = $idDoUsuario;
 	}
-	
+
 	private function isSessaoIniciada(){
 		return isset($_SESSION['informacoesDoUsuario']['id']);
 	}
@@ -94,6 +96,7 @@ class CCore{
 	 * Finaliza sessão atual
 	 */
 	protected function finalizarSessao(){
+		unset($_SERVER['PHP_AUTH_DIGEST']);
 		session_destroy();
 		$this->idDaSessao = '';
 	}
