@@ -102,6 +102,7 @@ class CEvento extends CDocumentoDaBase implements IEvento{
 
 	public function __construct(){
 		parent::__construct();
+		$this->setNomeDaBaseDeDados(CConfiguracao::CONST_BD_NOME_PESSOAS);
 	}
 
 	public function setDataInicio(DateTime $dataInicio){

@@ -8,6 +8,6 @@ require_once __DIR__ . 'Class/Core/CCore.php';
  *
  */
 class index extends CCore{
-	
+
 }
 ?>

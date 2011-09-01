@@ -313,7 +313,7 @@ class CXTemplate extends CCore{
      * @return XTemplate
      */
 	public function __construct($file, $tpldir = '', $files = null, $mainblock = 'main', $autosetup = true) {
-
+		parent::__construct();
 		$this->restart($file, $tpldir, $files, $mainblock, $autosetup, $this->tag_start_delim, $this->tag_end_delim);
 	}
 

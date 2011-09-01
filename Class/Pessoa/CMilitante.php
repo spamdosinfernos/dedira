@@ -10,10 +10,32 @@ class CMilitante extends CPessoa{
 	protected $chavePgp;
 
 	public function __construct(){
-
 		parent::__construct();
-
 		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_MILITANTE;
+	}
+
+	public function getEmail(){
+	    return $this->email;
+	}
+
+	public function setEmail($email){
+	    $this->email = $email;
+	}
+
+	public function getIdOrganizacao(){
+	    return $this->idOrganizacao;
+	}
+
+	public function setIdOrganizacao($idOrganizacao){
+	    $this->idOrganizacao = $idOrganizacao;
+	}
+
+	public function getChavePgp(){
+	    return $this->chavePgp;
+	}
+
+	public function setChavePgp($chavePgp){
+	    $this->chavePgp = $chavePgp;
 	}
 }
 ?>
