@@ -26,6 +26,12 @@ class CDocumentoDaBase extends CCore{
 	private $rev;
 
 	/**
+	 * Nome da base de dados que receberá os dados
+	 * @var string
+	 */
+	private $nomeDaBaseDeDados;
+
+	/**
 	 * Responsável por realizar as transações com o banco de dados
 	 * @var CBaseDeDados
 	 */
@@ -91,12 +97,12 @@ class CDocumentoDaBase extends CCore{
 	 */
 	public function carregar(){
 
-		//A id te que estar setada
+		//A id tem que estar setada
 		if($this->id == "") return null;
 
 		$this->abrirConexaoComObancoDeDados();
 
-		if(!$this->operadorDeBancoDeDados->carregarInformacao($this->id)) return null;
+		if(!$this->operadorDeBancoDeDados->carregarDocumento($this->id)) return null;
 
 		$informacao = $this->operadorDeBancoDeDados->getResposta();
 
@@ -114,7 +120,7 @@ class CDocumentoDaBase extends CCore{
 		$this->abrirConexaoComObancoDeDados();
 
 		if($this->id == ""){
-			$ok = $this->operadorDeBancoDeDados->inserirInformacao("", $this->toArray());
+			$ok = $this->operadorDeBancoDeDados->gravarDocumento("", $this->toArray());
 		}else{
 			$ok = $this->operadorDeBancoDeDados->atualizarInformacao($this->id, $this->rev, $this->toArray());
 		}
@@ -137,7 +143,7 @@ class CDocumentoDaBase extends CCore{
 
 		$this->abrirConexaoComObancoDeDados();
 
-		return $this->operadorDeBancoDeDados->apagarInformacao($this->id, $this->rev);
+		return $this->operadorDeBancoDeDados->apagarDocumento($this->id, $this->rev);
 	}
 
 	public function setId($id){
@@ -157,10 +163,13 @@ class CDocumentoDaBase extends CCore{
 	}
 
 	private function abrirConexaoComObancoDeDados(){
+		
+		if($this->getNomeDaBaseDeDados() == "") throw new Exception("text - Para conectar na base de dados é necessário informar seu nome com 'setNomeDaBaseDeDados()'");
+		
 		if(is_null($this->operadorDeBancoDeDados)){
 			//Preparando para realizar as transações com o banco de dados
 			$this->operadorDeBancoDeDados = new CBaseDeDados();
-			$this->operadorDeBancoDeDados->selecionarBaseDeDados(CConfiguracao::CONST_BD_NOME_EVENTOS);
+			$this->operadorDeBancoDeDados->selecionarBaseDeDados($this->getNomeDaBaseDeDados());
 		}
 	}
 
@@ -333,6 +342,23 @@ class CDocumentoDaBase extends CCore{
 			$conteudoSerializado .= "s:" . strlen($valor) . ":\"" . $valor . "\";";
 			return $conteudoSerializado;
 		}
+	}
+
+	/**
+	 * Recupera o nome da base de dados na qual serão salvos os dados
+	 * @return string
+	 */
+	public function getNomeDaBaseDeDados(){
+		return $this->nomeDaBaseDeDados;
+	}
+
+	/**
+	 * Seta o nome da base de dados na qual serão salvos os dados
+	 * @param string $nomeDaBaseDeDados
+	 */
+	public function setNomeDaBaseDeDados($nomeDaBaseDeDados){
+		if(!is_string($nomeDaBaseDeDados)) throw new Exception("text - O nome da base de dados tem que ser uma string");
+		$this->nomeDaBaseDeDados = $nomeDaBaseDeDados;
 	}
 }
 ?>

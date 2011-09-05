@@ -45,6 +45,12 @@ class CConfiguracao extends CMensagensDeErro {
 	 * @var int
 	 */
 	const CONST_BD_PORTA = 5984;
+	
+	/**
+	 * Mensagem exibida quando o sistema pede autenticação
+	 * @var string
+	 */
+	const CONST_AUTH_MENSAGEM = "Autentique-se no sistema";
 
 	/**
 	 * Formato da data no arquivo de log
