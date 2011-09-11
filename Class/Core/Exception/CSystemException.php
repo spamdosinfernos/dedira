@@ -1,4 +1,9 @@
-<?php 
+<?php
+/**
+ * Dá conta das exceções geradas pelo sistema (erros de programação, divisão 
+ * por zero, falha ao conectar no banco de dados, etc.).
+ * @author tatupheba
+ */
 class CSystemException extends CException{
 	
 	public function __construct($message, $code, $infoExtra = null){
@@ -10,7 +15,6 @@ class CSystemException extends CException{
 		"\nDados do GET: " . serialize($_GET) .
 		"\nDados do ENV: " . serialize($_ENV) . 
 		  
-		
 		parent:: __construct($message, $code, $infoExtra = null);
 	}
 }
