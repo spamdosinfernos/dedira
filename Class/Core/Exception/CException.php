@@ -8,6 +8,9 @@ require_once __DIR__ . '/../Log/CLog.php';
 class CException extends Exception {
 
 	public function __construct($message, $code, $infoExtra = null){
+		
+		//Mata o programa se a excessão não form informada corretamente
+		if($message == "" || $code == "") die ("Uma excessão deve ter, necessáriamente uma mensagem é um código");
 
 		new CLog("$message - $code: $infoExtra");
 		parent::__construct($message, $code);
