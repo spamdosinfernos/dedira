@@ -121,7 +121,8 @@ class CampoHtml{
 	}
 	
 	public function getHtml(){
-		
+
+		//TODO preciso fazer com esta parte retorne um html completo para que eu possa seguir fazendo o gerador de páginas
 		$xtemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . DIRECTORY_SEPARATOR . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
 	}
 }
