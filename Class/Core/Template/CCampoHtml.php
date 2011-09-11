@@ -48,8 +48,14 @@ class CampoHtml{
 
 	public function setTipo($tipo){
 
-		if(!in_array($tipo,array(self::CONST_TIPO_INT, self::CONST_TIPO_FLOAT, self::CONST_TIPO_ARRAY,	self::CONST_TIPO_STRING, self::CONST_TIPO_DATETIME))
-
+		//Se o tipo informado for inválido lança um excessão
+		if(!in_array($tipo,array(self::CONST_TIPO_INT, self::CONST_TIPO_FLOAT, self::CONST_TIPO_ARRAY,	self::CONST_TIPO_STRING, self::CONST_TIPO_DATETIME))){
+			throw new CUserException(
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
+			$tipo
+			);
+		}
 
 		$this->tipo = $tipo;
 	}
@@ -62,12 +68,21 @@ class CampoHtml{
 		$this->nome = $nome;
 	}
 
-	public function getEditavel()
-	{
+	public function getEditavel(){
 		return $this->editavel;
 	}
 
 	public function setEditavel($editavel){
+
+		//Se o valor informado for inválido lança um excessão
+		if(!is_bool($editavel)){
+			throw new CUserException(
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
+			$editavel
+			);
+		}
+
 		$this->editavel = $editavel;
 	}
 
@@ -84,6 +99,16 @@ class CampoHtml{
 	}
 
 	public function setRequerido($requerido){
+
+		//Se o valor informado for inválido lança um excessão
+		if(!is_bool($requerido)){
+			throw new CUserException(
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
+			$requerido
+			);
+		}
+
 		$this->requerido = $requerido;
 	}
 
@@ -93,6 +118,11 @@ class CampoHtml{
 
 	public function setValorPadrao($valorPadrao){
 		$this->valorPadrao = $valorPadrao;
+	}
+	
+	public function getHtml(){
+		
+		$xtemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . DIRECTORY_SEPARATOR . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
 	}
 }
 ?>

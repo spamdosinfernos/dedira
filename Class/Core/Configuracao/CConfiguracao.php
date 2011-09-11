@@ -106,6 +106,11 @@ class CConfiguracao extends CMensagensDeErro {
 	static public function getTipoDoIntevaloDeTempoPadrao(){
 		return "month";
 	}
+	
+	static public function getDiretorioDosTemplates(){
+		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "template" . DIRECTORY_SEPARATOR;
+	}
+	
 }
 
 ?>
