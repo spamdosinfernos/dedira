@@ -11,38 +11,34 @@ class CAutenticador{
 	 * Realiza a autenticação de um usuário no sistema
 	 * @return null - Falha na autenticação | string - Id do usuário
 	 */
-	public function __construct(){
-		
-		$realm = 'Área restrita, caia fora!';
+	public function autenticar(){
+
+		$realm = 'Restricted area';
+
 		$users = array('tatupheba' => 'tatu7', 'guest' => 'guest');
 
-		//Verifica se os dados de autenticação foram enviados.
 		if (empty($_SERVER['PHP_AUTH_DIGEST'])) {
-			//Caso os dados de autenticação não sejam informados, faz uma requisição http de autenticação
 			header('HTTP/1.1 401 Unauthorized');
-			header('WWW-Authenticate: Digest realm="' . $realm . '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) . '"');
-			die("sa");
+			header('WWW-Authenticate: Digest realm="'.$realm.
+           '",qop="auth",nonce="'.uniqid().'",opaque="'.md5($realm).'"');
+
+			die('Autenticação cancelada.');
 		}
 
-		//Trata os dados enviados pela autenticação
-		$data = $this->httpDigestParse($_SERVER['PHP_AUTH_DIGEST']);
-		
-		//Se nenhum usuário foi informado sai emitindo valor nulo
-		if(!isset($users[$data['username']])){
-			return null;
-		}
+		if (!($data = $this->httpDigestParse($_SERVER['PHP_AUTH_DIGEST'])) || !isset($users[$data['username']])) die('Falha na autenticação');
 
-		//Verifica se uma resposta correta foi gerada
 		$A1 = md5($data['username'] . ':' . $realm . ':' . $users[$data['username']]);
 		$A2 = md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']);
-		$respostaValida = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
+		$valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
 
-		if ($data['response'] != $respostaValida){
-			return null;
-		}
-		
-		//TODO retornar o id do usuário
-		//Está tudo ok!!
+		if ($data['response'] != $valid_response)
+		die('Falha na autenticação');
+
+		session_start();
+		session_regenerate_id();
+		$this->idDaSessao = session_id();
+		$_SESSION['informacoesDoUsuario']['id'] = $idDoUsuario;
+
 		return $data['username'];
 	}
 

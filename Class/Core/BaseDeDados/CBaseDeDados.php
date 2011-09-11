@@ -132,6 +132,15 @@ class CBaseDeDados extends CCouchDB{
 		return true;
 	}
 
+	/**
+	 * Executa a view
+	 * @param string $enderecoDaView
+	 */
+	public function executaView($enderecoDaView){
+		$this->enviar(self::CONST_OPERACAO_GET,$enderecoDaView);
+		$this->resposta = $this->getResultadoDaConsulta();
+	}
+
 	public function carregarTodasAsViews(){
 
 		$arrRespostaFinal = array();
@@ -150,7 +159,6 @@ class CBaseDeDados extends CCouchDB{
 			$this->enviar(self::CONST_OPERACAO_GET, $this->baseSelecionada . "/" . $view->id);
 			$this->resposta = $this->getResultadoDaConsulta();
 			if(isset($this->resposta->error)) return false;
-			
 			$arrRespostaFinal[] = $this->getResultadoDaConsulta();
 		}
 

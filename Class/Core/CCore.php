@@ -25,57 +25,20 @@ class CCore{
 	const CONST_NIVEL_ACESSO_PESSOA = 4;
 
 	protected function __construct(){
-
-		if($this->isSessaoIniciada()) return;
-
-		//Achar alguma forma de solicitar usuário e senha para o navegador
-		$this->autenticarUsuario();
-	}
-
-	protected function getRootClassName(){
-		return __CLASS__;
-	}
-
-	protected function SetIdDoUsuario($idDoUsuario){
-
-		$this->iniciarSessao();
-
-		$_SESSION['informacoesDoUsuario']['id'] = $idDoUsuario;
+		//Deve ser sempre o primeiro comando, pois disto depende todo o sistema
+		if(!$this->isSessaoIniciada()){
+			session_start();
+			//Se necessário solicita a autenticação do usuário
+			$this->autenticarUsuario();
+		}
 	}
 
 	protected function GetIdDoUsuario(){
 		return $_SESSION['informacoesDoUsuario']['id'];
 	}
 
-	protected function autenticarUsuario(){
-
-		//TODO Implementar de forma descente esta parte, aqui tem ser retornado a id do usuário ou FALSE
-		$idDoUsuario = new CAutenticador();
-
-		if($idDoUsuario){
-			$this->iniciarSessao($idDoUsuario);
-			return true;
-		}
-
-		return false;
-	}
-
 	protected function desautenticar(){
 		$this->finalizarSessao();
-	}
-
-	/**
-	 * Retorna uma chave identificando a sessão do sistema
-	 * @return string
-	 */
-	protected function iniciarSessao($idDoUsuario = null){
-
-		if($this->idDaSessao != '') return;
-
-		session_start();
-		session_regenerate_id();
-		$this->idDaSessao = session_id();
-		$_SESSION['informacoesDoUsuario']['id'] = $idDoUsuario;
 	}
 
 	private function isSessaoIniciada(){
@@ -163,5 +126,89 @@ class CCore{
 
 		return $arrSerial;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Realiza a autenticação de um usuário no sistema
+	 * @return null - Falha na autenticação | string - Id do usuário
+	 */
+	public function autenticarUsuario(){
+
+		//Se o usuário já estiver autenticado retorna o id da sessão
+		if(isset($_SESSION['informacoesDoUsuario']['id'])){
+			$this->idDaSessao = session_id();
+			return $this->idDaSessao;
+		}
+
+		$users = array('tatupheba' => 'tatu7', 'guest' => 'guest');
+
+		if(empty($_SERVER['PHP_AUTH_DIGEST'])){
+			header('HTTP/1.1 401 Unauthorized');
+			header('WWW-Authenticate: Digest realm="' . CConfiguracao::CONST_AUTH_MENSAGEM . '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5(CConfiguracao::CONST_AUTH_MENSAGEM) . '"');
+
+			die('Autenticação cancelada.');
+		}
+
+		if(
+		!($data = $this->httpDigestParse($_SERVER['PHP_AUTH_DIGEST'])) ||
+		!isset($users[$data['username']])
+		) die('Falha na autenticação');
+
+		$A1 = md5($data['username'] . ':' . CConfiguracao::CONST_AUTH_MENSAGEM . ':' . $users[$data['username']]);
+		$A2 = md5($_SERVER['REQUEST_METHOD'].':'.$data['uri']);
+		$valid_response = md5($A1.':'.$data['nonce'].':'.$data['nc'].':'.$data['cnonce'].':'.$data['qop'].':'.$A2);
+
+		if ($data['response'] != $valid_response) die('Falha na autenticação');
+
+		session_regenerate_id();
+		$this->idDaSessao = session_id();
+		$_SESSION['informacoesDoUsuario']['id'] = $data['username'];
+
+		return $this->idDaSessao;
+	}
+
+	// function to parse the http auth header
+	private function httpDigestParse($txt){
+		// protect against missing data
+		$needed_parts = array('nonce'=>1, 'nc'=>1, 'cnonce'=>1, 'qop'=>1, 'username'=>1, 'uri'=>1, 'response'=>1);
+		$data = array();
+		$keys = implode('|', array_keys($needed_parts));
+
+		preg_match_all('@(' . $keys . ')=(?:([\'"])([^\2]+?)\2|([^\s,]+))@', $txt, $matches, PREG_SET_ORDER);
+
+		foreach ($matches as $m) {
+			$data[$m[1]] = $m[3] ? $m[3] : $m[4];
+			unset($needed_parts[$m[1]]);
+		}
+
+		return $needed_parts ? false : $data;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 ?>
