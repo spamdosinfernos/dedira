@@ -21,7 +21,7 @@ class CAutenticador{
 			//Caso os dados de autenticação não sejam informados, faz uma requisição http de autenticação
 			header('HTTP/1.1 401 Unauthorized');
 			header('WWW-Authenticate: Digest realm="' . $realm . '",qop="auth",nonce="' . uniqid() . '",opaque="' . md5($realm) . '"');
-			return null;
+			die("sa");
 		}
 
 		//Trata os dados enviados pela autenticação

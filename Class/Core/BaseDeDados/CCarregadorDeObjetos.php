@@ -21,10 +21,15 @@ class CCarregadorDeObjetos extends CCore{
 	
 	public function getIdsDeUsuarioViaLoginESenha($usuario, $senha){
 		
+		
 		//Ante executar uma view, devo verificar se a mesma existe
 		$this->carregadorDeInformacao->carregarTodasAsViews();
 		
-		$views = $this->carregadorDeInformacao->getResposta();
+		$arrViews = $this->carregadorDeInformacao->getResposta();
+		
+		foreach ($arrViews as $view) {
+			if(__FUNCTION__);
+		}
 	}
 	
 }

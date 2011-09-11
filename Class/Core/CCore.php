@@ -47,9 +47,10 @@ class CCore{
 		return $_SESSION['informacoesDoUsuario']['id'];
 	}
 
-	protected function autenticarUsuario($login = null, $senha = null){
+	protected function autenticarUsuario(){
 
-		$idDoUsuario = $this->validarUsuarioESenha($login, $senha);
+		//TODO Implementar de forma descente esta parte, aqui tem ser retornado a id do usuário ou FALSE
+		$idDoUsuario = new CAutenticador();
 
 		if($idDoUsuario){
 			$this->iniciarSessao($idDoUsuario);
@@ -63,17 +64,6 @@ class CCore{
 		$this->finalizarSessao();
 	}
 
-	/**
-	 * Valida o usuário e senha do usuário
-	 * Se tudo der certo retorna a id do usuário senão retorna FALSE
-	 * @param string $login
-	 * @param string $senha
-	 * @return string: Autenticado com sucesso | FALSE: Falha na autenticação
-	 */
-	private function validarUsuarioESenha($login, $senha){
-		//TODO Implementar de forma descente esta parte, aqui tem ser retornado a id do usuário ou FALSE
-		new CAutenticador();
-	}
 	/**
 	 * Retorna uma chave identificando a sessão do sistema
 	 * @return string
