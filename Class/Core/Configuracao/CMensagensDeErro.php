@@ -21,6 +21,8 @@ class CMensagensDeErro extends CNiveisDeAcesso{
 	//Falha ao setar propriedade: O valor fornecido é inválido
 	const CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD = 4;
 	const CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO = "Falha ao setar propriedade: O valor fornecido é inválido";
+	
+	
 }
 
 ?>

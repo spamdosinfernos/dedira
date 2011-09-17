@@ -757,11 +757,7 @@ class CXTemplate extends CCore{
      * @param string $bname Block name to echo out
      */
 	public function out ($bname) {
-
 		$out = $this->text($bname);
-		//        $length=strlen($out);
-		//header("Content-Length: ".$length); // TODO: Comment this back in later
-
 		echo $out;
 	}
 

@@ -7,6 +7,12 @@ require_once __DIR__ . '/../Log/CLog.php';
  */
 class CException extends Exception {
 
+	/**
+	 * Gera a excessão
+	 * @param string $message
+	 * @param int $code
+	 * @param string $infoExtra
+	 */
 	public function __construct($message, $code, $infoExtra = null){
 		
 		//Mata o programa se a excessão não form informada corretamente

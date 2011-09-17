@@ -6,6 +6,12 @@
  */
 class CUserException extends CException{
 
+	/**
+	 * Gera a excessão de usuário
+	 * @param string $message
+	 * @param int $code
+	 * @param string $infoExtra
+	 */
 	public function __construct($message, $code, $infoExtra = null){
 		parent:: __construct($message, $code, $infoExtra = null);
 	}

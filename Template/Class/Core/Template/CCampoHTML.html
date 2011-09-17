@@ -1,5 +1,25 @@
-<!-- CCampoHTML -->
+<!-- BEGIN:CCampoHTML -->
+	<!-- BEGIN:editSim -->
+		<!-- BEGIN:multilinhaSim -->
+		<label>{descricao}</label>
+		<textarea name="{nome}">{valorPadrao}</textarea> 
+		<!-- END:multilinhaSim -->
+		<!-- BEGIN:multilinhaNao -->
+		<label>{descricao}</label>
+		<input type="text" name="{nome}" value="{valorPadrao}" />
+		<!-- END:multilinhaNao -->
+	<!-- END:editSim -->
+	
+	<!-- BEGIN:editNao -->
+		<label>{descricao}</label>
+		<p>{valorPadrao}</p>
+	<!-- END:editNao -->
+	
+	<!-- BEGIN:editEsconder -->
+		<input type="hidden" name="{nome}" value="{valorPadrao}"/>
+	<!-- END:editEsconder -->
+	
+	<!-- BEGIN:editIgnorar -->
+	<!-- END:editIgnorar -->
 
-
-
-<!-- CCampoHTML -->
+<!-- END:CCampoHTML -->
