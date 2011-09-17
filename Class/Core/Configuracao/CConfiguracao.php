@@ -67,7 +67,7 @@ class CConfiguracao extends CMensagensDeErro {
 	static public function getDiretorioRaizDoSistema(){
 
 		if(self::$diretorioRaizDoSistema == ""){
-			self::$diretorioRaizDoSistema = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "..");
+			self::$diretorioRaizDoSistema = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "..");
 		}
 		return self::$diretorioRaizDoSistema;
 	}
@@ -108,7 +108,7 @@ class CConfiguracao extends CMensagensDeErro {
 	}
 	
 	static public function getDiretorioDosTemplates(){
-		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "template" . DIRECTORY_SEPARATOR;
+		return self::getDiretorioRaizDoSistema() . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR;
 	}
 	
 }

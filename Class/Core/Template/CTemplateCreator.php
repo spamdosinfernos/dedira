@@ -1,36 +1,34 @@
 <?php
+require_once __DIR__ . '/CCampoHtml.php';
 
 class Teste{
 
 	/**
 	 * Teste de propriedade privada
-	 * @edit não
+	 * @edit editNao
 	 * @val 1
-	 * @nome Teste privado
-	 * @rec true
+	 * @req true
 	 * @var string
 	 */
-	private $testePropPrivate;
+	private $campoHtmlPropPrivate;
 
 	/**
 	 * Teste de propriedade protegida
-	 * @edit sim
+	 * @edit editSim
 	 * @val 2
-	 * @nome Teste protegido
-	 * @rec false
+	 * @req false
 	 * @var string
 	 */
-	protected $testePropProtected;
+	protected $campoHtmlPropProtected;
 
 	/**
 	 * Teste de propriedade publica
-	 * @edit sim
+	 * @edit editSim
 	 * @val 3
-	 * @nome Teste public
-	 * @rec true
-	 * @var string
+	 * @req true
+	 * @var password
 	 */
-	public $testePropPublic;
+	public $campoHtmlPropPublic;
 
 }
 
@@ -41,31 +39,26 @@ class CTemplateCreator{
 	public function __construct($instanciaDaClasse){
 
 		$r = new ReflectionClass($instanciaDaClasse);
-		$r->getName();
 		$arrProp = $r->getProperties();
 
 		foreach ($arrProp as $prop) {
-			$html = $this->getHtml($prop->getDocComment());
+			$html = $this->getHtml($prop->getDocComment(), $prop->getName());
 		}
 	}
 
-	/**
-	 * Teste de propriedade protegida
-	 * @edit sim
-	 * @val 2
-	 * @nome Teste protegido
-	 * @rec false
-	 * @var string
-	 */
-	function getHtml($docComment){
-		
+	function getHtml($docComment, $nomeDaVariavel){
+
 		$html = "";
+
+		$campoHtml = new CampoHtml();
 
 		//Separa os agrupamentos de comentários
 		preg_match("/\/\*\*\n\s*\*\s*(.*)\n\s*((\*\s@.*\n\s*)*)/i", $docComment, $matches);
 
 		//Seta a descrição
 		$descricao = trim($matches[1]);
+		$campoHtml->setDescricao($descricao);
+		$campoHtml->setNome($nomeDaVariavel);
 
 		//Separa as tags
 		$arrDocTags = explode("@",$matches[2]);
@@ -74,25 +67,34 @@ class CTemplateCreator{
 
 			//Tira as impurezas dos dados das tags
 			$docTag = trim(str_replace("\n", "", str_replace("*", "", $docTag)));
-			
+
 			if($docTag == ""){
 				unset($arrDocTags[$index]);
 				continue;
 			}
-			
+
+			//Recupera os nomes e valores das tags
 			$arrDocTag = explode(" ", $docTag);
-			$propriedade = $arrDocTag[0];
-			$valor = trim(str_replace($propriedade, "", $docTag));
 			
-			
-			switch ($propriedade){
-				case "edit" :
-					$html = $valor == "sim" ? '<input type="text" ' : '<p>';
-				case "val" : 
-					$html .= $valor == "" ? '<input type="text" ' : '<p>';
-			}	
-			
+			$nome = $arrDocTag[0];
+			$valor = trim(str_replace($nome . " ", "", $docTag));
+
+			//Seta as propriedades na classe construtora do html do campo
+			switch ($nome){
+				case "edit": $campoHtml->setEditavel($valor);
+				break;
+				case "multilinha": $campoHtml->setMultilinha($valor);
+				break;
+				case "req": $campoHtml->setRequerido($valor);
+				break;
+				case "var": $campoHtml->setTipo($valor);
+				break;
+				case "val": $campoHtml->setValorPadrao($valor);
+				break;
+			}
 		}
+		
+		return $campoHtml->getHtml();
 	}
 }
 

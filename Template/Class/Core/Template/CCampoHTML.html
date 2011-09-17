@@ -1,5 +1,22 @@
-<!-- CCampoHTML -->
+<!-- BEGIN:CCampoHTML -->
+	<!-- BEGIN:editSim -->
+		<!-- BEGIN:multilinhaSim -->
+		<label>{descricao}</label><textarea name="{nome}">{valorPadrao}</textarea> 
+		<!-- END:multilinhaSim -->
+		<!-- BEGIN:multilinhaNao -->
+		<label>{descricao}</label><input type="text" name="{nome}" value="{valorPadrao}" />
+		<!-- END:multilinhaNao -->
+		<!-- BEGIN:senha -->
+		<label>{descricao}</label><input type="password" name="{nome}" value="{valorPadrao}" />
+		<!-- END:senha -->
+	<!-- END:editSim -->
+	
+	<!-- BEGIN:editNao -->
+		<label>{descricao}</label><p>{valorPadrao}</p>
+	<!-- END:editNao -->
+	
+	<!-- BEGIN:editEsconder -->
+		<input type="hidden" name="{nome}" value="{valorPadrao}"/>
+	<!-- END:editEsconder -->
 
-
-
-<!-- CCampoHTML -->
+<!-- END:CCampoHTML -->
