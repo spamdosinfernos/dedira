@@ -191,7 +191,6 @@ class CampoHtml{
 		//O campo deve ter um nome
 		if($this->getNome() == "") throw new CUserException(CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'nome' não pode ser vazio.");
 
-
 		$xTemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
 
 		//Seta as propriedades do campo
