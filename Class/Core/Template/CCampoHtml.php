@@ -14,12 +14,22 @@ class CampoHtml{
 	const CONST_TIPO_DATETIME = "datetime";
 
 	/*
-	 * Valore aceitos para tipo de edição
+	 * Valores aceitos para tipo de edição, também
+	 * é o nome dos blocos no template que definem 
+	 * os tipos de campos a serem renderizados 
 	 */
-	const CONST_EDIT_SIM = "editSim";
-	const CONST_EDIT_NAO = "editNao";
-	const CONST_EDIT_IGNORAR = "editIgnorar";
-	const CONST_EDIT_ESCONDER = "editEsconder";
+	const CONST_EDITAR_IGNORAR = "ignorar";
+	const CONST_EDITAR_COMO_TEXTO = "editarComoTexto";
+	const CONST_EDITAR_COMO_SENHA = "editarComoSenha";
+	const CONST_EDITAR_APENAS_MOSTRAR = "apenasMostrar";
+	const CONST_EDITAR_COMO_ESCONDIDO = "editarEscondido";
+	const CONST_EDITAR_COMO_CHECKBOX = "editarComoChekBox"; //TODO Implementar no template e no código
+	const CONST_EDITAR_COMO_COMBO_BOX = "editarComoComboBox"; //TODO Implementar no template e no código 
+	
+	/*
+	 * Bloco principal do template do campo a ser gerado
+	 */
+	const CONST_BLOCO_PRINCIPAL = "CCampoHTML";
 
 	/**
 	 * Tipo do campo
@@ -50,7 +60,7 @@ class CampoHtml{
 	/**
 	 * @var string | numeric
 	 */
-	private $valorPadrao;
+	private $valorInicial;
 
 	/**
 	 * Indica se o campo é multilinha
@@ -71,7 +81,7 @@ class CampoHtml{
 		 * Evita que informações inúteis sejam exibidas por engano, 
 		 * pois é necessário explicitar a propriedade que será exposta
 		 */
-		$this->editavel = self::CONST_EDIT_IGNORAR;
+		$this->editavel = self::CONST_EDITAR_IGNORAR;
 	}
 
 	public function getTipo(){
@@ -107,7 +117,7 @@ class CampoHtml{
 	public function setEditavel($editavel){
 
 		//Se o valor informado for inválido lança um excessão
-		if(!in_array($editavel,array(self::CONST_EDIT_SIM, self::CONST_EDIT_NAO, self::CONST_EDIT_IGNORAR,	self::CONST_EDIT_ESCONDER))){
+		if(!in_array($editavel,array(self::CONST_EDITAR_COMO_SENHA, self::CONST_EDITAR_COMO_TEXTO, self::CONST_EDITAR_APENAS_MOSTRAR, self::CONST_EDITAR_IGNORAR,	self::CONST_EDITAR_COMO_ESCONDIDO))){
 			throw new CUserException(
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
@@ -148,12 +158,12 @@ class CampoHtml{
 		$this->requerido = $requerido;
 	}
 
-	public function getValorPadrao(){
-		return $this->valorPadrao;
+	public function getValorInicial(){
+		return $this->valorInicial;
 	}
 
-	public function setValorPadrao($valorPadrao){
-		$this->valorPadrao = $valorPadrao;
+	public function setValorInicial($valorInicial){
+		$this->valorInicial = $valorInicial;
 	}
 
 	public function getMultilinha(){
@@ -186,30 +196,30 @@ class CampoHtml{
 
 		//Seta as propriedades do campo
 		switch ($this->getEditavel()){
-			case self::CONST_EDIT_IGNORAR: return;
-			case self::CONST_EDIT_ESCONDER:
-				$xTemplate->assign("valorPadrao", $this->getValorPadrao());
+			case self::CONST_EDITAR_IGNORAR: return;
+			case self::CONST_EDITAR_COMO_ESCONDIDO:
+				$xTemplate->assign("valorInicial", $this->getValorInicial());
 				$xTemplate->assign("nome", $this->getNome());
-				$xTemplate->parse("CCampoHTML.editEsconder");
+				$xTemplate->parse("CCampoHTML." . self::CONST_EDITAR_COMO_ESCONDIDO);
 				break;
-			case self::CONST_EDIT_NAO:
-				$xTemplate->assign("valorPadrao", $this->getValorPadrao());
+			case self::CONST_EDITAR_APENAS_MOSTRAR:
+				$xTemplate->assign("valorInicial", $this->getValorInicial());
 				$xTemplate->assign("descricao", $this->getDescricao());
-				$xTemplate->parse("CCampoHTML.editNao");
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_APENAS_MOSTRAR);
 				break;
-			case self::CONST_EDIT_SIM:
-				$xTemplate->assign("valorPadrao", $this->getValorPadrao());
+			case self::CONST_EDITAR_COMO_TEXTO || self::CONST_EDITAR_COMO_SENHA:
+				$xTemplate->assign("valorInicial", $this->getValorInicial());
 				$xTemplate->assign("descricao", $this->getDescricao());
 				$xTemplate->assign("nome", $this->getNome());
 				
-				if($this->getTipo() == self::CONST_TIPO_SENHA){
-					$xTemplate->parse("CCampoHTML.editSim.senha");
-					$xTemplate->parse("CCampoHTML.editSim");
+				if($this->getEditavel() == self::CONST_EDITAR_COMO_SENHA){
+					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_SENHA);
+					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 					break;					
 				}
 				
-				$xTemplate->parse($this->getMultilinha() ? "CCampoHTML.editSim.multilinhaSim" : "CCampoHTML.editSim.multilinhaNao");
-				$xTemplate->parse("CCampoHTML.editSim");
+				$xTemplate->parse($this->getMultilinha() ? self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaSim" : self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaNao");
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 				break;
 		}
 
@@ -218,10 +228,10 @@ class CampoHtml{
 		//$xTemplate->assign("requerido", $this->getRequerido());
 
 		//Gera o html
-		$xTemplate->parse("CCampoHTML");
+		$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL);
 
 		//Retorna o html
-		return $xTemplate->text("CCampoHTML");
+		return trim($xTemplate->text(self::CONST_BLOCO_PRINCIPAL));
 	}
 }
 ?>

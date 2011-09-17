@@ -1,22 +1,28 @@
 <!-- BEGIN:CCampoHTML -->
-	<!-- BEGIN:editSim -->
+	<!-- BEGIN:editarComoTexto -->
 		<!-- BEGIN:multilinhaSim -->
-		<label>{descricao}</label><textarea name="{nome}">{valorPadrao}</textarea> 
+		<label>{descricao}</label><textarea name="{nome}">{valorInicial}</textarea> 
 		<!-- END:multilinhaSim -->
 		<!-- BEGIN:multilinhaNao -->
-		<label>{descricao}</label><input type="text" name="{nome}" value="{valorPadrao}" />
+		<label>{descricao}</label><input type="text" name="{nome}" value="{valorInicial}" />
 		<!-- END:multilinhaNao -->
-		<!-- BEGIN:senha -->
-		<label>{descricao}</label><input type="password" name="{nome}" value="{valorPadrao}" />
-		<!-- END:senha -->
-	<!-- END:editSim -->
+		<!-- BEGIN:editarComoSenha -->
+		<label>{descricao}</label><input type="password" name="{nome}" value="{valorInicial}" />
+		<!-- END:editarComoSenha -->
+		<!-- BEGIN:editarComoChekBox -->
+		<label>{descricao}</label><input type="checkbox" name="{nome}" value="{valorInicial}" />
+		<!-- END:editarComoChekBox -->
+		<!-- BEGIN:editarComoComboBox -->
+		<label>{descricao}</label><input type="" name="{nome}" value="{valorInicial}" />
+		<!-- END:editarComoComboBox -->
+	<!-- END:editarComoTexto -->
 	
-	<!-- BEGIN:editNao -->
-		<label>{descricao}</label><p>{valorPadrao}</p>
-	<!-- END:editNao -->
+	<!-- BEGIN:apenasMostrar -->
+		<label>{descricao}</label><p>{valorInicial}</p>
+	<!-- END:apenasMostrar -->
 	
-	<!-- BEGIN:editEsconder -->
-		<input type="hidden" name="{nome}" value="{valorPadrao}"/>
-	<!-- END:editEsconder -->
+	<!-- BEGIN:editarEscondido -->
+		<input type="hidden" name="{nome}" value="{valorInicial}"/>
+	<!-- END:editarEscondido -->
 
 <!-- END:CCampoHTML -->

@@ -5,7 +5,7 @@ class Teste{
 
 	/**
 	 * Teste de propriedade privada
-	 * @edit editNao
+	 * @editarComo apenasMostrar
 	 * @val 1
 	 * @req true
 	 * @var string
@@ -14,7 +14,7 @@ class Teste{
 
 	/**
 	 * Teste de propriedade protegida
-	 * @edit editSim
+	 * @editarComo editarComoTexto
 	 * @val 2
 	 * @req false
 	 * @var string
@@ -23,10 +23,10 @@ class Teste{
 
 	/**
 	 * Teste de propriedade publica
-	 * @edit editSim
+	 * @editarComo editarComoSenha
 	 * @val 3
 	 * @req true
-	 * @var password
+	 * @var string
 	 */
 	public $campoHtmlPropPublic;
 
@@ -81,7 +81,7 @@ class CTemplateCreator{
 
 			//Seta as propriedades na classe construtora do html do campo
 			switch ($nome){
-				case "edit": $campoHtml->setEditavel($valor);
+				case "editarComo": $campoHtml->setEditavel($valor);
 				break;
 				case "multilinha": $campoHtml->setMultilinha($valor);
 				break;
@@ -89,7 +89,7 @@ class CTemplateCreator{
 				break;
 				case "var": $campoHtml->setTipo($valor);
 				break;
-				case "val": $campoHtml->setValorPadrao($valor);
+				case "val": $campoHtml->setValorInicial($valor);
 				break;
 			}
 		}
