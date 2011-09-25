@@ -6,7 +6,7 @@ class Teste{
 	/**
 	 * Teste de propriedade privada
 	 * @editarComo apenasMostrar
-	 * @val 1
+	 *
 	 * @req true
 	 * @get getCampoHtmlPropPrivate
 	 * @set setCampoHtmlPropPrivate
@@ -28,7 +28,7 @@ class Teste{
 	 * Teste de propriedade publica
 	 * @editarComo editarComoSenha
 	 * @req true
-	 * @get getCampoHtmlPropPubli
+	 * @get getCampoHtmlPropPublic
 	 * @set setCampoHtmlPropPublic
 	 * @var string
 	 */
@@ -46,7 +46,9 @@ class Teste{
 	public $campoHtmlArrayPublic;
 
 	public function __construct(){
-		$this->campoHtmlArrayPublic = array(1 => "teste", "teste2" => "2", 3);
+		$this->campoHtmlArrayPublic = array("valor00" => "teste", "valor02" => "2");
+		$this->campoHtmlPropPrivate = "campoHtmlPropPrivateValue";
+		$this->campoHtmlPropPublic = "testeDeSenha";
 	}
 
 	public function getCampoHtmlPropPrivate(){
@@ -90,66 +92,75 @@ class CTemplateCreator{
 
 		$r = new ReflectionClass($instanciaDaClasse);
 		$arrProp = $r->getProperties();
-
+		
+		$html = "";
 		foreach ($arrProp as $prop) {
-			$html = $this->getHtml($prop->getDocComment(), $prop->getName(), $prop->getValue());
+			$html .= $this->getHtml($prop->getDocComment(), $prop->getName(), $instanciaDaClasse);
 		}
+	$html = '<html><form action="' . self::CONST_DESTINO_PARA_OS_DADOS_DO_FORMULARIO . ' method="post">' . $html . '</form></html>';
+	$html = preg_replace("/(\n\s|\s\s|\s\n|\n|\t)*/", "", $html);
+	echo $html;
 	}
 
-	function getHtml($docComment, $nomeDaVariavel, $valorInicial){
+	private function getHtml($docComment, $nomeDaVariavel, $instanciaDaClasse){
 
 		$html = "";
 
-		$campoHtml = new CampoHtml();
+		try{
+			$campoHtml = new CampoHtml();
 
-		//Separa os agrupamentos de comentários
-		preg_match("/\/\*\*\n\s*\*\s*(.*)\n\s*((\*\s@.*\n\s*)*)/i", $docComment, $matches);
+			//Separa os agrupamentos de comentários
+			preg_match("/\/\*\*\n\s*\*\s*(.*)\n\s*((\*\s(|@).*\n\s*)*)/i", $docComment, $matches);
 
-		//Seta a descrição
-		$descricao = trim($matches[1]);
-		$campoHtml->setDescricao($descricao);
-		$campoHtml->setNome($nomeDaVariavel);
-		$campoHtml->setValorInicial($valorInicial);
+			//Seta a descrição
+			$descricao = trim($matches[1]);
+			$campoHtml->setDescricao($descricao);
+			$campoHtml->setNome($nomeDaVariavel);
 
-		//Separa as tags
-		$arrDocTags = explode("@",$matches[2]);
+			//Separa as tags
+			$arrDocTags = explode("@",$matches[2]);
 
-		foreach ($arrDocTags as $index => $docTag) {
+			foreach ($arrDocTags as $index => $docTag) {
 
-			//Tira as impurezas dos dados das tags
-			$docTag = trim(str_replace("\n", "", str_replace("*", "", $docTag)));
+				//Tira as impurezas dos dados das tags
+				$docTag = trim(str_replace("\n", "", str_replace("*", "", $docTag)));
 
-			if($docTag == ""){
-				unset($arrDocTags[$index]);
-				continue;
+				if($docTag == ""){
+					unset($arrDocTags[$index]);
+					continue;
+				}
+
+				//Recupera os nomes e valores das tags
+				$arrDocTag = explode(" ", $docTag);
+
+				$propriedade = $arrDocTag[0];
+				$valor = trim(str_replace($propriedade . " ", "", $docTag));
+
+				//Seta as propriedades na classe construtora do html do campo
+				switch ($propriedade){
+					case "editarComo": $campoHtml->setEditarComo($valor);
+					break;
+					case "multilinha": $campoHtml->setMultilinha($valor);
+					break;
+					case "req": $campoHtml->setRequerido($valor);
+					break;
+					case "var": $campoHtml->setTipo($valor);
+					break;
+					case "alimentador": $campoHtml->setAlimentador($valor);
+					break;
+					case "get" :
+						$comando = "return \$instanciaDaClasse->$valor();";
+						$campoHtml->setValorInicial(eval($comando));
+						break;
+					case "set" :
+						break;
+				}
 			}
 
-			//Recupera os nomes e valores das tags
-			$arrDocTag = explode(" ", $docTag);
-				
-			$nome = $arrDocTag[0];
-			$valor = trim(str_replace($nome . " ", "", $docTag));
-
-			//Seta as propriedades na classe construtora do html do campo
-			switch ($nome){
-				case "editarComo": $campoHtml->setEditavel($valor);
-				break;
-				case "multilinha": $campoHtml->setMultilinha($valor);
-				break;
-				case "req": $campoHtml->setRequerido($valor);
-				break;
-				case "var": $campoHtml->setTipo($valor);
-				break;
-				case "alimentador": $campoHtml->setAlimentador($valor);
-				break;
-				case "get" :
-					break;
-				case "set" :
-					break;
-			}
+			return $campoHtml->getHtml();
+		}catch (Exception $e){
+			throw new Exception("Falha ao gerar o código da página: " . $e->getMessage());
 		}
-
-		return $campoHtml->getHtml();
 	}
 }
 

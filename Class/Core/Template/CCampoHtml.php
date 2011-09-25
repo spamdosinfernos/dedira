@@ -16,7 +16,7 @@ class CampoHtml{
 	/*
 	 * Valores aceitos para tipo de edição, também
 	 * é o nome dos blocos no template que definem 
-	 * os tipos de campos a serem renderizados 
+	 * os tipos de campos a serem renderizados
 	 */
 	const CONST_EDITAR_IGNORAR = "ignorar";
 	const CONST_EDITAR_COMO_TEXTO = "editarComoTexto";
@@ -24,8 +24,8 @@ class CampoHtml{
 	const CONST_EDITAR_APENAS_MOSTRAR = "apenasMostrar";
 	const CONST_EDITAR_COMO_ESCONDIDO = "editarEscondido";
 	const CONST_EDITAR_COMO_CHECKBOX = "editarComoChekBox"; //TODO Implementar no template e no código
-	const CONST_EDITAR_COMO_LIST_BOX = "editarComoListBox"; //TODO Implementar no template e no código 
-	
+	const CONST_EDITAR_COMO_LIST_BOX = "editarComoListBox";
+
 	/*
 	 * Bloco principal do template do campo a ser gerado
 	 */
@@ -45,7 +45,7 @@ class CampoHtml{
 	/**
 	 * @var string
 	 */
-	private $editavel;
+	private $editarComo;
 
 	/**
 	 * @var string
@@ -61,7 +61,7 @@ class CampoHtml{
 	 * @var string | numeric
 	 */
 	private $valorInicial;
-	
+
 	/**
 	 * Identificação da consulta alimentadora da listbox
 	 * @var string
@@ -73,13 +73,13 @@ class CampoHtml{
 	 * @var boolean
 	 */
 	private $multilinha;
-	
+
 	/**
 	 * Aponta para a função que seta os dados na propriedade do campo
 	 * @var string
 	 */
 	private $setter;
-	
+
 	private $getter;
 
 	public function __construct(){
@@ -95,7 +95,12 @@ class CampoHtml{
 		 * Evita que informações inúteis sejam exibidas por engano, 
 		 * pois é necessário explicitar a propriedade que será exposta
 		 */
-		$this->editavel = self::CONST_EDITAR_IGNORAR;
+		$this->editarComo = self::CONST_EDITAR_IGNORAR;
+		
+		/**
+		 * Os campos são, por padrão de apenas uma linha
+		 */
+		$this->multilinha = false;
 	}
 
 	public function getTipo(){
@@ -124,22 +129,32 @@ class CampoHtml{
 		$this->nome = $nome;
 	}
 
-	public function getEditavel(){
-		return $this->editavel;
+	public function getEditarComo(){
+		return $this->editarComo;
 	}
 
-	public function setEditavel($editavel){
+	public function setEditarComo($editarComo){
+
+		$arrValoresAceitos = array(
+		self::CONST_EDITAR_IGNORAR,
+		self::CONST_EDITAR_COMO_SENHA,
+		self::CONST_EDITAR_COMO_TEXTO,
+		self::CONST_EDITAR_COMO_CHECKBOX,
+		self::CONST_EDITAR_COMO_LIST_BOX,
+		self::CONST_EDITAR_APENAS_MOSTRAR,
+		self::CONST_EDITAR_COMO_ESCONDIDO
+		);
 
 		//Se o valor informado for inválido lança um excessão
-		if(!in_array($editavel,array(self::CONST_EDITAR_COMO_SENHA, self::CONST_EDITAR_COMO_TEXTO, self::CONST_EDITAR_APENAS_MOSTRAR, self::CONST_EDITAR_IGNORAR,	self::CONST_EDITAR_COMO_ESCONDIDO))){
+		if(!in_array($editarComo, $arrValoresAceitos)){
 			throw new CUserException(
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
-			$editavel
+			$editarComo
 			);
 		}
 
-		$this->editavel = $editavel;
+		$this->editarComo = $editarComo;
 	}
 
 	public function getDescricao(){
@@ -155,7 +170,7 @@ class CampoHtml{
 	}
 
 	public function setRequerido($requerido){
-		
+
 		//Caso receba texto, é necessário traduzir o texto para para booleano 
 		$requerido = $requerido == "true" ? true : $requerido;
 		$requerido = $requerido == "false" ? false : $requerido;
@@ -206,9 +221,11 @@ class CampoHtml{
 		if($this->getNome() == "") throw new CUserException(CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'nome' não pode ser vazio.");
 
 		$xTemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
+		
+		$xTemplate->reset(self::CONST_BLOCO_PRINCIPAL);
 
 		//Seta as propriedades do campo
-		switch ($this->getEditavel()){
+		switch ($this->getEditarComo()){
 			case self::CONST_EDITAR_IGNORAR: return;
 			case self::CONST_EDITAR_COMO_ESCONDIDO:
 				$xTemplate->assign("valorInicial", $this->getValorInicial());
@@ -220,23 +237,49 @@ class CampoHtml{
 				$xTemplate->assign("descricao", $this->getDescricao());
 				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_APENAS_MOSTRAR);
 				break;
-			case self::CONST_EDITAR_COMO_TEXTO || self::CONST_EDITAR_COMO_SENHA:
+			case self::CONST_EDITAR_COMO_TEXTO:
 				$xTemplate->assign("valorInicial", $this->getValorInicial());
 				$xTemplate->assign("descricao", $this->getDescricao());
 				$xTemplate->assign("nome", $this->getNome());
-				
-				if($this->getEditavel() == self::CONST_EDITAR_COMO_SENHA){
-					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_SENHA);
-					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
-					break;					
-				}
-				
 				$xTemplate->parse($this->getMultilinha() ? self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaSim" : self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaNao");
 				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 				break;
-			case self::CONST_EDITAR_COMO_LIST_BOX : 
-				$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador(),$this->getValorInicial());
+			case self::CONST_EDITAR_COMO_SENHA:
+				$xTemplate->assign("valorInicial", $this->getValorInicial());
+				$xTemplate->assign("descricao", $this->getDescricao());
+				$xTemplate->assign("nome", $this->getNome());
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_SENHA);
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
+				break;
+			case self::CONST_EDITAR_COMO_LIST_BOX :
 				
+				$xTemplate->assign("nome", $this->getNome());
+				
+				//Recupera as opções disponíveis do list box
+				$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador());
+				//Recupera as opções já selecionadas
+				$arrValoresIniciais = $this->getValorInicial();
+
+				//Constrói a list box
+				foreach ($arrAlimentador as $valorDaOpcao => $descricaoDaOpcao) {
+
+					$xTemplate->assign("valorDaOpcao", $valorDaOpcao);
+					$xTemplate->assign("descricaoDaOpcao", $descricaoDaOpcao);
+
+					//Marca as opções selecionadas (Comparo apenas os valores, não as descrições)
+					foreach ($arrValoresIniciais as $valorDaOpcaoIncial => $descricaoDaOpcaoInicial) {
+						if($valorDaOpcaoIncial == $valorDaOpcao){
+							$xTemplate->assign("selected", "selected=\"selected\"");
+							break;
+						}
+					}
+
+					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX . ".opcaoDoListBox");
+					$xTemplate->assign("selected", "");
+				}
+
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX);
+				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 		}
 
 		//TODO usar estas propriedades para fazer uma validação via javascript, a verificação dos dados postados deve ser feita via php
@@ -249,7 +292,7 @@ class CampoHtml{
 		//Retorna o html
 		return trim($xTemplate->text(self::CONST_BLOCO_PRINCIPAL));
 	}
-	
+
 	/**
 	 * Recupera os dados de uma lista de alimentação.
 	 * A lista de alimentação é usada para preencher 
@@ -257,24 +300,20 @@ class CampoHtml{
 	 * @param string $nomeDaListaDealimentacao
 	 * @return array : index => string
 	 */
-	private function getListaDeAlimentacao($nomeDaListaDealimentacao, $arrValores){
+	private function getListaDeAlimentacao($nomeDaListaDealimentacao){
 		//TODO implementar
 		$arrRetorno = array(
-		0 => "teste0" . $nomeDaListaDealimentacao,
-		1 => "teste1" . $nomeDaListaDealimentacao,
-		2 => "teste2" . $nomeDaListaDealimentacao,
-		3 => "teste3" . $nomeDaListaDealimentacao
+		"valor00" => "descricaoDaOpcao 00" . $nomeDaListaDealimentacao,
+		"valor01" => "descricaoDaOpcao 01" . $nomeDaListaDealimentacao,
+		"valor02" => "descricaoDaOpcao 02" . $nomeDaListaDealimentacao,
+		"valor03" => "descricaoDaOpcao 03" . $nomeDaListaDealimentacao
 		);
-		
-		foreach ($arrValores as $index => $valor) {
-			unset($arrRetorno[$index]);
-		}
-		
+
 		return $arrRetorno;
 	}
 
 	public function getAlimentador(){
-	    return $this->alimentador;
+		return $this->alimentador;
 	}
 
 	public function setAlimentador($alimentador){
@@ -286,8 +325,8 @@ class CampoHtml{
 			$alimentador
 			);
 		}
-		
-	    $this->alimentador = $alimentador;
+
+		$this->alimentador = $alimentador;
 	}
 }
 ?>
