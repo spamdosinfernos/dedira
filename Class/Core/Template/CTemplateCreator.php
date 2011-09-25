@@ -8,6 +8,8 @@ class Teste{
 	 * @editarComo apenasMostrar
 	 * @val 1
 	 * @req true
+	 * @get getCampoHtmlPropPrivate
+	 * @set setCampoHtmlPropPrivate
 	 * @var string
 	 */
 	private $campoHtmlPropPrivate;
@@ -15,8 +17,9 @@ class Teste{
 	/**
 	 * Teste de propriedade protegida
 	 * @editarComo editarComoTexto
-	 * @val 2
 	 * @req false
+	 * @get getCampoHtmlPropProtected
+	 * @set setCampoHtmlPropProtected
 	 * @var string
 	 */
 	protected $campoHtmlPropProtected;
@@ -24,12 +27,59 @@ class Teste{
 	/**
 	 * Teste de propriedade publica
 	 * @editarComo editarComoSenha
-	 * @val 3
 	 * @req true
+	 * @get getCampoHtmlPropPubli
+	 * @set setCampoHtmlPropPublic
 	 * @var string
 	 */
 	public $campoHtmlPropPublic;
 
+	/**
+	 * Teste de propriedade publica
+	 * @editarComo editarComoListBox
+	 * @req true
+	 * @alimentador viewTeste
+	 * @set setCampoHtmlArrayPublic
+	 * @get getCampoHtmlArrayPublic
+	 * @var array
+	 */
+	public $campoHtmlArrayPublic;
+
+	public function __construct(){
+		$this->campoHtmlArrayPublic = array(1 => "teste", "teste2" => "2", 3);
+	}
+
+	public function getCampoHtmlPropPrivate(){
+		return $this->campoHtmlPropPrivate;
+	}
+
+	public function setCampoHtmlPropPrivate($campoHtmlPropPrivate){
+		$this->campoHtmlPropPrivate = $campoHtmlPropPrivate;
+	}
+
+	public function getCampoHtmlPropProtected(){
+		return $this->campoHtmlPropProtected;
+	}
+
+	public function setCampoHtmlPropProtected($campoHtmlPropProtected){
+		$this->campoHtmlPropProtected = $campoHtmlPropProtected;
+	}
+
+	public function getCampoHtmlPropPublic(){
+		return $this->campoHtmlPropPublic;
+	}
+
+	public function setCampoHtmlPropPublic($campoHtmlPropPublic){
+		$this->campoHtmlPropPublic = $campoHtmlPropPublic;
+	}
+
+	public function getCampoHtmlArrayPublic(){
+		return $this->campoHtmlArrayPublic;
+	}
+
+	public function setCampoHtmlArrayPublic($campoHtmlArrayPublic){
+		$this->campoHtmlArrayPublic = $campoHtmlArrayPublic;
+	}
 }
 
 class CTemplateCreator{
@@ -42,11 +92,11 @@ class CTemplateCreator{
 		$arrProp = $r->getProperties();
 
 		foreach ($arrProp as $prop) {
-			$html = $this->getHtml($prop->getDocComment(), $prop->getName());
+			$html = $this->getHtml($prop->getDocComment(), $prop->getName(), $prop->getValue());
 		}
 	}
 
-	function getHtml($docComment, $nomeDaVariavel){
+	function getHtml($docComment, $nomeDaVariavel, $valorInicial){
 
 		$html = "";
 
@@ -59,6 +109,7 @@ class CTemplateCreator{
 		$descricao = trim($matches[1]);
 		$campoHtml->setDescricao($descricao);
 		$campoHtml->setNome($nomeDaVariavel);
+		$campoHtml->setValorInicial($valorInicial);
 
 		//Separa as tags
 		$arrDocTags = explode("@",$matches[2]);
@@ -75,7 +126,7 @@ class CTemplateCreator{
 
 			//Recupera os nomes e valores das tags
 			$arrDocTag = explode(" ", $docTag);
-			
+				
 			$nome = $arrDocTag[0];
 			$valor = trim(str_replace($nome . " ", "", $docTag));
 
@@ -89,11 +140,15 @@ class CTemplateCreator{
 				break;
 				case "var": $campoHtml->setTipo($valor);
 				break;
-				case "val": $campoHtml->setValorInicial($valor);
+				case "alimentador": $campoHtml->setAlimentador($valor);
 				break;
+				case "get" :
+					break;
+				case "set" :
+					break;
 			}
 		}
-		
+
 		return $campoHtml->getHtml();
 	}
 }

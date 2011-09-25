@@ -24,7 +24,7 @@ class CampoHtml{
 	const CONST_EDITAR_APENAS_MOSTRAR = "apenasMostrar";
 	const CONST_EDITAR_COMO_ESCONDIDO = "editarEscondido";
 	const CONST_EDITAR_COMO_CHECKBOX = "editarComoChekBox"; //TODO Implementar no template e no código
-	const CONST_EDITAR_COMO_COMBO_BOX = "editarComoComboBox"; //TODO Implementar no template e no código 
+	const CONST_EDITAR_COMO_LIST_BOX = "editarComoListBox"; //TODO Implementar no template e no código 
 	
 	/*
 	 * Bloco principal do template do campo a ser gerado
@@ -61,12 +61,26 @@ class CampoHtml{
 	 * @var string | numeric
 	 */
 	private $valorInicial;
+	
+	/**
+	 * Identificação da consulta alimentadora da listbox
+	 * @var string
+	 */
+	private $alimentador;
 
 	/**
 	 * Indica se o campo é multilinha
 	 * @var boolean
 	 */
 	private $multilinha;
+	
+	/**
+	 * Aponta para a função que seta os dados na propriedade do campo
+	 * @var string
+	 */
+	private $setter;
+	
+	private $getter;
 
 	public function __construct(){
 		//Setando os valores padrões de cada campo
@@ -220,6 +234,9 @@ class CampoHtml{
 				$xTemplate->parse($this->getMultilinha() ? self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaSim" : self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaNao");
 				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 				break;
+			case self::CONST_EDITAR_COMO_LIST_BOX : 
+				$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador(),$this->getValorInicial());
+				
 		}
 
 		//TODO usar estas propriedades para fazer uma validação via javascript, a verificação dos dados postados deve ser feita via php
@@ -231,6 +248,46 @@ class CampoHtml{
 
 		//Retorna o html
 		return trim($xTemplate->text(self::CONST_BLOCO_PRINCIPAL));
+	}
+	
+	/**
+	 * Recupera os dados de uma lista de alimentação.
+	 * A lista de alimentação é usada para preencher 
+	 * dados em combox e list boxes
+	 * @param string $nomeDaListaDealimentacao
+	 * @return array : index => string
+	 */
+	private function getListaDeAlimentacao($nomeDaListaDealimentacao, $arrValores){
+		//TODO implementar
+		$arrRetorno = array(
+		0 => "teste0" . $nomeDaListaDealimentacao,
+		1 => "teste1" . $nomeDaListaDealimentacao,
+		2 => "teste2" . $nomeDaListaDealimentacao,
+		3 => "teste3" . $nomeDaListaDealimentacao
+		);
+		
+		foreach ($arrValores as $index => $valor) {
+			unset($arrRetorno[$index]);
+		}
+		
+		return $arrRetorno;
+	}
+
+	public function getAlimentador(){
+	    return $this->alimentador;
+	}
+
+	public function setAlimentador($alimentador){
+		//Se o valor informado for inválido lança um excessão
+		if(!is_string($alimentador)){
+			throw new CUserException(
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
+			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
+			$alimentador
+			);
+		}
+		
+	    $this->alimentador = $alimentador;
 	}
 }
 ?>

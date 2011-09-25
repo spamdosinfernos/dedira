@@ -9,12 +9,14 @@
 		<!-- BEGIN:editarComoSenha -->
 		<label>{descricao}</label><input type="password" name="{nome}" value="{valorInicial}" />
 		<!-- END:editarComoSenha -->
-		<!-- BEGIN:editarComoChekBox -->
-		<label>{descricao}</label><input type="checkbox" name="{nome}" value="{valorInicial}" />
-		<!-- END:editarComoChekBox -->
-		<!-- BEGIN:editarComoComboBox -->
-		<label>{descricao}</label><input type="" name="{nome}" value="{valorInicial}" />
-		<!-- END:editarComoComboBox -->
+		<!-- BEGIN:editarComoListBox -->
+		<label>{descricao}</label>
+		<select name="{nome}">
+			<!-- BEGIN:opcao -->
+			<option value="{valorDaOpcao}" {selected}>{descricaoDaOpcao}</option>
+			<!-- END:opcao -->
+		</select>
+		<!-- END:editarComoListBox -->
 	<!-- END:editarComoTexto -->
 	
 	<!-- BEGIN:apenasMostrar -->
@@ -24,5 +26,9 @@
 	<!-- BEGIN:editarEscondido -->
 		<input type="hidden" name="{nome}" value="{valorInicial}"/>
 	<!-- END:editarEscondido -->
+
+	<!-- BEGIN:editarComoChekBox -->
+	<label>{descricao}</label><input type="checkbox" name="{nome}" value="{valorInicial}" />
+	<!-- END:editarComoChekBox -->
 
 <!-- END:CCampoHTML -->
