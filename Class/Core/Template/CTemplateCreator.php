@@ -44,6 +44,31 @@ class Teste{
 	 * @var array
 	 */
 	public $campoHtmlArrayPublic;
+	
+	/**
+	 * Teste de propriedade publica check box array
+	 * @editarComo editarComoCheckBox
+	 * @req true
+	 * @alimentador viewTeste
+	 * @set setCampoHtmlArrayPublic
+	 * @get getCampoHtmlArrayPublic
+	 * @var array
+	 */
+	public $campoHtmlArrayPublicCheckBox;
+	
+	/**
+	 * Teste de propriedade publica check box string
+	 * @editarComo editarComoCheckBox
+	 * @req true
+	 * @set setCampoBooleano
+	 * @get getCampoBooleano
+	 * @var boolean
+	 */
+	public $campoHtmlArrayPublicCheckBoxString;
+	
+	public function getCampoBooleano(){
+		return true;
+	}
 
 	public function __construct(){
 		$this->campoHtmlArrayPublic = array("valor00" => "teste", "valor02" => "2");
@@ -84,7 +109,7 @@ class Teste{
 	}
 }
 
-class CTemplateCreator{
+class CTemplateCreator extends CCore {
 
 	const CONST_DESTINO_PARA_OS_DADOS_DO_FORMULARIO = "index.php";
 
@@ -98,6 +123,8 @@ class CTemplateCreator{
 			$html .= $this->getHtml($prop->getDocComment(), $prop->getName(), $instanciaDaClasse);
 		}
 	$html = '<html><form action="' . self::CONST_DESTINO_PARA_OS_DADOS_DO_FORMULARIO . ' method="post">' . $html . '</form></html>';
+	
+	//Remove os espaços
 	$html = preg_replace("/(\n\s|\s\s|\s\n|\n|\t)*/", "", $html);
 	echo $html;
 	}

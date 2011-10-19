@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/CXTemplate.php';
+require_once __DIR__ . '/../Exception/CUserException.php';
 
 class CampoHtml{
 
@@ -11,6 +12,7 @@ class CampoHtml{
 	const CONST_TIPO_ARRAY = "array";
 	const CONST_TIPO_SENHA = "password";
 	const CONST_TIPO_STRING = "string";
+	const CONST_TIPO_BOOLEANO = "boolean";
 	const CONST_TIPO_DATETIME = "datetime";
 
 	/*
@@ -23,7 +25,7 @@ class CampoHtml{
 	const CONST_EDITAR_COMO_SENHA = "editarComoSenha";
 	const CONST_EDITAR_APENAS_MOSTRAR = "apenasMostrar";
 	const CONST_EDITAR_COMO_ESCONDIDO = "editarEscondido";
-	const CONST_EDITAR_COMO_CHECKBOX = "editarComoChekBox"; //TODO Implementar no template e no código
+	const CONST_EDITAR_COMO_CHECKBOX = "editarComoCheckBox";
 	const CONST_EDITAR_COMO_LIST_BOX = "editarComoListBox";
 
 	/*
@@ -82,6 +84,9 @@ class CampoHtml{
 
 	private $getter;
 
+
+	private $xTemplate;
+
 	public function __construct(){
 		//Setando os valores padrões de cada campo
 
@@ -96,11 +101,15 @@ class CampoHtml{
 		 * pois é necessário explicitar a propriedade que será exposta
 		 */
 		$this->editarComo = self::CONST_EDITAR_IGNORAR;
-		
+
 		/**
 		 * Os campos são, por padrão de apenas uma linha
 		 */
 		$this->multilinha = false;
+
+		$this->xTemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
+		$this->xTemplate->reset(self::CONST_BLOCO_PRINCIPAL);
+
 	}
 
 	public function getTipo(){
@@ -110,7 +119,7 @@ class CampoHtml{
 	public function setTipo($tipo){
 
 		//Se o tipo informado for inválido lança um excessão
-		if(!in_array($tipo,array(self::CONST_TIPO_SENHA, self::CONST_TIPO_INT, self::CONST_TIPO_FLOAT, self::CONST_TIPO_ARRAY,	self::CONST_TIPO_STRING, self::CONST_TIPO_DATETIME))){
+		if(!in_array($tipo,array(self::CONST_TIPO_BOOLEANO, self::CONST_TIPO_SENHA, self::CONST_TIPO_INT, self::CONST_TIPO_FLOAT, self::CONST_TIPO_ARRAY,	self::CONST_TIPO_STRING, self::CONST_TIPO_DATETIME))){
 			throw new CUserException(
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
@@ -220,77 +229,26 @@ class CampoHtml{
 		//O campo deve ter um nome
 		if($this->getNome() == "") throw new CUserException(CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, CConfiguracao::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'nome' não pode ser vazio.");
 
-		$xTemplate = new CXTemplate(CConfiguracao::getDiretorioDosTemplates() . "Class" . DIRECTORY_SEPARATOR . "Core" . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR . "CCampoHTML.html");
-		
-		$xTemplate->reset(self::CONST_BLOCO_PRINCIPAL);
-
 		//Seta as propriedades do campo
 		switch ($this->getEditarComo()){
 			case self::CONST_EDITAR_IGNORAR: return;
-			case self::CONST_EDITAR_COMO_ESCONDIDO:
-				$xTemplate->assign("valorInicial", $this->getValorInicial());
-				$xTemplate->assign("nome", $this->getNome());
-				$xTemplate->parse("CCampoHTML." . self::CONST_EDITAR_COMO_ESCONDIDO);
-				break;
-			case self::CONST_EDITAR_APENAS_MOSTRAR:
-				$xTemplate->assign("valorInicial", $this->getValorInicial());
-				$xTemplate->assign("descricao", $this->getDescricao());
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_APENAS_MOSTRAR);
-				break;
-			case self::CONST_EDITAR_COMO_TEXTO:
-				$xTemplate->assign("valorInicial", $this->getValorInicial());
-				$xTemplate->assign("descricao", $this->getDescricao());
-				$xTemplate->assign("nome", $this->getNome());
-				$xTemplate->parse($this->getMultilinha() ? self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaSim" : self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaNao");
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
-				break;
-			case self::CONST_EDITAR_COMO_SENHA:
-				$xTemplate->assign("valorInicial", $this->getValorInicial());
-				$xTemplate->assign("descricao", $this->getDescricao());
-				$xTemplate->assign("nome", $this->getNome());
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_SENHA);
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
-				break;
-			case self::CONST_EDITAR_COMO_LIST_BOX :
-				
-				$xTemplate->assign("nome", $this->getNome());
-				
-				//Recupera as opções disponíveis do list box
-				$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador());
-				//Recupera as opções já selecionadas
-				$arrValoresIniciais = $this->getValorInicial();
-
-				//Constrói a list box
-				foreach ($arrAlimentador as $valorDaOpcao => $descricaoDaOpcao) {
-
-					$xTemplate->assign("valorDaOpcao", $valorDaOpcao);
-					$xTemplate->assign("descricaoDaOpcao", $descricaoDaOpcao);
-
-					//Marca as opções selecionadas (Comparo apenas os valores, não as descrições)
-					foreach ($arrValoresIniciais as $valorDaOpcaoIncial => $descricaoDaOpcaoInicial) {
-						if($valorDaOpcaoIncial == $valorDaOpcao){
-							$xTemplate->assign("selected", "selected=\"selected\"");
-							break;
-						}
-					}
-
-					$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX . ".opcaoDoListBox");
-					$xTemplate->assign("selected", "");
-				}
-
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX);
-				$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
+			case self::CONST_EDITAR_APENAS_MOSTRAR:	$this->gerarApenasVisualizacao(); break;
+			case self::CONST_EDITAR_COMO_ESCONDIDO:	$this->gerarCampoEscondido(); break;
+			case self::CONST_EDITAR_COMO_TEXTO: $this->gerarCampoDeTexto();	break;
+			case self::CONST_EDITAR_COMO_SENHA:	$this->geraCampoDeSenha(); break;
+			case self::CONST_EDITAR_COMO_CHECKBOX: $this->geraCheckBox(); break;
+			case self::CONST_EDITAR_COMO_LIST_BOX: $this->geraListBox(); break;
 		}
 
 		//TODO usar estas propriedades para fazer uma validação via javascript, a verificação dos dados postados deve ser feita via php
-		//$xTemplate->assign("tipo", $this->getTipo());
-		//$xTemplate->assign("requerido", $this->getRequerido());
+		//$this->xTemplate->assign("tipo", $this->getTipo());
+		//$this->xTemplate->assign("requerido", $this->getRequerido());
 
 		//Gera o html
-		$xTemplate->parse(self::CONST_BLOCO_PRINCIPAL);
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL);
 
 		//Retorna o html
-		return trim($xTemplate->text(self::CONST_BLOCO_PRINCIPAL));
+		return trim($this->xTemplate->text(self::CONST_BLOCO_PRINCIPAL));
 	}
 
 	/**
@@ -327,6 +285,95 @@ class CampoHtml{
 		}
 
 		$this->alimentador = $alimentador;
+	}
+	private function gerarCampoEscondido(){
+		$this->xTemplate->assign("valorInicial", $this->getValorInicial());
+		$this->xTemplate->assign("nome", $this->getNome());
+		$this->xTemplate->parse("CCampoHTML." . self::CONST_EDITAR_COMO_ESCONDIDO);
+	}
+
+	private function gerarApenasVisualizacao(){
+		$this->xTemplate->assign("valorInicial", $this->getValorInicial());
+		$this->xTemplate->assign("descricao", $this->getDescricao());
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_APENAS_MOSTRAR);
+	}
+
+	private function gerarCampoDeTexto(){
+		$this->xTemplate->assign("valorInicial", $this->getValorInicial());
+		$this->xTemplate->assign("descricao", $this->getDescricao());
+		$this->xTemplate->assign("nome", $this->getNome());
+		$this->xTemplate->parse($this->getMultilinha() ? self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaSim" : self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . ".multilinhaNao");
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
+	}
+
+	private function geraCampoDeSenha(){
+		$this->xTemplate->assign("valorInicial", $this->getValorInicial());
+		$this->xTemplate->assign("descricao", $this->getDescricao());
+		$this->xTemplate->assign("nome", $this->getNome());
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_SENHA);
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
+	}
+
+	private function geraListBox(){
+
+		$this->xTemplate->assign("nome", $this->getNome());
+
+		//Recupera as opções disponíveis do list bo
+		$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador());
+		//Recupera as opções já selecionadas
+		$arrValoresIniciais = $this->getValorInicial();
+
+		//Constrói a list box
+		foreach ($arrAlimentador as $valorDaOpcao => $descricaoDaOpcao) {
+
+			$this->xTemplate->assign("valorDaOpcao", $valorDaOpcao);
+			$this->xTemplate->assign("descricaoDaOpcao", $descricaoDaOpcao);
+
+			//Marca as opções selecionadas (Comparo apenas os valores, não as descrições)
+			foreach ($arrValoresIniciais as $valorDaOpcaoIncial => $descricaoDaOpcaoInicial) {
+				if($valorDaOpcaoIncial == $valorDaOpcao){
+					$this->xTemplate->assign("selected", "selected=\"selected\"");
+					break;
+				}
+			}
+
+			$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX . ".opcaoDoListBox");
+			$this->xTemplate->assign("selected", "");
+		}
+
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_LIST_BOX);
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
+	}
+
+	private function geraCheckBox(){
+
+		$this->xTemplate->assign("nome", $this->getNome());
+
+		//Recupera as opções disponíveis do list bo
+		$arrAlimentador = $this->getListaDeAlimentacao($this->getAlimentador());
+		//Recupera as opções já selecionadas
+		$arrValoresIniciais = $this->getValorInicial();
+
+		//Constrói a list box
+		foreach ($arrAlimentador as $valorDaOpcao => $descricaoDaOpcao) {
+
+			$this->xTemplate->assign("valorDaOpcao", $valorDaOpcao);
+			$this->xTemplate->assign("descricaoDaOpcao", $descricaoDaOpcao);
+
+			//Marca as opções selecionadas (Comparo apenas os valores, não as descrições)
+			foreach ($arrValoresIniciais as $valorDaOpcaoIncial => $descricaoDaOpcaoInicial) {
+				if($valorDaOpcaoIncial == $valorDaOpcao){
+					$this->xTemplate->assign("checked", "checked=\"checked\"");
+					break;
+				}
+			}
+
+			$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_CHECKBOX . ".checkBox");
+			$this->xTemplate->assign("checked", "");
+		}
+
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO . "." . self::CONST_EDITAR_COMO_CHECKBOX);
+		$this->xTemplate->parse(self::CONST_BLOCO_PRINCIPAL . "." . self::CONST_EDITAR_COMO_TEXTO);
 	}
 }
 ?>

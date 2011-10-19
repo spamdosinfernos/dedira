@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/Seguranca/CAutenticador.php';
 
+//TODO Apagar!!!!
+session_start();
+$_SESSION['informacoesDoUsuario']['id'] = 10;
+
 class CCore{
 
 	/**
