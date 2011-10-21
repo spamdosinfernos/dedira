@@ -23,5 +23,4 @@ class CException extends Exception {
 	}
 
 }
-
 ?>

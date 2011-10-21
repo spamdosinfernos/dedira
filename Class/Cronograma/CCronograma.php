@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Core/Configuracao/CConfiguracao.php';
+require_once __DIR__ . '/../Core/Configuration/CConfiguration.php';
 require_once __DIR__ . '/Evento/CManifestacao.php';
 require_once __DIR__ . '/Evento/CEncontro.php';
 require_once __DIR__ . '/Evento/CReuniao.php';
@@ -53,7 +53,7 @@ class CCronograma extends CCore{
 
 			//Seta a data final
 			$dataFinal = new DateTime();
-			$dataFinal->modify(CConfiguracao::getQtdeDoIntevaloDeTempoPadrao() . CConfiguracao::getTipoDoIntevaloDeTempoPadrao());
+			$dataFinal->modify(CConfiguration::getDefaultTimeInterval() . CConfiguration::getDefaultTimeIntervalType());
 		}
 
 		$this->setDonoDoCronograma($donoDoCronograma);

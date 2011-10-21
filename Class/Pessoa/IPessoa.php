@@ -1,7 +1,7 @@
 <?php
 interface IPessoa{
 	
-	public function autenticar($usuario, $senha);
+	public function autenticar($user, $password);
 
 	public function getNome();
 

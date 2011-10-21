@@ -1,4 +1,6 @@
 <?php
+require_once 'CException.php';
+
 /**
  * Dá conta das exceções geradas pelo usuário (campos de formulário mal digitados, 
  * operações não permitidas, login inválido, etc.).

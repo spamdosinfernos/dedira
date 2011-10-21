@@ -11,7 +11,7 @@ class CMilitante extends CPessoa{
 
 	public function __construct(){
 		parent::__construct();
-		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_MILITANTE;
+		$this->nivelDeAcessoAoSitema = CCore::CONST_ACCESS_LEVEL_BASIC;
 	}
 
 	public function getEmail(){

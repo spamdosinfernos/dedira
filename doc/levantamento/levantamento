@@ -29,7 +29,7 @@ O sistema tem um cadastro de organizações irmãs, neste cadastro devem constar
 Os militantes devem ser agrupados também pelas suas frentes de atuação tais como: Camponesa, Indígenas, etc.
 A organização irmã deve ter um e-mail de contato, afim de receber os relatórios e status da militância das frentes da organização.
 O sistema deve ler os e-mails da organização periódicamente afim de receber os relatórios de militância das organizações irmãs e colocá-las no banco de sistema.
-O sistema deve enviar os eventos da agenda da organização, marcados como compratilhados, para os e-mails das organizações irmãs
+O sistema deve send os eventos da agenda da organização, marcados como compratilhados, para os e-mails das organizações irmãs
 O sistema deve ler os e-mails da organização periodicamente afim de receber as agendas das organizações irmãs e organiza-las no cronograma da organização.
 O sistema de prover um chat para reuniões on-line.
 O sistema deve prover um fórum para troca de idéias entre todas as organizações irmãs e entre organizações irmãs específicas.

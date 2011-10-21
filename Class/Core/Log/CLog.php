@@ -1,93 +1,81 @@
 <?php
 require_once __DIR__ . '/../CCore.php';
-require_once __DIR__ . '/../Configuracao/CConfiguracao.php';
-
+require_once __DIR__ . '/../Configuration/CConfiguration.php';
 /**
  * Grava o log de solicitações
  */
 class CLog extends CCore{
 
 	/**
-	 * Guarda a data de geração do log
-	 * esta data é gerada quando o objeto
-	 * é construído
-	 * @var datetime
-	 */
-	private $data;
-
-	/**
 	 * Mensagem a ser gravada
 	 * @var string
 	 */
-	private $mensagem;
+	protected $arrMensagem;
 
 	/**
-	 * Separador de coluna para os dados
+	 * Local onde o log será salvo
 	 * @var string
 	 */
-	const CONST_SEPARADOR_DE_CAMPOS = "\t";
+	protected $diretorioDeSalvamento;
 
 	/**
-	 * Cria um nova entra de log
-	 * @param string $mensagem
+	 * Nome do arquivo de log
+	 * @var string
 	 */
-	public function __construct($mensagem){
-		$this->data = date(CConfiguracao::CONST_LOG_FORMATO_DA_DATA);
-		$this->mensagem = $mensagem;
-		$this->gravarLog();
+	protected $nomeDoArquivoDeLog;
+
+	const CONST_SEPARADOR_DE_CAMPOS = "\t";
+
+	public function setSaveDirectory($diretorioDeSalvamento){
+		$this->diretorioDeSalvamento = $diretorioDeSalvamento;
+	}
+
+	public function setLogFileName($nomeDoArquivoDeLog){
+		$this->nomeDoArquivoDeLog = $nomeDoArquivoDeLog;
+	}
+
+	public function addMessage($mensagem){
+		$this->arrMensagem[] = date("Y-m-d H:i:s") . self::CONST_SEPARADOR_DE_CAMPOS . $mensagem . PHP_EOL;
 	}
 
 	/**
-	 * Grava o log no local especificado
+	 * Cria um nova entrada de log
 	 */
-	private function gravarLog(){
-		$arquivoDeLog = Configuracao::getCaminhoDoLog();
+	public function save(){
 
-		if(is_file($arquivoDeLog)){
-			$arrArquivo = file($arquivoDeLog);
+		if(count($this->arrMensagem) == 0) return;
+
+		$logFilePath = CConfiguration::getLogFilePath();
+
+		if(is_file($logFilePath)){
+			$arrFileContents = file($logFilePath);
 
 			//Evita que o arquivo de log supere o número de linhas limite
-			if(count($arrArquivo) > Configuracao::getTamanhoDoLog()){
-				unset($arrArquivo[0]);
-				$filehandle = fopen($arquivoDeLog, 'w');
+			if(count($arrFileContents) > CConfiguration::getTamanhoDoLog()){
+				unset($arrFileContents[0]);
+				$filehandle = fopen($logFilePath, 'w');
 
 				if(!is_resource($filehandle)) throw new CException(
-				CConfiguracao::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_TEXTO,
-				CConfiguracao::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_COD,
-				$arquivoDeLog
+				CConfiguration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_TEXTO,
+				CConfiguration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_COD,
+				$logFilePath
 				);
 
-				$resultadoDaEscrita = fwrite($filehandle, join("", $arrArquivo));
-				if($resultadoDaEscrita === false){
+				$fileWriteResult = fwrite($filehandle, join("", $arrFileContents));
+
+				if($fileWriteResult === false){
 					throw new CException(
-					CConfiguracao::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_TEXTO,
-					CConfiguracao::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_COD,
-					$arquivoDeLog
+					CConfiguration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_TEXTO,
+					CConfiguration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_COD,
+					$logFilePath
 					);
 				}
 
 				fclose($filehandle);
 			}
+
+			$this->arrMensagem = array();
 		}
-
-		$filehandle = fopen($arquivoDeLog, 'a');
-		if(!is_resource($filehandle)){
-			throw new CException(
-			CConfiguracao::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_TEXTO,
-			CConfiguracao::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_COD,
-			$arquivoDeLog
-			);
-		}
-
-		$resultadoDaEscrita = fwrite($filehandle, $this->data . self::CONST_SEPARADOR_DE_CAMPOS . $this->mensagem . "\n");
-		
-		if($resultadoDaEscrita === false) throw new CException(
-		CConfiguracao::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_TEXTO,
-		CConfiguracao::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_COD,
-		$arquivoDeLog
-		);
-
-		fclose($filehandle);
 	}
 }
 ?>

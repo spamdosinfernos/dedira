@@ -7,31 +7,31 @@ require_once __DIR__ . '/CMilitante.php';
  */
 class CMilitanteOrganico extends CMilitante{
 
-	protected $usuario;
+	protected $user;
 	
-	protected $senha;
+	protected $password;
 	
 	public function __construct(){
 		
 		parent::__construct();
 		
-		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_MILITANTE_DE_APOIO;
+		$this->nivelDeAcessoAoSitema = CCore::CONST_ACCESS_LEVEL_MEDIUM;
 	}
 
 	public function getUsuario(){
-	    return $this->usuario;
+	    return $this->user;
 	}
 
-	public function setUsuario($usuario){
-	    $this->usuario = $usuario;
+	public function setUsuario($user){
+	    $this->user = $user;
 	}
 
 	public function getSenha(){
-	    return $this->senha;
+	    return $this->password;
 	}
 
-	public function setSenha($senha){
-	    $this->senha = $senha;
+	public function setSenha($password){
+	    $this->password = $password;
 	}
 }
 

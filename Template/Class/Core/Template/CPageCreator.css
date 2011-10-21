@@ -1,0 +1,51 @@
+.formulario {
+	width: 100%;
+}
+
+.campoMultilinha {
+	margin: 5px;
+	clear: both;
+}
+
+.campoMultilinha label {
+}
+
+.campoUmalinha {
+	margin: 5px;
+	clear: both;
+	float: left;
+}
+
+.campoUmalinha label {
+}
+
+.campoSenha {
+	clear: both;
+	margin: 5px;
+}
+
+.campoSenha label {
+}
+
+.campoListBox {
+	margin: 5px;
+	clear: both;
+}
+
+.campoListBox label {
+	
+}
+
+.campoCheckBox {
+	margin: 5px;
+	clear: both;
+}
+
+.campoCheckBox label {
+	
+}
+
+.nenhumCampo {
+	margin: 5px;
+	clear: both;
+}

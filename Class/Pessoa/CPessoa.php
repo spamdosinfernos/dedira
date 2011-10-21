@@ -18,8 +18,8 @@ class CPessoa extends CDocumentoDaBase implements IPessoa{
 
 	public function __construct(){
 		parent::__construct();
-		$this->setNomeDaBaseDeDados(CConfiguracao::CONST_BD_NOME_PESSOAS);
-		$this->nivelDeAcessoAoSitema = CCore::CONST_NIVEL_ACESSO_PESSOA;
+		$this->setNomeDaBaseDeDados(CConfiguration::CONST_DB_PEOPLE_NAME);
+		$this->nivelDeAcessoAoSitema = CCore::CONST_ACCESS_LEVEL_NONE;
 	}
 
 	public function getId(){
@@ -78,8 +78,8 @@ class CPessoa extends CDocumentoDaBase implements IPessoa{
 		$this->nivelDeAcessoAoSitema = $nivelDeAcessoAoSitema;
 	}
 	
-	public function autenticar($usuario, $senha){
-		$this->autenticarUsuario($usuario, $senha);
+	public function autenticar($user, $password){
+		$this->autenticarUsuario($user, $password);
 	}
 
 }

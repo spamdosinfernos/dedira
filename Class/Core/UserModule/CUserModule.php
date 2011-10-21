@@ -13,7 +13,7 @@ class CUserModule extends CCore{
 	 * @param string $userModuleName
 	 */
 	public function ativar($userModuleName){
-		require_once CConfiguracao::getDiretorioDosModulosDeUsuario() . DIRECTORY_SEPARATOR . $userModuleName . ".php";
+		require_once CConfiguration::getUserModuleDiretory() . DIRECTORY_SEPARATOR . $userModuleName . ".php";
 
 		$this->arrUserModules[$userModuleName] = new $userModuleName;
 	}
@@ -35,7 +35,7 @@ class CUserModule extends CCore{
 
 		if(is_dir($caminhoDoDiretorioDeOrigemDoModulo)) return -1;
 		
-		$copiou = copy($caminhoDoDiretorioDeOrigemDoModulo, CConfiguracao::getDiretorioDeTesteDosModulosDeUsuario());
+		$copiou = copy($caminhoDoDiretorioDeOrigemDoModulo, CConfiguration::getUserModuleTestDiretory());
 		
 		if(!$copiou) return -2;
 		//TODO definir a estrutura dos módulos afim de escrever as rotinas de verificação do módulo
