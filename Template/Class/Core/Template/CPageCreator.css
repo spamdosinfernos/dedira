@@ -1,3 +1,8 @@
+body {
+	margin: 0px;
+	padding: 0px;
+}
+
 .formulario {
 	width: 100%;
 }
@@ -8,6 +13,7 @@
 }
 
 .campoMultilinha label {
+	
 }
 
 .campoUmalinha {
@@ -17,6 +23,7 @@
 }
 
 .campoUmalinha label {
+	
 }
 
 .campoSenha {
@@ -25,6 +32,7 @@
 }
 
 .campoSenha label {
+	
 }
 
 .campoListBox {
@@ -48,4 +56,33 @@
 .nenhumCampo {
 	margin: 5px;
 	clear: both;
+}
+
+#menu {
+	list-style: none;
+	list-style-type: none;
+	width: 100%;
+	margin: 0px;
+	clear: both;
+}
+
+#menu ul {
+	width: 100%;
+	border-right: 10px;
+	border-color: black;
+	background-color: black;
+	height: 30px;
+	padding: 1px;
+	margin: 0px;
+	color: white;
+}
+
+#menu ul li {
+	float: left;
+	padding: 5px;
+	display: inline;
+}
+
+#menu ul li input{
+	width: 40px;
 }
