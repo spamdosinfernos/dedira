@@ -4,7 +4,6 @@ require_once __DIR__ . '/CXTemplate.php';
 require_once __DIR__ . '/../Filesystem/CFile.php';
 require_once __DIR__ . '/../Configuration/Template/CPageCreatorConf.php';
 
-
 class Teste{
 
 	/**

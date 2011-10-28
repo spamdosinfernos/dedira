@@ -1,0 +1,66 @@
+<?php
+
+
+$codigo_produto = "TT32";
+$data_ame = "2011-06-10 14:58:00";
+$cupom = "09682020";
+$cpf_cliente = "30007769822";
+$nome_cliente = "Vinicius Andrade Canovas";
+$email_cliente = "vcanovas@tectotal.com.br";
+$endereco_cliente = "Rua Doutor Freak Man,220";
+$complemento_cliente = "Bloco 1 - Apto: 21";
+$zipcode_cliente = "09682020";
+$bairro_cliente = "Cidade da Flores";
+$cidade	= "São Paulo";
+$uf_cliente	= "SP";
+$fone_cliente = "1130962020";
+
+$webservice .= "   <soapenv:Body>\n";
+$webservice .= "      <vok:getInfoDoCartao soapenv:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">\n";
+$webservice .= "        <codigo_produto xsi:type=\"xsd:string\">TT32</codigo_produto>\n";
+$webservice .= "        <data_venda xsi:type=\"xsd:string\">$data_ame</data_venda>\n";
+$webservice .= "        <cupom xsi:type=\"xsd:string\"></cupom>\n";
+$webservice .= "        <cpf_cliente xsi:type=\"xsd:string\">$cpf_cliente</cpf_cliente>\n";
+$webservice .= "        <nome_cliente xsi:type=\"xsd:string\">$nome_cliente</nome_cliente>\n";
+$webservice .= "        <email_cliente xsi:type=\"xsd:string\">$email_cliente</email_cliente>\n";
+$webservice .= "        <endereco_cliente xsi:type=\"xsd:string\">$endereco_cliente</endereco_cliente>\n";
+$webservice .= "        <complemento_cliente xsi:type=\"xsd:string\"></complemento_cliente>\n";
+$webservice .= "        <cep_cliente xsi:type=\"xsd:string\">$zipcode_cliente</cep_cliente>\n";
+$webservice .= "        <bairro_cliente xsi:type=\"xsd:string\"></bairro_cliente>\n";
+$webservice .= "        <cidade_cliente xsi:type=\"xsd:string\">$cidade</cidade_cliente>\n";
+$webservice .= "        <uf_cliente xsi:type=\"xsd:string\"></uf_cliente>\n";
+$webservice .= "        <fone_cliente xsi:type=\"xsd:string\">$mobile_cliente</fone_cliente>\n";
+$webservice .= "      </vok:getInfoDoCartao>\n";
+$webservice .= "   </soapenv:Body>\n";
+
+$xml = "<soapenv:Envelope xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" xmlns:soapenv=\"http://schemas.xmlsoap.org/soap/envelope/\" xmlns:voki=\"OfertaNossa\"\n";
+$xml .= "<soapenv:Header/>\n";
+$xml .= $webservice;
+$xml .= "</soapenv:Envelope>\n";
+
+
+
+/* gets the data from a URL */
+function get_data($url,$xml){
+	$ch = curl_init();
+	$timeout = 5;
+	curl_setopt($ch,CURLOPT_URL,$url);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+	curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+
+	//curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, 1);
+	//curl_setopt($ch, CURLOPT_PROXY,'172.16.100.2:1080');
+	//curl_setopt($ch, CURLOPT_PROXYUSERPWD, 'user:password');
+
+	$data = curl_exec($ch);
+	curl_close($ch);
+	return $data;
+}
+
+$t = get_data("http://201.77.195.246/ofertanossa/server.php",$xml);
+
+print $t;
+
+
+?>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+	<SOAP-ENV:Body>
+		<SOAP-ENV:getInfoDoCartao>
+			<codigo_produto xsi:type="xsd:string">TT32</codigo_produto>
+			<data_venda xsi:type="xsd:string">2011-06-10 14:58:00</data_venda>
+			<cupom xsi:type="xsd:string">5465488282</cupom>
+			<cpf_cliente xsi:type="xsd:string">11111111111</cpf_cliente>
+			<nome_cliente xsi:type="xsd:string">André Furlan de tal</nome_cliente>
+			<email_cliente xsi:type="xsd:string">tatupheba@gmail.com</email_cliente>
+			<endereco_cliente xsi:type="xsd:string">Rua Doutor Freak Man,220</endereco_cliente>
+			<complemento_cliente xsi:type="xsd:string">Bloco 1 - Apto: 21</complemento_cliente>
+			<cep_cliente xsi:type="xsd:string">09682020</cep_cliente>
+			<bairro_cliente xsi:type="xsd:string">Cidade da Flores</bairro_cliente>
+			<cidade_cliente xsi:type="xsd:string">São Paulo</cidade_cliente>
+			<uf_cliente xsi:type="xsd:string">SP</uf_cliente>
+			<fone_cliente xsi:type="xsd:string">1191021056</fone_cliente>
+		</SOAP-ENV:getInfoDoCartao>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

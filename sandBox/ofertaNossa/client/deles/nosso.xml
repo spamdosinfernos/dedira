@@ -1,0 +1,20 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:voki="OfertaNossa"
+<soapenv:Header/>
+   <soapenv:Body>
+      <vok:getInfoDoCartao soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+        <codigo_produto xsi:type="xsd:string">TT32</codigo_produto>
+        <data_venda xsi:type="xsd:string">2011-06-10 14:58:00</data_venda>
+        <cupom xsi:type="xsd:string">09682020</cupom>
+        <cpf_cliente xsi:type="xsd:string">30007769822</cpf_cliente>
+        <nome_cliente xsi:type="xsd:string">Vinicius Andrade Canovas</nome_cliente>
+        <email_cliente xsi:type="xsd:string">vcanovas@tectotal.com.br</email_cliente>
+        <endereco_cliente xsi:type="xsd:string">Rua Doutor Freak Man,220</endereco_cliente>
+        <complemento_cliente xsi:type="xsd:string"></complemento_cliente>
+        <cep_cliente xsi:type="xsd:string">09682020</cep_cliente>
+        <bairro_cliente xsi:type="xsd:string">Cidade da Flores</bairro_cliente>
+        <cidade_cliente xsi:type="xsd:string">São Paulo</cidade_cliente>
+        <uf_cliente xsi:type="xsd:string">SP</uf_cliente>
+        <fone_cliente xsi:type="xsd:string">1130962020</fone_cliente>
+      </vok:getInfoDoCartao>
+   </soapenv:Body>
+</soapenv:Envelope>

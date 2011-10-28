@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../Senders/File/IFileSender.php';
+require_once __DIR__ . '/../protocols/ftp/IFileSender.php';
 
 /**
  * Representa um arquivo no sistema.
  * Contêm as operações mais comuns referentes a arquivos como
- * mover, comprimir, send, apagar, etc
+ * mover, comprimir, enviar, apagar, etc
  */
 class CFile{
 
@@ -39,8 +39,8 @@ class CFile{
 	protected $compressed;
 
 	/**
-	 * Contêm o objeto responsável por send o arquivo para algum lugar remoto
-	 * @var IFileSender
+	 * Contêm o objeto responsável por enviar o arquivo para algum lugar remoto
+	 * @var InterfaceEnviador
 	 */
 	protected $sender;
 
@@ -51,7 +51,27 @@ class CFile{
 	public function __construct($filePath = null){
 		if(!is_null($filePath)){
 			$this->setCaminhoDoArquivo($filePath);
+			$this->readMetaInformation();
 		}
+	}
+
+	/**
+	 * Lê as informações sobre o arquivo
+	 */
+	public function readMetaInformation(){
+
+		/*
+		 * Ao apagar o md5 o mesmo será gerado apenas na próxima vez que 
+		 * for solicitado. Isso é feito para ganhar desempenho
+		 */
+		$this->md5 = "";
+
+		//Verifica se a extensão é a de um arquivo compactado
+		if($this->getFileExtension() == self::CONST_COMPRESSED_EXTENSION){
+			$this->compressed = true;
+		}
+
+		$this->fileCreationDate = filemtime($this->filePath);
 	}
 
 	public function isCompressed(){
@@ -89,6 +109,16 @@ class CFile{
 	}
 
 	public function getMd5(){
+
+		/*
+		 * O md5 apenas será gerado quando for solicitado. 
+		 * Isso é feito para ganhar desempenho pois esta
+		 * operação pode demorar considerávelmente
+		 */
+		if($this->md5 == "" ){
+			$this->md5 = md5_file($filePath);
+		}
+
 		return $this->md5;
 	}
 
@@ -100,7 +130,7 @@ class CFile{
 		$arrNomeDoArquivo = array_reverse(explode(DIRECTORY_SEPARATOR, $this->filePath));
 		return $arrNomeDoArquivo[0];
 	}
-	
+
 	public function getFileContents(){
 		return file_get_contents($this->getFilePath());
 	}
@@ -114,16 +144,16 @@ class CFile{
 	public function getFilePath(){
 		return $this->filePath;
 	}
-	
+
 	public function getFileDirectory(){
 		return dirname($this->filePath);
 	}
 
 	/**
-	 * Seta o enviador caso se queira send o arquivo
-	 * @param IFileSender $sender
+	 * Seta o enviador caso se queira enviar o arquivo
+	 * @param InterfaceEnviador $sender
 	 */
-	public function setSender(IFileSender $sender){
+	public function setSender(InterfaceEnviador $sender){
 		$this->sender = $sender;
 	}
 
@@ -131,15 +161,7 @@ class CFile{
 		if(is_file($filePath) == FALSE){
 			throw new Exception("O arquivo " . $filePath . " não existe ou é um atalho apontando para arquivo inválido, certifique-se também que as permissões de escrita e leitura estejam liberadas.");
 		}
-
-		//Verifica se a extensão é a de um arquivo compactado
-		if(substr($filePath,-strlen(self::CONST_COMPRESSED_EXTENSION),strlen(self::CONST_COMPRESSED_EXTENSION)) == self::CONST_COMPRESSED_EXTENSION){
-			$this->compressed = true;
-		}
-
-		$this->fileCreationDate = filemtime($filePath);
 		$this->filePath = realpath($filePath);
-		$this->md5 = md5_file($filePath);
 	}
 
 	public function getFileCreationDate(){
@@ -162,7 +184,7 @@ class CFile{
 
 		if($this->getFileName() == "") throw new Exception("O nome do arquivo a ser enviado está vazio!");
 
-		if(!$this->sender->connect()) throw new Exception("Falha em estabelecer a conexão para send o arquivo");
+		if(!$this->sender->connect()) throw new Exception("Falha em estabelecer a conexão para enviar o arquivo");
 
 		$status = $this->sender->upload($this->getFilePath(), $filePathDestiny, $this->getFileName(), $callBackFunction);
 
