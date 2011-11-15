@@ -1,0 +1,89 @@
+<?php
+//Aqui temos uma simples demonstração de como fazer um código organizado e orientado a objetos de forma
+//a economizar trabalho, tempo e linhas de código
+
+/**
+Classe base.
+Esta classe é responsável por executar todo que é redundante a todas as demais classes, como por exemplo a conexão ao banco de dados.
+Aqui definimos algumas variaveis privadas contendo as informações de conecxão com o banco de dados e algumas funções base como
+a função de coneção.
+
+As demais classes devem herdar desta classe e implementar apenas os métodos de manipulação de dados como insert, delete, select, update, etc.
+**/
+class base {
+	private $db_server   = '127.0.0.1';
+	private $db_user     = 'root';
+	private $db_pass     = 'root';
+	private $db_database = 'crudgrid';
+	protected $conn      = null;
+	protected $actions   = array();
+	
+	public function __construct($action=null){
+		//Esta função é disparada quando se cria o objeto
+		//Então ao criamos um objeto desta classe é executada uma conexão ao banco de dados
+		$this->_connect();
+		//Se alguma ação foi passada chama a função que se encarrega desta tarefa
+		if(isset($action)){
+			$this->_execAction($action);
+		}
+	}
+	
+	/*
+	 * Esta função é disparada quando objeto é destruído, assim devemos destruir tudo que criamos,
+	 * como a nossa conecxão
+	 */
+	public function __destruct(){
+		mysql_close($this->conn);
+	}
+	
+	protected function _connect(){
+		//Conecta ao banco
+		$this->conn = mysql_connect($this->db_server, $this->db_user, $this->db_pass);
+		//Seleciona o banco de dados desejado
+		mysql_select_db($this->db_database,$this->conn);
+	}
+	
+	/****
+	 * Função que executa uma query no banco de dados, se um dia precisarmos mudar de banco teoricamente bastaria mudar
+	 * as funções de manipulação do banco que estão abstraidas aqui, também facilita por não precisar passar 2 parâmetros
+	 * passando apenas o sql
+	****/
+	public function _select($sql){
+		return mysql_query($sql,$this->conn);
+	}
+	
+	/****
+	 * Como o mysql não nos prove uma função que retorne todos os registros em forma de array aqui crio uma que faz isso
+	****/
+	public function _fetch_all($query){
+		$rows = array();
+		while ($row = mysql_fetch_object($query)) {
+			$rows[] = $row;
+		}
+		return $rows;
+	}
+	
+	/****
+	 * Aqui temos uma facilidade, geralmente o que fazermos é fazer um select montar um array e imprimir em JSON,
+	 * chamando esta função temos o resultado de um sql já em array pronta para ser codificado em JSON
+	****/
+	public function _select_fetch_all($sql){
+		return $this->_fetch_all($this->_select($sql));
+	}
+	
+	/****
+	 * Esta função executa um método da classe pelo seu nome em STRING caso ele exista e esteja na lista
+	 * de ações contiga em $actions, esta lista deve ser definida em cada classe filha
+	****/
+	public function _execAction($action){
+		if((in_array($action, $this->actions))&&(method_exists($this, $action))){
+			call_user_func(array($this, $action));
+		}else{
+			echo json_encode(array(
+				'success' => false,
+				'msg' => utf8_encode("Ação inválida: '$action'")
+			));
+		}
+	}
+}
+?>

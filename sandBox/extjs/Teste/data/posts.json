@@ -1,0 +1,7 @@
+{
+    "posts": [
+        {"id":1, "title": "Post 1", "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id nisl tellus, nec pretium tortor. Duis luctus posuere felis vitae viverra. Vivamus nisl purus, pulvinar eget rhoncus et, mattis nec leo. Donec sagittis ultrices molestie. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas."},
+        {"id":2, "title": "Post 2", "content": "In hac habitasse platea dictumst. Nam commodo, augue id consequat ultricies, lacus augue pharetra odio, in aliquet neque magna vitae ipsum. Praesent porta dictum nibh, quis aliquam tortor volutpat nec. Nulla egestas nibh ac neque congue eu commodo dui elementum. Sed interdum massa sit amet odio aliquet at blandit mauris condimentum."},
+        {"id":3, "title": "Post 3", "content": "Vestibulum commodo pellentesque sagittis. Nullam sed venenatis mi. Etiam convallis turpis at velit faucibus lobortis. Sed pretium viverra dui vitae adipiscing. Quisque mattis mollis lectus. Nullam a convallis sapien. Donec vitae eleifend ipsum. Nam tortor ipsum, ultrices eget feugiat nec, sodales et magna."}
+    ]
+}

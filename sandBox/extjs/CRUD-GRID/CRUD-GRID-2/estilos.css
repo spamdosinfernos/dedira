@@ -1,0 +1,19 @@
+.btn-add {
+	background-image: url(imagens/add.png) !important;
+}
+
+.btn-delete {
+	background-image: url(imagens/delete.png) !important;
+}
+
+.btn-save {
+	background-image: url(imagens/disk.png) !important;
+}
+
+.btn-cancel {
+	background-image: url(imagens/cancel.png) !important;
+}
+
+.btn-edit {
+	background-image: url(imagens/pencil.png) !important;
+}

@@ -1,0 +1,300 @@
+Ext.onReady(function(){
+	
+	Ext.grid.ColumnModel.prototype.defaults = {sortable: true};
+	
+	Ext.form.Field.prototype.msgTarget = 'side';
+	Ext.form.FormPanel.prototype.bodyStyle = 'padding:5px';
+	Ext.form.FormPanel.prototype.labelAlign = 'right';
+	Ext.QuickTips.init();
+	
+	var usuario = Ext.extend(Ext.util.Observable, {
+		
+		formTitle: 'Cadastro de Usuários ',
+		
+		constructor: function(){
+			with (this){
+				initStores();
+				initForm();
+				initPrincipal();
+			}
+		},
+		
+		adicionar: function(){
+			this.winForm.update = false;
+			this.winForm.setTitle(this.formTitle+'[Inserindo]');
+			this.winForm.show();
+			this.form.getForm().findField('usu_login').setReadOnly(false);
+			this.form.getForm().reset();
+		},
+		
+		editar: function(){
+			if(this.grid.getSelectionModel().hasSelection()){
+				this.winForm.update = true;
+				this.winForm.setTitle(this.formTitle+'[Alterando]');
+				this.winForm.show();
+				this.form.getForm().findField('usu_login').setReadOnly(true);
+				this.form.getForm().loadRecord(this.grid.getSelectionModel().getSelected());
+			}else{
+				Ext.Msg.alert('Atenção', 'Selecione um registro');
+			}
+		},
+		
+		deletar: function(){
+			if(this.grid.getSelectionModel().hasSelection()){
+				var record = this.grid.getSelectionModel().getSelected();
+				Ext.Msg.confirm('Atenção', 'Você está prestes a excluir o usuário <b>'+record.data.usu_nome+'</b>. Deseja continuar?', function(btn){
+					if(btn = 'yes'){
+						Ext.Ajax.request({
+							url: 'php/usuarios.php',
+							params: {
+								_action: 'delete',
+								usu_login: record.data.usu_login
+							},
+							success: function(r){
+								var obj = Ext.decode(r.responseText);
+								if(obj.success){
+									this.dsUsuarios.remove(record);
+								}else{
+									Ext.Msg.alert('Erro', obj.msg);
+								}
+							},
+							failure: function(){
+								Ext.Msg.alert('Erro', 'Ocorreu um erro ao se comunicar com o servidor, tente novamente. Se o erro persistir entre em contato com o adiministrador do sistema')
+							},
+							scope: this
+						})
+					}
+				}, this)
+			}else{
+				Ext.Msg.alert('Atenção', 'Selecione um registro');
+			}
+		},
+		
+		salvar: function(){
+			if(this.form.getForm().isValid()){
+				this.winForm.el.mask('Salvando', 'x-mask-loading');
+				this.form.getForm().submit({
+					url: 'php/usuarios.php',
+					params: {
+						_action: this.winForm.update ? 'update' : 'insert'
+					},
+					success: function(){
+						this.winForm.el.unmask();
+						this.winForm.hide();
+					},
+					failure: function(form, action){
+						this.winForm.el.unmask();
+						Ext.Msg.Alert('Erro', action.result.msg);
+					},
+					scope: this
+				})
+			}else{
+				Ext.Msg.alert('Atenção', 'Exixtem campos inválidos');
+			}
+		},
+		
+		cancelar: function(){
+			this.winForm.hide();
+		},
+		
+		initStores: function(){
+			this.dsCategorias = new Ext.data.JsonStore({
+				url: 'php/categorias.php',
+				root: 'data',
+				idProperty: 'cat_id',
+				fields: [
+					'cat_id',
+					'cat_descricao'
+				],
+				baseParams: {
+					_action: 'select'
+				}
+			})
+			
+			this.dsUsuarios = new Ext.data.JsonStore({
+				url: 'php/usuarios.php',
+				root: 'data',
+				totalProperty: 'total',
+				fields: [
+					'usu_login',
+					'usu_nome',
+					'usu_senha',
+					'usu_email',
+					{name: 'usu_data_nascimento', type: 'date', dateFormat: 'Y-m-d g:i:s'},
+					{name: 'cat_id', type: 'int'},
+					{name: 'inserted', type: 'bool'}
+				],
+				baseParams: {
+					_action: 'selectLimited',
+					start  : 0,
+					limit  : 6
+				}
+			})
+		},
+		
+		initForm: function(){
+			this.form = new Ext.form.FormPanel({
+				border: false,
+				labelWidth: 70,
+				items: [{
+					xtype     : 'textfield',
+					name      : 'usu_nome',
+					fieldLabel: 'Nome',
+					width     : 300,
+					allowBlank: false
+				},{
+					xtype     : 'textfield',
+					name      : 'usu_login',
+					fieldLabel: 'Login',
+					width     : 100,
+					allowBlank: false
+				},{
+					xtype     : 'textfield',
+					name      : 'usu_senha',
+					fieldLabel: 'Senha',
+					width     : 100,
+					allowBlank: false,
+					col       : true
+				},{
+					xtype     : 'textfield',
+					name      : 'usu_email',
+					fieldLabel: 'E-mail',
+					width     : 300,
+					allowBlank: true
+				},{
+					xtype     : 'datefield',
+					name      : 'usu_data_nascimento',
+					fieldLabel: 'Data Nasc.',
+					width     : 100,
+					allowBlank: false
+				},{
+					xtype     : 'combo',
+					name      : 'cat_id',
+					fieldLabel: 'Categoria',
+					width     : 100,
+					allowBlank: false,
+					col       : true,
+					store        : this.dsCategorias,
+					valueField   : 'cat_id',
+					displayField : 'cat_descricao',
+					hiddenName   : 'cat_id',
+					triggerAction: 'all'
+				}]
+			})
+			
+			this.winForm = new Ext.Window({
+				title      : this.formTitle,
+				height     : 180,
+				width      : 430,
+				modal      : true,
+				closeAction: 'hide',
+				layout     : 'fit',
+				items      : this.form,
+				buttonAlign: 'center',
+				buttons    : [{
+					text   : 'Salvar',
+					iconCls: 'btn-save',
+					scope  : this,
+					handler: this.salvar
+				},{
+					text   : 'Cancelar',
+					iconCls: 'btn-cancel',
+					scope  : this,
+					handler: this.cancelar
+				}]
+			})
+		},
+		
+		initPrincipal: function(){
+			this.grid = new Ext.grid.GridPanel({
+				store   : this.dsUsuarios,
+				loadMask: true,
+				border  : false,
+				stripRows: true,
+				columns : [{
+					dataIndex: 'usu_nome', 
+					header   : 'Usuário',
+					width    : 170
+				},{
+					dataIndex: 'usu_login', 
+					header   : 'Login',
+					width    : 50
+				},{
+					dataIndex: 'usu_senha', 
+					header   : 'Senha',
+					width    : 50
+				},{
+					dataIndex: 'usu_email', 
+					header   : 'E-mail',
+					width    : 180
+				},{
+					dataIndex: 'usu_data_nascimento', 
+					header   : 'Dt. Nasc.',
+					width    : 70,
+					xtype    : 'datecolumn'
+				},{
+					dataIndex: 'cat_id',
+					header   : 'Categoria',
+					width    : 80,
+					renderer: {
+						scope: this,
+						fn   : function(value, metaData, record, rowIndex, colIndex, store){
+							if(this.dsCategorias.getById(value)){
+								return this.dsCategorias.getById(value).data.cat_descricao;
+							}
+						}
+					}
+				}],
+				viewConfig: {
+					forceFit: true,
+					emptyText: '<center>Sem registros para exibir</center>'
+				}
+			});
+			
+			this.ptb = new Ext.PagingToolbar({
+				store: this.dsUsuarios,
+				pageSize: this.dsUsuarios.baseParams.limit,
+				displayInfo: true
+			})
+			
+			this.winGrid = new Ext.Window({
+				title : '<center>CRUD Completo - Parte 2</center>',
+				height: 240,
+				width : 620,
+				layout: 'fit',
+				items : this.grid,
+				listeners: {
+					show: function(){
+						this.dsCategorias.load({
+							callback: function(){
+								this.dsUsuarios.load();
+							},
+							scope: this
+						});
+					},
+					scope: this
+				},
+				bbar: this.ptb,
+				tbar: [{
+					text   : 'Adicionar',
+					iconCls: 'btn-add',
+					scope  : this,
+					handler: this.adicionar
+				},{
+					text   : 'Editar',
+					iconCls: 'btn-edit',
+					scope  : this,
+					handler: this.editar
+				},{
+					text   : 'Deletar',
+					iconCls: 'btn-delete',
+					scope  : this,
+					handler: this.deletar
+				}]
+			})
+			
+			this.winGrid.show();
+		}
+	});
+	var cadUsuario = new usuario;
+})

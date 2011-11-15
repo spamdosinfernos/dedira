@@ -1,23 +1,17 @@
+Ext.Loader.setPath('Ext', 'ext-4.0/src');
+Ext.Loader.setConfig( {
+	enabled : true
+});
+
+// Ext.require('Ext.layout.container.Border', 'Ext.tab.Panel');
+
 Ext.application( {
-	name : 'AM',
-	appFolder : 'app',
-
-	stores : [ 'Users' ],
-
-	// Anexa os controladores do sistema
-	controllers : [ 'Users' ],
-
-	models : [ 'User' ],
-
-	launch : function() {
-
-		// Cria uma janela e exibição
-	Ext.create('Ext.container.Viewport', {
-		layout : 'fit',
-		// Adiciona as views à interface
-		items : {
-			xtype : 'userlist'
-		}
-	});
-}
+	// app namespace (from ExtBlog)
+	name : 'EB',
+	// here goes the models
+	models : [],
+	// here goes the controllers
+	controllers : [ 'Posts' ],
+	// automatically creates Viewport
+	autoCreateViewport : true
 });
