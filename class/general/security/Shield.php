@@ -2,7 +2,7 @@
 /**
  * Contêm métodos "escudo", ou seja, cuja função é proteger o sistema contra alguns tipos de ataque
  */
-final class CShield{
+final class Shield{
 	/**
 	 * Tenta impedir os tipos mais comuns de ataques por injeção de código
 	 * Se a string for informada trata a string, senão trata todas as variáveis 

@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/./Class/Pessoa/CAdministrador.php';
+require_once __DIR__ . '/./Class/Pessoa/Administrador.php';
 
-$teste = new CAdministrador();
+$teste = new Administrador();
 $teste->autenticar("andre", "teste");
 ?>

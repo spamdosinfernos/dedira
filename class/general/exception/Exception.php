@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/../Log/CLog.php';
+require_once __DIR__ . '/../log/Log.php';
 
 /**
  * Responsável pelo tratamento e registros dos erros no sistema
  * @author tatupheba
  */
-class CException extends Exception {
+class Exception extends Exception {
 
 	/**
 	 * Gera a excessão
@@ -18,7 +18,7 @@ class CException extends Exception {
 		//Mata o programa se a excessão não form informada corretamente
 		if($message == "" || $code == "") die ("Uma excessão deve ter, necessáriamente uma mensagem é um código");
 
-		new CLog("$message - $code: $infoExtra	" . $this->getFile() . "	" . $this->getLine() . "	" . $this->getTraceAsString());
+		new Log("$message - $code: $infoExtra	" . $this->getFile() . "	" . $this->getLine() . "	" . $this->getTraceAsString());
 		parent::__construct($message, $code);
 	}
 

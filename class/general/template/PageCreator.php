@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/CPageElement.php';
+require_once __DIR__ . '/PageElement.php';
 require_once __DIR__ . '/CXTemplate.php';
-require_once __DIR__ . '/../Filesystem/CFile.php';
-require_once __DIR__ . '/../Configuration/Template/CPageCreatorConf.php';
+require_once __DIR__ . '/../filesystem/File.php';
+require_once __DIR__ . '/../configuration/template/PageCreatorConf.php';
 
 class Teste{
 
@@ -11,8 +11,8 @@ class Teste{
 	 * @editarComo apenasMostrar
 	 *
 	 * @req true
-	 * @get getCPageElementPropPrivate
-	 * @set setCPageElementPropPrivate
+	 * @get getPageElementPropPrivate
+	 * @set setPageElementPropPrivate
 	 * @var string
 	 */
 	private $campoHtmlPropPrivate;
@@ -21,8 +21,8 @@ class Teste{
 	 * Teste de propriedade protegida
 	 * @editarComo editarComoTexto
 	 * @req false
-	 * @get getCPageElementPropProtected
-	 * @set setCPageElementPropProtected
+	 * @get getPageElementPropProtected
+	 * @set setPageElementPropProtected
 	 * @var string
 	 */
 	protected $campoHtmlPropProtected;
@@ -31,8 +31,8 @@ class Teste{
 	 * Teste de propriedade publica
 	 * @editarComo editarComoSenha
 	 * @req true
-	 * @get getCPageElementPropPublic
-	 * @set setCPageElementPropPublic
+	 * @get getPageElementPropPublic
+	 * @set setPageElementPropPublic
 	 * @var string
 	 */
 	public $campoHtmlPropPublic;
@@ -42,8 +42,8 @@ class Teste{
 	 * @editarComo editarComoListBox
 	 * @req true
 	 * @alimentador viewTeste
-	 * @set setCPageElementArrayPublic
-	 * @get getCPageElementArrayPublic
+	 * @set setPageElementArrayPublic
+	 * @get getPageElementArrayPublic
 	 * @var array
 	 */
 	public $campoHtmlArrayPublic;
@@ -53,8 +53,8 @@ class Teste{
 	 * @editarComo editarComoCheckBox
 	 * @req true
 	 * @alimentador viewTeste
-	 * @set setCPageElementArrayPublic
-	 * @get getCPageElementArrayPublic
+	 * @set setPageElementArrayPublic
+	 * @get getPageElementArrayPublic
 	 * @var array
 	 */
 	public $campoHtmlArrayPublicCheckBox;
@@ -79,40 +79,40 @@ class Teste{
 		$this->campoHtmlPropPublic = "testeDeSenha";
 	}
 
-	public function getCPageElementPropPrivate(){
+	public function getPageElementPropPrivate(){
 		return $this->campoHtmlPropPrivate;
 	}
 
-	public function setCPageElementPropPrivate($campoHtmlPropPrivate){
+	public function setPageElementPropPrivate($campoHtmlPropPrivate){
 		$this->campoHtmlPropPrivate = $campoHtmlPropPrivate;
 	}
 
-	public function getCPageElementPropProtected(){
+	public function getPageElementPropProtected(){
 		return $this->campoHtmlPropProtected;
 	}
 
-	public function setCPageElementPropProtected($campoHtmlPropProtected){
+	public function setPageElementPropProtected($campoHtmlPropProtected){
 		$this->campoHtmlPropProtected = $campoHtmlPropProtected;
 	}
 
-	public function getCPageElementPropPublic(){
+	public function getPageElementPropPublic(){
 		return $this->campoHtmlPropPublic;
 	}
 
-	public function setCPageElementPropPublic($campoHtmlPropPublic){
+	public function setPageElementPropPublic($campoHtmlPropPublic){
 		$this->campoHtmlPropPublic = $campoHtmlPropPublic;
 	}
 
-	public function getCPageElementArrayPublic(){
+	public function getPageElementArrayPublic(){
 		return $this->campoHtmlArrayPublic;
 	}
 
-	public function setCPageElementArrayPublic($campoHtmlArrayPublic){
+	public function setPageElementArrayPublic($campoHtmlArrayPublic){
 		$this->campoHtmlArrayPublic = $campoHtmlArrayPublic;
 	}
 }
 
-class CPageCreator extends CCore {
+class PageCreator extends Core {
 
 	/**
 	 * Título da página
@@ -126,9 +126,9 @@ class CPageCreator extends CCore {
 
 		parent::__construct();
 
-		$styleSheet = new CFile(CPageCreatorConf::getStyleSheetFile());
+		$styleSheet = new File(PageCreatorConf::getStyleSheetFile());
 
-		$xTemplate = new CXTemplate(CPageCreatorConf::getTemplateFile());
+		$xTemplate = new CXTemplate(PageCreatorConf::getTemplateFile());
 		$xTemplate->assign("title", $this->pageTitle);
 		$xTemplate->assign("cssPath", $styleSheet->getRelativePath(__DIR__));
 		$xTemplate->assign("conteudoDaPagina", $this->getPageBody($instanciaDaClasse));
@@ -157,7 +157,7 @@ class CPageCreator extends CCore {
 		$html = "";
 
 		try{
-			$campoHtml = new CPageElement();
+			$campoHtml = new PageElement();
 
 			//Separa os agrupamentos de comentários
 			preg_match("/\/\*\*\n\s*\*\s*(.*)\n\s*((\*\s(|@).*\n\s*)*)/i", $docComment, $matches);
@@ -230,5 +230,5 @@ class CPageCreator extends CCore {
 	}
 }
 
-new CPageCreator(new Teste());
+new PageCreator(new Teste());
 ?>

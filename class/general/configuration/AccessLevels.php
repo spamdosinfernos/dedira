@@ -1,5 +1,5 @@
 <?php
-class CAccessLevels{
+class AccessLevels{
 	/**
 	 * Não acessa coisa alguma!
 	 * @var int

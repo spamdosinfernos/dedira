@@ -1,7 +1,7 @@
 <?php 
-//require_once __DIR__ . '/CDatabase.php';
+//require_once __DIR__ . '/Database.php';
 //
-//$t = new CDatabase();
+//$t = new Database();
 //
 //$t->databaseSelect("");
 //$t->createDatabase("milibase");
@@ -24,9 +24,9 @@
 //$id1 = $t->getResponse();
 
 
-require_once __DIR__ . '/CObjectLoader.php';
+require_once __DIR__ . '/ObjectLoader.php';
 
-$c = new CObjectLoader(Configuration::CONST_DB_PEOPLE_NAME);
+$c = new ObjectLoader(Configuration::CONST_DB_PEOPLE_NAME);
 
 $c->getUserIdThroughLoginAndPassword("tatupheba","tatu7");
 

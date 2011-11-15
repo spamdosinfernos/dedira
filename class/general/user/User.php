@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../database/DataBase.php';
-require_once __DIR__ . '/../security/CAuthRules.php';
+require_once __DIR__ . '/../security/AuthRules.php';
 /**
  * Representa um usuário no sistema
  */

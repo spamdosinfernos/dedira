@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/IAuthenticationRules.php';
 
-class CAuthRules implements IAuthenticationRules{
+class AuthRules implements IAuthenticationRules{
 
 	private $login;
 

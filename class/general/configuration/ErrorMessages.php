@@ -1,10 +1,10 @@
 <?php
-require_once 'CAccessLevels.php';
+require_once 'AccessLevels.php';
 /**
  * Códigos de erro no sistema
  * @author tatupheba
  */
-class CErrorMessages extends CAccessLevels{
+class ErrorMessages extends AccessLevels{
 
 	//Sessão inválida (login expirou ou a pessoa não logou)
 	const CONST_ERR_SESSAO_INVALIDA_COD = 1;

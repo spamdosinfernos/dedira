@@ -1,22 +1,22 @@
 <?php
-require_once __DIR__ . '/CDatabase.php';
+require_once __DIR__ . '/Database.php';
 
 /**
  * Responsável por carregar muitos objetos de uma só vez, dados parâmetros 
  * que não necessáriamente seja a id dos mesmos no banco.
  * @author andre
  */ 
-class CObjectLoader extends CCore{
+class ObjectLoader extends Core{
 
 	/**
 	 * Abriga o objeto responsável por carregar as informações
-	 * @var CDatabase
+	 * @var Database
 	 */
 	private $database;
 
 	public function __construct($dataBaseName){
 		parent::__construct();
-		$this->database = new CDatabase();
+		$this->database = new Database();
 		$this->database->databaseSelect($dataBaseName);
 	}
 	

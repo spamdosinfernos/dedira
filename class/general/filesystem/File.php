@@ -1,12 +1,11 @@
 <?php
-require_once __DIR__ . '/../protocols/ftp/IFileSender.php';
 
 /**
  * Representa um arquivo no sistema.
  * Contêm as operações mais comuns referentes a arquivos como
  * mover, comprimir, enviar, apagar, etc
  */
-class CFile{
+class File{
 
 	/**
 	 * Md5 do arquivo quando está no seu estado original

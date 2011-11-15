@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/ISalvador.php';
 
-class CSalvador implements ISalvador {
+class Salvador implements ISalvador {
 
 	/**
 	 * Objeto que se quer salvar

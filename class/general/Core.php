@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/Security/CAuthenticator.php';
-require_once __DIR__ . '/Security/CAuthRules.php';
+require_once __DIR__ . '/security/Authenticator.php';
+require_once __DIR__ . '/security/AuthRules.php';
 
-class CCore{
+class Core{
 
 	private $arrUserModules;
 
@@ -20,7 +20,7 @@ class CCore{
 
 	protected function __construct(){
 
-		$this->authenticator = new CAuthenticator(new CAuthRules());
+		$this->authenticator = new Authenticator(new AuthRules());
 
 		//Deve ser sempre o primeiro comando, pois disto depende todo o sistema
 		if(!$this->authenticator->isAuthenticated()){

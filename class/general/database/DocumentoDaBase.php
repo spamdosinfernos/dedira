@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../Core/CCore.php';
-require_once __DIR__ . '/../../Core/BaseDeDados/CDatabase.php';
-require_once __DIR__ . '/../../Core/Configuration/Configuration.php';
+require_once __DIR__ . '/../../core/Core.php';
+require_once __DIR__ . '/../../core/baseDeDados/Database.php';
+require_once __DIR__ . '/../../core/configuration/Configuration.php';
 
 /**
  * Todos as classes que tiverem propriedades que se queira salvar
@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../Core/Configuration/Configuration.php';
  * @author andre
  *
  */
-class CDocumentoDaBase extends CCore{
+class DocumentoDaBase extends Core{
 
 	/**
 	 * Indentificação das informações na base de dados
@@ -33,7 +33,7 @@ class CDocumentoDaBase extends CCore{
 
 	/**
 	 * Responsável por realizar as transações com o banco de dados
-	 * @var CDatabase
+	 * @var Database
 	 */
 	private $operadorDeBancoDeDados;
 
@@ -168,7 +168,7 @@ class CDocumentoDaBase extends CCore{
 		
 		if(is_null($this->operadorDeBancoDeDados)){
 			//Preparando para realizar as transações com o banco de dados
-			$this->operadorDeBancoDeDados = new CDatabase();
+			$this->operadorDeBancoDeDados = new Database();
 			$this->operadorDeBancoDeDados->databaseSelect($this->getNomeDaBaseDeDados());
 		}
 	}

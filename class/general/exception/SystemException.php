@@ -4,7 +4,7 @@
  * por zero, falha ao conectar no banco de dados, etc.).
  * @author tatupheba
  */
-class CSystemException extends CException{
+class SystemException extends Exception{
 	
 	public function __construct($message, $code, $infoExtra = null){
 		

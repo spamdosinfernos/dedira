@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../CCore.php';
-require_once __DIR__ . '/../Configuration/Configuration.php';
+require_once __DIR__ . '/../Core.php';
+require_once __DIR__ . '/../configuration/Configuration.php';
 /**
  * Grava o log de solicitações
  */
-class CLog extends CCore{
+class Log extends Core{
 
 	/**
 	 * Mensagem a ser gravada
@@ -55,7 +55,7 @@ class CLog extends CCore{
 				unset($arrFileContents[0]);
 				$filehandle = fopen($logFilePath, 'w');
 
-				if(!is_resource($filehandle)) throw new CException(
+				if(!is_resource($filehandle)) throw new Exception(
 				Configuration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_TEXTO,
 				Configuration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_COD,
 				$logFilePath
@@ -64,7 +64,7 @@ class CLog extends CCore{
 				$fileWriteResult = fwrite($filehandle, join("", $arrFileContents));
 
 				if($fileWriteResult === false){
-					throw new CException(
+					throw new Exception(
 					Configuration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_TEXTO,
 					Configuration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_COD,
 					$logFilePath

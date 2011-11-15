@@ -1078,7 +1078,7 @@ class PHPMailer {
     $this->boundary[1] = 'b1_' . $uniq_id;
     $this->boundary[2] = 'b2_' . $uniq_id;
 
-    $result .= $this->HeaderLine('Date', self::RFCDate());
+    $result .= $this->HeaderLine('Date', self::RFDate());
     if($this->Sender == '') {
       $result .= $this->HeaderLine('Return-Path', trim($this->From));
     } else {
@@ -1840,7 +1840,7 @@ class PHPMailer {
    * Clears all recipients assigned in the CC array.  Returns void.
    * @return void
    */
-  public function ClearCCs() {
+  public function ClearCs() {
     foreach($this->cc as $cc) {
       unset($this->all_recipients[strtolower($cc[0])]);
     }
@@ -1851,7 +1851,7 @@ class PHPMailer {
    * Clears all recipients assigned in the BCC array.  Returns void.
    * @return void
    */
-  public function ClearBCCs() {
+  public function ClearBCs() {
     foreach($this->bcc as $bcc) {
       unset($this->all_recipients[strtolower($bcc[0])]);
     }
@@ -1921,7 +1921,7 @@ class PHPMailer {
    * @return string
    * @static
    */
-  public static function RFCDate() {
+  public static function RFDate() {
     $tz = date('Z');
     $tzs = ($tz < 0) ? '-' : '+';
     $tz = abs($tz);

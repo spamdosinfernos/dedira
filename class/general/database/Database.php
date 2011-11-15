@@ -1,12 +1,12 @@
 <?php
-require_once __DIR__ . '/CouchDb/CCouchDB.php';
-require_once __DIR__ . '/../../Core/Configuration/Configuration.php';
+require_once __DIR__ . '/couchDb/CouchDB.php';
+require_once __DIR__ . '/../../core/configuration/Configuration.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
  * @author andre
  *
  */
-class CDatabase extends CCouchDB{
+class Database extends CouchDB{
 
 	/**
 	 * Indica qual base de dados está selecionada 

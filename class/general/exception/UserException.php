@@ -1,12 +1,12 @@
 <?php
-require_once 'CException.php';
+require_once 'Exception.php';
 
 /**
  * Dá conta das exceções geradas pelo usuário (campos de formulário mal digitados, 
  * operações não permitidas, login inválido, etc.).
  * @author tatupheba
  */
-class CUserException extends CException{
+class UserException extends Exception{
 
 	/**
 	 * Gera a excessão de usuário

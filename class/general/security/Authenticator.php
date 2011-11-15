@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../Log/CLog.php';
+require_once __DIR__ . '/../log/Log.php';
 
-class CAuthenticator{
+class Authenticator{
 
 	/**
 	 * Regras de autenticação
@@ -37,6 +37,10 @@ class CAuthenticator{
 	 * @return boolean
 	 */
 	public function isAuthenticated(){
+		
+		//TODO APAGAR!!!!!
+		return true;
+		
 		if(!isset($_SESSION)) session_start();
 		return isset($_SESSION['userData']['userId']);
 	}

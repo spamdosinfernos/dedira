@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../CCore.php';
+require_once __DIR__ . '/../Core.php';
 
 /**
  * Lista os arquivos presentes em um diretório
  */
-class CDirectoryLister extends CCore{
+class DirectoryLister extends Core{
 
 	/**
 	 * Caminho do diretório que se pretende listar os arquivos

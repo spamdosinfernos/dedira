@@ -1,7 +1,7 @@
 <?php
-require_once 'CErrorMessages.php';
+require_once 'ErrorMessages.php';
 
-class Configuration extends CErrorMessages {
+class Configuration extends ErrorMessages {
 
 	/**
 	 * Usuário do banco de dados

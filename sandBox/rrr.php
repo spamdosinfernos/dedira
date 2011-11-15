@@ -1,15 +1,61 @@
-<?php 
+<?php
+require_once '/var/www/MiliSystem/class/general/filesystem/DirectoryLister.php';
+require_once '/var/www/MiliSystem/class/general/filesystem/File.php';
+
+function process($dirPath){
+
+	$dl = new DirectoryLister($dirPath);
+
+	$dl->readDirectory();
+
+	$arrFiles = $dl->getArrFilesAtDirectory();
+	$arrDirs = $dl->getArrDirectoriesAtDirectory();
+
+	foreach ($arrFiles as $filePath) {
+		$file = new File($filePath);
+
+		if($file->getFileExtension() != "php") continue;
+
+		editFile($file);
+	}
+
+	foreach ($arrDirs as $dirPath) {
+		process($dirPath);
+	}
+}
+
+function editFile(File &$file){
+	$fileContents = $file->getFileContents();
+
+	//print $fileContents . "\n\n\n\n\n\n\n";
+
+	$qtde = preg_match_all("/(C[A-Z][a-z]*)/",$fileContents,$matches);
+
+	if($qtde == 0) return;
+
+	foreach ($matches as $arrMatche) {
+
+		foreach ($arrMatche as $matche) {
+			$oldLen = strlen($matche);
+			
+			if($oldLen <= 2) continue;
+			
+			$newName = substr($matche,1,$oldLen-1);
+			$fileContents = str_replace($matche,$newName,$fileContents);
+		}
+
+	}
+
+	file_put_contents($file->getFilePath(),$fileContents);
+}
 
 
-$sql = "call sp_1(1,'RE00480','43806b9920711e28332d854d5c190d7e','','','','')";
+process("/var/www/MiliSystem");
 
-$dsn = "mysql:host=192.168.130.244;dbname=sca;port=3306";
-$conexao = new PDO($dsn, 'sys_usr_upsat', '71e5fcdf2d9217a8437cb5261fa41b4a');
-$conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-$res = new PDOStatement();
-$res = $conexao->query($sql);
 
-$arr = $res->fetchAll();
+
+
+
 
 ?>

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . 'Class/Core/CCore.php';
+require_once __DIR__ . 'Class/core/Core.php';
 
 /**
  * Esta classe gerencia todas as requisições recebidas pelo site
@@ -7,7 +7,7 @@ require_once __DIR__ . 'Class/Core/CCore.php';
  * @author tatupheba
  *
  */
-class index extends CCore{
+class index extends Core{
 
 }
 ?>

@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/CXTemplate.php';
-require_once __DIR__ . '/../Exception/CUserException.php';
-require_once __DIR__ . '/../Configuration/Template/CPageElementConf.php';
+require_once __DIR__ . '/../exception/UserException.php';
+require_once __DIR__ . '/../configuration/template/PageElementConf.php';
 
-class CPageElement{
+class PageElement{
 
 	/*
 	 * Valores aceitos para o tipo de campo
@@ -32,7 +32,7 @@ class CPageElement{
 	/*
 	 * Bloco principal do template do campo a ser gerado
 	 */
-	const CONST_BLOCO_PRINCIPAL = "CCampoHTML";
+	const CONST_BLOCO_PRINCIPAL = "CampoHTML";
 
 	/**
 	 * Tipo do campo
@@ -108,7 +108,7 @@ class CPageElement{
 		 */
 		$this->multilinha = false;
 
-		$this->xTemplate = new CXTemplate(CPageElementConf::getTemplateFile());
+		$this->xTemplate = new CXTemplate(PageElementConf::getTemplateFile());
 		$this->xTemplate->reset(self::CONST_BLOCO_PRINCIPAL);
 
 	}
@@ -121,7 +121,7 @@ class CPageElement{
 
 		//Se o tipo informado for inválido lança um excessão
 		if(!in_array($tipo,array(self::CONST_TIPO_BOOLEANO, self::CONST_TIPO_SENHA, self::CONST_TIPO_INT, self::CONST_TIPO_FLOAT, self::CONST_TIPO_ARRAY,	self::CONST_TIPO_STRING, self::CONST_TIPO_DATETIME))){
-			throw new CUserException(
+			throw new UserException(
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
 			$tipo
@@ -157,7 +157,7 @@ class CPageElement{
 
 		//Se o valor informado for inválido lança um excessão
 		if(!in_array($editarComo, $arrValoresAceitos)){
-			throw new CUserException(
+			throw new UserException(
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
 			$editarComo
@@ -187,7 +187,7 @@ class CPageElement{
 
 		//Se o valor informado for inválido lança um excessão
 		if(!is_bool($requerido)){
-			throw new CUserException(
+			throw new UserException(
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
 			$requerido
@@ -213,7 +213,7 @@ class CPageElement{
 
 		//Se o valor informado for inválido lança um excessão
 		if(!is_bool($multilinha)){
-			throw new CUserException(
+			throw new UserException(
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
 			$multilinha
@@ -226,9 +226,9 @@ class CPageElement{
 	public function getHtml(){
 
 		//O campo deve ter uma descrição
-		if($this->getDescricao() == "") throw new CUserException(Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'descrição' não pode ser vazio.");
+		if($this->getDescricao() == "") throw new UserException(Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'descrição' não pode ser vazio.");
 		//O campo deve ter um nome
-		if($this->getNome() == "") throw new CUserException(Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'nome' não pode ser vazio.");
+		if($this->getNome() == "") throw new UserException(Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO, Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD, "O campo 'nome' não pode ser vazio.");
 
 		//Seta as propriedades do campo
 		switch ($this->getEditarComo()){
@@ -278,7 +278,7 @@ class CPageElement{
 	public function setAlimentador($alimentador){
 		//Se o valor informado for inválido lança um excessão
 		if(!is_string($alimentador)){
-			throw new CUserException(
+			throw new UserException(
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_TEXTO,
 			Configuration::CONST_ERR_FALHA_AO_SETAR_PROPRIEDADE_VALOR_INVALIDO_COD,
 			$alimentador
@@ -290,7 +290,7 @@ class CPageElement{
 	private function gerarCampoEscondido(){
 		$this->xTemplate->assign("valorInicial", $this->getValorInicial());
 		$this->xTemplate->assign("nome", $this->getNome());
-		$this->xTemplate->parse("CCampoHTML." . self::CONST_EDITAR_COMO_ESCONDIDO);
+		$this->xTemplate->parse("CampoHTML." . self::CONST_EDITAR_COMO_ESCONDIDO);
 	}
 
 	private function gerarApenasVisualizacao(){

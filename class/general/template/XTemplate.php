@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../CCore.php';
+require_once __DIR__ . '/../Core.php';
 /**
  * XTemplate PHP templating engine
  *
@@ -19,7 +19,7 @@ require_once __DIR__ . '/../CCore.php';
  * License: LGPL / BSD - see license.txt
  * Changelog: see changelog.txt
  */
-class CXTemplate extends CCore{
+class CXTemplate extends Core{
 
 	/**
 	 * Properties
