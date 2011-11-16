@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	xmlns:ns1="vokiWebService" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+	<SOAP-ENV:Body>
+		<ns1:getStatusDoProdutoVendidoResponse>
+			<getStatusDoProdutoVendidoResponse
+				xsi:type="ns1:arrRetorno">
+				<arrRetornos xsi:type="ns1:arrRetornosType">
+					<codigoDaMensagem xsi:type="xsd:string">4</codigoDaMensagem>
+					<mensagem xsi:type="xsd:string">CÓDIGO DE PRODUTO E SEQUÊNCIA NAO
+						EXISTE NO SISTEMA</mensagem>
+				</arrRetornos>
+				<arrRetornos xsi:type="ns1:arrRetornosType">
+					<codigoDaMensagem xsi:type="xsd:string">4</codigoDaMensagem>
+					<mensagem xsi:type="xsd:string">CÓDIGO DE PRODUTO E SEQUÊNCIA NAO
+						EXISTE NO SISTEMA</mensagem>
+				</arrRetornos>
+			</getStatusDoProdutoVendidoResponse>
+		</ns1:getStatusDoProdutoVendidoResponse>
+	</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

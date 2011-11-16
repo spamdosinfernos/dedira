@@ -8,7 +8,7 @@ class Authenticator{
 	 * @var IAuthenticationRules
 	 */
 	private $authenticationRules;
-
+	
 	/**
 	 * Id do usuário na sessão
 	 * @var int | string
@@ -37,10 +37,6 @@ class Authenticator{
 	 * @return boolean
 	 */
 	public function isAuthenticated(){
-		
-		//TODO APAGAR!!!!!
-		return true;
-		
 		if(!isset($_SESSION)) session_start();
 		return isset($_SESSION['userData']['userId']);
 	}
@@ -60,31 +56,26 @@ class Authenticator{
 	 */
 	public function authenticate(){
 
-		//TODO Apagar!!!!
-		session_start();
-		session_regenerate_id();
-		$_SESSION['userData']['userId'] = 1;
-
 		try{
-			//Verificando se a verificação de usuário e password retorna o tipo de valor esperado (booleano)
+			//Verificando se a verificação de usuário e senha retorna o tipo de valor esperado (booleano)
 			$isValid = $this->authenticationRules->verifyUserAndPassword();
 			if(!is_bool($isValid)) throw new Exception("O procedimento 'verifyUserAndPassword' deve retornar um valor booleano.");
 
-			//Caso a verificação esteja ok, verifica se o usuário e password são válidos
+			//Caso a verificação esteja ok, verifica se o usuário e senha são válidos
 			if($isValid){
-
-				//Se o usuário e password são válidos recupera a id do usuário na sessão
+				
+				//Se o usuário e senha são válidos recupera a id do usuário na sessão
 				$authenticationId = $this->authenticationRules->getAutenticationId();
 				if(!(is_numeric($authenticationId) || is_string($authenticationId))) throw new Exception("O procedimento 'getAutenticationId' deve retornar uma string ou um número.");
-
+				
 				@session_destroy();
 				//Se tudo deu certo incia a sessão e atribui o id do usuário
 				session_start();
 				session_regenerate_id();
 				$_SESSION['userData']['userId'] = $authenticationId;
-
+				
 				$this->authenticationId = $authenticationId;
-
+				
 				return true;
 			}
 
@@ -92,7 +83,7 @@ class Authenticator{
 			new Log($e->getMessage());
 			throw new Exception($e->getMessage());
 		}
-		//login ou password inválidos
+		//login ou senha inválidos
 		return false;
 	}
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Define o padrão para classes que devem fazer a verificação de login e password de usuário
+ * Define o padrão para classes que devem fazer a verificação de login e senha de usuário
  */
 interface IAuthenticationRules{
 	
@@ -11,13 +11,13 @@ interface IAuthenticationRules{
 	public function setLogin($login);
 	
 	/**
-	 * Seta a password do usuário
+	 * Seta a senha do usuário
 	 * @return string
 	 */
 	public function setPassword($password);
 	
 	/**
-	 * Verifica se o usuário e password são válidos
+	 * Verifica se o usuário e senha são válidos
 	 * @return boolean true : válidos | false : inválidos
 	 * @see setLogin
 	 * @see setPassword

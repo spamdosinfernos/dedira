@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Representa um arquivo no sistema.
  * Contêm as operações mais comuns referentes a arquivos como
@@ -82,20 +81,18 @@ class File{
 	}
 
 	public function erase(){
-		if(!$this->unlinkPersonalizado($this->filePath)){
+		if(!$this->unlink($this->filePath)){
 			throw new Exception("Impossível apagar o arquivo " . $this->filePath);
 		}
 	}
 
 	/**
-	 * Foi necessário implementar este procedimento pois existe
-	 * um problema na plataforma windows (só para variar...) que
-	 * não permite a deleção de arquivos quando solicitado
+	 * Tenta apagar um arquivo dado seu nome
 	 * @throws Exception
 	 * @param string $filePath
 	 * @return boolean
 	 */
-	private function unlinkPersonalizado($filePath){
+	private function unlink($filePath){
 
 		if(!unlink($filePath)){
 			return false;
@@ -125,25 +122,55 @@ class File{
 		return $this->md5Compressed;
 	}
 
+	/**
+	 * Retorna o nome do arquivo
+	 * @return string
+	 */
 	public function getFileName(){
 		$arrNomeDoArquivo = array_reverse(explode(DIRECTORY_SEPARATOR, $this->filePath));
 		return $arrNomeDoArquivo[0];
 	}
 
+	/**
+	 * Retorna o conteúdo do arquivo
+	 * @return mixed
+	 */
 	public function getFileContents(){
 		return file_get_contents($this->getFilePath());
 	}
 
+	/**
+	 * Retorna o a extensão do arquivo
+	 * @return string
+	 */
 	public function getFileExtension(){
 		$arrCaminhoDoArquivo = array_reverse(explode(DIRECTORY_SEPARATOR, $this->filePath));
 		$arrNomeDoArquivo = array_reverse(explode(".", $arrCaminhoDoArquivo[0]));
 		return $arrNomeDoArquivo[0];
 	}
 
+	/**
+	 * Retorna o nome do arquivo sem a sua extensão
+	 * @return string
+	 */
+	public function getFileNameWithoutExtension(){
+		$arrCaminhoDoArquivo = array_reverse(explode(DIRECTORY_SEPARATOR, $this->filePath));
+		$arrNomeDoArquivo = explode(".", $arrCaminhoDoArquivo[0]);
+		return $arrNomeDoArquivo[0];
+	}
+
+	/**
+	 * Retorna o caminho do arquivo
+	 * @return string
+	 */
 	public function getFilePath(){
 		return $this->filePath;
 	}
 
+	/**
+	 * Retorna o diretório onde o arquivo se encontra
+	 * @return string
+	 */
 	public function getFileDirectory(){
 		return dirname($this->filePath);
 	}
@@ -156,6 +183,11 @@ class File{
 		$this->sender = $sender;
 	}
 
+	/**
+	 * Seta o caminho do arquivo
+	 * @param string $filePath
+	 * @throws Exception
+	 */
 	public function setCaminhoDoArquivo($filePath){
 		if(is_file($filePath) == FALSE){
 			throw new Exception("O arquivo " . $filePath . " não existe ou é um atalho apontando para arquivo inválido, certifique-se também que as permissões de escrita e leitura estejam liberadas.");
@@ -163,6 +195,10 @@ class File{
 		$this->filePath = realpath($filePath);
 	}
 
+	/**
+	 * Retorna a data de criação do arquivo
+	 * @return string
+	 */
 	public function getFileCreationDate(){
 		return $this->fileCreationDate;
 	}
@@ -214,7 +250,7 @@ class File{
 			}
 
 			if($quantidadeMaxDeTentativas == 0){
-				@$this->unlinkPersonalizado($caminhoDoPacote);
+				@$this->unlink($caminhoDoPacote);
 				throw new Exception("Falha ao compactar arquivo: " . join("\r\n",$arrOutPut));
 			}
 		}while(!$fechouPacote);
@@ -225,10 +261,10 @@ class File{
 			$quantidadeMaxDeTentativas--;
 
 			if($quantidadeMaxDeTentativas == 0){
-				$this->unlinkPersonalizado($caminhoDoPacote);
+				$this->unlink($caminhoDoPacote);
 				throw new Exception("Falha ao compactar arquivo, não foi possível apagar o arquivo de origem: " . $this->filePath);
 			}
-		} while(!$this->unlinkPersonalizado($this->filePath));
+		} while(!$this->unlink($this->filePath));
 
 		$this->compressed = true;
 		$this->filePath = $caminhoDoPacote;
@@ -262,7 +298,7 @@ class File{
 
 		$zip->close();
 
-		if($this->unlinkPersonalizado($this->filePath) === FALSE){
+		if($this->unlink($this->filePath) === FALSE){
 			throw new Exception("Não foi possí­vel apagar o arquivo original após a descompactação:" . $this->filePath);
 		}
 
@@ -301,7 +337,7 @@ class File{
 
 
 		do{
-			$this->unlinkPersonalizado($this->filePath);
+			$this->unlink($this->filePath);
 		} while(file_exists($this->filePath));
 
 		//Se a cópia foi feita com sucesso e o arquivo existe no destino vai em frente!
@@ -337,7 +373,7 @@ class File{
 		} while(!file_exists($caminhoDeDestino));
 
 		do{
-			$this->unlinkPersonalizado($this->filePath);
+			$this->unlink($this->filePath);
 		} while(file_exists($this->filePath));
 
 		if(file_exists($this->filePath)) throw new Exception("Falha ao mover arquivo, o arquivo de origem não foi apagado: " . $this->filePath);

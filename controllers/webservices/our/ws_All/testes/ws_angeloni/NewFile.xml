@@ -1,0 +1,30 @@
+<soapenv:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:vok="vokiWebService">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <vok:getInfoDoCartao soapenv:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+         <tipo_registro xsi:type="xsd:string">1</tipo_registro>
+         <cod_prd xsi:type="xsd:string">9921</cod_prd>
+         <sequencia xsi:type="xsd:string">00000751</sequencia>
+         <status xsi:type="xsd:string">AP</status>
+         <data_venda xsi:type="xsd:string">2011-10-25 10:00:01</data_venda>
+         <nome_cliente xsi:type="xsd:string">KARLA R CARDOSO HAWRELIUK</nome_cliente>
+         <cpf_cliente xsi:type="xsd:string">04585110992</cpf_cliente>
+         <telefone_cliente xsi:type="xsd:string">4791046783</telefone_cliente>
+         <celular_cliente xsi:type="xsd:string">00</celular_cliente>
+         <tipo_cliente xsi:type="xsd:string">F</tipo_cliente>
+         <sexo_cliente xsi:type="xsd:string">F</sexo_cliente>
+         <endereco_cliente xsi:type="xsd:string">RUA SANTA RITA</endereco_cliente>
+         <numero_cliente xsi:type="xsd:string">280</numero_cliente>
+         <complemento xsi:type="xsd:string">CASA</complemento>
+         <cep_cliente xsi:type="xsd:string">88340000</cep_cliente>
+         <bairro_cliente xsi:type="xsd:string">SAO FRANCISCO DE ASS</bairro_cliente>
+         <cidade_cliente xsi:type="xsd:string">CAMBORIU</cidade_cliente>
+         <uf_cliente xsi:type="xsd:string">SC</uf_cliente>
+         <preco_venda xsi:type="xsd:string">219.0</preco_venda>
+         <serie_rps xsi:type="xsd:string">9999</serie_rps>
+         <rps_numero xsi:type="xsd:string">000000000225</rps_numero>
+         <cod_loja xsi:type="xsd:string">00008</cod_loja>
+         <cod_cupom xsi:type="xsd:string">07381423</cod_cupom>
+      </vok:getInfoDoCartao>
+   </soapenv:Body>
+</soapenv:Envelope>

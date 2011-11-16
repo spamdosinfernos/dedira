@@ -1,0 +1,110 @@
+* {
+	padding: 0px;
+	border: 0px;
+	margin: 0px;
+}
+
+.login {
+	width: 210px;
+	height: 215px;
+	border: 1px;
+	border-color: black;
+	border-style: solid;
+	padding-left: 10px;
+	margin: 0px auto;
+	position: relative;
+	top: 80px;
+}
+
+.login label {
+	width: 100%;
+}
+
+.mensagemDeErro {
+	color: red;
+	font-weight: bolder;
+	font-size: medium;
+}
+
+body {
+	margin: 8px;
+	font-family: sans-serif;
+	font-size: small;
+	color: #ff6500;
+}
+
+#menu ul {
+	border: 0px;
+	width: 100%;
+	list-style-position: inside;
+	float: left;
+	clear: both;
+	background-color: #ccc;
+	margin-bottom: 5px;
+}
+
+#menu ul li {
+	float: left;
+	padding: 5px;
+	display: inline;
+}
+
+#menu ul li a:hover,#menu ul li .current {
+	color: #fff;
+	background-color: #0b75b2;
+}
+
+a {
+	font-size: small;
+	text-decoration: none;
+}
+
+fieldset {
+	width: 49%;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+}
+
+form fieldset {
+	width: 48%;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+	padding: 4px;
+	margin-bottom: 10px;
+	margin-left: 4px;
+}
+
+label {
+	width: 50%
+}
+
+form input {
+	margin-bottom: 10px;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
+}
+
+.login form input {
+	width: 50%;
+}
+
+fieldset img {
+	border-width: 0px;
+}
+
+fieldset legend {
+	border: 1px;
+	border-bottom: 0px;
+	border-color: black;
+	border-style: solid;
+	padding-right: 5px;
+	padding-left: 5px;
+}
+
+.systemAnounces{
+	background: purple;
+	color: white;
+}
