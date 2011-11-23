@@ -1,7 +1,15 @@
 <?php
-require_once __DIR__ . '/../../configuration/Configuration.php';
+require_once __DIR__ . '/../configuration/Configuration.php';
 
-class CouchDB {
+/**
+ * Define as operações básicas no banco de dados, não pode ser instânciada,
+ * as operações no banco de dados serão feitas pelas classes Database e 
+ * StorableObject
+ *
+ * @author tatupheba
+ *
+ */
+abstract class CouchDB {
 
 	private $user;
 

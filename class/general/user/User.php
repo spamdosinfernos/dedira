@@ -5,6 +5,9 @@ require_once __DIR__ . '/../person/Person.php';
 
 /**
  * Representa um usuário no sistema
+ *
+ * @author tatupheba
+ *
  */
 class User extends Person{
 
@@ -31,50 +34,52 @@ class User extends Person{
 	 * @var boolean
 	 */
 	protected $active;
-	
-	private $teste;
 
 	/**
 	 * Indica qual o grupo de acesso o usuário pertence
 	 * @var AccessGroup
 	 */
-	protected $accesGroup;
+	protected $accessGroup;
 
 	public function __construct(){
-		parent::setDataBaseName(Configuration::CONST_DB_NAME_PEOPLE);
+		$this->setDataBaseName(Configuration::CONST_DB_NAME_PEOPLE);
+		$this->active = true;
 	}
 
 
 	public function getLogin(){
-	    return $this->login;
+		return $this->login;
 	}
 
 	public function setLogin($login){
-	    $this->login = $login;
+		$this->login = $login;
 	}
 
 	public function getPassword(){
-	    return $this->password;
+		return $this->password;
 	}
 
 	public function setPassword($password){
-	    $this->password = $password;
+		$this->password = $password;
 	}
 
 	public function getActive(){
-	    return $this->active;
+		return $this->active;
 	}
 
 	public function setActive($active){
-	    $this->active = $active;
+
+		if(!is_bool($active)) throw new SystemException("Um valor booleano deve ser informado.", __CLASS__.__LINE__);
+
+		$this->active = $active;
 	}
 
-	public function getAccesGroup(){
-	    return $this->accesGroup;
+	public function getAccessGroup(){
+		return $this->accessGroup;
 	}
 
-	public function setAccesGroup($accesGroup){
-	    $this->accesGroup = $accesGroup;
+	public function setAccessGroup($accessGroup){
+		$this->accessGroup = $accessGroup;
 	}
 }
 ?>

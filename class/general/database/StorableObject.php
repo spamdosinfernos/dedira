@@ -41,7 +41,7 @@ class StorableObject {
 	 * do documento é um objeto
 	 * @var int
 	 */
-	const CONST_INFORMATION_TYPE_OBJETO = 0;
+	const CONST_INFORMATION_TYPE_OBJECT = 0;
 
 	/**
 	 * Usado para indicar quando um item
@@ -55,39 +55,44 @@ class StorableObject {
 	 * do documento é uma string ou número
 	 * @var int
 	 */
-	const CONST_INFORMATION_TYPE_ORDINARIA = 2;
+	const CONST_INFORMATION_TYPE_NUMBER_OR_STRING = 2;
 
 	/**
 	 * Usado para sinalizar um propriedade protegida,
-	 * esta string é marca o início e o fim da flag
+	 * esta string marca o início e o fim da flag
 	 * @var string
 	 */
-	const CONST_FLAG_DE_PROPRIEDADE_PROTEGIDA = "\0";
+	const CONST_FLAG_PROTECTED_PROPERTY = "\0";
 
 	/**
 	 * Usado para sinalizar um propriedade protegida,
-	 * esta string é marca o meio da flag
+	 * esta string marca o meio da flag
 	 * @var string
 	 */
-	const CONST_FLAG_DE_PROPRIEDADE_PROTEGIDA_MEIO = "*";
+	const CONST_MIDDLE_FLAG_PROTECTED_PROPERTY = "*";
 
 	/**
 	 * Usado para sinalizar um propriedade privada, esta
-	 * string é marca o início e o fim da flag, no meio 
+	 * string marca o início e o fim da flag, no meio 
 	 * deve constar o nome da classe a qual pertence a
 	 * propriedade
 	 * @var string
 	 */
-	const CONST_PRI = "\0";
+	const CONST_FLAG_PRIVATE_PROPERTY = "\0";
 
 	/**
 	 * Carrega uma informação da base dada sua identificação
 	 *
 	 * ATENÇÃO: Infelizmente não é possivel, de forma 
-	 * eficiente e internamente , substituir o objeto por
-	 * outro gerado por ele mesmo, sendo assim,
-	 * é necessário chamar este método de forma externa.
-	 * @return Object - O objeto carregado e gerado
+	 * eficiente e internamente a esta classe, substituir
+	 * uma instância dela por outra gerada dentro dela mesma, 
+	 * sendo assim, é necessário chamar este método de forma externa.
+	 * @example 
+	 * $obj = new StorableObject();
+	 * $obj->setId("fe65af4ef4ef64e45e4f6ef");
+	 * $obj->load() - NÃO FUNCIONA!
+	 * $obj = $obj->load() - É FEIO MAS FUNCIONA.
+	 * @return Object - O objeto carregado
 	 * @see setId()
 	 */
 	public function load(){
@@ -173,16 +178,16 @@ class StorableObject {
 	private function getInformationType($information){
 
 		if(is_null($information) || is_string($information) || is_numeric($information)){
-			return self::CONST_INFORMATION_TYPE_ORDINARIA;
+			return self::CONST_INFORMATION_TYPE_NUMBER_OR_STRING;
 		}
 
 		if(is_array($information)) return self::CONST_INFORMATION_TYPE_ARRAY;
 
 		if(isset($information->CLASSNAME)){
-			if($information->CLASSNAME != "stdClass") return self::CONST_INFORMATION_TYPE_OBJETO;
+			if($information->CLASSNAME != "stdClass") return self::CONST_INFORMATION_TYPE_OBJECT;
 		}
 
-		return self::CONST_INFORMATION_TYPE_OBJETO;
+		return self::CONST_INFORMATION_TYPE_OBJECT;
 	}
 
 	/**
@@ -237,9 +242,9 @@ class StorableObject {
 	 * @param int $visibility
 	 * @return string
 	 */
-	private function getValuesWithVisibilityFlags($tipo, $property, $visibility){
-		if($visibility == ReflectionProperty::IS_PROTECTED) return self::CONST_FLAG_DE_PROPRIEDADE_PROTEGIDA . self::CONST_FLAG_DE_PROPRIEDADE_PROTEGIDA_MEIO . self::CONST_FLAG_DE_PROPRIEDADE_PROTEGIDA . $property;
-		if($visibility == ReflectionProperty::IS_PRIVATE) return self::CONST_PRI . get_class($this) . self::CONST_PRI . $property;
+	private function generateSerializedProperty($tipo, $property, $visibility){
+		if($visibility == ReflectionProperty::IS_PROTECTED) return self::CONST_FLAG_PROTECTED_PROPERTY . self::CONST_MIDDLE_FLAG_PROTECTED_PROPERTY . self::CONST_FLAG_PROTECTED_PROPERTY . $property;
+		if($visibility == ReflectionProperty::IS_PRIVATE) return self::CONST_FLAG_PRIVATE_PROPERTY . get_class($this) . self::CONST_FLAG_PRIVATE_PROPERTY . $property;
 		return $property;
 	}
 
@@ -257,10 +262,10 @@ class StorableObject {
 		$visibility = $this->getVisibility($information);
 		$value = $this->getValue($information,$visibility);
 		$tipo = $this->getInformationType($value);
-		$property = $this->getValuesWithVisibilityFlags($tipo, $property, $visibility);
+		$property = $this->generateSerializedProperty($tipo, $property, $visibility);
 
 		//Trata objetos
-		if($tipo == self::CONST_INFORMATION_TYPE_OBJETO){
+		if($tipo == self::CONST_INFORMATION_TYPE_OBJECT){
 
 			if(is_null($property)){
 				//Se a propriedade é nula então estamos no objeto raíz
@@ -306,7 +311,7 @@ class StorableObject {
 
 		//Traduz a id do banco para a id do sistema
 		if($property === "_id"){
-			$strId = self::CONST_PRI . __CLASS__ . self::CONST_PRI . "id";
+			$strId = self::CONST_FLAG_PRIVATE_PROPERTY . __CLASS__ . self::CONST_FLAG_PRIVATE_PROPERTY . "id";
 			$serializedData .= "s:" . strlen($strId) . ":\"" . $strId . "\";";
 			$serializedData .= "s:" . strlen($value) . ":\"" . $value . "\";";
 			return $serializedData;
@@ -314,7 +319,7 @@ class StorableObject {
 
 		//Traduz a série da revisão do banco para a revisão do sistema
 		if($property === "_rev"){
-			$strRev = self::CONST_PRI . __CLASS__ . self::CONST_PRI . "rev";
+			$strRev = self::CONST_FLAG_PRIVATE_PROPERTY . __CLASS__ . self::CONST_FLAG_PRIVATE_PROPERTY . "rev";
 			$serializedData .= "s:" . strlen($strRev) . ":\"" . $strRev . "\";";
 			$serializedData .= "s:" . strlen($value) . ":\"" . $value . "\";";
 			return $serializedData;

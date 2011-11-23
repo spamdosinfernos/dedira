@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/couchDb/CouchDB.php';
+require_once 'ACouchDB.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
@@ -14,6 +14,10 @@ class Database extends CouchDB{
 	 */
 	private $selectedBaseName;
 
+	/**
+	 * Guarda a resposta de uma dada requisição
+	 * @var stdClass
+	 */
 	private $response;
 
 	/**
@@ -68,7 +72,8 @@ class Database extends CouchDB{
 
 	/**
 	 * Insere uma nova informação na base de dados
-	 * @param mixed $arrInformation
+	 * @param string $documentId - Id do documento (opcional)
+	 * @param mixed $arrInformation - Informação a ser salva
 	 * @return boolean
 	 */
 	public function saveDocument($documentId, $arrInformation){
@@ -90,6 +95,12 @@ class Database extends CouchDB{
 		return true;
 	}
 
+	/**
+	 * Apaga uma informação da base de dados
+	 * @param string $documentId - Id do documento
+	 * @param string $revisionId - Numero de revisão da informação
+	 * @return boolean
+	 */
 	public function eraseDocument($documentId, $revisionId){
 
 		$this->send(self::CONST_DEL_OPERATION, $this->selectedBaseName, $documentId, null, $revisionId);
@@ -103,6 +114,13 @@ class Database extends CouchDB{
 		return true;
 	}
 
+	/**
+	 *
+	 * @param string $documentId - Id do documento
+	 * @param string $revisionId - Numero de revisão da informação
+	 * @param mixed $arrInformation - Informação a ser salva
+	 * @return boolean
+	 */
 	public function updateDocumentInformation($documentId, $revisionId, $arrInformation){
 
 		$this->send(self::CONST_PUT_OPERATION, $this->selectedBaseName, $documentId, $arrInformation, $revisionId);
@@ -115,6 +133,11 @@ class Database extends CouchDB{
 		return true;
 	}
 
+	/**
+	 * Carrega uma informação dada sua identificação
+	 * @param string $documentId
+	 * @return boolean
+	 */
 	public function loadDocument($documentId){
 
 		$this->send(self::CONST_GET_OPERATION, $this->selectedBaseName, $documentId);
@@ -137,6 +160,10 @@ class Database extends CouchDB{
 		$this->response = $this->getRequestResponse();
 	}
 
+	/**
+	 * Carrega todas as views disponíveis na base
+	 * @return boolean
+	 */
 	public function loadAllViews(){
 
 		$arrFinalResponse = array();
