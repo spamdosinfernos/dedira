@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../core/Core.php';
+require_once __DIR__ . '/../general/Core.php';
 require_once __DIR__ . '/ICorrenteIdeologica.php';
 
 class CorrenteIdeologica  implements ICorrenteIdeologica{

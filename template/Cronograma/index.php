@@ -1,6 +1,6 @@
 <?php
 require_once  __DIR__ . '/../../Class/Cronograma/Cronograma.php';
-require_once __DIR__ . '/../../Class/core/template/CXTemplate.php';
+require_once __DIR__ . '/../../Class/general/template/CXTemplate.php';
 
 class index extends CXTemplate{
 	

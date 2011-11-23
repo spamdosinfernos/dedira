@@ -1,5 +1,5 @@
 <?php 
-require_once __DIR__ . '/../../core/baseDeDados/StorableObject.php';
+require_once __DIR__ . '/../../general/database/StorableObject.php';
 
 /**
  * Representa uma contribuição financeira

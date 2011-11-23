@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../core/configuration/Configuration.php';
+require_once __DIR__ . '/../general/configuration/Configuration.php';
 require_once __DIR__ . '/Event/Manifestacao.php';
 require_once __DIR__ . '/Event/Encontro.php';
 require_once __DIR__ . '/Event/Reuniao.php';

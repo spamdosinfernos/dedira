@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/Event.php';
+require_once 'Event.php';
 require_once __DIR__ . '/../../Organizacao/OrganizacaoSocial.php';
 
 class Manifestation extends Event{

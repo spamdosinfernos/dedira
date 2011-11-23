@@ -1,37 +1,37 @@
 <?php
 interface IEvent{
 	
-	public function getParticular();
-	public function setParticular($particular);
+	public function IsPrivate();
+	public function setPrivate($private);
 	
-	public function getDataFim();
-	public function setDataFim(DateTime $dataFim);
+	public function getFinalDate();
+	public function setFinalDate(DateTime $dataFim);
 	
-	public function getDataInicio();
-	public function setDataInicio(DateTime $dataInicio);
+	public function getBeginDate();
+	public function setBeginDate(DateTime $dataInicio);
 
-	public function getObservacoes();
-	public function setObservacoes($observacoes);
+	public function getObservations();
+	public function setObservations($observacoes);
 
-	public function getArrMaisContatos();
-	public function setArrMaisContatos($arrMaisContatos);
+	public function getArrMoreContats();
+	public function setArrMoreContats($arrMaisContatos);
 
-	public function getArrEnderecosDosLocais();
-	public function setArrEnderecosDosLocais($arrEnderecosDosLocais);
+	public function getArrPlacesAddresses();
+	public function setArrPlacesAddresses($arrEnderecosDosLocais);
 
-	public function getArrPersonsOuOrganizacoesPromotoras();
-	public function setArrPersonsOuOrganizacoesPromotoras($arrPersonsOuOrganizacoesPromotoras);
+	public function getArrPromoters();
+	public function setArrPromoters($arrPersonsOuOrganizacoesPromotoras);
 
-	public function getArrIdsDosDocumentosRelacionados();
-	public function setArrIdsDosDocumentosRelacionados($arrIdsDosDocumentosRelacionados);
+	public function getArrRelatedDocumentsIds();
+	public function setArrRelatedDocumentsIds($arrIdsDosDocumentosRelacionados);
 
-	public function getTipoDeRecorrencia();
-	public function setTipoDeRecorrencia($tipoDeRecorrencia);
+	public function getRecurringType();
+	public function setRecurringType($tipoDeRecorrencia);
 
-	public function getQtdeDeRecorrencia();
-	public function setQtdeDeRecorrencia($qtdeDeRecorrencia);
+	public function getRecurringAmount();
+	public function setRecurringAmount($qtdeDeRecorrencia);
 
-	public function getDataDeLembrete();
-	public function setDataDeLembrete(DateTime $dataDeLembrete);
+	public function getRememberingDate();
+	public function setRememberingDate(DateTime $dataDeLembrete);
 }
 ?>

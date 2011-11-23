@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/IDocumento.php';
-require_once __DIR__ . '/../../core/baseDeDados/StorableObject.php';
+require_once __DIR__ . '/../../general/database/StorableObject.php';
 
 class Documento extends StorableObject implements IDocumento{
 

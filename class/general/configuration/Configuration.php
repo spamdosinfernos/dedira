@@ -1,7 +1,5 @@
 <?php
-require_once 'ErrorMessages.php';
-
-class Configuration extends ErrorMessages {
+class Configuration {
 
 	/**
 	 * Usuário do banco de dados
@@ -109,6 +107,10 @@ class Configuration extends ErrorMessages {
 	
 	static public function getTemplatesDirectory(){
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR;
+	}
+	
+	static public function getLanguage(){
+		return "pt-br";
 	}
 	
 }

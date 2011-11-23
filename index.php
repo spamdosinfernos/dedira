@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . 'Class/core/Core.php';
+require_once __DIR__ . 'Class/general/Core.php';
 
 /**
  * Esta classe gerencia todas as requisições recebidas pelo site

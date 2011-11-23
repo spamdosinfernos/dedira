@@ -1,11 +1,17 @@
 <?php
 require_once __DIR__ .'/IEvent.php';
-require_once __DIR__ .'/../../core/baseDeDados/StorableObject.php';
+require_once __DIR__ . '/language/Lang_Event.php';
+require_once __DIR__ .'/../../general/database/StorableObject.php';
 
 /**
  * Define um evento no cronograma da organização, toda classe 
  * que determina um evento que deve entrar no cronograma
- * deve estender esta classe
+ * deve estender esta classe.
+ *
+ * Esta classe deveria ser abstrata mas como é necessário um 
+ * construtor para setar o nome da base de dados vai ter que
+ * ser uma classe normal mesmo.
+ *
  * @author tatupheba
  *
  */
@@ -15,207 +21,222 @@ class Event extends StorableObject implements IEvent{
 	 * Data de fim do evento
 	 * @var Datetime
 	 */
-	protected $dataFim;
+	protected $finalDate;
 
 	/**
 	 * Data de início do evento
 	 * @var Datetime
 	 */
-	protected $dataInicio;
+	protected $beginDate;
 
 	/**
 	 * Observação
 	 * @var string
 	 */
-	protected $observacoes;
+	protected $observations;
 
 	/**
 	 * Contatos do evento
 	 * @var array : IPerson
 	 */
-	protected $arrMaisContatos;
+	protected $arrMoreContats;
 
 	/**
 	 * Endereços do locais onde serão realizados os eventos
 	 * @var array : string
 	 */
-	protected $arrEnderecosDosLocais;
+	protected $arrPlacesAddresses;
 
 	/**
 	 * Lista das identificações dos documentos relacionados
 	 * @var int
 	 */
-	protected $arrIdsDosDocumentosRelacionados;
+	protected $arrRelatedDocumentsIds;
 
 	/**
 	 * Pessoas ou organizações promotoras do evento 
-	 * @var Person
-	 * @var Militante
+	 * @var IPerson
 	 * @var IOrganizacao
 	 */
-	protected $arrPersonsOuOrganizacoesPromotoras;
+	protected $arrPromoters;
 
 	/**
 	 * Guarda o tipo de recorrência
 	 */
-	protected $tipoDeRecorrencia;
+	protected $recurringType;
 
 	/**
 	 * Quantidade de recorrências (-1 para recorrências eternas)
 	 * @var int
 	 */
-	protected $qtdeDeRecorrencia;
+	protected $recurringAmount;
 
 	/**
 	 * Indica quando o sistema deve mostrar um lembrete
 	 * @var DateTime
 	 */
-	protected $dataDeLembrete;
-	
+	protected $rememberingDate;
+
 	/**
 	 * Indica se o evento é particular
 	 * @var boolean
 	 */
-	protected $particular;
+	protected $private;
+
+	/**
+	 * Guarda um arranjo com todos os códigos de recorrência
+	 * @var array : int
+	 */
+	protected $arrRecorrencies;
 
 	/*
 	 * Tipos de recorrências possíveis para um evento
 	 */
-	const CONST_RECORRENCIA_NAO = -1;
+	const CONST_RECORRENCY_NO = -1;
 
-	const CONST_RECORRENCIA_DIA = 0;
-	const CONST_RECORRENCIA_SEMANA = 1;
-	const CONST_RECORRENCIA_MES = 2;
-	const CONST_RECORRENCIA_ANO = 3;
+	const CONST_RECORRENCY_DAY = 0;
+	const CONST_RECORRENCY_WEEK = 1;
+	const CONST_RECORRENCY_MONTH = 2;
+	const CONST_RECORRENCY_YEAR = 3;
 
-	const CONST_RECORRENCIA_BIMESTRAL = 4;
-	const CONST_RECORRENCIA_TRIMESTRE = 5;
-	const CONST_RECORRENCIA_SEMESTRE = 6;
+	const CONST_RECORRENCY_BIMESTRAL = 4;
+	const CONST_RECORRENCY_TRIMESTRAL = 5;
+	const CONST_RECORRENCY_SEMESTRAL = 6;
 
-	const CONST_RECORRENCIA_DOMINGO = 7;
-	const CONST_RECORRENCIA_SEGUNDA = 8;
-	const CONST_RECORRENCIA_TERCA = 9;
-	const CONST_RECORRENCIA_QUARTA = 10;
-	const CONST_RECORRENCIA_QUINTA = 11;
-	const CONST_RECORRENCIA_SEXTA = 12;
-	const CONST_RECORRENCIA_SABADO = 13;
-
-	public function __construct(){
-		parent::__construct();
-		$this->setDataBaseName(Configuration::CONST_DB_NAME_PEOPLE);
-	}
-
-	public function setDataInicio(DateTime $dataInicio){
-		$this->dataInicio = $dataInicio;
-	}
-
-	public function setDataFim(DateTime $dataFim){
-		$this->dataFim = $dataFim;
-	}
-
-	public function setObservacoes($observacoes){
-		$this->observacoes = $observacoes;
-	}
-
-	public function setArrMaisContatos($arrMaisContatos){
-		$this->arrMaisContatos = $arrMaisContatos;
-	}
-
-	public function setArrEnderecosDosLocais($arrEnderecosDosLocais){
-		$this->arrEnderecosDosLocais = $arrEnderecosDosLocais;
-	}
-
-	public function setArrPersonsOuOrganizacoesPromotoras($arrPersonsOuOrganizacoesPromotoras){
-		$this->arrPersonsOuOrganizacoesPromotoras = $arrPersonsOuOrganizacoesPromotoras;
-	}
-
-	public function setArrIdsDosDocumentosRelacionados($arrIdsDosDocumentosRelacionados){
-		$this->arrIdsDosDocumentosRelacionados = $arrIdsDosDocumentosRelacionados;
-	}
-
-	public function getDataInicio(){
-		return $this->dataInicio;
-	}
-
-	public function getDataFim(){
-		return $this->dataFim;
-	}
-
-	public function getObservacoes(){
-		return $this->observacoes;
-	}
-
-	public function getArrMaisContatos(){
-		return $this->arrMaisContatos;
-	}
-
-	public function getArrEnderecosDosLocais(){
-		return $this->arrEnderecosDosLocais;
-	}
+	const CONST_RECORRENCY_SUNDAY = 7;
+	const CONST_RECORRENCY_MONDAY = 8;
+	const CONST_RECORRENCY_TUESDAY = 9;
+	const CONST_RECORRENCY_WEDNESDAY = 10;
+	const CONST_RECORRENCY_THURSDAY = 11;
+	const CONST_RECORRENCY_FRIDAY = 12;
+	const CONST_RECORRENCY_SATURDAY = 13;
 	
-	public function getParticular(){
-	    return $this->particular;
+	/*
+	 * Erro emitidos por esta classe
+	 */
+	const CONST_ERROR_1 = 1;
+	const CONST_ERROR_2 = 2;
+	
+	public function __construct(){
+		$this->setDataBaseName(Configuration::CONST_DB_NAME_EVENTS);
+
+		$this->arrRecorrencies = array(
+		self::CONST_RECORRENCY_NO,
+		self::CONST_RECORRENCY_DAY,
+		self::CONST_RECORRENCY_WEEK,
+		self::CONST_RECORRENCY_MONTH,
+		self::CONST_RECORRENCY_YEAR,
+		self::CONST_RECORRENCY_BIMESTRAL,
+		self::CONST_RECORRENCY_TRIMESTRAL,
+		self::CONST_RECORRENCY_SEMESTRAL,
+		self::CONST_RECORRENCY_SUNDAY,
+		self::CONST_RECORRENCY_MONDAY,
+		self::CONST_RECORRENCY_TUESDAY,
+		self::CONST_RECORRENCY_WEDNESDAY,
+		self::CONST_RECORRENCY_THURSDAY,
+		self::CONST_RECORRENCY_FRIDAY,
+		self::CONST_RECORRENCY_SATURDAY
+		);
 	}
 
-	public function setParticular($particular){
-	    $this->particular = $particular;
+	public function getRecorrencyName($recorrencyId){
+		return Lang_Event::getDescriptions($recorrencyId);
 	}
 
-	public function getArrPersonsOuOrganizacoesPromotoras(){
-		return $this->arrPersonsOuOrganizacoesPromotoras;
-	}
-
-	public function getArrIdsDosDocumentosRelacionados(){
-		return $this->arrIdsDosDocumentosRelacionados;
-	}
-
-	public function getTipoDeRecorrencia(){
-		return $this->tipoDeRecorrencia;
-	}
-
-	public function setTipoDeRecorrencia($tipoDeRecorrencia){
+	public function setRecurringType($recurringType){
 
 		//Verifica se o tipo de recorrência é válida
-		$valida = in_array(
-		$tipoDeRecorrencia,
-		array(
-		self::CONST_RECORRENCIA_NAO,
-		self::CONST_RECORRENCIA_DIA,
-		self::CONST_RECORRENCIA_SEMANA,
-		self::CONST_RECORRENCIA_MES,
-		self::CONST_RECORRENCIA_ANO,
-		self::CONST_RECORRENCIA_BIMESTRAL,
-		self::CONST_RECORRENCIA_TRIMESTRE,
-		self::CONST_RECORRENCIA_SEMESTRE,
-		self::CONST_RECORRENCIA_DOMINGO,
-		self::CONST_RECORRENCIA_SEGUNDA,
-		self::CONST_RECORRENCIA_TERCA,
-		self::CONST_RECORRENCIA_QUARTA,
-		self::CONST_RECORRENCIA_QUINTA,
-		self::CONST_RECORRENCIA_SEXTA,
-		self::CONST_RECORRENCIA_SABADO
-		)
-		);
+		$valid = in_array($recurringType,$this->arrRecorrencies);
+		if(!$valid) throw new UserException(Lang_Event::getDescriptions(self::CONST_ERROR_1), self::CONST_ERROR_1);
 
-		if(!$valida) throw new Exception("text - O tipo de recorrência informada é inválida");
-
-		$this->tipoDeRecorrencia = $tipoDeRecorrencia;
+		$this->recurringType = $recurringType;
 	}
 
-	public function getQtdeDeRecorrencia(){
-		return $this->qtdeDeRecorrencia;
+	public function getFinalDate(){
+		return $this->finalDate;
 	}
 
-	public function setQtdeDeRecorrencia($qtdeDeRecorrencia){
-		$this->qtdeDeRecorrencia = $qtdeDeRecorrencia;
+	public function setFinalDate(Datetime $finalDate){
+		$this->finalDate = $finalDate;
 	}
 
-	public function getDataDeLembrete(){
-		return $this->dataDeLembrete;
+	public function getBeginDate(){
+		return $this->beginDate;
 	}
 
-	public function setDataDeLembrete(DateTime $dataDeLembrete){
-		$this->dataDeLembrete = $dataDeLembrete;
+	public function setBeginDate(Datetime $beginDate){
+		$this->beginDate = $beginDate;
+	}
+
+	public function getObservations(){
+		return $this->observations;
+	}
+
+	public function setObservations($observations){
+		$this->observations = $observations;
+	}
+
+	public function getArrMoreContats(){
+		return $this->arrMoreContats;
+	}
+
+	public function setArrMoreContats($arrMoreContats){
+		$this->arrMoreContats = $arrMoreContats;
+	}
+
+	public function getArrPlacesAddresses(){
+		return $this->arrPlacesAddresses;
+	}
+
+	public function setArrPlacesAddresses($arrPlacesAddresses){
+		$this->arrPlacesAddresses = $arrPlacesAddresses;
+	}
+
+	public function getArrRelatedDocumentsIds(){
+		return $this->arrRelatedDocumentsIds;
+	}
+
+	public function setArrRelatedDocumentsIds($arrRelatedDocumentsIds){
+		$this->arrRelatedDocumentsIds = $arrRelatedDocumentsIds;
+	}
+
+	public function getArrPromoters(){
+		return $this->arrPromoters;
+	}
+
+	public function setArrPromoters($arrPromoters){
+		$this->arrPromoters = $arrPromoters;
+	}
+
+	public function getRecurringType(){
+		return $this->recurringType;
+	}
+
+	public function getRecurringAmount(){
+		return $this->recurringAmount;
+	}
+
+	public function setRecurringAmount($recurringAmount){
+		$this->recurringAmount = $recurringAmount;
+	}
+
+	public function getRememberingDate(){
+		return $this->rememberingDate;
+	}
+
+	public function setRememberingDate(Datetime $rememberingDate){
+		$this->rememberingDate = $rememberingDate;
+	}
+
+	public function IsPrivate(){
+		return $this->private;
+	}
+
+	public function setPrivate($private){
+		
+		if(!is_bool($private)) throw new UserException(Lang_Event::getDescriptions(self::CONST_ERROR_2), self::CONST_ERROR_2);
+		
+		$this->private = $private;
 	}
 }
 ?>
