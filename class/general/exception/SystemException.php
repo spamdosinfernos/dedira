@@ -15,7 +15,7 @@ class SystemException extends Exception{
 		"\nDados do GET: " . serialize($_GET) .
 		"\nDados do ENV: " . serialize($_ENV) . 
 		  
-		parent:: __construct($message, $code, $infoExtra = null);
+		parent:: __construct($message . $infoExtra, $code);
 	}
 }
 

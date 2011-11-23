@@ -112,7 +112,7 @@ class Teste{
 	}
 }
 
-class PageCreator extends Core {
+class PageCreator  {
 
 	/**
 	 * Título da página

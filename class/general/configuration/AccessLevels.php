@@ -28,6 +28,6 @@ class AccessLevels{
 	 * Acessa tudo!
 	 * @var int
 	 */
-	const CONST_ACCESS_LEVEL_ADMINISTRATOR = 4;
+	const CONST_ACCESS_LEVEL_ROOT = 4;
 }
 ?>

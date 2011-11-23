@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/IDocumento.php';
-require_once __DIR__ . '/../../core/baseDeDados/DocumentoDaBase.php';
+require_once __DIR__ . '/../../core/baseDeDados/StorableObject.php';
 
-class Documento extends DocumentoDaBase implements IDocumento{
+class Documento extends StorableObject implements IDocumento{
 
 	protected $autor;
 

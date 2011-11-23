@@ -19,7 +19,7 @@ require_once __DIR__ . '/../Core.php';
  * License: LGPL / BSD - see license.txt
  * Changelog: see changelog.txt
  */
-class CXTemplate extends Core{
+class CXTemplate {
 
 	/**
 	 * Properties

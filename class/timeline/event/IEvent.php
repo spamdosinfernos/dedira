@@ -1,5 +1,5 @@
 <?php
-interface IEvento{
+interface IEvent{
 	
 	public function getParticular();
 	public function setParticular($particular);
@@ -19,8 +19,8 @@ interface IEvento{
 	public function getArrEnderecosDosLocais();
 	public function setArrEnderecosDosLocais($arrEnderecosDosLocais);
 
-	public function getArrPessoasOuOrganizacoesPromotoras();
-	public function setArrPessoasOuOrganizacoesPromotoras($arrPessoasOuOrganizacoesPromotoras);
+	public function getArrPersonsOuOrganizacoesPromotoras();
+	public function setArrPersonsOuOrganizacoesPromotoras($arrPersonsOuOrganizacoesPromotoras);
 
 	public function getArrIdsDosDocumentosRelacionados();
 	public function setArrIdsDosDocumentosRelacionados($arrIdsDosDocumentosRelacionados);

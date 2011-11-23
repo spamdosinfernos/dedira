@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../class/general/user/UserLister.php';
 require_once __DIR__ . '/../../class/general/partner/Partner.php';
 require_once __DIR__ . '/../../class/general/partner/PartnerLister.php';
 
-require_once __DIR__ . '/../../class/general/database/DataBase.php';
+require_once __DIR__ . '/../../class/general/database/Database.php';
 require_once __DIR__ . '/../../class/general/database/IDataBaseOperations.php';
 
 require_once __DIR__ . '/../../class/general/security/Shield.php';

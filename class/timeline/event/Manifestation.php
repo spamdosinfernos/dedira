@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/Evento.php';
+require_once __DIR__ . '/Event.php';
 require_once __DIR__ . '/../../Organizacao/OrganizacaoSocial.php';
 
-class Manifestacao extends Evento{
+class Manifestation extends Event{
 	
 	protected $reinvindicacao;
 	

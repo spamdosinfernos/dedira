@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/Evento.php';
+require_once __DIR__ . '/Event.php';
 
-class Encontro extends Evento{
+class Meet extends Event{
 	
 	protected $tema;
 	

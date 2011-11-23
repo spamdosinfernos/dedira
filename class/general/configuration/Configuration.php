@@ -19,14 +19,14 @@ class Configuration extends ErrorMessages {
 	 * Base de dados usada para os eventos
 	 * @var string
 	 */
-	const CONST_DB_EVENTS_NAME = "eventos";
+	const CONST_DB_NAME_EVENTS = "eventos";
 
 
 	/**
 	 * Base de dados usada para as pessoas
 	 * @var string
 	 */
-	const CONST_DB_PEOPLE_NAME = "pessoas";
+	const CONST_DB_NAME_PEOPLE = "people";
 
 	/**
 	 * Endereço do servidor de banco de dados

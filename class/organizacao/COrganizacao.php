@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/IOrganizacao.php';
-require_once __DIR__ . '/../core/baseDeDados/DocumentoDaBase.php';
+require_once __DIR__ . '/../core/baseDeDados/StorableObject.php';
 
-class Organizacao extends DocumentoDaBase implements IOrganizacao {
+class Organizacao extends StorableObject implements IOrganizacao {
 
 	/**
 	 * Tipo da organização social

@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/Evento.php';
+require_once __DIR__ . '/Event.php';
 
-class Reuniao extends Evento{
+class Reunion extends Event{
 
 	/**
 	 * @var string
@@ -9,7 +9,7 @@ class Reuniao extends Evento{
 	protected $pauta;
 
 	/**
-	 * Pessoas da organização que devm participar da reunião 
+	 * Pessoas da organização que devem participar da reunião 
 	 * @var Array : MilitanteOrganico
 	 * @var Array : Administrador
 	 */
@@ -18,7 +18,7 @@ class Reuniao extends Evento{
 	/**
 	 *
 	 * Ouvintes e outras pessoas
-	 * @var Array : Pessoa
+	 * @var Array : Person
 	 * @var Array : MilitanteDeApoio
 	 */
 	protected $arrConvidadosOpcionais;

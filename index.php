@@ -7,7 +7,7 @@ require_once __DIR__ . 'Class/core/Core.php';
  * @author tatupheba
  *
  */
-class index extends Core{
+class index {
 
 }
 ?>

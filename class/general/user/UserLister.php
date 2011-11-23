@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/User.php';
-require_once __DIR__ . '/../database/DataBase.php';
+require_once __DIR__ . '/../database/Database.php';
 
 /**
  * Responsável por listar os usuários do sistema 

@@ -5,7 +5,7 @@
  * @author tatupheba
  *
  */
-class UserModule extends Core{
+class UserModule {
 
 	/**
 	 * Carrega o módulo de usuário dado seu nome.

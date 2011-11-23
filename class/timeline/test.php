@@ -1,6 +1,6 @@
 <?php 
-require_once __DIR__ . '/Evento/Reuniao.php';
-require_once __DIR__ . '/Evento/Manifestacao.php';
+require_once __DIR__ . '/Event/Reuniao.php';
+require_once __DIR__ . '/Event/Manifestacao.php';
 
 $r = new Reuniao();
 
@@ -10,9 +10,9 @@ $r = $r->carregar();
 $r->setDataFim(new DateTime());
 $r->setPauta("Pauta");
 $r->setObservacoes("teste de reunião");
-$r->setTipoDeRecorrencia(Evento::CONST_RECORRENCIA_MES);
+$r->setTipoDeRecorrencia(Event::CONST_RECORRENCIA_MES);
 $r->setQtdeDeRecorrencia(3);
-$r->setArrIntegrantes(array("Pessoa1", "Pessoa2" => "teste de pessoa 2", "Pessoa3" => 1, "Pessoa4" => 10, "Pessoa20" => 21));
+$r->setArrIntegrantes(array("Person1", "Person2" => "teste de pessoa 2", "Person3" => 1, "Person4" => 10, "Person20" => 21));
 $r->salvar();
 
 $r->setPauta("Pauta");

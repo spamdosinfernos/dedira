@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../core/baseDeDados/DocumentoDaBase.php';
+require_once __DIR__ . '/../../core/baseDeDados/StorableObject.php';
 
-class Objeto extends DocumentoDaBase{
+class Objeto extends StorableObject{
 	
 	protected $foto;
 
@@ -11,14 +11,14 @@ class Objeto extends DocumentoDaBase{
 
 	/**
 	 * Pessoa que tem a posse do objeto 
-	 * @var Pessoa
+	 * @var Person
 	 * @var IOrganizacao
 	 */
 	protected $possuidor;
 	
 	/**
 	 * Pessoa que tem a posse do objeto 
-	 * @var Pessoa
+	 * @var Person
 	 * @var IOrganizacao
 	 */
 	protected $possuidorTemporario;

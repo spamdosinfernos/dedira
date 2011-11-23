@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ .'/IEvento.php';
-require_once __DIR__ .'/../../core/baseDeDados/DocumentoDaBase.php';
+require_once __DIR__ .'/IEvent.php';
+require_once __DIR__ .'/../../core/baseDeDados/StorableObject.php';
 
 /**
  * Define um evento no cronograma da organização, toda classe 
  * que determina um evento que deve entrar no cronograma
  * deve estender esta classe
- * @author andre
+ * @author tatupheba
  *
  */
-class Evento extends DocumentoDaBase implements IEvento{
+class Event extends StorableObject implements IEvent{
 
 	/**
 	 * Data de fim do evento
@@ -31,7 +31,7 @@ class Evento extends DocumentoDaBase implements IEvento{
 
 	/**
 	 * Contatos do evento
-	 * @var array : IPessoa
+	 * @var array : IPerson
 	 */
 	protected $arrMaisContatos;
 
@@ -49,11 +49,11 @@ class Evento extends DocumentoDaBase implements IEvento{
 
 	/**
 	 * Pessoas ou organizações promotoras do evento 
-	 * @var Pessoa
+	 * @var Person
 	 * @var Militante
 	 * @var IOrganizacao
 	 */
-	protected $arrPessoasOuOrganizacoesPromotoras;
+	protected $arrPersonsOuOrganizacoesPromotoras;
 
 	/**
 	 * Guarda o tipo de recorrência
@@ -102,7 +102,7 @@ class Evento extends DocumentoDaBase implements IEvento{
 
 	public function __construct(){
 		parent::__construct();
-		$this->setNomeDaBaseDeDados(Configuration::CONST_DB_PEOPLE_NAME);
+		$this->setDataBaseName(Configuration::CONST_DB_NAME_PEOPLE);
 	}
 
 	public function setDataInicio(DateTime $dataInicio){
@@ -125,8 +125,8 @@ class Evento extends DocumentoDaBase implements IEvento{
 		$this->arrEnderecosDosLocais = $arrEnderecosDosLocais;
 	}
 
-	public function setArrPessoasOuOrganizacoesPromotoras($arrPessoasOuOrganizacoesPromotoras){
-		$this->arrPessoasOuOrganizacoesPromotoras = $arrPessoasOuOrganizacoesPromotoras;
+	public function setArrPersonsOuOrganizacoesPromotoras($arrPersonsOuOrganizacoesPromotoras){
+		$this->arrPersonsOuOrganizacoesPromotoras = $arrPersonsOuOrganizacoesPromotoras;
 	}
 
 	public function setArrIdsDosDocumentosRelacionados($arrIdsDosDocumentosRelacionados){
@@ -161,8 +161,8 @@ class Evento extends DocumentoDaBase implements IEvento{
 	    $this->particular = $particular;
 	}
 
-	public function getArrPessoasOuOrganizacoesPromotoras(){
-		return $this->arrPessoasOuOrganizacoesPromotoras;
+	public function getArrPersonsOuOrganizacoesPromotoras(){
+		return $this->arrPersonsOuOrganizacoesPromotoras;
 	}
 
 	public function getArrIdsDosDocumentosRelacionados(){

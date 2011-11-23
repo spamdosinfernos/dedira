@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../core/Core.php';
 require_once __DIR__ . '/ICorrenteIdeologica.php';
 
-class CorrenteIdeologica extends Core implements ICorrenteIdeologica{
+class CorrenteIdeologica  implements ICorrenteIdeologica{
 	
 	protected $nome;
 	

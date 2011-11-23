@@ -5,7 +5,7 @@ class Ata extends Documento{
 	
 	/**
 	 * Participantes na reunião em que foi feita a ata
-	 * @var Array : IPessoa
+	 * @var Array : IPerson
 	 */
 	protected $arrPartcipantesDaReuniao;
 	
@@ -19,7 +19,7 @@ class Ata extends Documento{
 	    return $this->arrPartcipantesDaReuniao;
 	}
 
-	public function addPartcipantesDaReuniao(IPessoa $participanteDaReuniao){
+	public function addPartcipantesDaReuniao(IPerson $participanteDaReuniao){
 	    $this->arrPartcipantesDaReuniao[] = $participanteDaReuniao;
 	}
 

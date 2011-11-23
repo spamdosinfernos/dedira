@@ -37,6 +37,14 @@ class File{
 	protected $compressed;
 
 	/**
+	 * Qualquer modificação do conteúdo deste arquivo constará aqui.
+	 * Para que as mesmas sejam efetivadas é necessário usar o método "saveAs".
+	 * @see setContents()
+	 * @var string
+	 */
+	protected $temporaryContents;
+
+	/**
 	 * Contêm o objeto responsável por enviar o arquivo para algum lugar remoto
 	 * @var InterfaceEnviador
 	 */
@@ -51,6 +59,25 @@ class File{
 			$this->setCaminhoDoArquivo($filePath);
 			$this->readMetaInformation();
 		}
+	}
+
+	/**
+	 * Salva o arquivo no lugar especificado
+	 * @param string $newFilePath
+	 * @return int - Quantidade de bytes escritos
+	 */
+	public function saveAs($newFilePath){
+		$bytesWrote = file_put_contents($newFilePath, $this->temporaryContents);
+
+		//TODO Pesquisar as duas funções abaixo
+		//set_error_handler()
+		//set_exception_handler()
+
+		if(is_bool($bytesWrote)) throw new SystemException("Falha ao gravar as informações em um arquivo", 1 . __CLASS__);
+
+		$this->setCaminhoDoArquivo($newFilePath);
+
+		return $bytesWrote;
 	}
 
 	/**
@@ -139,6 +166,12 @@ class File{
 		return file_get_contents($this->getFilePath());
 	}
 
+	public function setContents($contents){
+		$this->temporaryContents = $contents;
+		$this->md5 = md5($contents, true);
+		$this->fileCreationDate = time();
+	}
+
 	/**
 	 * Retorna o a extensão do arquivo
 	 * @return string
@@ -190,7 +223,7 @@ class File{
 	 */
 	public function setCaminhoDoArquivo($filePath){
 		if(is_file($filePath) == FALSE){
-			throw new Exception("O arquivo " . $filePath . " não existe ou é um atalho apontando para arquivo inválido, certifique-se também que as permissões de escrita e leitura estejam liberadas.");
+			throw new SystemException("O arquivo " . $filePath . " não existe ou é um atalho apontando para arquivo inválido, certifique-se também que as permissões de escrita e leitura estejam liberadas.", 2 . __CLASS__);
 		}
 		$this->filePath = realpath($filePath);
 	}
@@ -268,7 +301,7 @@ class File{
 
 		$this->compressed = true;
 		$this->filePath = $caminhoDoPacote;
-		$this->md5Compressed = md5_file($this->filePath);
+		$this->readMetaInformation();
 	}
 
 	public function uncompress(){

@@ -1,5 +1,5 @@
 <?php
-class Votacao extends Core{
+class Votacao {
 	
 	/**
 	 * Opções indexadas numericamente da votacao 

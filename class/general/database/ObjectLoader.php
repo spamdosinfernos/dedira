@@ -4,9 +4,9 @@ require_once __DIR__ . '/Database.php';
 /**
  * Responsável por carregar muitos objetos de uma só vez, dados parâmetros 
  * que não necessáriamente seja a id dos mesmos no banco.
- * @author andre
+ * @author tatupheba
  */ 
-class ObjectLoader extends Core{
+class ObjectLoader {
 
 	/**
 	 * Abriga o objeto responsável por carregar as informações

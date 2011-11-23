@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../class/general/security/Shield.php';
-require_once __DIR__ . '/../../class/general/database/DataBase.php';
+require_once __DIR__ . '/../../class/general/database/Database.php';
 require_once __DIR__ . '/../../class/ws_conexaoDb/WsConexaoDbConf.php';
 
 /**

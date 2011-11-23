@@ -5,17 +5,17 @@
 
 	function linhaDoTempo(){
 
-		var arrEventos;
+		var arrEvents;
 		
 		this.dataIncial;
 		this.dataFinal;
 
-		this.addEvento = function (evento){
-			arrEventos[evento.id] = evento;
-			euMesmo.renderizarEvento(evento);
+		this.addEvent = function (evento){
+			arrEvents[evento.id] = evento;
+			euMesmo.renderizarEvent(evento);
 		}
 
-		this.renderizarEvento = function (evento){
+		this.renderizarEvent = function (evento){
 			str = '<g id="'  + evento.id; + '>';
 			str += '</g>';
 		}
@@ -25,7 +25,7 @@
 
 	
 
-	function CEvento(){
+	function CEvent(){
 
 		var euMesmo = this;
 		
@@ -36,7 +36,7 @@
 		this.arrMaisContatos;
 		this.arrEnderecosDosLocais;
 		this.arrIdsDosDocumentosRelacionados;
-		this.arrPessoasOuOrganizacoesPromotoras;
+		this.arrPersonsOuOrganizacoesPromotoras;
 
 		this.__construct = function(){
 			alert();
@@ -44,18 +44,18 @@
 
 	}
 
-	CManifestacao = new CEvento();
+	CManifestacao = new CEvent();
 	CManifestacao = function(){
 		this.reinvindicacao;
 		this.arrMovimentosPromovedor;
 	}
 
-	CEncontro = new CEvento();
+	CEncontro = new CEvent();
 	CEncontro = function(){
 		this.tema;
 	} 
 
-	CReuniao = new CEvento();
+	CReuniao = new CEvent();
 	CReuniao = function(){
 		this.pauta;
 		this.arrIntegrantes;
@@ -67,7 +67,7 @@
 	evt = new CReuniao();
 	evt.pauta = "teste";
 	evt.id = 1;
-	lnTp.addEvento(evt);
+	lnTp.addEvent(evt);
 	
 	
 	

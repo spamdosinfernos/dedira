@@ -1,12 +1,12 @@
 <?php 
-require_once __DIR__ . '/../../core/baseDeDados/DocumentoDaBase.php';
+require_once __DIR__ . '/../../core/baseDeDados/StorableObject.php';
 
 /**
  * Representa uma contribuição financeira
- * @author andre
+ * @author tatupheba
  *
  */
-class Contribuicao extends DocumentoDaBase{
+class Contribuicao extends StorableObject{
 	
 	/**
 	 * Valor

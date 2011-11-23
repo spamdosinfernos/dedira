@@ -1,8 +1,7 @@
 <?php
-require_once __DIR__ . '/../../Core.php';
 require_once __DIR__ . '/../../configuration/Configuration.php';
 
-class CouchDB extends Core{
+class CouchDB {
 
 	private $user;
 
@@ -16,10 +15,6 @@ class CouchDB extends Core{
 	const CONST_PUT_OPERATION = "PUT";
 	const CONST_DEL_OPERATION = "DELETE";
 	const CONST_POST_OPERATION = "POST";
-
-	protected function __construct(){
-		parent::__construct();
-	}
 
 	protected function getRequestResponse(){
 		return json_decode($this->response);

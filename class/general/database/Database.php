@@ -1,9 +1,9 @@
 <?php
 require_once __DIR__ . '/couchDb/CouchDB.php';
-require_once __DIR__ . '/../../core/configuration/Configuration.php';
+require_once __DIR__ . '/../configuration/Configuration.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
- * @author andre
+ * @author tatupheba
  *
  */
 class Database extends CouchDB{
@@ -15,10 +15,6 @@ class Database extends CouchDB{
 	private $selectedBaseName;
 
 	private $response;
-
-	public function __construct(){
-		parent::__construct();
-	}
 
 	/**
 	 * Criar um nova base de dados

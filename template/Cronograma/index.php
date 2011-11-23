@@ -13,7 +13,7 @@ class index extends CXTemplate{
 	public function __construct(){
 		parent::__construct();
 		$this->cronograma = new Cronograma();
-		$this->cronograma->setDonoDoCronograma();
+		$this->cronograma->setTimelineOwner();
 	}
 	
 }

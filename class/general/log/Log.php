@@ -4,7 +4,7 @@ require_once __DIR__ . '/../configuration/Configuration.php';
 /**
  * Grava o log de solicitações
  */
-class Log extends Core{
+class Log {
 
 	/**
 	 * Mensagem a ser gravada

@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/IAuthenticationRules.php';
 require_once __DIR__ . '/../database/direct/V3DbOperations.php';
-require_once __DIR__ . '/../database/DataBase.php';
+require_once __DIR__ . '/../database/Database.php';
 require_once __DIR__ . '/../database/IDataBaseOperations.php';
 
 class IntegracaoAuthRules implements IAuthenticationRules{
