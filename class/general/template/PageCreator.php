@@ -209,7 +209,7 @@ class PageCreator  {
 
 			return $campoHtml->getHtml();
 		}catch (Exception $e){
-			throw new Exception("Falha ao gerar o código da página: " . $e->getMessage());
+			throw new SystemException("Falha ao gerar o código da página: " . $e->getMessage(),__CLASS__ .__LINE__);
 		}
 	}
 

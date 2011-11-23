@@ -59,14 +59,14 @@ class Authenticator{
 		try{
 			//Verificando se a verificação de usuário e senha retorna o tipo de valor esperado (booleano)
 			$isValid = $this->authenticationRules->verifyUserAndPassword();
-			if(!is_bool($isValid)) throw new Exception("O procedimento 'verifyUserAndPassword' deve retornar um valor booleano.");
+			if(!is_bool($isValid)) throw new SystemException("O procedimento 'verifyUserAndPassword' deve retornar um valor booleano.",__CLASS__ .__LINE__);
 
 			//Caso a verificação esteja ok, verifica se o usuário e senha são válidos
 			if($isValid){
 				
 				//Se o usuário e senha são válidos recupera a id do usuário na sessão
 				$authenticationId = $this->authenticationRules->getAutenticationId();
-				if(!(is_numeric($authenticationId) || is_string($authenticationId))) throw new Exception("O procedimento 'getAutenticationId' deve retornar uma string ou um número.");
+				if(!(is_numeric($authenticationId) || is_string($authenticationId))) throw new SystemException("O procedimento 'getAutenticationId' deve retornar uma string ou um número.",__CLASS__ .__LINE__);
 				
 				@session_destroy();
 				//Se tudo deu certo incia a sessão e atribui o id do usuário
@@ -81,7 +81,7 @@ class Authenticator{
 
 		}catch(Exception $e){
 			new Log($e->getMessage());
-			throw new Exception($e->getMessage());
+			throw new SystemException($e->getMessage(),__CLASS__ .__LINE__);
 		}
 		//login ou senha inválidos
 		return false;

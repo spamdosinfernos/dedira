@@ -13,7 +13,7 @@ class XTemplatePersonalizado extends XTemplate {
 		header('Content-Type: text/html; charset=utf-8');
 		
 		//Se o arquivo não existir lança uma nova excessão
-		if(!file_exists($file)) throw new Exception("O arquivo de template $file não existe!");
+		if(!file_exists($file)) throw new SystemException("O arquivo de template $file não existe!",__CLASS__ .__LINE__);
 		
 		//Constrói a classe normalmente
 		parent::__construct($file, $tpldir, $files, $mainblock, $autosetup);

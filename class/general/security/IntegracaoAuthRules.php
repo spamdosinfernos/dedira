@@ -52,7 +52,7 @@ class IntegracaoAuthRules implements IAuthenticationRules{
 		$log->setLogFileName(__CLASS__ . ".log");
 		$log->save();
 		
-		throw new Exception("Falha ao verificar login: " . $sql);
+		throw new SystemException("Falha ao verificar login: " . $sql,__CLASS__ .__LINE__);
 
 	}
 

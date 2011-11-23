@@ -32,7 +32,7 @@ class UserLister{
 
 		$query = 'select id_usuario from tbl_usuario where status = true';
 		$ok = $this->database->execReturnableSql($query);
-		if(!$ok) throw new Exception("A consulta de recuperação de usuários ativos falhou.");
+		if(!$ok) throw new SystemException("A consulta de recuperação de usuários ativos falhou.",__CLASS__ .__LINE__);
 
 		$arrResults = $this->database->getFetchArray();
 
@@ -53,7 +53,7 @@ class UserLister{
 		
 		$query = 'select id_usuario from tbl_usuario where status = false';
 		$ok = $this->database->execReturnableSql($query);
-		if(!$ok) throw new Exception("A consulta de recuperação de usuários não ativos falhou.");
+		if(!$ok) throw new SystemException("A consulta de recuperação de usuários não ativos falhou.",__CLASS__ .__LINE__);
 
 		$arrResults = $this->database->getFetchArray();
 

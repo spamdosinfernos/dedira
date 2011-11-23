@@ -93,18 +93,18 @@ class FTPClient implements InterfaceEnviador{
 		}
 
 		if($status != "" && $status != false) return $directoryPathDestiny;
-		throw new Exception("Falha ao determinar o diretório de destino do arquivo: " . $nameDestiny);
+		throw new SystemException("Falha ao determinar o diretório de destino do arquivo: " . $nameDestiny,__CLASS__ .__LINE__);
 	}
 
 	public function download($remoteFileToDownload, $localFileToSave, $callBackFunction = null){
 		if(!is_null($callBackFunction)){
-			if(!is_callable($callBackFunction)) throw new Exception("Função de callback inválida");
+			if(!is_callable($callBackFunction)) throw new SystemException("Função de callback inválida",__CLASS__ .__LINE__);
 		}
 
 		if(!$this->isConnected()){
 			$this->connect();
 			if(!$this->isConnected()){
-				throw new Exception("Não foi possí­vel conectar ao ftp " . $this->ftpAddress);
+				throw new SystemException("Não foi possí­vel conectar ao ftp " . $this->ftpAddress,__CLASS__ .__LINE__);
 			}
 
 		}
@@ -124,13 +124,13 @@ class FTPClient implements InterfaceEnviador{
 
 	public function upload($filePathOrign, $directoryPathDestiny, $nameDestiny, $callBackFunction = null){
 		if(!is_null($callBackFunction)){
-			if(!is_callable($callBackFunction)) throw new Exception("Função de callback inválida");
+			if(!is_callable($callBackFunction)) throw new SystemException("Função de callback inválida",__CLASS__ .__LINE__);
 		}
 
 		if(!$this->isConnected()){
 			$this->connect();
 			if(!$this->isConnected()){
-				throw new Exception("Não foi possí­vel conectar ao ftp " . $this->ftpAddress);
+				throw new SystemException("Não foi possí­vel conectar ao ftp " . $this->ftpAddress,__CLASS__ .__LINE__);
 			}
 
 		}
@@ -138,7 +138,7 @@ class FTPClient implements InterfaceEnviador{
 		if(!$this->testingConnection){
 			$filePathDestiny = $this->criarSubFilePathDestiny($directoryPathDestiny,$nameDestiny);
 			if(!$filePathDestiny){
-				throw new Exception("Não foi possí­vel criar o diretório de destino para o arquivo: " . $nameDestiny);
+				throw new SystemException("Não foi possí­vel criar o diretório de destino para o arquivo: " . $nameDestiny,__CLASS__ .__LINE__);
 			}
 
 			$filePathDestiny .= Configuracao::getDirectorySeparatorRemote() . $nameDestiny;
@@ -157,7 +157,7 @@ class FTPClient implements InterfaceEnviador{
 
 				//Se a função de callback retornar false, é para cancelar o envio
 				if(call_user_func($callBackFunction, $porcentagem) === false){
-					throw new Exception("Envio do arquivo $filePathOrign foi cancelado!");
+					throw new SystemException("Envio do arquivo $filePathOrign foi cancelado!",__CLASS__ .__LINE__);
 				}
 			}
 
@@ -187,10 +187,10 @@ class FTPClient implements InterfaceEnviador{
 		}
 
 		catch (Exception $e){
-			throw new Exception("Não foi possí­vel criar arquivo de teste do ftp: " . $e->getMessage());
+			throw new SystemException("Não foi possí­vel criar arquivo de teste do ftp: " . $e->getMessage(),__CLASS__ .__LINE__);
 		}
 
-		if(is_file("." . DIRECTORY_SEPARATOR . $nomeDoArquivoDeTeste) == FALSE) throw new Exception("Não foi possí­vel criar arquivo de teste do ftp: " . $e->getMessage());
+		if(is_file("." . DIRECTORY_SEPARATOR . $nomeDoArquivoDeTeste) == FALSE) throw new SystemException("Não foi possí­vel criar arquivo de teste do ftp: " . $e->getMessage(),__CLASS__ .__LINE__);
 		$retorno = $this->upload("." . DIRECTORY_SEPARATOR . $nomeDoArquivoDeTeste, Configuracao::getLocalRemotoParaEnvioDosArquivos(), $nomeDoArquivoDeTeste);
 		if($retorno){
 			$this->testingConnection = false;

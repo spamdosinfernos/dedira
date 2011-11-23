@@ -73,7 +73,7 @@ class Database extends CouchDB{
 	 */
 	public function saveDocument($documentId, $arrInformation){
 
-		if(!is_array($arrInformation)) throw new Exception("text - A informação fornecida deve ser um arranjo");
+		if(!is_array($arrInformation)) throw new SystemException("text - A informação fornecida deve ser um arranjo",__CLASS__ .__LINE__);
 
 		if($documentId == ""){
 			$this->send(self::CONST_POST_OPERATION, $this->selectedBaseName, $documentId, $arrInformation);

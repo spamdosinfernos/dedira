@@ -135,9 +135,8 @@ class StorableObject {
 	 */
 	public function erase(){
 
-		if($this->id == "") throw new Exception("Texto - Falha ao apagar informação: O evento não tem uma identificação.");
-
-		if($this->rev == "") $this->load();
+		if($this->id == "") throw new SystemException("Falha ao apagar informação: O evento não tem uma identificação.");
+		if($this->rev == "") throw new SystemException("Falha ao apagar informação: O evento não tem um número de revisão.",__CLASS__ .__LINE__);
 		
 		$this->openDataBaseConexion();
 
@@ -162,7 +161,7 @@ class StorableObject {
 
 	private function openDataBaseConexion(){
 
-		if($this->getDatabaseName() == "") throw new Exception("text - Para conectar na base de dados é necessário informar seu nome com 'setDataBaseName()'");
+		if($this->getDatabaseName() == "") throw new SystemException("text - Para conectar na base de dados é necessário informar seu nome com 'setDataBaseName()'",__CLASS__ .__LINE__);
 
 		if(is_null($this->dataBaseOperator)){
 			//Preparando para realizar as transações com o banco de dados
@@ -356,7 +355,7 @@ class StorableObject {
 	 * @param string $dataBaseName
 	 */
 	protected function setDataBaseName($dataBaseName){
-		if(!is_string($dataBaseName)) throw new Exception("text - O nome da base de dados tem que ser uma string");
+		if(!is_string($dataBaseName)) throw new SystemException("text - O nome da base de dados tem que ser uma string",__CLASS__ .__LINE__);
 		$this->databaseName = $dataBaseName;
 	}
 

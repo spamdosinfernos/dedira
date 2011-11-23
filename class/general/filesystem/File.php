@@ -109,7 +109,7 @@ class File{
 
 	public function erase(){
 		if(!$this->unlink($this->filePath)){
-			throw new Exception("Impossível apagar o arquivo " . $this->filePath);
+			throw new SystemException("Impossível apagar o arquivo " . $this->filePath,__CLASS__ .__LINE__);
 		}
 	}
 
@@ -250,9 +250,9 @@ class File{
 			$filePathDestiny = substr($filePathDestiny, 0, -1);
 		}
 
-		if($this->getFileName() == "") throw new Exception("O nome do arquivo a ser enviado está vazio!");
+		if($this->getFileName() == "") throw new SystemException("O nome do arquivo a ser enviado está vazio!",__CLASS__ .__LINE__);
 
-		if(!$this->sender->connect()) throw new Exception("Falha em estabelecer a conexão para enviar o arquivo");
+		if(!$this->sender->connect()) throw new SystemException("Falha em estabelecer a conexão para enviar o arquivo",__CLASS__ .__LINE__);
 
 		$status = $this->sender->upload($this->getFilePath(), $filePathDestiny, $this->getFileName(), $callBackFunction);
 
@@ -284,7 +284,7 @@ class File{
 
 			if($quantidadeMaxDeTentativas == 0){
 				@$this->unlink($caminhoDoPacote);
-				throw new Exception("Falha ao compactar arquivo: " . join("\r\n",$arrOutPut));
+				throw new SystemException("Falha ao compactar arquivo: " . join("\r\n",$arrOutPut),__CLASS__ .__LINE__);
 			}
 		}while(!$fechouPacote);
 
@@ -295,7 +295,7 @@ class File{
 
 			if($quantidadeMaxDeTentativas == 0){
 				$this->unlink($caminhoDoPacote);
-				throw new Exception("Falha ao compactar arquivo, não foi possível apagar o arquivo de origem: " . $this->filePath);
+				throw new SystemException("Falha ao compactar arquivo, não foi possível apagar o arquivo de origem: " . $this->filePath,__CLASS__ .__LINE__);
 			}
 		} while(!$this->unlink($this->filePath));
 
@@ -307,12 +307,12 @@ class File{
 	public function uncompress(){
 		$arrNomeDoArquivo = explode(".", $this->filePath);
 		if("." . $arrNomeDoArquivo[count($arrNomeDoArquivo) -1] != self::CONST_COMPRESSED_EXTENSION){
-			throw new Exception("O arquivo " . $this->filePath . " não é um arquivo compactado. Não é possí­vel descompactá-lo");
+			throw new SystemException("O arquivo " . $this->filePath . " não é um arquivo compactado. Não é possí­vel descompactá-lo",__CLASS__ .__LINE__);
 		}
 
 		$zip = new ZipArchive();
 		try{
-			if (!($zip->open($this->filePath) === TRUE)) throw new Exception("Erro ao abrir o arquivo compactado " . $this->filePath . " verifique as permissões de leitura no seu sistema.");
+			if (!($zip->open($this->filePath) === TRUE)) throw new SystemException("Erro ao abrir o arquivo compactado " . $this->filePath . " verifique as permissões de leitura no seu sistema.",__CLASS__ .__LINE__);
 			$qtdeDeArquivosNoArquivoCompactado = $zip->numFiles;
 			if($qtdeDeArquivosNoArquivoCompactado > 1){
 
@@ -332,7 +332,7 @@ class File{
 		$zip->close();
 
 		if($this->unlink($this->filePath) === FALSE){
-			throw new Exception("Não foi possí­vel apagar o arquivo original após a descompactação:" . $this->filePath);
+			throw new SystemException("Não foi possí­vel apagar o arquivo original após a descompactação:" . $this->filePath,__CLASS__ .__LINE__);
 		}
 
 		if($qtdeDeArquivosNoArquivoCompactado > 1){
@@ -354,7 +354,7 @@ class File{
 		try{
 			$this->renamePersonalizado($novoCaminho);
 		}catch (Exception $e){
-			throw new Exception("Não foi possível renomear o arquivo " . $this->getFileName() . " para " . $novoNome . ". Verifique as permissões de escrita no diretório: " . $e->getMessage());
+			throw new SystemException("Não foi possível renomear o arquivo " . $this->getFileName() . " para " . $novoNome . ". Verifique as permissões de escrita no diretório: " . $e->getMessage(),__CLASS__ .__LINE__);
 		}
 
 		$this->filePath = $novoCaminho;
@@ -375,11 +375,11 @@ class File{
 
 		//Se a cópia foi feita com sucesso e o arquivo existe no destino vai em frente!
 		if(file_exists($this->filePath)){
-			throw new Exception("Erro, não foi possível apagar o arquivo de origem: " . $this->filePath);
+			throw new SystemException("Erro, não foi possível apagar o arquivo de origem: " . $this->filePath,__CLASS__ .__LINE__);
 		}
 
 		if(!file_exists($caminhoDeDestino)){
-			throw new Exception("Erro, não foi possível criar o arquivo de destino: " . $caminhoDeDestino);
+			throw new SystemException("Erro, não foi possível criar o arquivo de destino: " . $caminhoDeDestino,__CLASS__ .__LINE__);
 		}
 
 		$this->filePath = $caminhoDeDestino;
@@ -392,11 +392,11 @@ class File{
 		}
 
 		if(!file_exists($caminhoDoDiretorio)){
-			throw new Exception("O caminho para o diretório " . $caminhoDoDiretorio . " é inválido!");
+			throw new SystemException("O caminho para o diretório " . $caminhoDoDiretorio . " é inválido!",__CLASS__ .__LINE__);
 		}
 
 		if(!is_dir($caminhoDoDiretorio)){
-			throw new Exception("O caminho indicado " . $caminhoDoDiretorio . " não é um diretório!");
+			throw new SystemException("O caminho indicado " . $caminhoDoDiretorio . " não é um diretório!",__CLASS__ .__LINE__);
 		}
 
 		$caminhoDeDestino = $caminhoDoDiretorio . DIRECTORY_SEPARATOR . $this->getFileName();
@@ -409,9 +409,9 @@ class File{
 			$this->unlink($this->filePath);
 		} while(file_exists($this->filePath));
 
-		if(file_exists($this->filePath)) throw new Exception("Falha ao mover arquivo, o arquivo de origem não foi apagado: " . $this->filePath);
+		if(file_exists($this->filePath)) throw new SystemException("Falha ao mover arquivo, o arquivo de origem não foi apagado: " . $this->filePath,__CLASS__ .__LINE__);
 
-		if(!file_exists($caminhoDeDestino)) throw new Exception("Falha ao mover arquivo, o arquivo de destino não foi criado: " . $caminhoDeDestino);
+		if(!file_exists($caminhoDeDestino)) throw new SystemException("Falha ao mover arquivo, o arquivo de destino não foi criado: " . $caminhoDeDestino,__CLASS__ .__LINE__);
 
 		$this->filePath = $caminhoDeDestino;
 	}
