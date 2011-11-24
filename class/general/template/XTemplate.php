@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../Core.php';
 /**
  * XTemplate PHP templating engine
  *
@@ -19,7 +18,7 @@ require_once __DIR__ . '/../Core.php';
  * License: LGPL / BSD - see license.txt
  * Changelog: see changelog.txt
  */
-class CXTemplate {
+class XTemplate {
 
 	/**
 	 * Properties
@@ -313,7 +312,6 @@ class CXTemplate {
      * @return XTemplate
      */
 	public function __construct($file, $tpldir = '', $files = null, $mainblock = 'main', $autosetup = true) {
-		parent::__construct();
 		$this->restart($file, $tpldir, $files, $mainblock, $autosetup, $this->tag_start_delim, $this->tag_end_delim);
 	}
 

@@ -84,7 +84,7 @@ class Event extends StorableObject implements IEvent{
 	protected $private;
 
 	/**
-	 * Guarda um arranjo com todos os códigos de recorrência
+	 * (apenas para uso interno a classe) Guarda um arranjo com todos os códigos de recorrência
 	 * @var array : int
 	 */
 	protected $arrRecorrencies;

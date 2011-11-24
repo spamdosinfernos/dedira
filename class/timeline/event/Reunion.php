@@ -4,16 +4,17 @@ require_once 'Event.php';
 class Reunion extends Event{
 
 	/**
+	 * Pauta da reunião
 	 * @var string
 	 */
-	protected $pauta;
+	protected $guideLines;
 
 	/**
 	 * Pessoas da organização que devem participar da reunião 
 	 * @var Array : MilitanteOrganico
 	 * @var Array : Administrador
 	 */
-	protected $arrIntegrantes;
+	protected $arrMembers;
 
 	/**
 	 *
@@ -21,30 +22,30 @@ class Reunion extends Event{
 	 * @var Array : Person
 	 * @var Array : MilitanteDeApoio
 	 */
-	protected $arrConvidadosOpcionais;
+	protected $arrInvited;
 	
-	public function getPauta(){
-		return $this->pauta;
+	public function getGuideLines(){
+		return $this->guideLines;
 	}
 
-	public function setPauta($pauta){
-		$this->pauta = $pauta;
+	public function setGuideLines($guideLines){
+		$this->guideLines = $guideLines;
 	}
 
-	public function getArrIntegrantes(){
-		return $this->arrIntegrantes;
+	public function getArrMembers(){
+		return $this->arrMembers;
 	}
 
-	public function setArrIntegrantes($arrIntegrantes){
-		$this->arrIntegrantes = $arrIntegrantes;
+	public function setArrMembers($arrMembers){
+		$this->arrMembers = $arrMembers;
 	}
 
-	public function getArrConvidadosOpcionais(){
-		return $this->arrConvidadosOpcionais;
+	public function getArrInvited(){
+		return $this->arrInvited;
 	}
 
-	public function setArrConvidadosOpcionais($arrConvidadosOpcionais){
-		$this->arrConvidadosOpcionais = $arrConvidadosOpcionais;
+	public function setArrInvited($arrInvited){
+		$this->arrInvited = $arrInvited;
 	}
 }
 ?>

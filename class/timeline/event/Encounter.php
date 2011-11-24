@@ -3,14 +3,14 @@ require_once 'Event.php';
 
 class Encounter extends Event{
 	
-	protected $tema;
+	protected $theme;
 	
-	public function getTema(){
-	    return $this->tema;
+	public function getTheme(){
+	    return $this->theme;
 	}
 
-	public function setTema($tema){
-	    $this->tema = $tema;
+	public function setTheme($theme){
+	    $this->theme = $theme;
 	}
 }
 

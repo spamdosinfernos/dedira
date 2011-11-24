@@ -4,27 +4,13 @@ require_once __DIR__ . '/../../Organizacao/OrganizacaoSocial.php';
 
 class Manifestation extends Event{
 	
-	protected $reinvindicacao;
+	protected $demand;
 	
-	/**
-	 * Movimentos promovedores
-	 * @var array : OrganizacaoSocial
-	 */
-	protected $arrMovimentosPromovedor;
-
-	public function getReinvindicacao(){
-	    return $this->reinvindicacao;
+	public function getDemand(){
+	    return $this->demand;
 	}
 
-	public function setReinvindicacao($reinvindicacao){
-	    $this->reinvindicacao = $reinvindicacao;
-	}
-
-	public function getArrMovimentosPromovedor(){
-	    return $this->arrMovimentosPromovedor;
-	}
-
-	public function addMovimentoPromovedor(OrganizacaoSocial $movimentoPromovedor){
-	    $this->arrMovimentosPromovedor[] = $movimentoPromovedor;
+	public function setDemand($demand){
+	    $this->demand = $demand;
 	}
 }

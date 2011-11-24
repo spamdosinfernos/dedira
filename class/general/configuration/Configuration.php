@@ -17,7 +17,7 @@ class Configuration {
 	 * Base de dados usada para os eventos
 	 * @var string
 	 */
-	const CONST_DB_NAME_EVENTS = "eventos";
+	const CONST_DB_NAME_EVENTS = "events";
 
 
 	/**
@@ -45,12 +45,6 @@ class Configuration {
 	const CONST_DB_PORT = 5984;
 	
 	/**
-	 * Mensagem exibida quando o sistema pede autenticação
-	 * @var string
-	 */
-	const CONST_AUTH_MESSAGE = "Autentique-se no sistema";
-
-	/**
 	 * Formato da data no arquivo de log
 	 * @var string
 	 */
@@ -61,6 +55,14 @@ class Configuration {
 	 * @var string
 	 */
 	static private $systemRootDirectory;
+	
+	/**
+	 * Mensagem exibida quando o sistema pede autenticação
+	 * @return string
+	 */
+	static public function getAuthMessage(){
+		return Lang_Configuration::getDescriptions(1);
+	}
 
 	static public function getSystemRootDirectory(){
 
@@ -71,11 +73,11 @@ class Configuration {
 	}
 	
 	static public function getUserModuleDiretory(){
-		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "Modulos";
+		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "modules";
 	}
 	
 	static public function getUserModuleTestDiretory(){
-		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "Modulos" . DIRECTORY_SEPARATOR . "teste";
+		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "m odules" . DIRECTORY_SEPARATOR . "teste";
 	}
 
 	/**
@@ -106,7 +108,7 @@ class Configuration {
 	}
 	
 	static public function getTemplatesDirectory(){
-		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "Template" . DIRECTORY_SEPARATOR;
+		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "template" . DIRECTORY_SEPARATOR;
 	}
 	
 	static public function getLanguage(){
