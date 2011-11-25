@@ -39,15 +39,33 @@ class Timeline {
 	protected $finalDate;
 
 	/**
+	 * Erro 1: O dono deve ser informado
+	 * @var int
+	 */
+	const CONST_ERROR_1 = 1;
+	
+	/**
+	 * Erro 2: A data inicial deve ser informada
+	 * @var int
+	 */
+	const CONST_ERROR_2 = 2;
+	
+	/**
+	 * Erro 3: A data final deve ser informada
+	 * @var int
+	 */
+	const CONST_ERROR_3 = 3;
+
+	/**
 	 * Constrói o cronograma do usuário
 	 * @param IPerson $timelineOwner
 	 * @param DateTime $finalDate
 	 * @param DateTime $inicialDate
 	 */
-	public function __construct(IPerson $timelineOwner, $finalDate = null, $inicialDate = null){
+	public function __construct(IPerson $timelineOwner, Datetime $finalDate = null, Datetime $inicialDate = null){
 
 		if(is_null($inicialDate)){
-			
+				
 			//Data inicial, por padrão é hoje
 			$inicialDate = new DateTime();
 
@@ -71,8 +89,14 @@ class Timeline {
 		return $this->arrEvents;
 	}
 
-	public function setArrEvents($arrEvents){
-		$this->arrEvents = $arrEvents;
+	public function loadEvents(){
+		if(is_null($this->timelineOwner)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_1), self::CONST_ERROR_1);
+		if(is_null($this->inicialDate)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_2), self::CONST_ERROR_2);
+		if(is_null($this->finalDate)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_3), self::CONST_ERROR_3);
+		
+		//TODO Implementar o carregamento de todos os eventos dados o dono e as datas inicial e final.
+		//TODO Parei aqui! Percebi que talvez aquela classe para gerar interfaces na qual trabalhei tanto seja nada mais que inútil as exigências das interfaces parecem ser muito mais superiores ao que esta classe pode ou poderá fazer, sendo assim é melhor eu fazer as interfaces do modo mais tradicional mesmo
+		
 	}
 
 	public function addEvent(IEvent $evento){
@@ -94,5 +118,7 @@ class Timeline {
 	public function setFinalDate(Datetime $finalDate){
 		$this->finalDate = $finalDate;
 	}
+
+
 }
 ?>

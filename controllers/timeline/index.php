@@ -18,8 +18,6 @@ class index{
 		$this->customXtemplate = new CustomXtemplate(TimelineConfiguration::getTemplatesDirectory() . "index.html");
 		$this->customXtemplate->parse("main");
 		$this->customXtemplate->out("main");
-		
-		//TODO Parei aqui, já fiz uma primeira tela básica que faz nada, preciso me focar na classe de templates afim de gerar telas mais facilmente além de poder traduzi-las também, preciso pensar em uma forma eficiente de carregar os idiomas no sistema sem carregar a memória
 	}
 
 	/**
