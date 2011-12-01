@@ -1,24 +1,33 @@
 <?php
 require_once 'User.php';
+require_once __DIR__ . '/../security/authentication/UserAuthRules.php';
+require_once __DIR__ . '/../security/authentication/Authenticator.php';
 
 $user = new User();
-
-//$user->setId("d1e3b82a5a1e114190ba2c9877000a88");
-//$user = $user->load();
-//$user->erase();
-
-
-$user->setName("André");
-$user->setSecondName("Furlan");
-$user->setArrEmail(array("tatupheba@gmail.com","nonducornonduco@riseup.net"));
-$user->setArrTelefone(array("6627-6501","9102-1056"));
+$user->setActive(true);
+$user->setArrEmail(array("tatupheba@gmail.com.br","nonducornonduco@riseup.net"));
 $user->setBirthDate(new DateTime("27-11-1980"));
-$user->setSex("M");
+$user->setArrTelefone(array("88889999"));
 $user->setLogin("tatupheba");
 $user->setPassword(md5("tatu7"));
-$user->save();
-$s = serialize($user);
+$user->setSex("M");
+//$user->save();
+
+$user = new User();
+$user->setActive(true);
+$user->setArrEmail(array("jac.meire@hotmail.com","jacqueline@riseup.net"));
+$user->setBirthDate(new DateTime("18-09-1989"));
+$user->setArrTelefone(array("66276501"));
+$user->setLogin("jacqueline");
+$user->setPassword(md5("232523"));
+$user->setSex("F");
+//$user->save();
+
+$uar = new UserAuthRules();
+$uar->setUser($user);
 
 
-$s = str_replace("\0","*",$s);
+$au = new Authenticator($uar);
+$au->authenticate();
+$au->unauthenticate();
 ?>

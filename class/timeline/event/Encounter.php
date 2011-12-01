@@ -1,7 +1,7 @@
 <?php
-require_once 'Event.php';
+require_once 'AEvent.php';
 
-class Encounter extends Event{
+class Encounter extends AEvent{
 	
 	protected $theme;
 	

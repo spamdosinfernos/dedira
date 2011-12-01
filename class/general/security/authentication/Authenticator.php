@@ -1,6 +1,4 @@
 <?php
-require_once __DIR__ . '/../log/Log.php';
-
 class Authenticator{
 
 	/**
@@ -58,8 +56,8 @@ class Authenticator{
 
 		try{
 			//Verificando se a verificação de usuário e senha retorna o tipo de valor esperado (booleano)
-			$isValid = $this->authenticationRules->verifyUserAndPassword();
-			if(!is_bool($isValid)) throw new SystemException("O procedimento 'verifyUserAndPassword' deve retornar um valor booleano.",__CLASS__ .__LINE__);
+			$isValid = $this->authenticationRules->checkAuthenticationData();
+			if(!is_bool($isValid)) throw new SystemException("O procedimento 'checkAuthenticationData' deve retornar um valor booleano.",__CLASS__ .__LINE__);
 
 			//Caso a verificação esteja ok, verifica se o usuário e senha são válidos
 			if($isValid){
@@ -89,13 +87,6 @@ class Authenticator{
 
 	public function setAuthenticationRules(IAuthenticationRules $authenticationRules){
 		$this->authenticationRules = $authenticationRules;
-	}
-
-	/**
-	 * Verifica se houve uma solicitação de autenticação na página
-	 */
-	public function isAuthenticationRequested(){
-		return isset($_POST["login"]) && isset($_POST["password"]);
 	}
 
 	public function getAuthenticationId(){

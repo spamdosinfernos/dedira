@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ .'/IEvent.php';
-require_once __DIR__ . '/language/Lang_Event.php';
+require_once __DIR__ . '/language/Lang_AEvent.php';
 require_once __DIR__ .'/../../general/database/StorableObject.php';
 
 /**
@@ -8,14 +8,10 @@ require_once __DIR__ .'/../../general/database/StorableObject.php';
  * que determina um evento que deve entrar no cronograma
  * deve estender esta classe.
  *
- * Esta classe deveria ser abstrata mas como é necessário um 
- * construtor para setar o nome da base de dados vai ter que
- * ser uma classe normal mesmo.
- *
  * @author tatupheba
  *
  */
-class Event extends StorableObject implements IEvent{
+abstract class AEvent extends StorableObject implements IEvent{
 
 	/**
 	 * Data de fim do evento
@@ -87,7 +83,7 @@ class Event extends StorableObject implements IEvent{
 	 * (apenas para uso interno a classe) Guarda um arranjo com todos os códigos de recorrência
 	 * @var array : int
 	 */
-	protected $arrRecorrencies;
+	private $arrRecorrencies;
 
 	/*
 	 * Tipos de recorrências possíveis para um evento
@@ -110,17 +106,23 @@ class Event extends StorableObject implements IEvent{
 	const CONST_RECORRENCY_THURSDAY = 11;
 	const CONST_RECORRENCY_FRIDAY = 12;
 	const CONST_RECORRENCY_SATURDAY = 13;
-	
+
 	/*
 	 * Erro emitidos por esta classe
 	 */
 	const CONST_ERROR_1 = 1;
 	const CONST_ERROR_2 = 2;
-	
-	public function __construct(){
-		$this->setDataBaseName(Configuration::CONST_DB_NAME_EVENTS);
 
-		$this->arrRecorrencies = array(
+	public function getRecorrencyName(){
+		return Lang_AEvent::getDescriptions($this->recurringType);
+	}
+
+	public function setRecurringType($recurringType){
+
+		//Verifica se o tipo de recorrência é válida
+		$valid = in_array(
+		$recurringType,
+		array(
 		self::CONST_RECORRENCY_NO,
 		self::CONST_RECORRENCY_DAY,
 		self::CONST_RECORRENCY_WEEK,
@@ -136,18 +138,9 @@ class Event extends StorableObject implements IEvent{
 		self::CONST_RECORRENCY_THURSDAY,
 		self::CONST_RECORRENCY_FRIDAY,
 		self::CONST_RECORRENCY_SATURDAY
+		)
 		);
-	}
-
-	public function getRecorrencyName($recorrencyId){
-		return Lang_Event::getDescriptions($recorrencyId);
-	}
-
-	public function setRecurringType($recurringType){
-
-		//Verifica se o tipo de recorrência é válida
-		$valid = in_array($recurringType,$this->arrRecorrencies);
-		if(!$valid) throw new UserException(Lang_Event::getDescriptions(self::CONST_ERROR_1), self::CONST_ERROR_1);
+		if(!$valid) throw new UserException(Lang_AEvent::getDescriptions(self::CONST_ERROR_1), self::CONST_ERROR_1);
 
 		$this->recurringType = $recurringType;
 	}
@@ -233,9 +226,9 @@ class Event extends StorableObject implements IEvent{
 	}
 
 	public function setPrivate($private){
-		
-		if(!is_bool($private)) throw new UserException(Lang_Event::getDescriptions(self::CONST_ERROR_2), self::CONST_ERROR_2);
-		
+
+		if(!is_bool($private)) throw new UserException(Lang_AEvent::getDescriptions(self::CONST_ERROR_2), self::CONST_ERROR_2);
+
 		$this->private = $private;
 	}
 }

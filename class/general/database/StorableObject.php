@@ -87,13 +87,14 @@ class StorableObject {
 	 * eficiente e internamente a esta classe, substituir
 	 * uma instância dela por outra gerada dentro dela mesma, 
 	 * sendo assim, é necessário chamar este método de forma externa.
-	 * @example 
+	 * @example
 	 * $obj = new StorableObject();
 	 * $obj->setId("fe65af4ef4ef64e45e4f6ef");
 	 * $obj->load() - NÃO FUNCIONA!
 	 * $obj = $obj->load() - É FEIO MAS FUNCIONA.
 	 * @return Object - O objeto carregado
 	 * @see setId()
+	 * @see setDataBaseName()
 	 */
 	public function load(){
 
@@ -107,7 +108,7 @@ class StorableObject {
 		$stdObject = $this->dataBaseOperator->getResponse();
 
 		$expression = $this->generateSerializedData(null, $stdObject);
-		
+
 		return unserialize($expression);
 	}
 
@@ -142,7 +143,7 @@ class StorableObject {
 
 		if($this->id == "") throw new SystemException("Falha ao apagar informação: O evento não tem uma identificação.");
 		if($this->rev == "") throw new SystemException("Falha ao apagar informação: O evento não tem um número de revisão.",__CLASS__ .__LINE__);
-		
+
 		$this->openDataBaseConexion();
 
 		return $this->dataBaseOperator->eraseDocument($this->id, $this->rev);
@@ -166,12 +167,12 @@ class StorableObject {
 
 	private function openDataBaseConexion(){
 
-		if($this->getDatabaseName() == "") throw new SystemException("text - Para conectar na base de dados é necessário informar seu nome com 'setDataBaseName()'",__CLASS__ .__LINE__);
+		if(Configuration::CONST_DB_NAME == "") throw new SystemException("text - Para conectar na base de dados é necessário informar seu nome com 'setDataBaseName()'",__CLASS__ .__LINE__);
 
 		if(is_null($this->dataBaseOperator)){
 			//Preparando para realizar as transações com o banco de dados
 			$this->dataBaseOperator = new Database();
-			$this->dataBaseOperator->databaseSelect($this->getDatabaseName());
+			$this->dataBaseOperator->databaseSelect(Configuration::CONST_DB_NAME);
 		}
 	}
 
@@ -348,18 +349,10 @@ class StorableObject {
 	}
 
 	/**
-	 * Recupera o nome da base de dados na qual serão salvos os dados
-	 * @return string
-	 */
-	protected function getDatabaseName(){
-		return $this->databaseName;
-	}
-
-	/**
 	 * Seta o nome da base de dados na qual serão salvos os dados
 	 * @param string $dataBaseName
 	 */
-	protected function setDataBaseName($dataBaseName){
+	private function setDataBaseName($dataBaseName){
 		if(!is_string($dataBaseName)) throw new SystemException("text - O nome da base de dados tem que ser uma string",__CLASS__ .__LINE__);
 		$this->databaseName = $dataBaseName;
 	}
@@ -384,7 +377,9 @@ class StorableObject {
 		if(is_object($info)){
 			//As propriedades são as propriedades do objeto
 			$reflection = new ReflectionObject($info);
-			$arrPropriedades = $reflection->getProperties();
+			
+			//Apenas me nteressam neste caso as propriedades públicas e protegidas
+			$arrPropriedades = $reflection->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
 		}else{
 			//Senão as propridades são os itens do arranjo
 			$arrPropriedades = $info;
@@ -402,16 +397,15 @@ class StorableObject {
 
 			//Recupera os dados da propridade do objeto
 			if(is_object($info)){
-				
+
 				//Não é possível guardar valores de propriedades privadas, sendo assim, pulamos todas elas 
 				$visibilidade = $propriedade->getModifiers();
-				if($visibilidade == ReflectionMethod::IS_PRIVATE) continue;
-				
+
 				$nomeDaPropriedade = $propriedade->getName();
 				$valorDaPropriedade = $info->$nomeDaPropriedade;
 
-				//Correção de bug aparente: As vezes a visibilidade fica em 4096 sendo que o máximo é 1024
-				$visibilidade = $visibilidade > ReflectionMethod::IS_PRIVATE ? ReflectionMethod::IS_PUBLIC : $visibilidade;
+				//Correção de bug aparente: As vezes a visibilidade fica em 4096 sendo que o máximo é 102
+				$visibilidade = $visibilidade > ReflectionProperty::IS_PRIVATE ? ReflectionProperty::IS_PUBLIC : $visibilidade;
 			}
 
 			//Se o valor da propriedade é um objeto, chama recursivamente o método

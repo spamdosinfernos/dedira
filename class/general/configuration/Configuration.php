@@ -14,17 +14,10 @@ class Configuration {
 	const CONST_DB_PASSWORD = "";
 
 	/**
-	 * Base de dados usada para os eventos
+	 * Nome dabBase de dados
 	 * @var string
 	 */
-	const CONST_DB_NAME_EVENTS = "events";
-
-
-	/**
-	 * Base de dados usada para as pessoas
-	 * @var string
-	 */
-	const CONST_DB_NAME_PEOPLE = "people";
+	const CONST_DB_NAME = "milisystem";
 
 	/**
 	 * Endereço do servidor de banco de dados
@@ -77,7 +70,7 @@ class Configuration {
 	}
 	
 	static public function getUserModuleTestDiretory(){
-		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "m odules" . DIRECTORY_SEPARATOR . "teste";
+		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "teste";
 	}
 
 	/**

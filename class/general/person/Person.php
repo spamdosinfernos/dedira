@@ -1,7 +1,8 @@
 <?php
+require_once 'IPerson.php';
 require_once __DIR__ . '/../database/StorableObject.php';
 
-class Person extends StorableObject{
+class Person extends StorableObject implements IPerson{
 
 	/**
 	 * Nome
@@ -59,7 +60,7 @@ class Person extends StorableObject{
 		return $this->birthDate;
 	}
 
-	public function setBirthDate($birthDate){
+	public function setBirthDate(Datetime $birthDate){
 		$this->birthDate = $birthDate;
 	}
 
@@ -86,5 +87,6 @@ class Person extends StorableObject{
 	public function setArrTelefone($arrTelefone){
 		$this->arrTelefone = $arrTelefone;
 	}
+	
 }
 ?>

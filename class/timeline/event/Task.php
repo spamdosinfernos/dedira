@@ -1,11 +1,11 @@
 <?php
-require_once 'Event.php';
+require_once 'AEvent.php';
 /**
  * Descreve tarefas que devem ser realizadas pelo usuário
  * @author tatupheba
  *
  */
-class Task extends Event{
+class Task extends AEvent{
 
 	/**
 	 * Indica se a tarefa foi realizada ou não 

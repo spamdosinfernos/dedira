@@ -8,25 +8,18 @@ interface IAuthenticationRules{
 	 * Seta o login do usuário
 	 * @return string
 	 */ 
-	public function setLogin($login);
-	
-	/**
-	 * Seta a senha do usuário
-	 * @return string
-	 */
-	public function setPassword($password);
+	public function setUser(User $user);
 	
 	/**
 	 * Verifica se o usuário e senha são válidos
 	 * @return boolean true : válidos | false : inválidos
-	 * @see setLogin
-	 * @see setPassword
+	 * @see setUser
 	 */
-	public function verifyUserAndPassword();
+	public function checkAuthenticationData();
 	
 	/**
 	 * Retorna a id do usuário dentro da sessão
-	 * Execute com sucesso "verifyUserAndPassword()" 
+	 * Execute com sucesso "checkAuthenticationData()" 
 	 * antes de usar isso.
 	 * @return string | int
 	 */

@@ -2,10 +2,9 @@
 require_once __DIR__ . '/Database.php';
 
 /**
- * Responsável por carregar muitos objetos de uma só vez, dados parâmetros 
- * que não necessáriamente seja a id dos mesmos no banco.
+ * Responsável por carregar muitos ids de objetos de uma só vez
  * @author tatupheba
- */ 
+ */
 class ObjectLoader {
 
 	/**
@@ -15,13 +14,20 @@ class ObjectLoader {
 	private $database;
 
 	public function __construct($dataBaseName){
-		parent::__construct();
 		$this->database = new Database();
-		$this->database->databaseSelect($dataBaseName);
+		$this->database->databaseSelect(Configuration::CONST_DB_NAME);
 	}
-	
-	public function getUserIdThroughLoginAndPassword($user, $password){
 
+	public function getUserId($login, $password){
+
+
+
+
+		$this->database->executeView($viewAddress);
+	}
+
+	protected function getViewUrl(){
+		
 		$viewExists = false;
 		$viewAddress = "";
 
@@ -31,7 +37,7 @@ class ObjectLoader {
 		$arrDesigns = $this->database->getResponse();
 
 		foreach ($arrDesigns as $design) {
-			
+
 			$r = new ReflectionObject($design->views);
 			$arrViews = $r->getProperties();
 
@@ -42,8 +48,8 @@ class ObjectLoader {
 				}
 			}
 		}
-
-		$this->database->executeView($viewAddress);
 	}
+
+
 }
 ?>

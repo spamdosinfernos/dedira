@@ -1,9 +1,6 @@
 <?php
 require_once __DIR__ . '/../general/configuration/Configuration.php';
-require_once __DIR__ . '/Event/Manifestacao.php';
-require_once __DIR__ . '/Event/Encontro.php';
-require_once __DIR__ . '/Event/Reuniao.php';
-require_once __DIR__ . '/Event/Event.php';
+require_once __DIR__ . '/Event/IEvent.php';
 
 /**
  * Representa o cronograma de um usuário dado um determinado intervalo de datas
@@ -43,13 +40,13 @@ class Timeline {
 	 * @var int
 	 */
 	const CONST_ERROR_1 = 1;
-	
+
 	/**
 	 * Erro 2: A data inicial deve ser informada
 	 * @var int
 	 */
 	const CONST_ERROR_2 = 2;
-	
+
 	/**
 	 * Erro 3: A data final deve ser informada
 	 * @var int
@@ -65,7 +62,7 @@ class Timeline {
 	public function __construct(IPerson $timelineOwner, Datetime $finalDate = null, Datetime $inicialDate = null){
 
 		if(is_null($inicialDate)){
-				
+
 			//Data inicial, por padrão é hoje
 			$inicialDate = new DateTime();
 
@@ -90,13 +87,30 @@ class Timeline {
 	}
 
 	public function loadEvents(){
+		//TODO Implementar o carregamento de todos os eventos dados o dono e as datas inicial e final.
 		if(is_null($this->timelineOwner)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_1), self::CONST_ERROR_1);
 		if(is_null($this->inicialDate)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_2), self::CONST_ERROR_2);
 		if(is_null($this->finalDate)) throw new SystemException(Lang_Timeline::getDescriptions(self::CONST_ERROR_3), self::CONST_ERROR_3);
+
+		//TODO Preciso carregar todos os ids dos eventos, preciso criar uma view para isso
+		$database = new Database();
 		
-		//TODO Implementar o carregamento de todos os eventos dados o dono e as datas inicial e final.
+		$database->
+		
+		//TODO Para fazer o dito acima preciso ver se a classe event se transforma em uma de suas derivadas, senão acho que terei que colocar os requires de todas as classes derivadas aqui no timeline
+		$this->arrEvents = array();
+
+		foreach ($arrEventsData as $eventData){
+			$event = new Event();
+			$event->setDataBaseName(Configuration::CONST_DB_NAME);
+			$event->setId($eventId);
+			$event = $event->load();
+
+			$this->arrEvents[] = $event;
+		}
+
 		//TODO Parei aqui! Percebi que talvez aquela classe para gerar interfaces na qual trabalhei tanto seja nada mais que inútil as exigências das interfaces parecem ser muito mais superiores ao que esta classe pode ou poderá fazer, sendo assim é melhor eu fazer as interfaces do modo mais tradicional mesmo
-		
+
 	}
 
 	public function addEvent(IEvent $evento){

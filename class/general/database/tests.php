@@ -26,7 +26,7 @@
 
 require_once __DIR__ . '/ObjectLoader.php';
 
-$c = new ObjectLoader(Configuration::CONST_DB_NAME_PEOPLE);
+$c = new ObjectLoader(Configuration::CONST_DB_NAME);
 
 $c->getUserIdThroughLoginAndPassword("tatupheba","tatu7");
 

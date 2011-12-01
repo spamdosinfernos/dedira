@@ -38,10 +38,10 @@ class index{
 
 		//Cria o objeto que contêm as regras para autenticação neste sistema
 		$authParams = new IntegracaoAuthRules();
-		$authParams->setLogin($_POST["login"]);
+		$authParams->setUser($_POST["login"]);
 		$authParams->setPassword($_POST["password"]);
 
-		//Tenta authenticate no sistema
+		//Tenta autenticar no sistema
 		$this->authenticator->setAuthenticationRules($authParams);
 		return $this->authenticator->authenticate();
 	}

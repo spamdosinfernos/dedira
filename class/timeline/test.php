@@ -1,27 +1,32 @@
 <?php 
-require_once __DIR__ . '/Event/Reuniao.php';
-require_once __DIR__ . '/Event/Manifestacao.php';
+require_once __DIR__ . '/event/Reunion.php';
 
-$r = new Reuniao();
-
-$r->setId("4918c8130d75ec0beda8d60c39001c06");
-$r = $r->carregar();
-
-$r->setDataFim(new DateTime());
-$r->setGuideLines("GuideLines");
-$r->setObservacoes("teste de reunião");
-$r->setTipoDeRecorrencia(Event::CONST_RECORRENCY_MES);
-$r->setQtdeDeRecorrencia(3);
-$r->setArrIntegrantes(array("Person1", "Person2" => "teste de pessoa 2", "Person3" => 1, "Person4" => 10, "Person20" => 21));
-$r->salvar();
-
-$r->setGuideLines("GuideLines");
-$r->setObservacoes("teste de reunião ataualizada ALTERADA");
-$r->salvar();
+$r = new Reunion();
+$r->setArrInvited(array("Osmualdo da silva","Amadeu de cana","Bonicéia da cruz"));
+$r->setArrMembers(array("Jac linda","André gostoso","Michel fala magra","Hugo brisa","Hernani chaveco véio"));
+$r->setArrPlacesAddresses(array("Ay carmela"));
+$r->setBeginDate(new DateTime("26-11-2011 17:00:00"));
+$r->setFinalDate(new DateTime("26-11-2011 18:00:00"));
+$r->setGuideLines("pauta 1, pauta 2, auta 3");
+$r->setObservations("Reunião de teste 01");
+$r->setPrivate(false);
+$r->setRememberingDate(new DateTime("26-11-2011 17:50:00"));
+$r->save();
 
 
-$a = new Manifestacao();
-$a->salvar();
+$r = new Reunion();
+$r->setArrInvited(array("Osmualdo da silva"));
+$r->setArrMembers(array("Jac linda","André gostoso","Michel fala magra","Hugo brisa","Hernani chaveco véio"));
+$r->setArrPlacesAddresses(array("Sinsprev"));
+$r->setBeginDate(new DateTime("26-11-2011 16:00:00"));
+$r->setFinalDate(new DateTime("26-11-2011 19:00:00"));
+$r->setGuideLines("pauta 4, pauta 5, pauta 6");
+$r->setObservations("Reunião de teste 02");
+$r->setPrivate(false);
+$r->setRememberingDate(new DateTime("26-11-2011 17:50:00"));
+$r->save();
+
+
 
 
 ?>

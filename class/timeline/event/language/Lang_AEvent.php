@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../Event.php';
+require_once __DIR__ . '/../AEvent.php';
 
-final class Lang_Event{
+final class Lang_AEvent{
 
 	public static function getDescriptions($descriptionId){
 

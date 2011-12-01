@@ -1,6 +1,5 @@
 <?php
 require_once __DIR__ . '/../database/Database.php';
-require_once __DIR__ . '/../security/AuthRules.php';
 require_once __DIR__ . '/../person/Person.php';
 
 /**
@@ -37,15 +36,13 @@ class User extends Person{
 
 	/**
 	 * Indica qual o grupo de acesso o usuário pertence
-	 * @var AccessGroup
+	 * @var Group
 	 */
 	protected $accessGroup;
 
 	public function __construct(){
-		$this->setDataBaseName(Configuration::CONST_DB_NAME_PEOPLE);
 		$this->active = true;
 	}
-
 
 	public function getLogin(){
 		return $this->login;
@@ -78,7 +75,7 @@ class User extends Person{
 		return $this->accessGroup;
 	}
 
-	public function setAccessGroup($accessGroup){
+	public function setAccessGroup(Group $accessGroup){
 		$this->accessGroup = $accessGroup;
 	}
 }

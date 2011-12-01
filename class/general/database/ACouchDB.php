@@ -47,7 +47,7 @@ abstract class CouchDB {
 	 * @param mixed $information
 	 * @return string
 	 */
-	private function generateRequest($url, $requestType, $documentId = null, $information = null, $rev = null) {
+	private function generateRequest($url, $requestType, $documentId = null, $information = null, $rev = null, $arrViewArguments = array()) {
 
 		if($rev != null && $requestType != self::CONST_DEL_OPERATION){
 			if(is_object($information)){
@@ -63,6 +63,21 @@ abstract class CouchDB {
 		 */
 		if($documentId != "" && $requestType == self::CONST_POST_OPERATION){
 			$requestType = self::CONST_PUT_OPERATION;
+		}
+
+		//Se a view tiver algum parâmetro deve-se codificar o mesmo com urlencode
+		if(count($arrViewArguments) > 0){
+			foreach ($arrViewArguments as $fieldArgument => $dataArgument) {
+				//Limpando a string de argumento
+				$dataArgument = str_replace(PHP_EOL, "", $dataArgument);
+				$dataArgument = str_replace("\t", "", $dataArgument);
+				
+				//Prepando para montar os argumentos
+				$arrViewArguments[$fieldArgument] = $fieldArgument . "=" . $dataArgument;
+			}
+			
+			//Monta os argumentos
+			$url .= "?" . join("&", $arrViewArguments);
 		}
 
 		$information = is_null($information) ? null : json_encode($information);
@@ -92,9 +107,11 @@ abstract class CouchDB {
 		return $req;
 	}
 
-	protected function send($requestType, $url, $documentId = null, $information = null, $rev = null){
+	protected function send($requestType, $url, $documentId = null, $information = null, $rev = null, $arrViewArguments = array()){
 
-		$request = $this->generateRequest($url, $requestType, $documentId, $information, $rev);
+		//TODO Fazer uma validação de tipos nos argumentos acima
+
+		$request = $this->generateRequest($url, $requestType, $documentId, $information, $rev, $arrViewArguments);
 
 		$ponteiro = fsockopen(Configuration::CONST_DB_HOST_ADDRESS, Configuration::CONST_DB_PORT, $errno, $errstr);
 

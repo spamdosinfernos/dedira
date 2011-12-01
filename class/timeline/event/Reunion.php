@@ -1,7 +1,7 @@
 <?php
-require_once 'Event.php';
+require_once 'AEvent.php';
 
-class Reunion extends Event{
+class Reunion extends AEvent{
 
 	/**
 	 * Pauta da reunião
@@ -11,8 +11,6 @@ class Reunion extends Event{
 
 	/**
 	 * Pessoas da organização que devem participar da reunião 
-	 * @var Array : MilitanteOrganico
-	 * @var Array : Administrador
 	 */
 	protected $arrMembers;
 
