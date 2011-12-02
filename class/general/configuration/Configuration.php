@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/language/Lang_Configuration.php';
+
 class Configuration {
 
 	/**
@@ -104,7 +106,7 @@ class Configuration {
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "template" . DIRECTORY_SEPARATOR;
 	}
 	
-	static public function getLanguage(){
+	static public function getSelectedLanguage(){
 		return "pt-br";
 	}
 	

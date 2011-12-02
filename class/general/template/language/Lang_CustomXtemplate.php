@@ -15,7 +15,7 @@ final class Lang_CustomXtemplate{
 		Event::CONST_ERROR_1 => "CONST_ERROR_1 - The template file does not exist!"
 		);
 
-		return $languages[Configuration::getLanguage()][$descriptionId];
+		return $languages[Configuration::getSelectedLanguage()][$descriptionId];
 	}
 }
 ?>

@@ -13,7 +13,7 @@ final class Lang_Configuration{
 		1 => "You need autentication to use the system."
 		);
 
-		return $languages[Configuration::getLanguage()][$descriptionId];
+		return $languages[Configuration::getSelectedLanguage()][$descriptionId];
 	}
 }
 ?>

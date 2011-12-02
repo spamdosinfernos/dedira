@@ -47,7 +47,7 @@ final class Lang_AEvent{
 		Event::CONST_ERROR_2 => "CONST_ERROR_2 - To inform if an event is private or not use a boolean value"
 		);
 
-		return $languages[Configuration::getLanguage()][$descriptionId];
+		return $languages[Configuration::getSelectedLanguage()][$descriptionId];
 	}
 }
 ?>

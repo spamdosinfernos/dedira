@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../../class/general/template/CustomXtemplate.php';
-require_once __DIR__ . '/../../class/timeline/configuration/TimelineConfiguration.php';
+require_once __DIR__ . '/../../../class/general/template/CustomXtemplate.php';
+require_once __DIR__ . '/../../../class/timeline/configuration/TimelineConfiguration.php';
 
 
 class index{

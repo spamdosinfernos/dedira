@@ -10,6 +10,10 @@ class UserAuthRules implements IAuthenticationRules{
 	 * @var User
 	 */
 	private $user;
+	
+	public function __construct(User $user = null){
+		$this->user = $user;
+	}
 
 	/**
 	 * Seta o user do usuário
