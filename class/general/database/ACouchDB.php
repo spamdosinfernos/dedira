@@ -47,7 +47,7 @@ abstract class CouchDB {
 	 * @param mixed $information
 	 * @return string
 	 */
-	private function generateRequest($url, $requestType, $documentId = null, $information = null, $rev = null, $arrViewArguments = array()) {
+	private function generateRequest($url, $requestType, $documentId = null, $information = null, $rev = null, $arrViewArguments = array(), $includeDocs = false) {
 
 		if($rev != null && $requestType != self::CONST_DEL_OPERATION){
 			if(is_object($information)){
@@ -87,7 +87,11 @@ abstract class CouchDB {
 		$urlCompleta = $documentId == "" ? $url : $url . "/" . $documentId;
 
 		if($requestType == self::CONST_DEL_OPERATION && $rev != ""){
-			$urlCompleta = $urlCompleta . "?rev=" . $rev;
+			$urlCompleta .= "?rev=" . $rev;
+		}
+		
+		if($includeDocs){
+			$urlCompleta .= "&include_docs=true";             	
 		}
 
 		$req = "{$requestType} {$urlCompleta} HTTP/1.0\r\nHost: " . Configuration::CONST_DB_HOST_ADDRESS . "\r\n";
@@ -107,11 +111,11 @@ abstract class CouchDB {
 		return $req;
 	}
 
-	protected function send($requestType, $url, $documentId = null, $information = null, $rev = null, $arrViewArguments = array()){
+	protected function send($requestType, $url, $documentId = null, $information = null, $rev = null, $arrViewArguments = array(), $includeDocs = false){
 
 		//TODO Fazer uma validação de tipos nos argumentos acima
 
-		$request = $this->generateRequest($url, $requestType, $documentId, $information, $rev, $arrViewArguments);
+		$request = $this->generateRequest($url, $requestType, $documentId, $information, $rev, $arrViewArguments, $includeDocs);
 
 		$ponteiro = fsockopen(Configuration::CONST_DB_HOST_ADDRESS, Configuration::CONST_DB_PORT, $errno, $errstr);
 

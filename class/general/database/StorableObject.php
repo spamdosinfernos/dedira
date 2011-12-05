@@ -58,6 +58,13 @@ class StorableObject {
 	const CONST_INFORMATION_TYPE_NUMBER_OR_STRING = 2;
 
 	/**
+	 * Usado para indicar quando um item
+	 * do documento é booleano
+	 * @var int
+	 */
+	const CONST_INFORMATION_TYPE_BOOLEAN = 3;
+
+	/**
 	 * Usado para sinalizar um propriedade protegida,
 	 * esta string marca o início e o fim da flag
 	 * @var string
@@ -182,6 +189,8 @@ class StorableObject {
 			return self::CONST_INFORMATION_TYPE_NUMBER_OR_STRING;
 		}
 
+		if(is_bool($information)) return self::CONST_INFORMATION_TYPE_BOOLEAN;
+
 		if(is_array($information)) return self::CONST_INFORMATION_TYPE_ARRAY;
 
 		if(isset($information->CLASSNAME)){
@@ -272,7 +281,7 @@ class StorableObject {
 				//Se a propriedade é nula então estamos no objeto raíz
 				$serializedData = "O:" . strlen($value->CLASSNAME) . ":\"" . $value->CLASSNAME . "\":" . (count(get_object_vars($value)) - 1) . ":{";
 			}else{
-				//Se a propriedade é NÃO nula então estamos precessando um propriedade do objeto
+				//Se a propriedade é NÃO nula então estamos processando uma propriedade do objeto
 				$serializedData = "s:" . strlen($property) . ":\"" . $property . "\";O:" . strlen($value->CLASSNAME) . ":\"" . $value->CLASSNAME . "\":" . (count(get_object_vars($value)) - 1) . ":{";
 			}
 
@@ -326,12 +335,12 @@ class StorableObject {
 			return $serializedData;
 		}
 
-		//Cria a descrição das propriedade para os tipo primitivos (string, número, etc)
+		//Cria a descrição das propriedade para os tipos primitivos string, número e booleano
 		$serializedData .= "s:" . strlen($property) . ":\"" . $property . "\";";
 
-		//Monta a propridade nula
-		if(trim($value) == ""){
-			$serializedData .= "N;";
+		//Monta a propridade textual
+		if(is_string($value)){
+			$serializedData .= "s:" . strlen($value) . ":\"" . $value . "\";";
 			return $serializedData;
 		}
 
@@ -341,11 +350,18 @@ class StorableObject {
 			return $serializedData;
 		}
 
-		//Monta a propridade textual
-		if(is_string($value)){
-			$serializedData .= "s:" . strlen($value) . ":\"" . $value . "\";";
+		//Monta a propridade nula
+		if(is_null($value) || trim($value) == ""){
+			$serializedData .= "N;";
 			return $serializedData;
 		}
+
+		if(is_bool($value)){
+			$serializedData .= "b:" . ($value ? 1 : 0) . ";";
+			return $serializedData;
+		}
+
+		throw new SystemException("Tipo de valor inesperado!", __CLASS__ . __LINE__);
 	}
 
 	/**
@@ -377,7 +393,7 @@ class StorableObject {
 		if(is_object($info)){
 			//As propriedades são as propriedades do objeto
 			$reflection = new ReflectionObject($info);
-			
+
 			//Apenas me nteressam neste caso as propriedades públicas e protegidas
 			$arrPropriedades = $reflection->getProperties(ReflectionProperty::IS_PUBLIC | ReflectionProperty::IS_PROTECTED);
 		}else{

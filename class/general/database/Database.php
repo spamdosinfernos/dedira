@@ -155,11 +155,11 @@ class Database extends CouchDB{
 	 * Executa a view
 	 * @param string $viewAddress
 	 */
-	public function executeView($viewAddress, $arrViewArguments){
+	public function executeView($viewAddress, $arrViewArguments, $includeDocs = false){
 		
 		if(substr($viewAddress,0,1) != "/") throw new SystemException("O endereço da view não está correto", __CLASS__ . __LINE__);
 		
-		$this->send(self::CONST_GET_OPERATION, $this->selectedBaseName . $viewAddress,null,null,null,$arrViewArguments);
+		$this->send(self::CONST_GET_OPERATION, $this->selectedBaseName . $viewAddress,null,null,null,$arrViewArguments, $includeDocs);
 		$this->response = $this->getRequestResponse();
 	}
 

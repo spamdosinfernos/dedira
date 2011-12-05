@@ -6,7 +6,7 @@ class Authenticator{
 	 * @var IAuthenticationRules
 	 */
 	private $authenticationRules;
-	
+
 	/**
 	 * Id do usuário na sessão
 	 * @var int | string
@@ -61,19 +61,29 @@ class Authenticator{
 
 			//Caso a verificação esteja ok, verifica se o usuário e senha são válidos
 			if($isValid){
-				
+
 				//Se o usuário e senha são válidos recupera a id do usuário na sessão
 				$authenticationId = $this->authenticationRules->getAutenticationId();
 				if(!(is_numeric($authenticationId) || is_string($authenticationId))) throw new SystemException("O procedimento 'getAutenticationId' deve retornar uma string ou um número.",__CLASS__ .__LINE__);
-				
-				@session_destroy();
+
 				//Se tudo deu certo incia a sessão e atribui o id do usuário
+				@session_destroy();
 				session_start();
 				session_regenerate_id();
+
+				$user = new User();
+				$user->setId($authenticationId);
+				$user = $user->load();
+
 				$_SESSION['userData']['userId'] = $authenticationId;
-				
+				$_SESSION['userData'] = $user;
+				//$_SESSION['userData']['userName'] = $user->getName();
+				//$_SESSION['userData']['userName'] = $user->getSecondName();
+				//$_SESSION['userData']['userName'] = 
+				//$user->getSex()
+
 				$this->authenticationId = $authenticationId;
-				
+
 				return true;
 			}
 

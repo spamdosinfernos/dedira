@@ -7,7 +7,7 @@ class index{
 	 * Constrói a página o cronograma
 	 */
 	public function __construct(){
-		$userAuth = new UserAuthenticaticator();
+ 		$userAuth = new UserAuthenticaticator();
 		if($userAuth->handleRequest()) die($_SESSION['userData']['userId']);
 		$userAuth->showGui();
 	}

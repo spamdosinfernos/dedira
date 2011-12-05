@@ -54,9 +54,9 @@ class UserAuthenticaticator implements IModule{
 
 		//Se já estiver autenticado sai do método com true
 		$authenticator = new Authenticator();
-		if($authenticator->isAuthenticated()) return true;
+ 		if($authenticator->isAuthenticated()) return true;
 
-		//Recupera a requisição
+		//Recupera a requisição (login e senha)
 		$httpRequest = new HttpRequest();
 		$postedVars = $httpRequest->getPostRequest();
 
@@ -74,7 +74,7 @@ class UserAuthenticaticator implements IModule{
 	}
 
 	public function showGui($arrGuiBlockNames = array()){
-		$this->xTemplate->assign("title", $this->getTitle());
+		$this->xTemplate->assign("systemMessage", $this->getTitle());
 
 
 		//Mostra os blocos de interface especificados
