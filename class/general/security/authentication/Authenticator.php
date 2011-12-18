@@ -76,11 +76,9 @@ class Authenticator{
 				$user = $user->load();
 
 				$_SESSION['userData']['userId'] = $authenticationId;
-				$_SESSION['userData'] = $user;
-				//$_SESSION['userData']['userName'] = $user->getName();
-				//$_SESSION['userData']['userName'] = $user->getSecondName();
-				//$_SESSION['userData']['userName'] = 
-				//$user->getSex()
+				$_SESSION['userData']['userSex'] = $user->getSex();
+				$_SESSION['userData']['userName'] = $user->getName();
+				$_SESSION['userData']['userSecondName'] = $user->getSecondName();
 
 				$this->authenticationId = $authenticationId;
 

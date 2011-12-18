@@ -22,17 +22,19 @@ interface IModule {
 	
 	/**
 	 * Mostra a interface do módulo ou parte dela caso o nome do bloco seja especificado
-	 * @param string $arrGuiBlockNames
+	 * @param array : string $arrGuiBlockNames
 	 */
 	public function showGui($arrGuiBlockNames = array());
 	
 	/**
 	 * Manipula as requisições (via POST, GET ou RAW_HTTP_DATA)
+	 * @return boolean
 	 */
 	public function handleRequest();
 	
 	/**
 	 * Recupera o título do módulo
+	 * @return string
 	 */
 	public function getTitle();
 }

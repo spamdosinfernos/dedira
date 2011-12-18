@@ -46,6 +46,12 @@ class Configuration {
 	const CONST_LOG_DATE_FORMAT = "Y-m-d H:i:s";
 	
 	/**
+	 * Indica o nome do módulo que está em ação
+	 * @var string
+	 */
+	const CONST_QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
+	
+	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 * @var string
 	 */

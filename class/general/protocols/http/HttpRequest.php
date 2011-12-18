@@ -30,13 +30,13 @@ class HttpRequest {
 	 * @var string
 	 */
 	private $rawHttpRequestHeader;
-	
+
 	/**
 	 * Guarda os dados enviados via POST
 	 * @var array : mixed
 	 */
 	private $postRequest;
-	
+
 	/**
 	 * Guarda os dados enviados via GET
 	 * @var array : mixed
@@ -46,10 +46,10 @@ class HttpRequest {
 	public function __construct($arrAditionalHeaders = null){
 		Shield::treatTextFromForm();
 		$this->retrieveHeaders($arrAditionalHeaders);
-		
+
 		//Recupera o corpo da requisição no get
 		$this->getRequest = $_GET;
-		
+
 		//Recupera o corpo da requisição no post
 		$this->postRequest = $_POST;
 
@@ -155,11 +155,20 @@ class HttpRequest {
 	}
 
 	public function getPostRequest(){
-	    return $this->postRequest;
+		return $this->postRequest;
 	}
 
-	public function getGetRequest(){
-	    return $this->getRequest;
+	/**
+	 * Recupera os dados da requisição GET informe $queryStringVarName
+	 * para pegar um dado específico ou nada para recuperar todas as variáveis
+	 * @param string $queryStringVarName
+	 * @return array : string
+	 */
+	public function getGetRequest($queryStringVarName = null){
+
+		if(is_null($queryStringVarName)) return $this->getRequest;
+
+		return isset($this->getRequest[$queryStringVarName]) ? array($this->getRequest[$queryStringVarName]) : null;
 	}
 }
 ?>
