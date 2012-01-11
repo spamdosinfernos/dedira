@@ -4,6 +4,12 @@ require_once __DIR__ . '/language/Lang_Configuration.php';
 class Configuration {
 
 	/**
+	 * Extensão padrão do arquivo executável no sistema
+	 * @var string
+	 */
+	const DEFAULT_EXECUTABLE_FILE_EXTENSION = "php";
+	
+	/**
 	 * Usuário do banco de dados
 	 * @var string
 	 */
@@ -52,10 +58,17 @@ class Configuration {
 	const CONST_QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
 	
 	/**
+	 * Nome da classe que inicia a execução do módulo de usuário
+	 * @var string
+	 */
+	const CONST_USER_MODULE_STARTER_CLASS_NAME = "index";
+	
+	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 * @var string
 	 */
 	static private $systemRootDirectory;
+	
 	
 	/**
 	 * Mensagem exibida quando o sistema pede autenticação
@@ -71,6 +84,14 @@ class Configuration {
 			self::$systemRootDirectory = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "..");
 		}
 		return self::$systemRootDirectory;
+	}
+	
+	static public function getUserModuleStarterFileName(){
+		return self::CONST_USER_MODULE_STARTER_CLASS_NAME . self::DEFAULT_EXECUTABLE_FILE_EXTENSION;
+	}
+	
+	static public function getUserModuleStarterClassName(){
+		return self::CONST_USER_MODULE_STARTER_CLASS_NAME;
 	}
 	
 	static public function getUserModuleDiretory(){

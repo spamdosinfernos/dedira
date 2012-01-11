@@ -1,13 +1,5 @@
 <?php
-require_once __DIR__ . 'Class/general/Core.php';
-
-/**
- * Esta classe gerencia todas as requisições recebidas pelo site
- * Requisições enviadas a outros arquivos devem ser ignoradas
- * @author tatupheba
- *
- */
-class index {
-
-}
+//Chama o controlador-mor do sistema, mais nada
+require_once __DIR__ . DIRECTORY_SEPARATOR . "controllers" . DIRECTORY_SEPARATOR . "index.php";
+new index();
 ?>

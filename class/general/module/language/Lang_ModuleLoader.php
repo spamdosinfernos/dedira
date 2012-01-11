@@ -1,18 +1,16 @@
 <?php
-require_once __DIR__ . '/../CustomXtemplate.php';
-
-final class Lang_CustomXtemplate{
-
+final class Lang_ModuleLoader{
+	
 	public static function getDescriptions($descriptionId){
 
 		//Português Brasil
 		$languages["pt-br"] = array(
-		Event::CONST_ERROR_1 => "CONST_ERROR_1 - O arquivo de template não existe!"
+		1 => "O módulo informado não é válido."
 		);
 
 		//English United States
 		$languages["en-us"] = array(
-		Event::CONST_ERROR_1 => "CONST_ERROR_1 - The template file does not exist!"
+		1 => "The informed module is inválid."
 		);
 
 		return $languages[Configuration::getSelectedLanguage()][$descriptionId];
