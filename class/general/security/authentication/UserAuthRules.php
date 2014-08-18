@@ -40,7 +40,7 @@ class UserAuthRules implements IAuthenticationRules{
 
 		//Verifca se foram retornados os dados esperados
 		$results = $database->getResponse();
-		if(count($results->rows) > 0){
+		if(!is_null($results) && count($results->rows) > 0){
 
 			//Se sim guarda a id do usuário
 			$this->autenticationId = $results->rows[0]->id;
