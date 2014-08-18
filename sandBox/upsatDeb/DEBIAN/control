@@ -1,9 +1,0 @@
-Package: upsat
-Priority: optional
-Version: 3.0
-Architecture: all
-Maintainer: André Furlan <tatupheba@gmail.com>
-Section: misc
-Installed-Size: 59
-Depends: php5-gtk2, php5-curl, php5-cairo
-Description: Sistema de envio e registro dos vídeos de atendimento remoto.

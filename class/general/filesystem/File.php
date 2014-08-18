@@ -139,7 +139,7 @@ class File{
 		 * operação pode demorar considerávelmente
 		 */
 		if($this->md5 == "" ){
-			$this->md5 = md5_file($filePath);
+			$this->md5 = md5_file($this->filePath);
 		}
 
 		return $this->md5;
@@ -445,6 +445,16 @@ class File{
 
 		//Retorna o caminho final
 		return implode(DIRECTORY_SEPARATOR, $arrPathToConvert);;
+	}
+
+	public function getBase64Encode(){
+		if($fp = fopen($this->filePath,"rb", 0)){
+			$picture = fread($fp,filesize($file));
+			fclose($fp);
+			// base64 encode the binary data, then break it
+			// into chunks according to RFC 2045 semantics
+			return chunk_split(base64_encode($picture));
+		}
 	}
 }
 ?>

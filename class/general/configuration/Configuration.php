@@ -8,7 +8,7 @@ class Configuration {
 	 * @var string
 	 */
 	const DEFAULT_EXECUTABLE_FILE_EXTENSION = "php";
-	
+
 	/**
 	 * Usuário do banco de dados
 	 * @var string
@@ -44,32 +44,32 @@ class Configuration {
 	 * @var int
 	 */
 	const CONST_DB_PORT = 5984;
-	
+
 	/**
 	 * Formato da data no arquivo de log
 	 * @var string
 	 */
-	const CONST_LOG_DATE_FORMAT = "Y-m-d H:i:s";
-	
+	const CONST_DATE_FORMAT = "Y-m-d H:i:s";
+
 	/**
 	 * Indica o nome do módulo que está em ação
 	 * @var string
 	 */
 	const CONST_QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
-	
+
 	/**
 	 * Nome da classe que inicia a execução do módulo de usuário
 	 * @var string
 	 */
-	const CONST_USER_MODULE_STARTER_CLASS_NAME = "index";
-	
+	const CONST_USER_MODULE_STARTER_CLASS_NAME = "module";
+
 	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 * @var string
 	 */
 	static private $systemRootDirectory;
-	
-	
+
+
 	/**
 	 * Mensagem exibida quando o sistema pede autenticação
 	 * @return string
@@ -85,19 +85,19 @@ class Configuration {
 		}
 		return self::$systemRootDirectory;
 	}
-	
+
 	static public function getUserModuleStarterFileName(){
 		return self::CONST_USER_MODULE_STARTER_CLASS_NAME . self::DEFAULT_EXECUTABLE_FILE_EXTENSION;
 	}
-	
+
 	static public function getUserModuleStarterClassName(){
 		return self::CONST_USER_MODULE_STARTER_CLASS_NAME;
 	}
-	
+
 	static public function getUserModuleDiretory(){
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "modules";
 	}
-	
+
 	static public function getUserModuleTestDiretory(){
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "teste";
 	}
@@ -112,7 +112,7 @@ class Configuration {
 	static public function getLogFilePath(){
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
 	}
-	
+
 	/**
 	 * Retorna o intervalo de tempo padrão que o sistema adota
 	 * @return string - (um sinal [+ ou -] mais um número indicando a quantidade)
@@ -120,22 +120,22 @@ class Configuration {
 	static public function getDefaultTimeInterval(){
 		return array("+1");
 	}
-	
-		/**
+
+	/**
 	 * Retorna o tipo intervalo de tempo padrão que o sistema adota
 	 * @return string - (year = ano, month = mês, day = dia, hour = hora, minute = minuto, segundo = second) 
 	 */
 	static public function getDefaultTimeIntervalType(){
 		return "month";
 	}
-	
+
 	static public function getTemplatesDirectory(){
 		return self::getSystemRootDirectory() . DIRECTORY_SEPARATOR . "template" . DIRECTORY_SEPARATOR;
 	}
-	
+
 	static public function getSelectedLanguage(){
 		return "pt-br";
 	}
-	
+
 }
 ?>

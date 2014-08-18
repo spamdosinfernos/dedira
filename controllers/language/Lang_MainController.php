@@ -1,5 +1,5 @@
 <?php
-final class Lang_index{
+final class Lang_MainController{
 	
 	public static function getDescriptions($descriptionId){
 

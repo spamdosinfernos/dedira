@@ -1,13 +1,13 @@
 <?php
 require_once __DIR__ . '/../class/general/module/UserAuthenticaticator.php';
-require_once __DIR__ . '/language/Lang_index.php';
+require_once __DIR__ . '/language/Lang_MainController.php';
 
 /**
  * Esta classe gerencia todas as requisições recebidas pelo site
  * Requisições enviadas a outros arquivos devem ser ignoradas
  * @author tatupheba
  */
-class index{
+class MainController{
 
 	public function __construct(){
 
@@ -24,10 +24,10 @@ class index{
 		$moduleId = $this->getModuleId();
 
 		//Só pára aqui se na url não houver o nome do módulo
-		if(is_null($moduleId)) die (Lang_index::getDescriptions(1));
+		if(is_null($moduleId)) die (Lang_MainController::getDescriptions(1));
 
 		//Só pára aqui se o módulo especificado é inválido senão carrega o mesmo
-		if(!$this->loadModule($moduleId)) die (Lang_index::getDescriptions(2));
+		if(!$this->loadModule($moduleId)) die (Lang_MainController::getDescriptions(2));
 	}
 
 	/**
@@ -69,5 +69,5 @@ class index{
 	}
 
 }
-new index();
+new MainController();
 ?>

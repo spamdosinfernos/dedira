@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../../class/general/template/CustomXtemplate.php';
 require_once __DIR__ . '/../../../class/timeline/configuration/TimelineConfiguration.php';
 
 
-class index{
+class module{
 
 	/**
 	 * Renderiza as páginas
@@ -46,5 +46,4 @@ class index{
 		return $this->authenticator->authenticate();
 	}
 }
-new index();
 ?>
