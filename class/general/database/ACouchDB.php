@@ -6,7 +6,7 @@ require_once __DIR__ . '/../configuration/Configuration.php';
  * as operações no banco de dados serão feitas pelas classes Database e 
  * StorableObject
  *
- * @author tatupheba
+ * @author André Furlan
  *
  */
 abstract class CouchDB {

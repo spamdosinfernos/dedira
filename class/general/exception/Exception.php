@@ -3,7 +3,7 @@ require_once __DIR__ . '/../log/Log.php';
 
 /**
  * Responsável pelo tratamento e registros dos erros no sistema
- * @author tatupheba
+ * @author André Furlan
  */
 class Exception extends Exception {
 

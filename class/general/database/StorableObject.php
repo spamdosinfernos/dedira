@@ -7,7 +7,7 @@ require_once __DIR__ . '/../configuration/Configuration.php';
  * deve extender esta classe, mas atenção: As propriedades salvas 
  * serão apenas aquelas cuja visibilidade for "protected" ou "public"
  *
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class StorableObject {

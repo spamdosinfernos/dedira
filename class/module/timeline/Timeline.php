@@ -6,7 +6,7 @@ require_once __DIR__ . '/Event/IEvent.php';
  * Representa o cronograma de um usuário dado um determinado intervalo de datas
  * @see setInicialDate()
  * @see setFinalDate()
- * @author tatupheba
+ * @author André Furlan
  */
 class Timeline {
 

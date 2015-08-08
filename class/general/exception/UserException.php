@@ -4,7 +4,7 @@ require_once 'Exception.php';
 /**
  * Dá conta das exceções geradas pelo usuário (campos de formulário mal digitados, 
  * operações não permitidas, login inválido, etc.).
- * @author tatupheba
+ * @author André Furlan
  */
 class UserException extends Exception{
 

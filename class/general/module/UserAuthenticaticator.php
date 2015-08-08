@@ -9,7 +9,7 @@ require_once __DIR__ . '/../security/authentication/Authenticator.php';
 require_once __DIR__ . '/../configuration/module/UserAuthenticaticatorConf.php';
 /**
  * Responsável por carregar os módulos do sistema 
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class UserAuthenticaticator implements IModule{

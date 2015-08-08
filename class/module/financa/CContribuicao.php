@@ -3,7 +3,7 @@ require_once __DIR__ . '/../../general/database/StorableObject.php';
 
 /**
  * Representa uma contribuição financeira
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class Contribuicao extends StorableObject{

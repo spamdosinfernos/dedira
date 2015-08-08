@@ -8,7 +8,7 @@ require_once __DIR__ .'/../../general/database/StorableObject.php';
  * que determina um evento que deve entrar no cronograma
  * deve estender esta classe.
  *
- * @author tatupheba
+ * @author André Furlan
  *
  */
 abstract class AEvent extends StorableObject implements IEvent{

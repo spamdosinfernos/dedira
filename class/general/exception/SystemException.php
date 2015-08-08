@@ -2,7 +2,7 @@
 /**
  * Dá conta das exceções geradas pelo sistema (erros de programação, divisão 
  * por zero, falha ao conectar no banco de dados, etc.).
- * @author tatupheba
+ * @author André Furlan
  */
 class SystemException extends Exception{
 	

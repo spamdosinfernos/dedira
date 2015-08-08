@@ -3,7 +3,7 @@ require_once __DIR__ . '/Database.php';
 
 /**
  * Responsável por carregar muitos ids de objetos de uma só vez
- * @author tatupheba
+ * @author André Furlan
  */
 class ObjectLoader {
 

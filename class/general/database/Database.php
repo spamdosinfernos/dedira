@@ -3,7 +3,7 @@ require_once 'ACouchDB.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 /**
  * Responsável pelo gerenciamento do armazenamento dos dados
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class Database extends CouchDB{

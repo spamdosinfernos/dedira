@@ -5,7 +5,7 @@ require_once __DIR__ . '/../person/Person.php';
 /**
  * Representa um usuário no sistema
  *
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class User extends Person{

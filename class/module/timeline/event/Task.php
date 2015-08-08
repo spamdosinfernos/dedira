@@ -2,7 +2,7 @@
 require_once 'AEvent.php';
 /**
  * Descreve tarefas que devem ser realizadas pelo usuário
- * @author tatupheba
+ * @author André Furlan
  *
  */
 class Task extends AEvent{
