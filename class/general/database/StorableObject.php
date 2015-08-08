@@ -108,7 +108,7 @@ class StorableObject {
 		//A id tem que estar setada
 		if($this->id == "") return null;
 
-		$this->openDataBaseConexion();
+		$this->openDataBaseConection();
 
 		if(!$this->dataBaseOperator->loadDocument($this->id)) return null;
 
@@ -125,7 +125,7 @@ class StorableObject {
 	 */
 	public function save(){
 
-		$this->openDataBaseConexion();
+		$this->openDataBaseConection();
 
 		if($this->id == ""){
 			$ok = $this->dataBaseOperator->saveDocument("", $this->toArray());
@@ -151,7 +151,7 @@ class StorableObject {
 		if($this->id == "") throw new SystemException("Falha ao apagar informação: O evento não tem uma identificação.");
 		if($this->rev == "") throw new SystemException("Falha ao apagar informação: O evento não tem um número de revisão.",__CLASS__ .__LINE__);
 
-		$this->openDataBaseConexion();
+		$this->openDataBaseConection();
 
 		return $this->dataBaseOperator->eraseDocument($this->id, $this->rev);
 	}
@@ -172,7 +172,7 @@ class StorableObject {
 		return $this->rev;
 	}
 
-	private function openDataBaseConexion(){
+	private function openDataBaseConection(){
 
 		if(Configuration::CONST_DB_NAME == "") throw new SystemException("text - Para conectar na base de dados é necessário informar seu nome com 'setDataBaseName()'",__CLASS__ .__LINE__);
 
