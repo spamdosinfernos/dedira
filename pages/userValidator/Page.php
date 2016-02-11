@@ -22,7 +22,7 @@ class Page extends \APage{
 	/**
 	 * Manages os templates
 	 *
-	 * @var \XTemplate
+	 * @var \TemplateLoader
 	 */
 	protected $xTemplate;
 	public function __construct() {

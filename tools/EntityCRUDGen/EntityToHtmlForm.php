@@ -4,25 +4,25 @@ class EntityToHtmlForm {
 	
 	/**
 	 *
-	 * @var XTemplate
+	 * @var \TemplateLoader
 	 */
 	private $templateHtml;
 	
 	/**
 	 *
-	 * @var XTemplate
+	 * @var \TemplateLoader
 	 */
 	private $templatePhp;
 	
 	/**
 	 *
-	 * @var XTemplate
+	 * @var TemplateLoader
 	 */
 	private $templateConf;
 	
 	/**
 	 *
-	 * @var XTemplate
+	 * @var \TemplateLoader
 	 */
 	private $templateLang;
 	
@@ -35,9 +35,9 @@ class EntityToHtmlForm {
 		require_once $pathToClass;
 		
 		$this->reflector = new ReflectionClass ( $class );
-		$this->templateHtml = new XTemplate ( "./template/template.tmpl" );
-		$this->templatePhp = new XTemplate ( "./template/Page.tmpl" );
-		$this->templateConf = new XTemplate ( "./template/Conf.tmpl" );
+		$this->templateHtml = new TemplateLoader( "./template/template.tmpl" );
+		$this->templatePhp = new TemplateLoader( "./template/Page.tmpl" );
+		$this->templateConf = new TemplateLoader( "./template/Conf.tmpl" );
 		
 		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
 		
