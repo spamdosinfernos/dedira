@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../log/Log.php';
+
 class Authenticator{
 
 	/**

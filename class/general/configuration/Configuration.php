@@ -1,5 +1,10 @@
 <?php
 require_once __DIR__ . '/../../../language/class/general/configuration/Lang_Configuration.php';
+/**
+ * Centraliza todas as configurações do sistema
+ * @author André Furlan
+ *
+ */
 class Configuration {
 	
 	/**

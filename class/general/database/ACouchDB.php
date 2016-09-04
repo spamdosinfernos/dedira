@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../configuration/Configuration.php';
+require_once __DIR__ . '/../exception/SystemException.php';
 
 /**
  * Define as operações básicas no banco de dados, não pode ser instânciada,
@@ -123,6 +124,8 @@ abstract class CouchDB {
 
 		$response = "";
 
+		if(is_bool($ponteiro)) throw new SystemException("Fail to open database", 0);
+		
 		while(!feof($ponteiro)) {
 			$response .= fgets($ponteiro);
 		}
