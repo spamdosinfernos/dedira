@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../class/general/module/UserAuthenticaticator.php';
 require_once __DIR__ . '/language/Lang_MainController.php';
+require_once __DIR__ . '/../class/general/module/UserAuthenticaticator.php';
 
 /**
  * Esta classe gerencia todas as requisições recebidas pelo site

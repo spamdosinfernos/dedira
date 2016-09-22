@@ -6,37 +6,43 @@ require_once __DIR__ . '/../person/Person.php';
  * Representa um usuário no sistema
  *
  * @author André Furlan
- *
+ * @Entity
  */
 class User extends Person{
 
 	/**
 	 * Login
 	 * @var string
+	 * @Column(nullable = false)
 	 */
 	protected $login;
 
 	/**
 	 * Senha
 	 * @var string
+	 * @Column(nullable = false)
 	 */
 	protected $password;
 
 	/**
 	 * Identificação do usuário
 	 * @var string | int
+	 * @Id
+	 * @GeneratedValue
 	 */
 	protected $userId;
 
 	/**
 	 * Indica se o usuário está ativo ou não
 	 * @var boolean
+	 * @Column(nullable = false)
 	 */
 	protected $active;
 
 	/**
 	 * Indica qual o grupo de acesso o usuário pertence
 	 * @var Group
+	 * @Column(nullable = false)
 	 */
 	protected $accessGroup;
 
