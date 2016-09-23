@@ -1,7 +1,7 @@
 <?php
 require_once '../class/general/user/User.php';
 require_once '../class/general/security/PasswordPreparer.php';
-require_once '../class/general/database/Database.php';
+require_once '../class/general/database/test/Database.php';
 
 
 //The first thing to do is to create the database 

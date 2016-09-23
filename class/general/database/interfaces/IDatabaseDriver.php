@@ -1,41 +1,41 @@
 <?php
+require_once 'IDatabaseQuery.php';
+require_once 'IDatabaseRequestedData.php';
 /**
  * Paterns for a data base driver
+ * 
  * @author André Furlan
- *
+ *        
  */
 interface IDatabaseDriver {
 	
 	/**
-	 * The database connection
-	 */
-	private $connection;
-	
-	/**
-	 * The result store
-	 */
-	private $results;
-	
-	/**
 	 * Connects to database
+	 * 
+	 * @return bool
 	 */
-	public function connect();
+	public function connect(): bool;
 	
 	/**
 	 * Disconnect from database
+	 * 
+	 * @return bool
 	 */
-	public function disconnect();
+	public function disconnect(): bool;
 	
 	/**
 	 * The query that must be executed
 	 *
 	 * @param IDatabaseQuery $query        	
+	 * @return bool
 	 */
-	public function execute(IDatabaseQuery $query);
+	public function execute(IDatabaseQuery $query): bool;
 	
 	/**
 	 * Return the results
+	 * 
+	 * @return IDatabaseRequestedData
 	 */
-	public function getResults();
+	public function getResults(): IDatabaseRequestedData;
 }
 ?>
