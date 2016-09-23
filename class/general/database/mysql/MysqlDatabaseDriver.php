@@ -29,10 +29,12 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 */
 	public function connect(): bool {
 		try {
-			$dsn = Configuration::CONST_DB_HOST_PROTOCOL . ":host=" . Configuration::CONST_DB_HOST_ADDRESS . ";dbname=" . Configuration::CONST_DB_NAME;
-			$this->conexao = new PDO ( $dsn, Configuration::CONST_DB_LOGIN, Configuration::CONST_DB_PASSWORD );
+			$dsn = Configuration::CONST_DB_HOST_PROTOCOL . ": host=" . Configuration::CONST_DB_HOST_ADDRESS . ";dbname=" . Configuration::CONST_DB_NAME;
+			$this->conexao = new PDO ( $dsn, Configuration::CONST_DB_LOGIN, Configuration::CONST_DB_PASSWORD, array (
+					PDO::ATTR_PERSISTENT,
+					true 
+			) );
 			$this->conexao->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-			$this->conexao->setAttribute ( PDO::ATTR_PERSISTENT, true );
 			return true;
 		} catch ( Exception $e ) {
 			return false;

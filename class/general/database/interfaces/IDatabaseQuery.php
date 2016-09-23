@@ -2,7 +2,7 @@
 require_once 'IDatabaseConditions.php';
 /**
  * Patterns for a query
- * 
+ *
  * @author ensismoebius
  *        
  */
@@ -14,14 +14,14 @@ interface IDatabaseQuery {
 	
 	/**
 	 * Sets the query parameters
-	 * 
+	 *
 	 * @param IDatabaseConditions $c        	
 	 */
 	public function setConditions(IDatabaseConditions $c);
 	
 	/**
 	 * Gets the query parameters
-	 * 
+	 *
 	 * @return IDatabaseConditions
 	 *
 	 */
@@ -30,13 +30,21 @@ interface IDatabaseQuery {
 	/**
 	 * OPERATION_GET, OPERATION_ERASE, OPERATION_INSERT, OPERATION_UPDATE
 	 *
-	 * @param
-	 *        	one of the above constants
+	 * @param $type one
+	 *        	of the above constants
 	 */
-	public function setOperationType($type);
+	public function setOperationType(int $type);
+	
+	/**
+	 * Sets the object
+	 * 
+	 * @param mixed $object        	
+	 */
+	public function setObject($object);
 	
 	/**
 	 * Generates the query for the specific database
+	 *
 	 * @return mixed
 	 */
 	public function getGeneratedQuery();
