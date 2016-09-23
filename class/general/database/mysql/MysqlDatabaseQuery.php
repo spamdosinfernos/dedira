@@ -6,7 +6,7 @@ class MysqlDatabaseQuery implements IDatabaseQuery{
 	 * {@inheritDoc}
 	 * @see IDatabaseQuery::setConditions()
 	 */
-	private function setConditions(IDatabaseConditions $c) {
+	public function setConditions(IDatabaseConditions $c) {
 		// TODO: Auto-generated method stub
 
 	}
@@ -15,7 +15,7 @@ class MysqlDatabaseQuery implements IDatabaseQuery{
 	 * {@inheritDoc}
 	 * @see IDatabaseQuery::getConditions()
 	 */
-	private function getConditions() {
+	public function getConditions() {
 		// TODO: Auto-generated method stub
 
 	}
@@ -24,10 +24,21 @@ class MysqlDatabaseQuery implements IDatabaseQuery{
 	 * {@inheritDoc}
 	 * @see IDatabaseQuery::setOperationType()
 	 */
-	private function setOperationType($type) {
+	public function setOperationType($type) {
 		// TODO: Auto-generated method stub
 
 	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseQuery::getGeneratedQuery()
+	 */
+	public function getGeneratedQuery() {
+		// TODO: Auto-generated method stub
+	}
+
 
 }
 ?>

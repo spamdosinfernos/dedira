@@ -17,7 +17,7 @@ interface IDatabaseQuery {
 	 * 
 	 * @param IDatabaseConditions $c        	
 	 */
-	private function setConditions(IDatabaseConditions $c);
+	public function setConditions(IDatabaseConditions $c);
 	
 	/**
 	 * Gets the query parameters
@@ -25,7 +25,7 @@ interface IDatabaseQuery {
 	 * @return IDatabaseConditions
 	 *
 	 */
-	private function getConditions(): IDatabaseConditions;
+	public function getConditions(): IDatabaseConditions;
 	
 	/**
 	 * OPERATION_GET, OPERATION_ERASE, OPERATION_INSERT, OPERATION_UPDATE
@@ -33,6 +33,12 @@ interface IDatabaseQuery {
 	 * @param
 	 *        	one of the above constants
 	 */
-	private function setOperationType($type);
+	public function setOperationType($type);
+	
+	/**
+	 * Generates the query for the specific database
+	 * @return mixed
+	 */
+	public function getGeneratedQuery();
 }
 ?>

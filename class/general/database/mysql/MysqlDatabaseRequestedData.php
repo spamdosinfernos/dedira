@@ -1,14 +1,38 @@
 <?php
 require_once __DIR__ . '/../interfaces/IDatabaseRequestedData.php';
 class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
+	
+	/**
+	 * The data returned
+	 *
+	 * @var array
+	 */
+	private $arrData;
+	
+	/**
+	 * The dataset pointer
+	 *
+	 * @var int
+	 */
+	private $pointer = - 1;
+	
+	/**
+	 * Sets the data to be returned
+	 *
+	 * @param array $data        	
+	 */
+	public function setData(array $data) {
+		$this->arrData = $data;
+	}
+	
 	/**
 	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseRequestedData::getRowsAffected()
 	 */
-	public function getRowsAffected() {
-		// TODO: Auto-generated method stub
+	public function getRowsAffected(): int {
+		return count ( $this->arrData );
 	}
 	
 	/**
@@ -18,7 +42,7 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 * @see IDatabaseRequestedData::getRetrivedObject()
 	 */
 	public function getRetrivedObject() {
-		// TODO: Auto-generated method stub
+		return $this->arrData [$this->pointer];
 	}
 	
 	/**
@@ -27,8 +51,12 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 *
 	 * @see IDatabaseRequestedData::next()
 	 */
-	public function next() {
-		// TODO: Auto-generated method stub
+	public function next(): bool {
+		if ($this->pointer < count ( $this->arrData )) {
+			$this->pointer ++;
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -37,8 +65,12 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 *
 	 * @see IDatabaseRequestedData::first()
 	 */
-	public function first() {
-		// TODO: Auto-generated method stub
+	public function first(): bool {
+		if (count ( $this->arrData ) > 0) {
+			$this->pointer = 0;
+			return true;
+		}
+		return false;
 	}
 	
 	/**
@@ -47,8 +79,12 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 *
 	 * @see IDatabaseRequestedData::previous()
 	 */
-	public function previous() {
-		// TODO: Auto-generated method stub
+	public function previous(): bool {
+		if (count ( $this->arrData ) > 0 && $this->pointer > 0) {
+			$this->pointer = 0;
+			return true;
+		}
+		return false;
 	}
 }
 ?>

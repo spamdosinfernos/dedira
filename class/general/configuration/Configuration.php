@@ -47,7 +47,7 @@ class Configuration {
 	 * 
 	 * @var string
 	 */
-	const CONST_DB_HOST_PROTOCOL = "http";
+	const CONST_DB_HOST_PROTOCOL = "mysql";
 	
 	/**
 	 * Porta np servidor de banco de dados
