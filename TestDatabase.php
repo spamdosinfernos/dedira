@@ -26,6 +26,22 @@ class TestDatabase {
 		while ( $res->next () ) {
 			echo $res->getRetrivedObject ()->getLogin ();
 		}
+		
+		
+		
+		$user = new User ();
+		$user->setLogin("andre");
+		$user->setPassword("1234");
+		
+		$query2 = new MysqlDatabaseQuery ();
+		$query2->setObject ( $user );
+		$query2->setOperationType ( IDatabaseQuery::OPERATION_INSERT );
+		Database::execute ( $query2 );
+		
+		
+		
+		$c2 = new MysqlDatabaseConditions ();
+		$c2->addCondition ( IDatabaseConditions::AND, "id", 1 );
 	}
 }
 ?>

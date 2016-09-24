@@ -78,7 +78,6 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 	public function getOperationType() {
 		return $this->operation;
 	}
-
 	
 	/**
 	 *
@@ -91,10 +90,13 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 			case IDatabaseQuery::OPERATION_GET :
 				return $this->generateSelect ();
 			case IDatabaseQuery::OPERATION_ERASE :
+				return $this->generateDelete ();
 				break;
 			case IDatabaseQuery::OPERATION_INSERT :
+				return $this->generateInsert ();
 				break;
 			case IDatabaseQuery::OPERATION_UPDATE :
+				return $this->generateUpdate ();
 				break;
 			default :
 				throw new Exception ( "Unsuported operation" );
@@ -124,19 +126,87 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 	}
 	
 	/**
+	 * Generates the update query
+	 *
+	 * @return string
+	 */
+	private function generateUpdate(): string {
+		$sets = array ();
+		
+		foreach ( $this->object as $field => $value ) {
+			$sets [] = "$field = $value";
+		}
+		
+		return "update " . $this->getTableName () . "set " . implode ( ",", $sets ) . $this->buildConditions ();
+	}
+	
+	/**
+	 * Generates the insert query
+	 *
+	 * @return string
+	 */
+	private function generateInsert(): string {
+		$fields = array ();
+		$values = array ();
+		
+		$reflection = new ReflectionClass ( $this->object );
+		
+		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
+			
+			// We just want the getters
+			if ($method->isConstructor () || $method->getNumberOfParameters () > 0)
+				continue;
+			
+			$value = $method->invoke ( $this->object );
+			
+			// Just put non empty fields in insert
+			if ($value == "")
+				continue;
+			
+			$values [] = is_bool ( $value ) ? "true" : "'$value'";
+			$fields [] = strtolower ( str_ireplace ( "get", "", $method->getName () ) );
+		}
+		
+		return "insert into " . $this->getTableName () . "(" . implode ( ",", $fields ) . ")values(" . implode ( ",", $values ) . ")";
+	}
+	
+	/**
+	 * Generates the delete query
+	 *
+	 * @return string
+	 */
+	private function generateDelete(): string {
+		return "delete from " . $this->getTableName () . $this->buildConditions ();
+	}
+	
+	/**
 	 * Generates the select query
 	 *
 	 * @return string
 	 */
 	private function generateSelect(): string {
+		return "select * from " . $this->getTableName () . $this->buildConditions ();
+	}
+	
+	/**
+	 * Returns the table name
+	 *
+	 * @return string
+	 */
+	private function getTableName() {
 		$reflection = new ReflectionClass ( $this->object );
 		
-		$tableName = $reflection->getName ();
+		return $reflection->getName ();
+	}
+	
+	/**
+	 * Builds the where clause
+	 *
+	 * @return string
+	 */
+	private function buildConditions(): string {
+		$sql = "";
 		
-		// Standard query
-		$sql = "select * from $tableName";
-		
-		// Builds the where clause
 		if (count ( $this->conditions->getConditions () ) > 0) {
 			
 			// If is the first condition do not put the logical operations
@@ -171,6 +241,7 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 				}
 			}
 		}
+		
 		return $sql;
 	}
 }
