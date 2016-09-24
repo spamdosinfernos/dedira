@@ -19,14 +19,14 @@ class Configuration {
 	 * 
 	 * @var string
 	 */
-	const CONST_DB_LOGIN = "";
+	const CONST_DB_LOGIN = "root";
 	
 	/**
 	 * Senha do banco de dados
 	 * 
 	 * @var string
 	 */
-	const CONST_DB_PASSWORD = "";
+	const CONST_DB_PASSWORD = "1234";
 	
 	/**
 	 * Nome dabBase de dados

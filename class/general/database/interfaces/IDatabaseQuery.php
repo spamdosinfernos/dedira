@@ -36,11 +36,24 @@ interface IDatabaseQuery {
 	public function setOperationType(int $type);
 	
 	/**
+	 * OPERATION_GET, OPERATION_ERASE, OPERATION_INSERT, OPERATION_UPDATE
+	 *
+	 * @return one of the above constants
+	 */
+	public function getOperationType();
+	
+	/**
 	 * Sets the object
 	 * 
 	 * @param mixed $object        	
 	 */
 	public function setObject($object);
+	
+	/**
+	 * Gets the object
+	 * @return object
+	 */
+	public function getObject();
 	
 	/**
 	 * Generates the query for the specific database

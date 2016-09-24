@@ -2,7 +2,8 @@
 interface IDatabaseConditions {
 	const OR = 0;
 	const AND = 1;
-	const LIKE = 2;
+	const OR_LIKE = 2;
+	const AND_LIKE = 3;
 	
 	/**
 	 * Adds the conditions to a query

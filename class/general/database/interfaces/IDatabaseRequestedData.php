@@ -17,7 +17,7 @@ interface IDatabaseRequestedData {
 	 * 
 	 * @return mixed
 	 */
-	public function getRetrivedObject(): array;
+	public function getRetrivedObject();
 	
 	/**
 	 * Go to the next object, if there is no one returns false

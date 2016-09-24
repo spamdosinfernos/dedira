@@ -52,7 +52,7 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 * @see IDatabaseRequestedData::next()
 	 */
 	public function next(): bool {
-		if ($this->pointer < count ( $this->arrData )) {
+		if ($this->pointer < count ( $this->arrData ) - 1) {
 			$this->pointer ++;
 			return true;
 		}
@@ -81,7 +81,7 @@ class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
 	 */
 	public function previous(): bool {
 		if (count ( $this->arrData ) > 0 && $this->pointer > 0) {
-			$this->pointer = 0;
+			$this->pointer--;
 			return true;
 		}
 		return false;

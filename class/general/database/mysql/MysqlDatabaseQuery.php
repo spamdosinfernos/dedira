@@ -55,19 +55,30 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 	 *
 	 * @see IDatabaseQuery::setOperationType()
 	 */
-	public function setOperationType($type) {
+	public function setOperationType(int $type) {
 		switch ($type) {
 			case IDatabaseQuery::OPERATION_GET :
 			case IDatabaseQuery::OPERATION_ERASE :
 			case IDatabaseQuery::OPERATION_INSERT :
 			case IDatabaseQuery::OPERATION_UPDATE :
-				$this->$this->operation = $type;
+				$this->operation = $type;
 				break;
 			default :
 				throw new Exception ( "Unsuported operation" );
 				return;
 		}
 	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseQuery::getOperationType()
+	 */
+	public function getOperationType() {
+		return $this->operation;
+	}
+
 	
 	/**
 	 *
@@ -102,6 +113,17 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 	}
 	
 	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @return object
+	 * @see IDatabaseQuery::getObject()
+	 */
+	public function getObject() {
+		return $this->object;
+	}
+	
+	/**
 	 * Generates the select query
 	 *
 	 * @return string
@@ -118,29 +140,33 @@ class MysqlDatabaseQuery implements IDatabaseQuery {
 		if (count ( $this->conditions->getConditions () ) > 0) {
 			
 			// If is the first condition do not put the logical operations
-			$firstCondition = false;
+			$firstCondition = true;
 			
 			$sql .= " where ";
 			
 			// The conditions are a bidimensional array, we must do a double loop
-			foreach ( $this->conditions->getConditions () as $arrParameteSpecification => $value ) {
+			foreach ( $this->conditions->getConditions () as $type => $arrParameters ) {
 				
-				foreach ( $arrParameteSpecification as $type => $name ) {
+				foreach ( $arrParameters as $param => $value ) {
 					// If is the first condition do not put the logical operations
 					if ($firstCondition) {
-						$sql .= $name . "='" . $value . "'";
+						$sql .= $param . "='" . $value . "'";
+						$firstCondition = false;
 						continue;
 					}
 					
 					switch ($type) {
 						case IDatabaseConditions::AND :
-							$sql .= " AND " . $name . "='" . $value . "' ";
+							$sql .= " AND " . $param . "='" . $value . "' ";
 							break;
-						case IDatabaseConditions::LIKE :
-							$sql .= $name . " LIKE '%" . $value . "%' ";
+						case IDatabaseConditions::AND_LIKE :
+							$sql .= " AND " . $param . " LIKE '%" . $value . "%' ";
+							break;
+						case IDatabaseConditions::AND_LIKE :
+							$sql .= " OR " . $param . " LIKE '%" . $value . "%' ";
 							break;
 						case IDatabaseConditions::OR :
-							$sql .= " OR " . $name . "='" . $value . "' ";
+							$sql .= " OR " . $param . "='" . $value . "' ";
 					}
 				}
 			}

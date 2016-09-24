@@ -20,11 +20,12 @@ class MysqlDatabaseConditions implements IDatabaseConditions {
 	 *
 	 * @see IDatabaseConditions::addCondition()
 	 */
-	public function addCondition($type, $name, $value) {
+	public function addCondition($type, string $name, $value) {
 		switch ($type) {
-			case IDatabaseConditions::AND :
-			case IDatabaseConditions::LIKE :
 			case IDatabaseConditions::OR :
+			case IDatabaseConditions::AND :
+			case IDatabaseConditions::OR_LIKE :
+			case IDatabaseConditions::AND_LIKE :
 				$this->arrConditions [$type] [$name] = $value;
 				break;
 			

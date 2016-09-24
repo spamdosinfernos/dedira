@@ -26,11 +26,11 @@ class User extends Person{
 
 	/**
 	 * Identificação do usuário
-	 * @var string | int
+	 * @var int
 	 * @Id
 	 * @GeneratedValue
 	 */
-	protected $userId;
+	protected $id;
 
 	/**
 	 * Indica se o usuário está ativo ou não

@@ -1,8 +1,7 @@
 <?php
 require_once 'IPerson.php';
-require_once __DIR__ . '/../database/StorableObject.php';
 
-class Person extends StorableObject implements IPerson{
+class Person implements IPerson{
 
 	/**
 	 * Nome

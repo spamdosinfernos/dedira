@@ -6,7 +6,7 @@
 <stringAttribute key="debugPages" value="debugAllPages"/>
 <stringAttribute key="debugTransferEncoding" value="UTF-8"/>
 <stringAttribute key="file_name" value="/MiliSystem/index.php"/>
-<booleanAttribute key="firstLineBreakpoint" value="true"/>
+<booleanAttribute key="firstLineBreakpoint" value="false"/>
 <stringAttribute key="name" value="Default PHP Web Server"/>
 <booleanAttribute key="org.eclipse.php.debug.core.OpenInBrowser" value="true"/>
 <stringAttribute key="org.eclipse.php.debug.core.PHP_Project" value="/MiliSystem"/>
