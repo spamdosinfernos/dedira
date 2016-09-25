@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../interfaces/IDatabaseRequestedData.php';
-class MysqlDatabaseRequestedData implements IDatabaseRequestedData {
+class DatabaseRequestedData {
 	
 	/**
 	 * The data returned

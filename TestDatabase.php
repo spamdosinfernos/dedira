@@ -32,7 +32,6 @@ class TestDatabase {
 		$user = new User ();
 		$user->setLogin("andre");
 		$user->setPassword("1234");
-		
 		$query2 = new MysqlDatabaseQuery ();
 		$query2->setObject ( $user );
 		$query2->setOperationType ( IDatabaseQuery::OPERATION_INSERT );

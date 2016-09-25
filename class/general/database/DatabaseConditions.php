@@ -5,7 +5,11 @@ require_once __DIR__ . '/../interfaces/IDatabaseConditions.php';
  * @author ensismoebius
  *        
  */
-class MysqlDatabaseConditions implements IDatabaseConditions {
+class DatabaseConditions {
+	const OR = 0;
+	const AND = 1;
+	const OR_LIKE = 2;
+	const AND_LIKE = 3;
 	
 	/**
 	 * Holds the conditions
@@ -22,10 +26,10 @@ class MysqlDatabaseConditions implements IDatabaseConditions {
 	 */
 	public function addCondition($type, string $name, $value) {
 		switch ($type) {
-			case IDatabaseConditions::OR :
-			case IDatabaseConditions::AND :
-			case IDatabaseConditions::OR_LIKE :
-			case IDatabaseConditions::AND_LIKE :
+			case self::OR :
+			case self::AND :
+			case self::OR_LIKE :
+			case self::AND_LIKE :
 				$this->arrConditions [$type] [$name] = $value;
 				break;
 			
