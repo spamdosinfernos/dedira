@@ -1,9 +1,9 @@
 <?php
-require_once 'IDatabaseQuery.php';
-require_once 'IDatabaseRequestedData.php';
+require_once __DIR__ . '/../DatabaseQuery.php';
+require_once __DIR__ . '/../DatabaseRequestedData.php';
 /**
  * Paterns for a data base driver
- * 
+ *
  * @author André Furlan
  *        
  */
@@ -11,14 +11,14 @@ interface IDatabaseDriver {
 	
 	/**
 	 * Connects to database
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function connect(): bool;
 	
 	/**
 	 * Disconnect from database
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function disconnect(): bool;
@@ -29,13 +29,13 @@ interface IDatabaseDriver {
 	 * @param IDatabaseQuery $query        	
 	 * @return bool
 	 */
-	public function execute(IDatabaseQuery $query): bool;
+	public function execute(DatabaseQuery $query): bool;
 	
 	/**
 	 * Return the results
-	 * 
+	 *
 	 * @return IDatabaseRequestedData
 	 */
-	public function getResults(): IDatabaseRequestedData;
+	public function getResults(): DatabaseRequestedData;
 }
 ?>

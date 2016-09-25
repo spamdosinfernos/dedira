@@ -9,15 +9,11 @@ class Database {
 	
 	/**
 	 * The database driver
-	 *
-	 * @var IDatabaseDriver
 	 */
 	private static $driver;
 	
 	/**
 	 * Initializes the database
-	 *
-	 * @param IDatabaseDriver $driver        	
 	 */
 	public static function init(IDatabaseDriver $driver) {
 		self::$driver = $driver;
@@ -25,8 +21,6 @@ class Database {
 	
 	/**
 	 * Connects to database
-	 *
-	 * @see IDatabaseDriver::connect()
 	 */
 	public static function connect(): bool {
 		return self::$driver->connect ();
@@ -34,8 +28,6 @@ class Database {
 	
 	/**
 	 * Disconnect from database
-	 *
-	 * @see IDatabaseDriver::disconnect()
 	 */
 	public static function disconnect(): bool {
 		return self::$driver->disconnect ();
@@ -43,21 +35,15 @@ class Database {
 	
 	/**
 	 * Execute a query
-	 *
-	 * @see IDatabaseDriver::execute()
 	 */
-	public static function execute(IDatabaseQuery $query): bool {
+	public static function execute(DatabaseQuery $query): bool {
 		return self::$driver->execute ( $query );
 	}
 	
 	/**
 	 * Retrive results
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseDriver::getResults()
 	 */
-	public static function getResults(): IDatabaseRequestedData {
+	public static function getResults(): DatabaseRequestedData {
 		return self::$driver->getResults ();
 	}
 }

@@ -1,9 +1,7 @@
 <?php
-require_once __DIR__ . '/../interfaces/IDatabaseConditions.php';
 /**
- *
+ * Manages the database query conditions
  * @author ensismoebius
- *        
  */
 class DatabaseConditions {
 	const OR = 0;
@@ -19,10 +17,11 @@ class DatabaseConditions {
 	private $arrConditions;
 	
 	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseConditions::addCondition()
+	 * Adds a condition to query
+	 * @param int $type        	
+	 * @param string $name        	
+	 * @param mixed $value        	
+	 * @throws Exception
 	 */
 	public function addCondition($type, string $name, $value) {
 		switch ($type) {
@@ -39,10 +38,9 @@ class DatabaseConditions {
 	}
 	
 	/**
+	 * Return the conditions
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseConditions::getConditions()
+	 * @return array
 	 */
 	public function getConditions(): array {
 		return $this->arrConditions;

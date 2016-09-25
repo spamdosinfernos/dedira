@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../interfaces/IDatabaseConditions.php';
 /**
  *
  * @author ensismoebius
@@ -7,21 +6,21 @@ require_once __DIR__ . '/../interfaces/IDatabaseConditions.php';
  */
 class DatabaseQuery {
 	const OPERATION_GET = 0;
-	const OPERATION_ERASE = 1;
-	const OPERATION_INSERT = 2;
+	const OPERATION_PUT = 1;
+	const OPERATION_ERASE = 2;
 	const OPERATION_UPDATE = 3;
 	
 	/**
 	 * Holds the operation code
 	 *
-	 * @var unknown
+	 * @var int
 	 */
 	private $operation;
 	
 	/**
 	 * Holds the conditions
 	 *
-	 * @var IDatabaseConditions
+	 * @var DatabaseConditions
 	 */
 	private $conditions;
 	
@@ -34,36 +33,36 @@ class DatabaseQuery {
 	
 	/**
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseQuery::setConditions()
+	 * @param DatabaseConditions $c        	
 	 */
-	public function setConditions(IDatabaseConditions $c) {
+	public function setConditions(DatabaseConditions $c) {
 		$this->conditions = $c;
 	}
 	
 	/**
+	 * Returns the conditions
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseQuery::getConditions()
+	 * @return DatabaseConditions
 	 */
-	public function getConditions(): IDatabaseConditions {
+	public function getConditions(): DatabaseConditions {
 		return $this->conditions;
 	}
 	
 	/**
+	 * Sets the query type it must be one of the constants:
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseQuery::setOperationType()
+	 * @param DatabaseQuery::OPERATION_GET $type        	
+	 * @param DatabaseQuery::OPERATION_PUT $type        	
+	 * @param DatabaseQuery::OPERATION_ERASE $type        	
+	 * @param DatabaseQuery::OPERATION_UPDATE $type        	
+	 * @throws Exception
 	 */
 	public function setOperationType(int $type) {
 		switch ($type) {
-			case IDatabaseQuery::OPERATION_GET :
-			case IDatabaseQuery::OPERATION_ERASE :
-			case IDatabaseQuery::OPERATION_INSERT :
-			case IDatabaseQuery::OPERATION_UPDATE :
+			case DatabaseQuery::OPERATION_GET :
+			case DatabaseQuery::OPERATION_PUT :
+			case DatabaseQuery::OPERATION_ERASE :
+			case DatabaseQuery::OPERATION_UPDATE :
 				$this->operation = $type;
 				break;
 			default :
@@ -73,31 +72,27 @@ class DatabaseQuery {
 	}
 	
 	/**
+	 * Gets the operation type
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseQuery::getOperationType()
+	 * @return int
 	 */
-	public function getOperationType() {
+	public function getOperationType(): int {
 		return $this->operation;
 	}
 	
 	/**
+	 * Sets the object involved in operation
 	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseQuery::setObject()
+	 * @param object $object        	
 	 */
 	public function setObject($object) {
 		$this->object = $object;
 	}
 	
 	/**
-	 *
-	 * {@inheritdoc}
+	 * Returns the object involved in operation
 	 *
 	 * @return object
-	 * @see IDatabaseQuery::getObject()
 	 */
 	public function getObject() {
 		return $this->object;

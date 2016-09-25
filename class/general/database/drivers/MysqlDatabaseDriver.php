@@ -27,15 +27,11 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	/**
 	 * Stores the query that will be executed
 	 *
-	 * @var IDatabaseQuery
+	 * @var DatabaseQuery
 	 */
 	private $query;
 	
 	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseDriver::connect()
 	 */
 	public function connect(): bool {
 		try {
@@ -53,10 +49,6 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseDriver::disconnect()
 	 */
 	public function disconnect(): bool {
 		$this->connection = null;
@@ -64,10 +56,6 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseDriver::execute()
 	 */
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
@@ -82,15 +70,12 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$res = $this->connection->prepare ( $this->getGeneratedQuery () );
 			$res->execute ();
 			
-			// Retrieves the object data to extract the class name
-			$reflection = new ReflectionClass ( $query->getObject () );
-			
 			$this->result = new DatabaseRequestedData ();
 			
 			// Only populates the results if the operation is data retrieving
 			if ($query->getOperationType () == DatabaseQuery::OPERATION_GET) {
 				// Sets the results as an array of objects (PDO rocks!!!!)
-				$this->result->setData ( $res->fetchAll ( PDO::FETCH_CLASS, $reflection->getName () ) );
+				$this->result->setData ( $res->fetchAll ( PDO::FETCH_CLASS, $this->getEntityName () ) );
 			}
 			$this->connection->commit ();
 		} catch ( PDOException $e ) {
@@ -104,10 +89,6 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see IDatabaseDriver::getResults()
 	 */
 	public function getResults(): DatabaseRequestedData {
 		return $this->result;
@@ -120,18 +101,15 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 		switch ($this->query->getOperationType ()) {
 			case DatabaseQuery::OPERATION_GET :
 				return $this->generateSelect ();
-			case DatabaseQuery::OPERATION_ERASE :
-				return $this->generateDelete ();
-				break;
-			case DatabaseQuery::OPERATION_INSERT :
+			case DatabaseQuery::OPERATION_PUT :
 				return $this->generateInsert ();
-				break;
 			case DatabaseQuery::OPERATION_UPDATE :
 				return $this->generateUpdate ();
-				break;
+			case DatabaseQuery::OPERATION_ERASE :
+				return $this->generateDelete ();
 			default :
 				throw new Exception ( "Unsuported operation" );
-				return;
+				return "";
 		}
 	}
 	
@@ -143,7 +121,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	private function generateUpdate(): string {
 		$sets = array ();
 		
-		$reflection = new ReflectionClass ( $this->object );
+		$reflection = new ReflectionClass ( $this->query->getObject () );
 		
 		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
 			
@@ -155,10 +133,13 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			// Invoke getter
 			$value = $method->invoke ( $this->query->getObject () );
 			
-			// Just put non empty fields in insert
+			// Just put non empty fields in update
 			if ($value == "") {
 				continue;
 			}
+			
+			// If value is boolean put it without quotes
+			$value = is_bool ( $value ) ? "true" : "'$value'";
 			
 			// extract property name
 			$field = strtolower ( str_ireplace ( "get", "", $method->getName () ) );
@@ -166,7 +147,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$sets [] = "$field = $value";
 		}
 		
-		return "update " . $this->getTableName () . "set " . implode ( ",", $sets ) . $this->buildConditions ();
+		return "update " . $this->getEntityName () . " set " . implode ( ",", $sets ) . $this->buildConditions ();
 	}
 	
 	/**
@@ -178,7 +159,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 		$fields = array ();
 		$values = array ();
 		
-		$reflection = new ReflectionClass ( $this->object );
+		$reflection = new ReflectionClass ( $this->query->getObject () );
 		
 		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
 			
@@ -196,7 +177,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$fields [] = strtolower ( str_ireplace ( "get", "", $method->getName () ) );
 		}
 		
-		return "insert into " . $this->getTableName () . "(" . implode ( ",", $fields ) . ")values(" . implode ( ",", $values ) . ")";
+		return "insert into " . $this->getEntityName () . "(" . implode ( ",", $fields ) . ")values(" . implode ( ",", $values ) . ")";
 	}
 	
 	/**
@@ -205,7 +186,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function generateDelete(): string {
-		return "delete from " . $this->getTableName () . $this->buildConditions ();
+		return "delete from " . $this->getEntityName () . $this->buildConditions ();
 	}
 	
 	/**
@@ -214,7 +195,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function generateSelect(): string {
-		return "select * from " . $this->getTableName () . $this->buildConditions ();
+		return "select * from " . $this->getEntityName () . $this->buildConditions ();
 	}
 	
 	/**
@@ -222,7 +203,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return string
 	 */
-	private function getTableName() {
+	private function getEntityName() {
 		$reflection = new ReflectionClass ( $this->query->getObject () );
 		return $reflection->getName ();
 	}
@@ -243,14 +224,14 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$sql .= " where ";
 			
 			// The conditions are a bidimensional array, we must do a double loop
-			foreach ( $this->query->getConditions () as $type => $arrParameters ) {
+			foreach ( $this->query->getConditions ()->getConditions () as $type => $arrParameters ) {
 				
 				foreach ( $arrParameters as $param => $value ) {
 					// If is the first condition do not put the logical operations
 					if ($firstCondition) {
 						$sql .= $param . "='" . $value . "'";
 						$firstCondition = false;
-						continue;
+						continue 1;
 					}
 					
 					switch ($type) {
@@ -260,7 +241,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 						case DatabaseConditions::AND_LIKE :
 							$sql .= " AND " . $param . " LIKE '%" . $value . "%' ";
 							break;
-						case DatabaseConditions::AND_LIKE :
+						case DatabaseConditions::OR_LIKE :
 							$sql .= " OR " . $param . " LIKE '%" . $value . "%' ";
 							break;
 						case DatabaseConditions::OR :
