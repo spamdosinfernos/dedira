@@ -45,6 +45,10 @@ class User extends Person {
 	 * @var Group @Column(nullable = false)
 	 */
 	protected $accessGroup;
+	
+	/**
+	 * User constructor
+	 */
 	public function __construct() {
 		$this->active = true;
 	}
