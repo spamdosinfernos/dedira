@@ -1,0 +1,25 @@
+//In mongo DBIf we have the folwing data:
+
+// Users (students)
+// > db.User.find({});
+{ "_id" : ObjectId("57ec5b63a0a43a9b679e4b53"), "login" : "andre", "pass" : "1234" }
+{ "_id" : ObjectId("57ec5b6fa0a43a9b679e4b54"), "login" : "joao", "pass" : "rrtt" }
+{ "_id" : ObjectId("57ec5b79a0a43a9b679e4b55"), "login" : "maria", "pass" : "lica" }
+
+// Are enrolled in one or more classes
+//> db.Class.find({});
+{ "_id" : ObjectId("57ec5be4a0a43a9b679e4b56"), "userId" : ObjectId("57ec5b63a0a43a9b679e4b53"), "name" : "Math" }
+{ "_id" : ObjectId("57ec5beda0a43a9b679e4b57"), "userId" : ObjectId("57ec5b79a0a43a9b679e4b55"), "name" : "Math" }
+{ "_id" : ObjectId("57ec5bfaa0a43a9b679e4b58"), "userId" : ObjectId("57ec5b6fa0a43a9b679e4b54"), "name" : "Portuguese" }
+
+//How do i discover which of them are enrolled in a math class?  
+
+// This way!!
+db.Class.find(
+		{name: "Math"},
+		{_id: 0, userId: 1} 
+	).forEach( 
+		function(doc){ 
+			db.User.find({_id: doc.userId}).forEach(printjson); 
+		}
+	);
