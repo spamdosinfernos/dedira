@@ -76,8 +76,16 @@ $user->setPassword ( array (
 		$user3 
 ) );
 
-echo JSONGenerator::objectToJson ( array(1,2,3,4,56,65,5) );
-echo JSONGenerator::objectToJson ( $user );
+echo JSONGenerator::objectToJson ( array (
+		1,
+		2,
+		3,
+		4,
+		56,
+		65,
+		5 
+) );
+echo JSONGenerator::objectToJson ( $user, true );
 
 // try {
 
