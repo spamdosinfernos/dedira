@@ -20,7 +20,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	/**
 	 * Guarda resultado da consulta
 	 *
-	 * @var IDatabaseRequestedData
+	 * @var DatabaseRequestedData
 	 */
 	private $result;
 	
@@ -43,6 +43,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$this->connection->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 			return true;
 		} catch ( Exception $e ) {
+			// TODO otherwise record a log
 			return false;
 		}
 		return false;
@@ -80,6 +81,8 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$this->connection->commit ();
 		} catch ( PDOException $e ) {
 			$this->connection->rollBack ();
+			
+			// TODO otherwise record a log
 			return false;
 		}
 		

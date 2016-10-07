@@ -4,17 +4,46 @@ require_once __DIR__ . '/class/general/database/Database.php';
 require_once __DIR__ . '/class/general/variable/JSONGenerator.php';
 require_once __DIR__ . '/class/general/database/DatabaseQuery.php';
 require_once __DIR__ . '/class/general/database/DatabaseConditions.php';
-require_once __DIR__ . '/class/general/database/drivers/MysqlDatabaseDriver.php';
+require_once __DIR__ . '/class/general/database/drivers/MongoDatabaseDriver.php';
 require_once __DIR__ . '/class/general/database/interfaces/IDatabaseDriver.php';
 class TestDatabase {
 	public function __construct() {
 		// Initilizing the database
-		Database::init ( new MysqlDatabaseDriver () );
+		Database::init ( new MongoDatabaseDriver () );
+		
+		$user2 = new User ();
+		$user2->setName ( "fsadfsaf" );
+		$user2->setLogin ( "11111" );
+		$user2->setArrEmail ( array (
+				"teste@gmail.com",
+				"uga@ig.com.br",
+				"e@a.b.c" 
+		) );
+		
+		$user3 = new User ();
+		$user3->setName ( "eee" );
+		$user3->setLogin ( "222" );
+		
+		// Recording objects
+		$user = new User ();
+		$user->setId ( 1 );
+		$user->setLogin ( "andre" );
+		$user->setPassword ( "1234" );
+		$user->setSex ( $user2 );
+		$user->setPassword ( array (
+				$user2,
+				$user3 
+		) );
+		
+		$query2 = new DatabaseQuery ();
+		$query2->setObject ( $user );
+		$query2->setOperationType ( DatabaseQuery::OPERATION_PUT );
+		Database::execute ( $query2 );
 		
 		// Retrieving objects
 		$c = new DatabaseConditions ();
 		$c->addCondition ( DatabaseConditions::AND, "id", 1 );
-		$c->addCondition ( DatabaseConditions::OR, "login", "uga" );
+		// $c->addCondition ( DatabaseConditions::OR, "login", "uga" );
 		$query = new DatabaseQuery ();
 		$query->setConditions ( $c );
 		$query->setObject ( new User () );
@@ -24,15 +53,6 @@ class TestDatabase {
 		while ( $res->next () ) {
 			echo $res->getRetrivedObject ()->getLogin ();
 		}
-		
-		// Recording objects
-		$user = new User ();
-		$user->setLogin ( "andre" );
-		$user->setPassword ( "1234" );
-		$query2 = new DatabaseQuery ();
-		$query2->setObject ( $user );
-		$query2->setOperationType ( DatabaseQuery::OPERATION_PUT );
-		Database::execute ( $query2 );
 		
 		// Updating objects
 		$c2 = new DatabaseConditions ();
@@ -54,61 +74,5 @@ class TestDatabase {
 		Database::execute ( $query4 );
 	}
 }
-$user2 = new User ();
-$user2->setName ( "fsadfsaf" );
-$user2->setLogin ( "11111" );
-$user2->setArrEmail ( array (
-		"teste@gmail.com",
-		"uga@ig.com.br",
-		"e@a.b.c" 
-) );
-
-$user3 = new User ();
-$user3->setName ( "eee" );
-$user3->setLogin ( "222" );
-
-$user = new User ();
-$user->setName ( "fsadfsaf" );
-$user->setLogin ( "11111" );
-$user->setSex ( $user2 );
-$user->setPassword ( array (
-		$user2,
-		$user3 
-) );
-
-echo JSONGenerator::objectToJson ( array (
-		1,
-		2,
-		3,
-		4,
-		56,
-		65,
-		5 
-) );
-echo JSONGenerator::objectToJson ( $user, true );
-
-// try {
-
-// $mng = new MongoDB\Driver\Manager ( "mongodb://localhost:27017" );
-
-// $stats = new MongoDB\Driver\Command ( [
-// "dbstats" => 1
-// ] );
-// $res = $mng->executeCommand ( "testdb", $stats );
-
-// $stats = current ( $res->toArray () );
-
-// print_r ( $stats );
-// } catch ( MongoDB\Driver\Exception\Exception $e ) {
-
-// $filename = basename ( __FILE__ );
-
-// echo "The $filename script has experienced an error.\n";
-// echo "It failed with the following exception:\n";
-
-// echo "Exception:", $e->getMessage (), "\n";
-// echo "In file:", $e->getFile (), "\n";
-// echo "On line:", $e->getLine (), "\n";
-// }
 
 ?>

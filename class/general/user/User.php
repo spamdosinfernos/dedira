@@ -12,21 +12,21 @@ class User extends Person {
 	
 	/**
 	 * Login
-	 * 
+	 *
 	 * @var string @Column(nullable = false)
 	 */
 	protected $login;
 	
 	/**
 	 * Senha
-	 * 
+	 *
 	 * @var string @Column(nullable = false)
 	 */
 	protected $password;
 	
 	/**
 	 * Identificação do usuário
-	 * 
+	 *
 	 * @var int @Id
 	 *      @GeneratedValue
 	 */
@@ -34,14 +34,14 @@ class User extends Person {
 	
 	/**
 	 * Indica se o usuário está ativo ou não
-	 * 
+	 *
 	 * @var boolean @Column(nullable = false)
 	 */
 	protected $active;
 	
 	/**
 	 * Indica qual o grupo de acesso o usuário pertence
-	 * 
+	 *
 	 * @var Group @Column(nullable = false)
 	 */
 	protected $accessGroup;
@@ -51,6 +51,12 @@ class User extends Person {
 	 */
 	public function __construct() {
 		$this->active = true;
+	}
+	public function getId() {
+		return $this->id;
+	}
+	public function setId($id) {
+		$this->id = $id;
 	}
 	public function getLogin() {
 		return $this->login;

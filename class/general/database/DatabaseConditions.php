@@ -42,7 +42,7 @@ class DatabaseConditions {
 	 *
 	 * @return array
 	 */
-	public function getConditions(): array {
+	public function getTokens(): array {
 		return $this->arrConditions;
 	}
 }

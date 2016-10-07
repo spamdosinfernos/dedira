@@ -47,14 +47,14 @@ class Configuration {
 	 * 
 	 * @var string
 	 */
-	const CONST_DB_HOST_PROTOCOL = "mysql";
+	const CONST_DB_HOST_PROTOCOL = "mongodb";
 	
 	/**
 	 * Porta np servidor de banco de dados
 	 * 
 	 * @var int
 	 */
-	const CONST_DB_PORT = 5984;
+	const CONST_DB_PORT = 27017;
 	
 	/**
 	 * Formato da data no arquivo de log

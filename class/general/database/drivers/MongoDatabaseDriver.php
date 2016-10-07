@@ -3,24 +3,27 @@ require_once __DIR__ . '/../DatabaseConditions.php';
 require_once __DIR__ . '/../DatabaseRequestedData.php';
 require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../../configuration/Configuration.php';
+
+require_once __DIR__ . '/../../variable/Caster.php';
+require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
  * @author ensismoebius
  *        
  */
-class MysqlDatabaseDriver implements IDatabaseDriver {
+class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * The database connection
 	 *
-	 * @var PDO
+	 * @var MongoDB\Driver\Manager
 	 */
 	private $connection;
 	
 	/**
 	 * Guarda resultado da consulta
 	 *
-	 * @var IDatabaseRequestedData
+	 * @var DatabaseRequestedData
 	 */
 	private $result;
 	
@@ -32,30 +35,53 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	private $query;
 	
 	/**
+	 *
+	 * @var MongoDB\Driver\WriteConcern
+	 */
+	private $writeConcern;
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseDriver::connect()
 	 */
 	public function connect(): bool {
+		
+		// Construct a write concern
+		$this->writeConcern = new MongoDB\Driver\WriteConcern ( 
+				// Guarantee that writes are acknowledged by a majority of our nodes
+				MongoDB\Driver\WriteConcern::MAJORITY, 
+				// But only wait 1000ms because we have an application to run!
+				1000 );
+		
 		try {
-			$dsn = Configuration::CONST_DB_HOST_PROTOCOL . ": host=" . Configuration::CONST_DB_HOST_ADDRESS . ";dbname=" . Configuration::CONST_DB_NAME;
-			$this->connection = new PDO ( $dsn, Configuration::CONST_DB_LOGIN, Configuration::CONST_DB_PASSWORD, array (
-					PDO::ATTR_PERSISTENT,
-					true 
-			) );
-			$this->connection->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+			$url = Configuration::CONST_DB_HOST_PROTOCOL . "://" . Configuration::CONST_DB_HOST_ADDRESS . ":" . Configuration::CONST_DB_PORT;
+			$this->connection = new MongoDB\Driver\Manager ( $url );
 			return true;
-		} catch ( Exception $e ) {
+		} catch ( MongoDB\Driver\Exception\Exception $e ) {
 			return false;
 		}
+		
 		return false;
 	}
 	
 	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseDriver::disconnect()
 	 */
 	public function disconnect(): bool {
-		$this->connection = null;
+		// For some reason looks like we cant close the connection
 		return true;
 	}
 	
 	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseDriver::execute()
 	 */
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
@@ -63,29 +89,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 		if (! $this->connect ())
 			return false;
 		
-		try {
-			$this->connection->beginTransaction ();
-			
-			// The results
-			$res = $this->connection->prepare ( $this->getGeneratedQuery () );
-			$res->execute ();
-			
-			$this->result = new DatabaseRequestedData ();
-			
-			// Only populates the results if the operation is data retrieving
-			if ($query->getOperationType () == DatabaseQuery::OPERATION_GET) {
-				// Sets the results as an array of objects (PDO rocks!!!!)
-				$this->result->setData ( $res->fetchAll ( PDO::FETCH_CLASS, $this->getEntityName () ) );
-			}
-			$this->connection->commit ();
-		} catch ( PDOException $e ) {
-			$this->connection->rollBack ();
-			return false;
-		}
-		
-		$this->disconnect ();
-		
-		return true;
+		return $this->executeQuery ();
 	}
 	
 	/**
@@ -97,17 +101,18 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	/**
 	 * Generates the query string
 	 */
-	private function getGeneratedQuery(): string {
+	private function executeQuery(): bool {
 		switch ($this->query->getOperationType ()) {
 			case DatabaseQuery::OPERATION_GET :
-				return $this->generateSelect ();
+				return $this->doRead ();
 			case DatabaseQuery::OPERATION_PUT :
-				return $this->generateInsert ();
+				return $this->doInsert ();
 			case DatabaseQuery::OPERATION_UPDATE :
 				return $this->generateUpdate ();
 			case DatabaseQuery::OPERATION_ERASE :
 				return $this->generateDelete ();
 			default :
+				// TODO otherwise record a log
 				throw new Exception ( "Unsuported operation" );
 				return "";
 		}
@@ -155,29 +160,31 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return string
 	 */
-	private function generateInsert(): string {
-		$fields = array ();
-		$values = array ();
+	private function doInsert(): bool {
 		
+		// Create a bulk write object and add our insert operation
+		$bulk = new MongoDB\Driver\BulkWrite ();
+		
+		// To insert we need turn all properties as public
+		$bulk->insert ( ClassPropertyPublicizator::publicizise ( $this->query->getObject () ) );
+		
+		// Retrieves the name of collection to insert
 		$reflection = new ReflectionClass ( $this->query->getObject () );
+		$collection = Configuration::CONST_DB_NAME . "." . $reflection->getName ();
 		
-		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
-			
-			// We just want the getters
-			if ($method->isConstructor () || $method->getNumberOfParameters () > 0)
-				continue;
-			
-			$value = $method->invoke ( $this->query->getObject () );
-			
-			// Just put non empty fields in insert
-			if ($value == "")
-				continue;
-			
-			$values [] = is_bool ( $value ) ? "true" : "'$value'";
-			$fields [] = strtolower ( str_ireplace ( "get", "", $method->getName () ) );
+		try {
+			/*
+			 * Specify the full namespace as the first argument, followed by the bulk
+			 * write object and an optional write concern. MongoDB\Driver\WriteResult is
+			 * returned on success; otherwise, an exception is thrown.
+			 */
+			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			return true;
+		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+			// TODO otherwise record a log
+			echo $e->getMessage (), "\n";
 		}
-		
-		return "insert into " . $this->getEntityName () . "(" . implode ( ",", $fields ) . ")values(" . implode ( ",", $values ) . ")";
+		return false;
 	}
 	
 	/**
@@ -194,8 +201,70 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return string
 	 */
-	private function generateSelect(): string {
-		return "select * from " . $this->getEntityName () . $this->buildConditions ();
+	private function doRead(): bool {
+		
+		// Filter for documents
+		$arrFilter = array ();
+		
+		// Retrieves the class name for document casting
+		$reflection = new ReflectionClass ( $this->query->getObject () );
+		$className = $reflection->getName ();
+		
+		// Prepare the caster
+		$caster = new Caster ();
+		
+		// Creates the filter
+		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
+			
+			switch ($type) {
+				case DatabaseConditions::AND :
+					;
+					break;
+				
+				case DatabaseConditions::AND_LIKE :
+					;
+					break;
+				
+				case DatabaseConditions::OR :
+					;
+					break;
+				
+				case DatabaseConditions::OR_LIKE :
+					;
+					break;
+				default :
+					;
+					break;
+			}
+			
+			foreach ( $arrToken as $key => $value ) {
+				
+				$arrFilter;
+			}
+		}
+		
+		$query = new MongoDB\Driver\Query ( $arrFilter );
+		
+		try {
+			
+			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $query );
+			/*
+			 * Specify the full namespace as the first argument, followe'd by the query
+			 * object and an optional read preference. MongoDB\Driver\Cursor is returned
+			 * success; otherwise, an exception is thrown.
+			 */
+			
+			// Stores all matched documents
+			foreach ( $cursor as $document ) {
+				$this->result [] = $caster->classToClassCast ( $document, $className );
+			}
+			
+			return true;
+		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+			// TODO otherwise record a log
+			echo $e->getMessage (), "\n";
+		}
+		return false;
 	}
 	
 	/**
@@ -224,7 +293,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$sql .= " where ";
 			
 			// The conditions are a bidimensional array, we must do a double loop
-			foreach ( $this->query->getConditions ()->getConditions () as $type => $arrParameters ) {
+			foreach ( $this->query->getConditions ()->getTokens () as $type => $arrParameters ) {
 				
 				foreach ( $arrParameters as $param => $value ) {
 					// If is the first condition do not put the logical operations

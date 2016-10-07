@@ -86,6 +86,9 @@ class DatabaseQuery {
 	 * @param object $object        	
 	 */
 	public function setObject($object) {
+		
+		
+		
 		$this->object = $object;
 	}
 	

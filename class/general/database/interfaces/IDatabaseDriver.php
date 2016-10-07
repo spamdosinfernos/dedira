@@ -34,7 +34,7 @@ interface IDatabaseDriver {
 	/**
 	 * Return the results
 	 *
-	 * @return IDatabaseRequestedData
+	 * @return DatabaseRequestedData
 	 */
 	public function getResults(): DatabaseRequestedData;
 }
