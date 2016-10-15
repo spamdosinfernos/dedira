@@ -86,8 +86,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
-		if (! $this->connect ())
-			return false;
+		if (! $this->connect ()) return false;
 		
 		return $this->executeQuery ();
 	}
@@ -108,7 +107,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			case DatabaseQuery::OPERATION_PUT :
 				return $this->doInsert ();
 			case DatabaseQuery::OPERATION_UPDATE :
-				return $this->generateUpdate ();
+				return $this->doUpdate ();
 			case DatabaseQuery::OPERATION_ERASE :
 				return $this->generateDelete ();
 			default :
@@ -123,7 +122,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return string
 	 */
-	private function generateUpdate(): string {
+	private function doUpdate(): string {
 		$sets = array ();
 		
 		$reflection = new ReflectionClass ( $this->query->getObject () );
@@ -203,51 +202,15 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 */
 	private function doRead(): bool {
 		
-		// Filter for documents
-		$arrFilter = array ();
-		
-		// Retrieves the class name for document casting
-		$reflection = new ReflectionClass ( $this->query->getObject () );
-		$className = $reflection->getName ();
-		
-		// Prepare the caster
-		$caster = new Caster ();
-		
-		// Creates the filter
-		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
-			
-			switch ($type) {
-				case DatabaseConditions::AND :
-					;
-					break;
-				
-				case DatabaseConditions::AND_LIKE :
-					;
-					break;
-				
-				case DatabaseConditions::OR :
-					;
-					break;
-				
-				case DatabaseConditions::OR_LIKE :
-					;
-					break;
-				default :
-					;
-					break;
-			}
-			
-			foreach ( $arrToken as $key => $value ) {
-				
-				$arrFilter;
-			}
-		}
-		
-		$query = new MongoDB\Driver\Query ( $arrFilter );
+		// Filtering documents
+		$filter = new MongoDB\Driver\Query ( $this->buildConditions () );
 		
 		try {
 			
-			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $query );
+			// Retrieves the class name for document casting
+			$className = $this->getEntityName ();
+			
+			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $filter );
 			/*
 			 * Specify the full namespace as the first argument, followe'd by the query
 			 * object and an optional read preference. MongoDB\Driver\Cursor is returned
@@ -256,7 +219,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			
 			// Stores all matched documents
 			foreach ( $cursor as $document ) {
-				$this->result [] = $caster->classToClassCast ( $document, $className );
+				$this->result [] = Caster::classToClassCast ( $document, $className );
 			}
 			
 			return true;
@@ -278,49 +241,48 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 * Builds the where clause
+	 * Builds the filter clause
 	 *
-	 * @return string
+	 * @return array
 	 */
-	private function buildConditions(): string {
-		$sql = "";
+	private function buildConditions(): array {
 		
-		if (count ( $this->query->getConditions () ) > 0) {
+		// Filter for documents
+		$arrFilter = array ();
+		
+		// Creates the filter
+		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
 			
-			// If is the first condition do not put the logical operations
-			$firstCondition = true;
-			
-			$sql .= " where ";
-			
-			// The conditions are a bidimensional array, we must do a double loop
-			foreach ( $this->query->getConditions ()->getTokens () as $type => $arrParameters ) {
+			switch ($type) {
+				case DatabaseConditions::AND :
+					$arrFilter [] = [ 
+							$arrToken [0] => $arrToken [1] 
+					];
+					break;
+				case DatabaseConditions::AND_LIKE :
+					$arrFilter [] = [ 
+							$arrToken [0] => "/.*" . $arrToken [1] . ".*/" 
+					];
+					break;
+				case DatabaseConditions::OR :
+					$arrFilter [] = [ 
+							'$or' => [ 
+									$arrToken [0] => $arrToken [1] 
+							] 
+					];
+					break;
 				
-				foreach ( $arrParameters as $param => $value ) {
-					// If is the first condition do not put the logical operations
-					if ($firstCondition) {
-						$sql .= $param . "='" . $value . "'";
-						$firstCondition = false;
-						continue 1;
-					}
-					
-					switch ($type) {
-						case DatabaseConditions::AND :
-							$sql .= " AND " . $param . "='" . $value . "' ";
-							break;
-						case DatabaseConditions::AND_LIKE :
-							$sql .= " AND " . $param . " LIKE '%" . $value . "%' ";
-							break;
-						case DatabaseConditions::OR_LIKE :
-							$sql .= " OR " . $param . " LIKE '%" . $value . "%' ";
-							break;
-						case DatabaseConditions::OR :
-							$sql .= " OR " . $param . "='" . $value . "' ";
-					}
-				}
+				case DatabaseConditions::OR_LIKE :
+					$arrFilter [] = [ 
+							'$or' => [ 
+									$arrToken [0] => "/.*" . $arrToken [1] . ".*/" 
+							] 
+					];
+					break;
 			}
 		}
 		
-		return $sql;
+		return $arrFilter;
 	}
 }
 ?>
