@@ -43,6 +43,9 @@ class TestDatabase {
 		// Retrieving objects
 		$c = new DatabaseConditions ();
 		$c->addCondition ( DatabaseConditions::AND, "id", 1 );
+		$c->addCondition ( DatabaseConditions::OR, "active", true );
+		$c->addCondition ( DatabaseConditions::AND_LIKE, "login", "nd" );
+		$c->addCondition ( DatabaseConditions::OR_LIKE, "login", "an" );
 		// $c->addCondition ( DatabaseConditions::OR, "login", "uga" );
 		$query = new DatabaseQuery ();
 		$query->setConditions ( $c );

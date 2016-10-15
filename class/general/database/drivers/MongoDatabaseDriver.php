@@ -5,6 +5,7 @@ require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../../configuration/Configuration.php';
 
 require_once __DIR__ . '/../../variable/Caster.php';
+require_once __DIR__ . '/../../variable/JSONGenerator.php';
 require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
@@ -86,7 +87,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
-		if (! $this->connect ()) return false;
+		if (! $this->connect ())
+			return false;
 		
 		return $this->executeQuery ();
 	}
@@ -253,32 +255,26 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		// Creates the filter
 		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
 			
-			switch ($type) {
-				case DatabaseConditions::AND :
-					$arrFilter [] = [ 
-							$arrToken [0] => $arrToken [1] 
-					];
-					break;
-				case DatabaseConditions::AND_LIKE :
-					$arrFilter [] = [ 
-							$arrToken [0] => "/.*" . $arrToken [1] . ".*/" 
-					];
-					break;
-				case DatabaseConditions::OR :
-					$arrFilter [] = [ 
-							'$or' => [ 
-									$arrToken [0] => $arrToken [1] 
-							] 
-					];
-					break;
+			foreach ( $arrToken as $field => $value ) {
 				
-				case DatabaseConditions::OR_LIKE :
-					$arrFilter [] = [ 
-							'$or' => [ 
-									$arrToken [0] => "/.*" . $arrToken [1] . ".*/" 
-							] 
-					];
-					break;
+				switch ($type) {
+					case DatabaseConditions::AND :
+						$arrFilter [$field] = $value;
+						continue;
+					case DatabaseConditions::AND_LIKE :
+						$arrFilter [$field] = new MongoDB\BSON\Regex ( ".*" . $value . ".*" );
+						continue;
+					case DatabaseConditions::OR :
+						$arrFilter ['$or'] [] = array (
+								$field => $value 
+						);
+						continue;
+					case DatabaseConditions::OR_LIKE :
+						$arrFilter ['$or'] [] = array (
+								$field => new MongoDB\BSON\Regex ( ".*" . $value . ".*" ) 
+						);
+						continue;
+				}
 			}
 		}
 		

@@ -3,7 +3,7 @@ require_once 'ClassPropertyPublicizator.php';
 
 /**
  * Generates a JSON expression
- * 
+ *
  * @author ensismoebius
  *        
  */
@@ -15,6 +15,7 @@ class JSONGenerator {
 	 * @param boolean $pretty        	
 	 * @return string
 	 */
+	// FIXME not perfect some structures can not be converted
 	public static function objectToJson($object, $pretty = false): string {
 		
 		// Returns the json

@@ -51,7 +51,7 @@ class ClassPropertyPublicizator {
 			
 			// Formatting the command that will gererate the property
 			if (is_string ( $value ) && ! is_numeric ( $value )) {
-				$value = "'" . $value . "'";
+				$value = "" . $value . "";
 			}
 			
 			// Creates the property
