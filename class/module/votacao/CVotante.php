@@ -1,20 +1,19 @@
 <?php
- 
-class Votante extends MilitanteOrganico{
+class Votante extends MilitanteOrganico {
 	
 	/**
 	 * Identificação da votação ou da pesquisa
+	 * 
 	 * @var int
 	 */
 	protected $IdDaVotacao;
 	
 	/**
-	 * Voto dado 
+	 * Voto dado
+	 * 
 	 * @var mixed
 	 */
 	protected $voto;
-	
-	
 }
 
 ?>

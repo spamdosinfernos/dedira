@@ -5,7 +5,6 @@ require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../../configuration/Configuration.php';
 
 require_once __DIR__ . '/../../variable/Caster.php';
-require_once __DIR__ . '/../../variable/JSONGenerator.php';
 require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
@@ -125,35 +124,36 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doUpdate(): string {
-		$sets = array ();
+// 		$arrFilter = $this->buildFilters ();
 		
-		$reflection = new ReflectionClass ( $this->query->getObject () );
+// 		// Create a bulk write object and add our insert operation
+// 		$bulk = new MongoDB\Driver\BulkWrite ();
 		
-		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
-			
-			// We just want the getters
-			if ($method->isConstructor () || $method->getNumberOfParameters () > 0) {
-				continue;
-			}
-			
-			// Invoke getter
-			$value = $method->invoke ( $this->query->getObject () );
-			
-			// Just put non empty fields in update
-			if ($value == "") {
-				continue;
-			}
-			
-			// If value is boolean put it without quotes
-			$value = is_bool ( $value ) ? "true" : "'$value'";
-			
-			// extract property name
-			$field = strtolower ( str_ireplace ( "get", "", $method->getName () ) );
-			
-			$sets [] = "$field = $value";
-		}
 		
-		return "update " . $this->getEntityName () . " set " . implode ( ",", $sets ) . $this->buildConditions ();
+// 		$bulk->update($arrFilter, $newObjarray)
+		
+		
+		
+// 		// To insert we need turn all properties as public
+// 		$bulk->insert ( ClassPropertyPublicizator::publicizise ( $this->query->getObject () ) );
+		
+// 		// Retrieves the name of collection to insert
+// 		$reflection = new ReflectionClass ( $this->query->getObject () );
+// 		$collection = Configuration::CONST_DB_NAME . "." . $reflection->getName ();
+		
+// 		try {
+// 			/*
+// 			 * Specify the full namespace as the first argument, followed by the bulk
+// 			 * write object and an optional write concern. MongoDB\Driver\WriteResult is
+// 			 * returned on success; otherwise, an exception is thrown.
+// 			 */
+// 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+// 			return true;
+// 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+// 			// TODO otherwise record a log
+// 			echo $e->getMessage (), "\n";
+// 		}
+// 		return false;
 	}
 	
 	/**
@@ -194,7 +194,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function generateDelete(): string {
-		return "delete from " . $this->getEntityName () . $this->buildConditions ();
+		return "delete from " . $this->getEntityName () . $this->buildFilters ();
 	}
 	
 	/**
@@ -203,16 +203,13 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doRead(): bool {
-		
-		// Filtering documents
-		$filter = new MongoDB\Driver\Query ( $this->buildConditions () );
-		
+		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
 			
 			// Retrieves the class name for document casting
 			$className = $this->getEntityName ();
 			
-			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $filter );
+			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $query );
 			/*
 			 * Specify the full namespace as the first argument, followe'd by the query
 			 * object and an optional read preference. MongoDB\Driver\Cursor is returned
@@ -247,7 +244,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return array
 	 */
-	private function buildConditions(): array {
+	private function buildFilters(): array {
 		
 		// Filter for documents
 		$arrFilter = array ();

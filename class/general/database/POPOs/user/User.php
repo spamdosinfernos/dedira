@@ -1,7 +1,5 @@
 <?php
-require_once __DIR__ . '/../database/Database.php';
 require_once __DIR__ . '/../person/Person.php';
-
 /**
  * Representa um usuário no sistema
  *
@@ -57,33 +55,37 @@ class User extends Person {
 	}
 	public function setId($id) {
 		$this->id = $id;
+		$this->AddChange ( "id", $id );
 	}
 	public function getLogin() {
 		return $this->login;
 	}
 	public function setLogin($login) {
 		$this->login = $login;
+		$this->AddChange ( "login", $login );
 	}
 	public function getPassword() {
 		return $this->password;
 	}
 	public function setPassword($password) {
 		$this->password = $password;
+		$this->AddChange ( "password", $password );
 	}
 	public function getActive(): bool {
 		return $this->active;
 	}
 	public function setActive(bool $active) {
 		if (! is_bool ( $active ))
-			throw new SystemException ( "Um valor booleano deve ser informado.", __CLASS__ . __LINE__ );
-		
+			throw new SystemException ( "A boolean must be informed.", __CLASS__ . __LINE__ );
 		$this->active = $active;
+		$this->AddChange ( "active", $active );
 	}
 	public function getAccessGroup() {
 		return $this->accessGroup;
 	}
 	public function setAccessGroup(Group $accessGroup) {
 		$this->accessGroup = $accessGroup;
+		$this->AddChange ( "accessGroup", $accessGroup );
 	}
 }
 ?>

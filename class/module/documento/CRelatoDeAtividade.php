@@ -1,6 +1,5 @@
-<?php 
+<?php
 require_once __DIR__ . '/Documento.php';
-
-class RelatoDeAtividade extends Documento{
+class RelatoDeAtividade extends Documento {
 }
 ?>

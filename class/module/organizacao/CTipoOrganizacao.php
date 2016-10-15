@@ -1,24 +1,18 @@
 <?php
-class TipoOrganizacao{
-
+class TipoOrganizacao {
 	protected $nomeDoTipo;
-
 	protected $descricao;
-
-	public function getNomeDoTipo(){
-	    return $this->nomeDoTipo;
+	public function getNomeDoTipo() {
+		return $this->nomeDoTipo;
 	}
-
-	public function setNomeDoTipo($nomeDoTipo){
-	    $this->nomeDoTipo = $nomeDoTipo;
+	public function setNomeDoTipo($nomeDoTipo) {
+		$this->nomeDoTipo = $nomeDoTipo;
 	}
-
-	public function getDescricao(){
-	    return $this->descricao;
+	public function getDescricao() {
+		return $this->descricao;
 	}
-
-	public function setDescricao($descricao){
-	    $this->descricao = $descricao;
+	public function setDescricao($descricao) {
+		$this->descricao = $descricao;
 	}
 }
 
