@@ -34,11 +34,22 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 */
 	private $query;
 	
+	
+	/**
+	 * Stores the entity name manipulated in query
+	 * @var string
+	 */
+	private $entityName;
+	
 	/**
 	 *
 	 * @var MongoDB\Driver\WriteConcern
 	 */
 	private $writeConcern;
+	public function __construct() {
+		$this->result = new DatabaseRequestedData ();
+		$this->entityName = "";
+	}
 	
 	/**
 	 *
@@ -86,6 +97,9 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
+		$reflection = new ReflectionClass ( $query->getObject () );
+		$this->entityName = $reflection->getName ();
+		
 		if (! $this->connect ())
 			return false;
 		
@@ -110,7 +124,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			case DatabaseQuery::OPERATION_UPDATE :
 				return $this->doUpdate ();
 			case DatabaseQuery::OPERATION_ERASE :
-				return $this->generateDelete ();
+				return $this->doDelete ();
 			default :
 				// TODO otherwise record a log
 				throw new Exception ( "Unsuported operation" );
@@ -124,36 +138,28 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doUpdate(): string {
-// 		$arrFilter = $this->buildFilters ();
 		
-// 		// Create a bulk write object and add our insert operation
-// 		$bulk = new MongoDB\Driver\BulkWrite ();
+		// Create a bulk write object and add our update operation
+		$bulk = new MongoDB\Driver\BulkWrite ();
 		
+		$bulk->update ( $this->buildFilters (), array (
+				'$set' => $this->query->getObject ()->getArrChanges () 
+		), [ 
+				'multi' => true,
+				'upsert' => false 
+		] );
 		
-// 		$bulk->update($arrFilter, $newObjarray)
+		// Retrieves the name of collection to insert
+		$collection = Configuration::CONST_DB_NAME . "." . $this->entityName;
 		
-		
-		
-// 		// To insert we need turn all properties as public
-// 		$bulk->insert ( ClassPropertyPublicizator::publicizise ( $this->query->getObject () ) );
-		
-// 		// Retrieves the name of collection to insert
-// 		$reflection = new ReflectionClass ( $this->query->getObject () );
-// 		$collection = Configuration::CONST_DB_NAME . "." . $reflection->getName ();
-		
-// 		try {
-// 			/*
-// 			 * Specify the full namespace as the first argument, followed by the bulk
-// 			 * write object and an optional write concern. MongoDB\Driver\WriteResult is
-// 			 * returned on success; otherwise, an exception is thrown.
-// 			 */
-// 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
-// 			return true;
-// 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-// 			// TODO otherwise record a log
-// 			echo $e->getMessage (), "\n";
-// 		}
-// 		return false;
+		try {
+			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			return true;
+		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+			// TODO otherwise record a log
+			echo $e->getMessage (), "\n";
+		}
+		return false;
 	}
 	
 	/**
@@ -170,15 +176,9 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$bulk->insert ( ClassPropertyPublicizator::publicizise ( $this->query->getObject () ) );
 		
 		// Retrieves the name of collection to insert
-		$reflection = new ReflectionClass ( $this->query->getObject () );
-		$collection = Configuration::CONST_DB_NAME . "." . $reflection->getName ();
+		$collection = Configuration::CONST_DB_NAME . "." . $this->entityName;
 		
 		try {
-			/*
-			 * Specify the full namespace as the first argument, followed by the bulk
-			 * write object and an optional write concern. MongoDB\Driver\WriteResult is
-			 * returned on success; otherwise, an exception is thrown.
-			 */
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
@@ -193,8 +193,25 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @return string
 	 */
-	private function generateDelete(): string {
-		return "delete from " . $this->getEntityName () . $this->buildFilters ();
+	private function doDelete(): string {
+		// Create a bulk write object and add our update operation
+		$bulk = new MongoDB\Driver\BulkWrite ();
+		
+		$bulk->delete ( $this->buildFilters (), array (
+				'multi' => true 
+		) );
+		
+		// Retrieves the name of collection to insert
+		$collection = Configuration::CONST_DB_NAME . "." . $this->entityName;
+		
+		try {
+			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			return true;
+		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+			// TODO otherwise record a log
+			echo $e->getMessage (), "\n";
+		}
+		return false;
 	}
 	
 	/**
@@ -206,20 +223,15 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
 			
-			// Retrieves the class name for document casting
-			$className = $this->getEntityName ();
-			
-			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $className, $query );
-			/*
-			 * Specify the full namespace as the first argument, followe'd by the query
-			 * object and an optional read preference. MongoDB\Driver\Cursor is returned
-			 * success; otherwise, an exception is thrown.
-			 */
+			$cursor = $this->connection->executeQuery ( Configuration::CONST_DB_NAME . "." . $this->entityName, $query );
 			
 			// Stores all matched documents
+			$result = array ();
 			foreach ( $cursor as $document ) {
-				$this->result [] = Caster::classToClassCast ( $document, $className );
+				$result [] = Caster::classToClassCast ( $document, $this->entityName );
 			}
+			
+			$this->result->setData ( $result );
 			
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
@@ -230,21 +242,11 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 * Returns the table name
-	 *
-	 * @return string
-	 */
-	private function getEntityName() {
-		$reflection = new ReflectionClass ( $this->query->getObject () );
-		return $reflection->getName ();
-	}
-	
-	/**
 	 * Builds the filter clause
 	 *
 	 * @return array
 	 */
-	private function buildFilters(): array {
+	protected function buildFilters(): array {
 		
 		// Filter for documents
 		$arrFilter = array ();

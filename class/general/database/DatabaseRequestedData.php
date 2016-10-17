@@ -27,10 +27,14 @@ class DatabaseRequestedData {
 	 */
 	public function setData(array $data) {
 		$this->arrData = $data;
+		
+		// Everytime a new data has been set we need to reset the pointer
+		$this->pointer = - 1;
 	}
 	
 	/**
 	 * Gets the amount of objects returned
+	 * 
 	 * @return int
 	 */
 	public function getObjectsAffected(): int {
@@ -39,6 +43,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Gets the current object
+	 * 
 	 * @return object
 	 */
 	public function getRetrivedObject() {
@@ -47,6 +52,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to next object if exists
+	 * 
 	 * @return bool
 	 */
 	public function next(): bool {
@@ -59,6 +65,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to next object if exists
+	 * 
 	 * @return bool
 	 */
 	public function first(): bool {
@@ -71,6 +78,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to previous object if exists
+	 * 
 	 * @return bool
 	 */
 	public function previous(): bool {
