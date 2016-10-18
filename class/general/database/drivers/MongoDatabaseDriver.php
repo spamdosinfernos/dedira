@@ -34,9 +34,9 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 */
 	private $query;
 	
-	
 	/**
 	 * Stores the entity name manipulated in query
+	 *
 	 * @var string
 	 */
 	private $entityName;
@@ -69,8 +69,18 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		try {
 			$url = Configuration::CONST_DB_HOST_PROTOCOL . "://" . Configuration::CONST_DB_HOST_ADDRESS . ":" . Configuration::CONST_DB_PORT;
 			$this->connection = new MongoDB\Driver\Manager ( $url );
+			
+			// Execute an connection test, it may or may not throw an exception
+			$stats = new MongoDB\Driver\Command ( [ 
+					"dbstats" => 1 
+			] );
+			$this->connection->executeCommand ( "testdb", $stats );
+			
+			// If nothing goes wrong so everything goes well ;)
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+			
+			// TODO Create a log entry
 			return false;
 		}
 		
