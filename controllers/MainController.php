@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_MainController.php';
 require_once __DIR__ . '/../class/general/module/Module.php';
 require_once __DIR__ . '/../class/general/security/Shield.php';
@@ -6,8 +7,7 @@ require_once __DIR__ . '/../class/general/database/Database.php';
 require_once __DIR__ . '/../class/general/configuration/Configuration.php';
 
 /**
- * Esta classe gerencia todas as requisições recebidas pelo site
- * Requisições enviadas a outros arquivos devem ser ignoradas
+ * Manages all requests and loads the correponding module
  *
  * @author André Furlan
  */
@@ -17,8 +17,10 @@ class MainController {
 		Database::init ( Configuration::getDatabaseDriver () );
 		
 		if (! Database::connect ()) {
-			// TODO create a log entry but keep the echo
-			echo "fail to connect";
+			$log = new Log ();
+			$log->addMessage ( Lang_MainController::getDescriptions ( 0 ) );
+			$log->save ();
+			echo Lang_MainController::getDescriptions ( 0 );
 			return;
 		}
 		

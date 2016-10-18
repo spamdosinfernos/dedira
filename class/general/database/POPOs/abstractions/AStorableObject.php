@@ -4,7 +4,8 @@
  * to do a proper storing and reading operations
  * @author André Furlan
  */
-abstract class AStorableObject {
+abstract class 
+{
 	
 	/**
 	 * id

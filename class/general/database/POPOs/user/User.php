@@ -4,21 +4,20 @@ require_once __DIR__ . '/../person/Person.php';
  * Representa um usuário no sistema
  *
  * @author André Furlan
- *         @Entity
  */
 class User extends Person {
 	
 	/**
 	 * Login
 	 *
-	 * @var string @Column(nullable = false)
+	 * @var string
 	 */
 	protected $login;
 	
 	/**
 	 * Senha
 	 *
-	 * @var string @Column(nullable = false)
+	 * @var string
 	 */
 	protected $password;
 	
@@ -32,7 +31,7 @@ class User extends Person {
 	/**
 	 * Indica qual o grupo de acesso o usuário pertence
 	 *
-	 * @var Group @Column(nullable = false)
+	 * @var Group
 	 */
 	protected $accessGroup;
 	
@@ -42,18 +41,17 @@ class User extends Person {
 	public function __construct() {
 		$this->active = true;
 	}
-	
 	public function getLogin() {
 		return $this->login;
 	}
-	public function setLogin($login) {
+	public function setLogin(string $login) {
 		$this->login = $login;
 		$this->AddChange ( "login", $login );
 	}
 	public function getPassword() {
 		return $this->password;
 	}
-	public function setPassword($password) {
+	public function setPassword(string $password) {
 		$this->password = $password;
 		$this->AddChange ( "password", $password );
 	}
@@ -61,8 +59,6 @@ class User extends Person {
 		return $this->active;
 	}
 	public function setActive(bool $active) {
-		if (! is_bool ( $active ))
-			throw new SystemException ( "A boolean must be informed.", __CLASS__ . __LINE__ );
 		$this->active = $active;
 		$this->AddChange ( "active", $active );
 	}
