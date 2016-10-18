@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../class/log/Log.php';
+require_once __DIR__ . '/../class/general/log/Log.php';
 require_once __DIR__ . '/language/Lang_MainController.php';
 require_once __DIR__ . '/../class/general/module/Module.php';
 require_once __DIR__ . '/../class/general/security/Shield.php';
@@ -17,10 +17,7 @@ class MainController {
 		Database::init ( Configuration::getDatabaseDriver () );
 		
 		if (! Database::connect ()) {
-			$log = new Log ();
-			$log->addMessage ( Lang_MainController::getDescriptions ( 0 ) );
-			$log->save ();
-			echo Lang_MainController::getDescriptions ( 0 );
+			Log::recordEntry ( Lang_MainController::getDescriptions ( 0 ), true );
 			return;
 		}
 		

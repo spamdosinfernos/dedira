@@ -1,58 +1,34 @@
 <?php
 require_once __DIR__ . '/../configuration/Configuration.php';
 /**
- * Grava o log de solicitações
+ * Records log
  */
 class Log {
 	
 	/**
-	 * Mensagem a ser gravada
-	 * 
+	 *
 	 * @var string
 	 */
-	protected $arrMensagem;
+	const CONST_FIELD_SEPARATOR = "\t";
 	
 	/**
-	 * @var string
+	 * Saves the log entries
 	 */
-	const CONST_SEPARADOR_DE_CAMPOS = "\t";
-
-	/**
-	 * 
-	 * @param string $mensagem
-	 */
-	public function addMessage(string $mensagem) {
-		$this->arrMensagem [] = date ( "Y-m-d H:i:s" ) . self::CONST_SEPARADOR_DE_CAMPOS . $mensagem . PHP_EOL;
-	}
-	
-	/**
-	 * Cria um nova entrada de log
-	 */
-	public function save() {
-		if (count ( $this->arrMensagem ) == 0) return;
+	public static function recordEntry(string $message, $exposeMessage = false) {
+		if (trim ( $message ) == "") return;
+		
+		if ($exposeMessage) echo $message;
 		
 		$logFilePath = Configuration::getLogFilePath ();
+		$message = date ( "Y-m-d H:i:s" ) . self::CONST_FIELD_SEPARATOR . $message . PHP_EOL;
 		
-		if (is_file ( $logFilePath )) {
-			$arrFileContents = file ( $logFilePath );
-			
-			// Evita que o arquivo de log supere o número de linhas limite
-			if (count ( $arrFileContents ) > Configuration::getTamanhoDoLog ()) {
-				unset ( $arrFileContents [0] );
-				$filehandle = fopen ( $logFilePath, 'w' );
-				
-				if (! is_resource ( $filehandle )) throw new Exception ( Configuration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_TEXTO, Configuration::CONST_ERR_FALHA_AO_ABRIR_OU_CRIAR_ARQUIVO_COD, $logFilePath );
-				
-				$fileWriteResult = fwrite ( $filehandle, join ( "", $arrFileContents ) );
-				
-				if ($fileWriteResult === false) {
-					throw new Exception ( Configuration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_TEXTO, Configuration::CONST_ERR_FALHA_AO_ESCREVER_NO_ARQUIVO_COD, $logFilePath );
-				}
-				
-				fclose ( $filehandle );
+		try {
+			if (is_file ( $logFilePath )) {
+				file_put_contents ( $logFilePath, $message, FILE_APPEND );
 			}
-			
-			$this->arrMensagem = array ();
+		} catch ( Exception $error ) {
+			echo "Fatal error!! The log system are not working!";
+			exit ( 1 );
 		}
 	}
 }
