@@ -61,14 +61,15 @@ class MainController {
 	}
 	
 	/**
-	 * Recupera identificação do módulo atual, se o mesmo não for informado
-	 * pára o programa
+	 * Return the module id, if no module is
+	 * specified than return the main module
 	 *
-	 * @return string - nome do módulo
+	 * @return string
 	 */
 	private function getModuleId() {
 		$httpRequest = new HttpRequest ();
-		return $httpRequest->getGetRequest ( Configuration::CONST_QUERY_STRING_MODULE_NAME_VAR_NAME ) [0];
+		$moduleId = $httpRequest->getGetRequest ( Configuration::CONST_QUERY_STRING_MODULE_NAME_VAR_NAME ) [0];
+		return is_null ( $moduleId ) ? Configuration::CONST_MAIN_MODULE_NAME : $moduleId;
 	}
 }
 new MainController ();

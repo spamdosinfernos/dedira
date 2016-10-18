@@ -42,7 +42,7 @@ class Authenticator {
 	 */
 	public function isAuthenticated() {
 		if (! isset ( $_SESSION )) session_start ();
-		return isset ( $_SESSION ['userData'] ['userId'] );
+		return isset ( $_SESSION ['authData'] ['autenticatedEntity'] );
 	}
 	
 	/**

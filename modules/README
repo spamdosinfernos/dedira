@@ -1,8 +1,11 @@
 Stores the system modules:
 
 - The module file name MUST be Module.php
-- The module MUST have the folowing folder structure:
-- <module name> : All module files
+- The module namespace MUST be the same in all module files
+- If you want to create sub namespaces its ok
+- The module MUST have the folowing FOLDERS structure:
+
+<module name> : All module files
   |_class	: Classes
   |_css		: CSS files
   |_doc		: The documenta
@@ -10,4 +13,4 @@ Stores the system modules:
   |_js		: The javascript files 
   |_lang	: The language files
   
- For more an example of module see /modules/example folder. 
+ For an example of module see /modules/example folder. 
