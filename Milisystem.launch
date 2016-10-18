@@ -8,6 +8,7 @@
 <stringAttribute key="file_name" value="/MiliSystem/index.php"/>
 <booleanAttribute key="firstLineBreakpoint" value="false"/>
 <stringAttribute key="name" value="Default PHP Web Server"/>
+<booleanAttribute key="org.eclipse.debug.ui.private" value="false"/>
 <booleanAttribute key="org.eclipse.php.debug.core.OpenInBrowser" value="true"/>
 <stringAttribute key="org.eclipse.php.debug.core.PHP_Project" value="/MiliSystem"/>
 <booleanAttribute key="org.eclipse.php.debug.core.RunWithDebugInfo" value="true"/>
@@ -16,4 +17,5 @@
 <booleanAttribute key="org.eclipse.php.debug.core.UseSSHTunnel" value="false"/>
 <stringAttribute key="org.eclipse.php.debug.coreconfiguration_delegate_class" value="org.eclipse.php.internal.debug.core.launching.XDebugWebLaunchConfigurationDelegate"/>
 <stringAttribute key="org.eclipse.php.debug.corephp_debugger_id" value="org.eclipse.php.debug.core.xdebugDebugger"/>
+<stringAttribute key="php_debug_type" value="php_web_page_debug"/>
 </launchConfiguration>

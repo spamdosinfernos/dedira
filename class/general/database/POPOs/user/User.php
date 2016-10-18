@@ -23,14 +23,6 @@ class User extends Person {
 	protected $password;
 	
 	/**
-	 * Identificação do usuário
-	 *
-	 * @var int @Id
-	 *      @GeneratedValue
-	 */
-	protected $id;
-	
-	/**
 	 * Indica se o usuário está ativo ou não
 	 *
 	 * @var boolean @Column(nullable = false)
@@ -50,13 +42,7 @@ class User extends Person {
 	public function __construct() {
 		$this->active = true;
 	}
-	public function getId() {
-		return $this->id;
-	}
-	public function setId($id) {
-		$this->id = $id;
-		$this->AddChange ( "id", $id );
-	}
+	
 	public function getLogin() {
 		return $this->login;
 	}

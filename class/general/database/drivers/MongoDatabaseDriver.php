@@ -100,9 +100,6 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$reflection = new ReflectionClass ( $query->getObject () );
 		$this->entityName = $reflection->getName ();
 		
-		if (! $this->connect ())
-			return false;
-		
 		return $this->executeQuery ();
 	}
 	

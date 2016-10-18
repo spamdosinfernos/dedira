@@ -1,15 +1,15 @@
 <?php
 require_once 'IModule.php';
-require_once __DIR__ . '/../user/User.php';
-require_once  __DIR__ . '/../template/CustomXtemplate.php';
-require_once  __DIR__ . '/../security/PasswordPreparer.php';
-require_once  __DIR__ . '/../protocols/http/HttpRequest.php';
-require_once  __DIR__ . '/../security/authentication/UserAuthRules.php';
-require_once  __DIR__ . '/../security/authentication/Authenticator.php';
-require_once  __DIR__ . '/../configuration/module/UserAuthenticaticatorConf.php';
+require_once __DIR__ . '/../database/POPOs/user/User.php';
+require_once __DIR__ . '/../template/CustomXtemplate.php';
+require_once __DIR__ . '/../security/PasswordPreparer.php';
+require_once __DIR__ . '/../protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../security/authentication/UserAuthRules.php';
+require_once __DIR__ . '/../security/authentication/Authenticator.php';
+require_once __DIR__ . '/../configuration/module/UserAuthenticaticatorConf.php';
 /**
  * Responsável por carregar os módulos do sistema
- * 
+ *
  * @author André Furlan
  *        
  */
@@ -17,7 +17,7 @@ class UserAuthenticaticator implements IModule {
 	
 	/**
 	 * Gerencia os templates
-	 * 
+	 *
 	 * @var XTemplate
 	 */
 	protected $xTemplate;
@@ -28,7 +28,7 @@ class UserAuthenticaticator implements IModule {
 	/**
 	 * Carrega o módulo de usuário dado seu nome.
 	 * Para carregar os módulos do próprio sistema use "require" ou "require_once"
-	 * 
+	 *
 	 * @param string $userModuleName        	
 	 */
 	public function activate($userModuleName) {
@@ -37,7 +37,7 @@ class UserAuthenticaticator implements IModule {
 	
 	/**
 	 * Descarrega o módulo de usuário dado seu nome.
-	 * 
+	 *
 	 * @param string $userModuleName        	
 	 */
 	public function deactivate($userModuleName) {
@@ -46,7 +46,7 @@ class UserAuthenticaticator implements IModule {
 	
 	/**
 	 * Instala um módulo, dado o caminho original do mesmo
-	 * 
+	 *
 	 * @param string $moduleDirectoryPath
 	 *        	: Caminho para o diretório onde o módulo se encontra
 	 * @return -1 : O caminho fornecido não é o caminho de um diretório | -2 : Falha ao copiar arquivos
@@ -54,22 +54,20 @@ class UserAuthenticaticator implements IModule {
 	public function install($moduleDirectoryPath) {
 		print $moduleDirectoryPath;
 	}
-	public function handleRequest() {
+	public function handleRequest(): bool {
 		
 		// Se já estiver autenticado sai do método com true
 		$authenticator = new Authenticator ();
-		if ($authenticator->isAuthenticated ())
-			return true;
-			
-			// Recupera a requisição (login e senha)
+		if ($authenticator->isAuthenticated ()) return true;
+		
+		// Recupera a requisição (login e senha)
 		$httpRequest = new HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
 		// Se os dados não foram postados corretamente sai do método com false
-		if (! isset ( $postedVars ["user"] ) || ! isset ( $postedVars ["password"] ))
-			return false;
-			
-			// Prepara o usuário para a verificação
+		if (! isset ( $postedVars ["user"] ) || ! isset ( $postedVars ["password"] )) return false;
+		
+		// Prepara o usuário para a verificação
 		$user = new User ();
 		$user->setLogin ( $postedVars ["user"] );
 		$user->setPassword ( PasswordPreparer::messItUp ( $postedVars ["password"] ) );

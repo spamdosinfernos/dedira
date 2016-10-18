@@ -1,11 +1,17 @@
 <?php
 /**
- * 
- *
+ * All POPOs MUST extends that abstraction in order 
+ * to do a proper storing and reading operations
  * @author André Furlan
- *        
  */
 abstract class AStorableObject {
+	
+	/**
+	 * id
+	 *
+	 * @var mixed
+	 */
+	protected $id;
 	
 	/**
 	 * Stores the changes
@@ -13,6 +19,25 @@ abstract class AStorableObject {
 	 * @var array
 	 */
 	private $arrChanges;
+	
+	/**
+	 * Gets the id
+	 *
+	 * @return mixed
+	 */
+	public function getId() {
+		return $this->id;
+	}
+	
+	/**
+	 * Sets the id
+	 *
+	 * @param mixed $id        	
+	 */
+	public function setId($id) {
+		$this->id = $id;
+		$this->AddChange ( "id", $id );
+	}
 	
 	/**
 	 * Returns if the object has changed

@@ -34,16 +34,16 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Gets the amount of objects returned
-	 * 
+	 *
 	 * @return int
 	 */
-	public function getObjectsAffected(): int {
+	public function getObjectsAffectedCounting(): int {
 		return count ( $this->arrData );
 	}
 	
 	/**
 	 * Gets the current object
-	 * 
+	 *
 	 * @return object
 	 */
 	public function getRetrivedObject() {
@@ -52,7 +52,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to next object if exists
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function next(): bool {
@@ -65,7 +65,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to next object if exists
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function first(): bool {
@@ -78,7 +78,7 @@ class DatabaseRequestedData {
 	
 	/**
 	 * Go to previous object if exists
-	 * 
+	 *
 	 * @return bool
 	 */
 	public function previous(): bool {
