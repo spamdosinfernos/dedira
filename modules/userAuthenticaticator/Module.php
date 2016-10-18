@@ -33,47 +33,46 @@ class Module {
 	 * Handles authentication request
 	 * If the authenticantion is successful keep executing
 	 * the system otherwise show the authentication screen
-	 * 
+	 *
 	 * @return void|boolean
 	 */
 	public function handleRequest() {
 		
-		// Se já estiver autenticado sai do método com true
+		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
 		if ($authenticator->isAuthenticated ()) return;
 		
-		// Recupera a requisição (login e senha)
+		// get login and password if any
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
-		// Se os dados não foram postados corretamente sai do método com false
+		// get the module user wants
+		$gotVars = $httpRequest->getGetRequest ();
+		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::CONST_MAIN_MODULE_NAME;
+		
+		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
-			$this->showGui ();
-			exit(0);
+			$this->showGui ( $nextModule );
+			exit ( 0 );
 		}
 		
-		// Prepara o usuário para a verificação
+		// Creates the user to authenticate
 		$user = new \User ();
 		$user->setLogin ( $postedVars ["login"] );
 		$user->setPassword ( \PasswordPreparer::messItUp ( $postedVars ["password"] ) );
 		
-		// Tenta autenticar o usuário no sistema
+		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
 			return;
 		}
 		
-		$this->showGui ();
+		$this->showGui ( $nextModule );
 		exit ( 0 );
 	}
-	private function showGui($arrGuiBlockNames = array()) {
+	private function showGui(string $nextModule) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle () );
-		$this->xTemplate->assign ( "nextModule", \Configuration::CONST_MAIN_MODULE_NAME );
-		
-		// Mostra os blocos de interface especificados
-		foreach ( $arrGuiBlockNames as $guiBlock ) {
-			$this->xTemplate->parse ( $guiBlock );
-		}
+		$this->xTemplate->assign ( "nextModule", $nextModule );
 		
 		// Mostra o bloco principal
 		$this->xTemplate->parse ( "main" );
