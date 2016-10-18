@@ -24,36 +24,35 @@ class UserAuthRules implements IAuthenticationRules {
 	public function setUser(User $user) {
 		$this->user = $user;
 	}
-	public function checkAuthenticationData() {
+	public function checkAuthenticationData() : bool {
 		
 		// We must be pessimistic
-		$this->autenticationId = null;
+		$this->autenticatedEntity = null;
 		
 		// Setting the conditions
 		$c = new DatabaseConditions ();
-		$c->addCondition ( DatabaseConditions::AND, "user", $this->user->getLogin () );
+		$c->addCondition ( DatabaseConditions::AND, "login", $this->user->getLogin () );
 		$c->addCondition ( DatabaseConditions::AND, "password", $this->user->getPassword () );
 		
 		// Assembling the querie
 		$query = new DatabaseQuery ();
 		$query->setConditions ( $c );
-		$query->setObject ( new User () );
+		$query->setObject ( $this->user );
 		$query->setOperationType ( DatabaseQuery::OPERATION_GET );
 		
 		// Everything is allright?
-		if (!Database::execute ( $query )) return false;
+		if (! Database::execute ( $query )) return false;
 		
 		// At least one user was returned?
-		if (! $res = Database::getResults ()->getObjectsAffectedCounting ()) return false;
-		
-		$res->next ();
+		$res = Database::getResults ();
+		if (! $res->next ()) return false;
 		
 		// If yes then stores the user id
-		$this->autenticationId = $res->getRetrivedObject ()->getId ();
+		$this->autenticatedEntity = $res->getRetrivedObject ();
 		return true;
 	}
-	public function getAutenticationId() {
-		return $this->autenticationId;
+	public function getAutenticatedEntity() {
+		return $this->autenticatedEntity;
 	}
 }
 ?>

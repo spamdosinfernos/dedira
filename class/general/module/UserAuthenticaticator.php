@@ -78,6 +78,7 @@ class UserAuthenticaticator implements IModule {
 	}
 	public function showGui($arrGuiBlockNames = array()) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle () );
+		$this->xTemplate->assign ( "nextModule", Configuration::CONST_MAIN_MODULE_NAME );
 		
 		// Mostra os blocos de interface especificados
 		foreach ( $arrGuiBlockNames as $guiBlock ) {

@@ -15,7 +15,7 @@ interface IAuthenticationRules{
 	 * @return boolean true : válidos | false : inválidos
 	 * @see setUser
 	 */
-	public function checkAuthenticationData();
+	public function checkAuthenticationData() : bool;
 	
 	/**
 	 * Retorna a id do usuário dentro da sessão
@@ -23,7 +23,7 @@ interface IAuthenticationRules{
 	 * antes de usar isso.
 	 * @return string | int
 	 */
-	public function getAutenticationId();
+	public function getAutenticatedEntity();
 	
 }
 ?>

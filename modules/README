@@ -1,0 +1,11 @@
+Stores the system modules:
+
+- The module file name MUST be Module.php
+- The module MUST have the folowing folder structure:
+- <module name> : All module files
+  |_class	: Classes
+  |_css		: CSS files
+  |_doc		: The documenta
+  |_img		: All module images
+  |_js		: The javascript files 
+  |_lang	: The language files

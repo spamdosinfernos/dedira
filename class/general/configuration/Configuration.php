@@ -11,6 +11,13 @@ require_once __DIR__ . '/../../../language/class/general/configuration/Lang_Conf
 class Configuration {
 	
 	/**
+	 * The main module name, it should be loaded after authentication
+	 *
+	 * @var string
+	 */
+	const CONST_MAIN_MODULE_NAME = "main";
+	
+	/**
 	 * Extensão padrão do arquivo executável no sistema
 	 *
 	 * @var string
@@ -74,13 +81,6 @@ class Configuration {
 	const CONST_QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
 	
 	/**
-	 * Nome da classe que inicia a execução do módulo de usuário
-	 *
-	 * @var string
-	 */
-	const CONST_USER_MODULE_STARTER_CLASS_NAME = "module";
-	
-	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 *
 	 * @var string
@@ -102,12 +102,9 @@ class Configuration {
 		return self::$systemRootDirectory;
 	}
 	static public function getUserModuleStarterFileName() {
-		return self::CONST_USER_MODULE_STARTER_CLASS_NAME . self::DEFAULT_EXECUTABLE_FILE_EXTENSION;
+		return "Module.php";
 	}
-	static public function getUserModuleStarterClassName() {
-		return self::CONST_USER_MODULE_STARTER_CLASS_NAME;
-	}
-	static public function getUserModuleDiretory() {
+	static public function getModuleDiretory() {
 		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "modules";
 	}
 	static public function getUserModuleTestDiretory() {

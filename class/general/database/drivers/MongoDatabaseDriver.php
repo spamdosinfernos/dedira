@@ -107,6 +107,12 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
+		if (is_null ( $this->connection )) {
+			// Create a log entry but keep the echo
+			echo "Connect to database!";
+			return false;
+		}
+		
 		$reflection = new ReflectionClass ( $query->getObject () );
 		$this->entityName = $reflection->getName ();
 		

@@ -5,9 +5,9 @@ final class ModuleLoader{
 	
 	public static function loadModule($moduleId){
 		
-		$modulePath = Configuration::getUserModuleDiretory() . DIRECTORY_SEPARATOR . $moduleId;
+		$modulePath = Configuration::getModuleDiretory() . DIRECTORY_SEPARATOR . $moduleId;
 		
-		$directoryLister = new DirectoryLister(Configuration::getUserModuleDiretory());
+		$directoryLister = new DirectoryLister(Configuration::getModuleDiretory());
 		$directoryLister->readDirectory();
 		
 		$arrDirs = $directoryLister->getArrDirectoriesAtDirectory();
