@@ -4,30 +4,30 @@ class Authenticator {
 	
 	/**
 	 * Regras de autenticação
-	 * 
+	 *
 	 * @var IAuthenticationRules
 	 */
-	private $authenticationRules;
+	private $authenticatorDriver;
 	
 	/**
 	 * Id do usuário na sessão
-	 * 
+	 *
 	 * @var int | string
 	 */
 	private $authenticationId;
 	
 	/**
 	 * Incia o autenticado de usuários no sistema
-	 * 
+	 *
 	 * @param IAuthenticationRules $authenticationRules        	
 	 */
 	public function __construct(IAuthenticationRules $authenticationRules = null) {
-		$this->authenticationRules = $authenticationRules;
+		$this->authenticatorDriver = $authenticationRules;
 	}
 	
 	/**
 	 * Retorna a id do usuário na sessão
-	 * 
+	 *
 	 * @return int | string
 	 */
 	public function getUserId() {
@@ -37,7 +37,7 @@ class Authenticator {
 	
 	/**
 	 * Informa se o usário está autenticado no sistema
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isAuthenticated() {
@@ -56,20 +56,20 @@ class Authenticator {
 	
 	/**
 	 * Autentica o usuário no sistema
-	 * 
+	 *
 	 * @return boolean
 	 */
-	public function authenticate() {
+	public function authenticate(): bool {
 		try {
 			// Caso a verificação esteja ok, verifica se o usuário e senha são válidos
-			if ($this->authenticationRules->checkAuthenticationData ()) {
+			if ($this->authenticatorDriver->checkAuthenticationData ()) {
 				
 				// Se tudo deu certo incia a sessão e atribui o id do usuário
 				@session_destroy ();
 				session_start ();
 				session_regenerate_id ();
 				
-				$_SESSION ['authData'] ['autenticatedEntity'] = $this->authenticationRules->getAutenticatedEntity ();
+				$_SESSION ['authData'] ['autenticatedEntity'] = $this->authenticatorDriver->getAutenticatedEntity ();
 				return true;
 			}
 		} catch ( Exception $e ) {
@@ -79,8 +79,8 @@ class Authenticator {
 		// login ou senha inválidos
 		return false;
 	}
-	public function setAuthenticationRules(IAuthenticationRules $authenticationRules) {
-		$this->authenticationRules = $authenticationRules;
+	public function setAuthenticationRules(IAuthenticationRules $authenticatiorDriver) {
+		$this->authenticatorDriver = $authenticatiorDriver;
 	}
 	public function getAuthenticationId() {
 		return $this->authenticationId;

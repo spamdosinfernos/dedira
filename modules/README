@@ -12,5 +12,6 @@ Stores the system modules:
   |_img		: All module images
   |_js		: The javascript files 
   |_lang	: The language files
+  |_template: Stores the templates
   
  For an example of module see /modules/example folder. 

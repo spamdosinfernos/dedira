@@ -142,9 +142,6 @@ class Configuration {
 	static public function getDefaultTimeIntervalType() {
 		return "month";
 	}
-	static public function getTemplatesDirectory() {
-		return self::getSystemRootDirectory () . "/template/";
-	}
 	static public function getSelectedLanguage() {
 		return "pt-br";
 	}

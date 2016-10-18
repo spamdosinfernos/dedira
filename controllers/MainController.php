@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/language/Lang_MainController.php';
 require_once __DIR__ . '/../class/general/security/Shield.php';
-require_once __DIR__ . '/../class/general/module/UserAuthenticaticator.php';
+require_once __DIR__ . '/../class/general/database/Database.php';
+require_once __DIR__ . '/../class/general/configuration/Configuration.php';
 
 /**
  * Esta classe gerencia todas as requisições recebidas pelo site
@@ -21,14 +22,9 @@ class MainController {
 			return;
 		}
 		
-		// Instância o módulo responsável pela autenticação no sistema
-		$userAuth = new UserAuthenticaticator ();
-		
-		// Se o usuário não estiver autenticado mostra a tela de autenticação
-		if (! $userAuth->handleRequest ()) {
-			$userAuth->showGui ();
-			return;
-		}
+		// Loads the authenticar module
+		// If not authenticated the stops here
+		require_once __DIR__ . '/../modules/userAuthenticaticator/Module.php';
 		
 		// Recupera identificação do módulo atual
 		$moduleId = $this->getModuleId ();

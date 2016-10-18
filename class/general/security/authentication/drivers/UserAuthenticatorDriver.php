@@ -1,11 +1,10 @@
 <?php
-require_once 'IAuthenticationRules.php';
-require_once __DIR__ . '/../../database/Database.php';
-require_once __DIR__ . '/../../database/DatabaseQuery.php';
-require_once __DIR__ . '/../../database/DatabaseConditions.php';
-require_once __DIR__ . '/../../database/DatabaseRequestedData.php';
-require_once __DIR__ . '/../../configuration/security/authentication/UserAuthRulesConf.php';
-class UserAuthRules implements IAuthenticationRules {
+require_once __DIR__ . '/../../../database/Database.php';
+require_once __DIR__ . '/../../../database/DatabaseQuery.php';
+require_once __DIR__ . '/../interfaces/IAuthenticationRules.php';
+require_once __DIR__ . '/../../../database/DatabaseConditions.php';
+require_once __DIR__ . '/../../../database/DatabaseRequestedData.php';
+class UserAuthenticatorDriver implements IAuthenticationRules {
 	
 	/**
 	 *
@@ -24,7 +23,7 @@ class UserAuthRules implements IAuthenticationRules {
 	public function setUser(User $user) {
 		$this->user = $user;
 	}
-	public function checkAuthenticationData() : bool {
+	public function checkAuthenticationData(): bool {
 		
 		// We must be pessimistic
 		$this->autenticatedEntity = null;
