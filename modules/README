@@ -9,3 +9,5 @@ Stores the system modules:
   |_img		: All module images
   |_js		: The javascript files 
   |_lang	: The language files
+  
+ For more an example of module see /modules/example folder. 
