@@ -7,12 +7,12 @@ final class Lang_CustomXtemplate{
 
 		//Português Brasil
 		$languages["pt-br"] = array(
-		Event::CONST_ERROR_1 => "CONST_ERROR_1 - O arquivo de template não existe!"
+		Event::ERROR_1 => "ERROR_1 - O arquivo de template não existe!"
 		);
 
 		//English United States
 		$languages["en-us"] = array(
-		Event::CONST_ERROR_1 => "CONST_ERROR_1 - The template file does not exist!"
+		Event::ERROR_1 => "ERROR_1 - The template file does not exist!"
 		);
 
 		return $languages[Configuration::getSelectedLanguage()][$descriptionId];

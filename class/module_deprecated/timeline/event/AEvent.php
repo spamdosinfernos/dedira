@@ -99,27 +99,27 @@ abstract class AEvent extends AStorableObject implements IEvent {
 	/*
 	 * Tipos de recorrências possíveis para um evento
 	 */
-	const CONST_RECORRENCY_NO = - 1;
-	const CONST_RECORRENCY_DAY = 0;
-	const CONST_RECORRENCY_WEEK = 1;
-	const CONST_RECORRENCY_MONTH = 2;
-	const CONST_RECORRENCY_YEAR = 3;
-	const CONST_RECORRENCY_BIMESTRAL = 4;
-	const CONST_RECORRENCY_TRIMESTRAL = 5;
-	const CONST_RECORRENCY_SEMESTRAL = 6;
-	const CONST_RECORRENCY_SUNDAY = 7;
-	const CONST_RECORRENCY_MONDAY = 8;
-	const CONST_RECORRENCY_TUESDAY = 9;
-	const CONST_RECORRENCY_WEDNESDAY = 10;
-	const CONST_RECORRENCY_THURSDAY = 11;
-	const CONST_RECORRENCY_FRIDAY = 12;
-	const CONST_RECORRENCY_SATURDAY = 13;
+	const RECORRENCY_NO = - 1;
+	const RECORRENCY_DAY = 0;
+	const RECORRENCY_WEEK = 1;
+	const RECORRENCY_MONTH = 2;
+	const RECORRENCY_YEAR = 3;
+	const RECORRENCY_BIMESTRAL = 4;
+	const RECORRENCY_TRIMESTRAL = 5;
+	const RECORRENCY_SEMESTRAL = 6;
+	const RECORRENCY_SUNDAY = 7;
+	const RECORRENCY_MONDAY = 8;
+	const RECORRENCY_TUESDAY = 9;
+	const RECORRENCY_WEDNESDAY = 10;
+	const RECORRENCY_THURSDAY = 11;
+	const RECORRENCY_FRIDAY = 12;
+	const RECORRENCY_SATURDAY = 13;
 	
 	/*
 	 * Erro emitidos por esta classe
 	 */
-	const CONST_ERROR_1 = 1;
-	const CONST_ERROR_2 = 2;
+	const ERROR_1 = 1;
+	const ERROR_2 = 2;
 	public function getRecorrencyName() {
 		return Lang_AEvent::getDescriptions ( $this->recurringType );
 	}
@@ -127,24 +127,24 @@ abstract class AEvent extends AStorableObject implements IEvent {
 		
 		// Verifica se o tipo de recorrência é válida
 		$valid = in_array ( $recurringType, array (
-				self::CONST_RECORRENCY_NO,
-				self::CONST_RECORRENCY_DAY,
-				self::CONST_RECORRENCY_WEEK,
-				self::CONST_RECORRENCY_MONTH,
-				self::CONST_RECORRENCY_YEAR,
-				self::CONST_RECORRENCY_BIMESTRAL,
-				self::CONST_RECORRENCY_TRIMESTRAL,
-				self::CONST_RECORRENCY_SEMESTRAL,
-				self::CONST_RECORRENCY_SUNDAY,
-				self::CONST_RECORRENCY_MONDAY,
-				self::CONST_RECORRENCY_TUESDAY,
-				self::CONST_RECORRENCY_WEDNESDAY,
-				self::CONST_RECORRENCY_THURSDAY,
-				self::CONST_RECORRENCY_FRIDAY,
-				self::CONST_RECORRENCY_SATURDAY 
+				self::RECORRENCY_NO,
+				self::RECORRENCY_DAY,
+				self::RECORRENCY_WEEK,
+				self::RECORRENCY_MONTH,
+				self::RECORRENCY_YEAR,
+				self::RECORRENCY_BIMESTRAL,
+				self::RECORRENCY_TRIMESTRAL,
+				self::RECORRENCY_SEMESTRAL,
+				self::RECORRENCY_SUNDAY,
+				self::RECORRENCY_MONDAY,
+				self::RECORRENCY_TUESDAY,
+				self::RECORRENCY_WEDNESDAY,
+				self::RECORRENCY_THURSDAY,
+				self::RECORRENCY_FRIDAY,
+				self::RECORRENCY_SATURDAY 
 		) );
 		if (! $valid)
-			throw new UserException ( Lang_AEvent::getDescriptions ( self::CONST_ERROR_1 ), self::CONST_ERROR_1 );
+			throw new UserException ( Lang_AEvent::getDescriptions ( self::ERROR_1 ), self::ERROR_1 );
 		
 		$this->recurringType = $recurringType;
 	}
@@ -210,7 +210,7 @@ abstract class AEvent extends AStorableObject implements IEvent {
 	}
 	public function setPrivate($private) {
 		if (! is_bool ( $private ))
-			throw new UserException ( Lang_AEvent::getDescriptions ( self::CONST_ERROR_2 ), self::CONST_ERROR_2 );
+			throw new UserException ( Lang_AEvent::getDescriptions ( self::ERROR_2 ), self::ERROR_2 );
 		
 		$this->private = $private;
 	}

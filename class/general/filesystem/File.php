@@ -50,9 +50,9 @@ class File{
 	 */
 	protected $sender;
 
-	const CONST_COMPRESSED_EXTENSION = ".zip";
+	const COMPRESSED_EXTENSION = ".zip";
 
-	const CONST_TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS = 10;
+	const TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS = 10;
 
 	public function __construct($filePath = null){
 		if(!is_null($filePath)){
@@ -92,7 +92,7 @@ class File{
 		$this->md5 = "";
 
 		//Verifica se a extensão é a de um arquivo compactado
-		if($this->getFileExtension() == self::CONST_COMPRESSED_EXTENSION){
+		if($this->getFileExtension() == self::COMPRESSED_EXTENSION){
 			$this->compressed = true;
 		}
 
@@ -263,12 +263,12 @@ class File{
 
 	public function compress(){
 
-		$caminhoDoPacote = $this->filePath . self::CONST_COMPRESSED_EXTENSION;
+		$caminhoDoPacote = $this->filePath . self::COMPRESSED_EXTENSION;
 		$criouPacote = false;
 		$fechouPacote = false;;
 
 		//Comprime o pacote
-		$quantidadeMaxDeTentativas = self::CONST_TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS;
+		$quantidadeMaxDeTentativas = self::TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS;
 
 		$zip = new ZipArchive();
 
@@ -289,7 +289,7 @@ class File{
 		}while(!$fechouPacote);
 
 		//Apaga o arquivo original
-		$quantidadeMaxDeTentativas = self::CONST_TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS;
+		$quantidadeMaxDeTentativas = self::TENTATIVAS_DE_OPERACAO_DE_ARQUIVOS;
 		do{
 			$quantidadeMaxDeTentativas--;
 
@@ -306,7 +306,7 @@ class File{
 
 	public function uncompress(){
 		$arrNomeDoArquivo = explode(".", $this->filePath);
-		if("." . $arrNomeDoArquivo[count($arrNomeDoArquivo) -1] != self::CONST_COMPRESSED_EXTENSION){
+		if("." . $arrNomeDoArquivo[count($arrNomeDoArquivo) -1] != self::COMPRESSED_EXTENSION){
 			throw new SystemException("O arquivo " . $this->filePath . " não é um arquivo compactado. Não é possí­vel descompactá-lo",__CLASS__ .__LINE__);
 		}
 

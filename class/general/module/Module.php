@@ -34,8 +34,8 @@ class Module {
 	 */
 	public static function getModuleId() {
 		$httpRequest = new HttpRequest ();
-		$moduleId = $httpRequest->getGetRequest ( Configuration::CONST_QUERY_STRING_MODULE_NAME_VAR_NAME ) [0];
-		return is_null ( $moduleId ) ? Configuration::CONST_MAIN_MODULE_NAME : $moduleId;
+		$moduleId = $httpRequest->getGetRequest ( Configuration::QUERY_STRING_MODULE_NAME_VAR_NAME ) [0];
+		return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
 	}
 }
 ?>

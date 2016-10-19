@@ -48,7 +48,7 @@ class Module {
 		
 		// get the module user wants
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::CONST_MAIN_MODULE_NAME;
+		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_MODULE_NAME;
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {

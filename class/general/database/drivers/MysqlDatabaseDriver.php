@@ -35,8 +35,8 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	 */
 	public function connect(): bool {
 		try {
-			$dsn = Configuration::CONST_DB_HOST_PROTOCOL . ": host=" . Configuration::CONST_DB_HOST_ADDRESS . ";dbname=" . Configuration::CONST_DB_NAME;
-			$this->connection = new PDO ( $dsn, Configuration::CONST_DB_LOGIN, Configuration::CONST_DB_PASSWORD, array (
+			$dsn = Configuration::DB_HOST_PROTOCOL . ": host=" . Configuration::DB_HOST_ADDRESS . ";dbname=" . Configuration::DB_NAME;
+			$this->connection = new PDO ( $dsn, Configuration::DB_LOGIN, Configuration::DB_PASSWORD, array (
 					PDO::ATTR_PERSISTENT,
 					true 
 			) );

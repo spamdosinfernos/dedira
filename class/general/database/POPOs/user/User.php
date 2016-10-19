@@ -29,45 +29,67 @@ class User extends Person {
 	protected $active;
 	
 	/**
-	 * Indica qual o grupo de acesso o usuário pertence
-	 *
-	 * @var Group
-	 */
-	protected $accessGroup;
-	
-	/**
 	 * User constructor
 	 */
 	public function __construct() {
 		$this->active = true;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
 	public function getLogin() {
 		return $this->login;
 	}
-	public function setLogin(string $login) {
+	
+	/**
+	 *
+	 * @param
+	 *        	$login
+	 */
+	public function setLogin($login) {
 		$this->login = $login;
 		$this->AddChange ( "login", $login );
+		return $this;
 	}
+	
+	/**
+	 *
+	 * @return the string
+	 */
 	public function getPassword() {
 		return $this->password;
 	}
-	public function setPassword(string $password) {
+	
+	/**
+	 *
+	 * @param
+	 *        	$password
+	 */
+	public function setPassword($password) {
 		$this->password = $password;
 		$this->AddChange ( "password", $password );
+		return $this;
 	}
-	public function getActive(): bool {
+	
+	/**
+	 *
+	 * @return the boolean
+	 */
+	public function getActive() {
 		return $this->active;
 	}
-	public function setActive(bool $active) {
+	
+	/**
+	 *
+	 * @param
+	 *        	$active
+	 */
+	public function setActive($active) {
 		$this->active = $active;
 		$this->AddChange ( "active", $active );
-	}
-	public function getAccessGroup() {
-		return $this->accessGroup;
-	}
-	public function setAccessGroup(Group $accessGroup) {
-		$this->accessGroup = $accessGroup;
-		$this->AddChange ( "accessGroup", $accessGroup );
+		return $this;
 	}
 }
 ?>

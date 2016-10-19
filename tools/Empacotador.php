@@ -18,7 +18,7 @@ class Empacotador {
 
 	private $nomeDoProjeto;
 
-	const CONST_SUFIXO_PARA_O_NOME_DO_ARQUIVO_DE_PACOTE = "update.zip";
+	const SUFIXO_PARA_O_NOME_DO_ARQUIVO_DE_PACOTE = "update.zip";
 
 	public function processarTudo(){
 
@@ -68,7 +68,7 @@ class Empacotador {
 
 	private function abrirPacote(){
 		$this->pacoteZip = new ZipArchive();
-		$this->pacoteZip->open($this->diretorioDeDestino . DIRECTORY_SEPARATOR . self::CONST_SUFIXO_PARA_O_NOME_DO_ARQUIVO_DE_PACOTE, ZIPARCHIVE::OVERWRITE);
+		$this->pacoteZip->open($this->diretorioDeDestino . DIRECTORY_SEPARATOR . self::SUFIXO_PARA_O_NOME_DO_ARQUIVO_DE_PACOTE, ZIPARCHIVE::OVERWRITE);
 	}
 
 	private function getArrDepencias($arquivo){

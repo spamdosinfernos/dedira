@@ -45,21 +45,21 @@ class Timeline {
 	 * 
 	 * @var int
 	 */
-	const CONST_ERROR_1 = 1;
+	const ERROR_1 = 1;
 	
 	/**
 	 * Erro 2: A data inicial deve ser informada
 	 * 
 	 * @var int
 	 */
-	const CONST_ERROR_2 = 2;
+	const ERROR_2 = 2;
 	
 	/**
 	 * Erro 3: A data final deve ser informada
 	 * 
 	 * @var int
 	 */
-	const CONST_ERROR_3 = 3;
+	const ERROR_3 = 3;
 	
 	/**
 	 * Constrói o cronograma do usuário
@@ -93,11 +93,11 @@ class Timeline {
 	public function loadEvents() {
 		// TODO Implementar o carregamento de todos os eventos dados o dono e as datas inicial e final.
 		if (is_null ( $this->timelineOwner ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::CONST_ERROR_1 ), self::CONST_ERROR_1 );
+			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_1 ), self::ERROR_1 );
 		if (is_null ( $this->inicialDate ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::CONST_ERROR_2 ), self::CONST_ERROR_2 );
+			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_2 ), self::ERROR_2 );
 		if (is_null ( $this->finalDate ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::CONST_ERROR_3 ), self::CONST_ERROR_3 );
+			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_3 ), self::ERROR_3 );
 			
 			// TODO Preciso carregar todos os ids dos eventos, preciso criar uma view para isso
 		$database = new Database ();
@@ -109,7 +109,7 @@ class Timeline {
 		
 		foreach ( $arrEventsData as $eventData ) {
 			$event = new Event ();
-			$event->setDataBaseName ( Configuration::CONST_DB_NAME );
+			$event->setDataBaseName ( Configuration::DB_NAME );
 			$event->setId ( $eventId );
 			$event = $event->load ();
 			

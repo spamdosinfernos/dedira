@@ -15,7 +15,7 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const CONST_MAIN_MODULE_NAME = "main";
+	const MAIN_MODULE_NAME = "main";
 	
 	/**
 	 * Extensão padrão do arquivo executável no sistema
@@ -29,56 +29,56 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const CONST_DB_LOGIN = "root";
+	const DB_LOGIN = "root";
 	
 	/**
 	 * Senha do banco de dados
 	 *
 	 * @var string
 	 */
-	const CONST_DB_PASSWORD = "1234";
+	const DB_PASSWORD = "1234";
 	
 	/**
 	 * Nome dabBase de dados
 	 *
 	 * @var string
 	 */
-	const CONST_DB_NAME = "milisystem";
+	const DB_NAME = "milisystem";
 	
 	/**
 	 * Endereço do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	const CONST_DB_HOST_ADDRESS = "127.0.0.1";
+	const DB_HOST_ADDRESS = "127.0.0.1";
 	
 	/**
 	 * Protocolo do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	const CONST_DB_HOST_PROTOCOL = "mongodb";
+	const DB_HOST_PROTOCOL = "mongodb";
 	
 	/**
 	 * Porta np servidor de banco de dados
 	 *
 	 * @var int
 	 */
-	const CONST_DB_PORT = 27017;
+	const DB_PORT = 27017;
 	
 	/**
 	 * Formato da data no arquivo de log
 	 *
 	 * @var string
 	 */
-	const CONST_DATE_FORMAT = "Y-m-d H:i:s";
+	const DATE_FORMAT = "Y-m-d H:i:s";
 	
 	/**
 	 * Indica o nome do módulo que está em ação
 	 *
 	 * @var string
 	 */
-	const CONST_QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
+	const QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
 	
 	/**
 	 * Indica o caminho do diretório raiz do sistema
