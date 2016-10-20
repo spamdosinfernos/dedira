@@ -76,7 +76,7 @@ abstract class AStorableObject {
 	 * @param mixed $newValue
 	 * @param int $changeType allowed values: UNITARY or COLLECTION_ADD or COLLECTION_REMOVE
 	 */
-	protected function AddChange( string $propertyName, $newValue, $changeType = self::TYPE_UNITARY ){
+	protected function AddChange( string $propertyName, $newValue, $changeType = self::UNITARY ){
 		$this->arrChanges [$changeType] [$propertyName] = $newValue;
 	}
 	

@@ -154,9 +154,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		// Create a bulk write object and add our update operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
 		
-		$bulk->update ( $this->buildFilters (), array (
-				'$set' => $this->query->getObject ()->getArrChanges () 
-		), [ 
+		// FIXME implement collections addition and removes, this part is not working!
+		$bulk->update ( $this->buildFilters (), $this->buildModifiers (), [ 
 				'multi' => true,
 				'upsert' => false 
 		] );
@@ -218,7 +217,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			Log::recordEntry($e->getMessage ());
+			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
@@ -244,9 +243,38 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			Log::recordEntry($e->getMessage ());
+			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
+	}
+	protected function buildModifiers() {
+		$arrChanges = $this->query->getObject ()->getArrChanges ();
+		
+		$adders = array ();
+		$setters = array ();
+		$removers = array ();
+		
+		foreach ( $arrChanges as $changeType => $fieldValues ) {
+			
+			if ($changeType == AStorableObject::UNITARY) {
+				$setters ['$set'] [] = $fieldValues;
+				continue;
+			}
+			
+			if ($changeType == AStorableObject::COLLECTION_ADD) {
+				$setters ['$push'] [] = $fieldValues;
+				continue;
+			}
+			
+			if ($changeType == AStorableObject::COLLECTION_REMOVE) {
+				
+				continue;
+			}
+		}
+		
+		array (
+				'$set' => $this->query->getObject ()->getArrChanges ()
+		)
 	}
 	
 	/**
