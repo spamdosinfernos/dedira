@@ -85,7 +85,7 @@ class Task extends AEvent {
 	 */
 	public function setComplete($complete) {
 		if (! is_bool ( $complete ))
-			throw new SystemException ( "o argumento deve ser booleano", __CLASS__ . __LINE__ );
+			throw new Exception ( "o argumento deve ser booleano" );
 			
 			// Ao marcar uma tarefa como completa ou imcompleta deve-se marcar também as subtarefas
 		foreach ( $this->arrSubTasks as $index => $task ) {

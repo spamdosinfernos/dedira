@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../log/Log.php';
 require_once __DIR__ . '/../DatabaseConditions.php';
 require_once __DIR__ . '/../DatabaseRequestedData.php';
 require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
@@ -43,7 +44,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$this->connection->setAttribute ( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 			return true;
 		} catch ( Exception $e ) {
-			// TODO otherwise record a log
+			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
 		return false;
@@ -61,8 +62,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
-		if (! $this->connect ())
-			return false;
+		if (! $this->connect ()) return false;
 		
 		try {
 			$this->connection->beginTransaction ();
@@ -81,8 +81,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			$this->connection->commit ();
 		} catch ( PDOException $e ) {
 			$this->connection->rollBack ();
-			
-			// TODO otherwise record a log
+			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
 		
@@ -111,7 +110,7 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 			case DatabaseQuery::OPERATION_ERASE :
 				return $this->generateDelete ();
 			default :
-				throw new Exception ( "Unsuported operation" );
+				Log::recordEntry ( "Unsuported operation" );
 				return "";
 		}
 	}
@@ -167,14 +166,12 @@ class MysqlDatabaseDriver implements IDatabaseDriver {
 		foreach ( $reflection->getMethods ( ReflectionMethod::IS_PUBLIC ) as $method ) {
 			
 			// We just want the getters
-			if ($method->isConstructor () || $method->getNumberOfParameters () > 0)
-				continue;
+			if ($method->isConstructor () || $method->getNumberOfParameters () > 0) continue;
 			
 			$value = $method->invoke ( $this->query->getObject () );
 			
 			// Just put non empty fields in insert
-			if ($value == "")
-				continue;
+			if ($value == "") continue;
 			
 			$values [] = is_bool ( $value ) ? "true" : "'$value'";
 			$fields [] = strtolower ( str_ireplace ( "get", "", $method->getName () ) );

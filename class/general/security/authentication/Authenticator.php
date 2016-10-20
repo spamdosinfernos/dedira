@@ -73,8 +73,8 @@ class Authenticator {
 				return true;
 			}
 		} catch ( Exception $e ) {
-			new Log ( $e->getMessage () );
-			throw new SystemException ( $e->getMessage (), __CLASS__ . __LINE__ );
+			Log::recordEntry ( $e->getMessage () );
+			throw new Exception ( $e->getMessage () );
 		}
 		// login ou senha inválidos
 		return false;

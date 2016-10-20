@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../../log/Log.php';
+
 require_once __DIR__ . '/../DatabaseConditions.php';
 require_once __DIR__ . '/../DatabaseRequestedData.php';
 require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
@@ -79,11 +81,9 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			// If nothing goes wrong so everything goes well ;)
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			
-			// TODO Create a log entry
+			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
-		
 		return false;
 	}
 	
@@ -139,9 +139,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			case DatabaseQuery::OPERATION_ERASE :
 				return $this->doDelete ();
 			default :
-				// TODO otherwise record a log
-				throw new Exception ( "Unsuported operation" );
-				return "";
+				Log::recordEntry ( "Unsuported operation" );
+				return false;
 		}
 	}
 	
@@ -169,8 +168,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			// TODO otherwise record a log
-			echo $e->getMessage (), "\n";
+			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
@@ -195,8 +193,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			// TODO otherwise record a log
-			echo $e->getMessage (), "\n";
+			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
@@ -221,8 +218,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			// TODO otherwise record a log
-			echo $e->getMessage (), "\n";
+			Log::recordEntry($e->getMessage ());
 		}
 		return false;
 	}
@@ -248,8 +244,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
-			// TODO otherwise record a log
-			echo $e->getMessage (), "\n";
+			Log::recordEntry($e->getMessage ());
 		}
 		return false;
 	}

@@ -21,11 +21,11 @@ class DirectoryLister{
 		}
 
 		if(!file_exists($directoryPath)){
-			throw new SystemException("O caminho para o diretório é inválido!",__CLASS__ .__LINE__);
+			throw new Exception("Invalid directory path!");
 		}
 
 		if(!is_dir($directoryPath)){
-			throw new SystemException("O caminho indicado não é um diretório!",__CLASS__ .__LINE__);
+			throw new Exception("Not a directory!");
 		}
 
 		$this->directoryToList = $directoryPath;

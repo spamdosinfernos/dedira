@@ -137,10 +137,10 @@ class HttpReplicator{
 			$result = $perl->eval('return $serverResponse');
 			
 		}catch (Exception $e){
-			throw new SystemException("Falha ao replicar conteúdo http: " . $e->getMessage(),__CLASS__ .__LINE__);
+			throw new Exception("Falha ao replicar conteúdo http: " . $e->getMessage());
 		}
 
-		if($result === false) throw new SystemException("Falha ao replicar conteúdo http",__CLASS__ .__LINE__);
+		if($result === false) throw new Exception("Falha ao replicar conteúdo http");
 
 		return $result;
 	}

@@ -93,11 +93,11 @@ class Timeline {
 	public function loadEvents() {
 		// TODO Implementar o carregamento de todos os eventos dados o dono e as datas inicial e final.
 		if (is_null ( $this->timelineOwner ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_1 ), self::ERROR_1 );
+			throw new Exception ( Lang_Timeline::getDescriptions ( self::ERROR_1 ), self::ERROR_1 );
 		if (is_null ( $this->inicialDate ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_2 ), self::ERROR_2 );
+			throw new Exception ( Lang_Timeline::getDescriptions ( self::ERROR_2 ), self::ERROR_2 );
 		if (is_null ( $this->finalDate ))
-			throw new SystemException ( Lang_Timeline::getDescriptions ( self::ERROR_3 ), self::ERROR_3 );
+			throw new Exception ( Lang_Timeline::getDescriptions ( self::ERROR_3 ), self::ERROR_3 );
 			
 			// TODO Preciso carregar todos os ids dos eventos, preciso criar uma view para isso
 		$database = new Database ();
