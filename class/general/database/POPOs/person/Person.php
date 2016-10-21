@@ -92,5 +92,10 @@ class Person extends AStorableObject {
 		$this->arrTelephone = $arrTelephone;
 		$this->AddChange ( "arrTelephone", $arrTelephone );
 	}
+	
+	public function addTelephone($telephone) {
+		$this->arrTelephone[] = $telephone;
+		$this->AddChange ( "arrTelephone", $telephone, self::COLLECTION_ADD );
+	}
 }
 ?>

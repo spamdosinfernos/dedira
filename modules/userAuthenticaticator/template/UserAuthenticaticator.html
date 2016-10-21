@@ -1,18 +1,16 @@
 <!-- BEGIN: main -->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Strict//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html>
 <head>
 	<title>{title}</title>
+	<link rel="stylesheet" type="text/css" href="./modules/userAuthenticaticator/css/css.css">
 </head>
 <body>
-	<fieldset>
-		<legend>{systemMessage}</legend>
 		<form action="index.php?module={nextModule}" method="post">
+			<p>{systemMessage}</p>
 			<input type="text" name="login">
 			<input type="password" name="password">
 			<input type="submit">
 		</form>
-	</fieldset>
 </body>
 </html>
 <!-- END: main -->

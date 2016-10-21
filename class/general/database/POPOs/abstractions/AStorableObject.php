@@ -58,6 +58,7 @@ abstract class AStorableObject {
 	public function setId( $id ){
 		$this->id = $id;
 		$this->AddChange ( "id", $id );
+		return $this;
 	}
 	
 	/**
@@ -77,7 +78,12 @@ abstract class AStorableObject {
 	 * @param int $changeType allowed values: UNITARY or COLLECTION_ADD or COLLECTION_REMOVE
 	 */
 	protected function AddChange( string $propertyName, $newValue, $changeType = self::UNITARY ){
-		$this->arrChanges [$changeType] [$propertyName] = $newValue;
+		if ($changeType == self::UNITARY) {
+			$this->arrChanges [$changeType] [$propertyName] = $newValue;
+			return;
+		}
+		
+		$this->arrChanges [$changeType] [$propertyName] [] = $newValue;
 	}
 	
 	/**

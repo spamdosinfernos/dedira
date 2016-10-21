@@ -1,7 +1,6 @@
 <?php
 require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../database/drivers/MongoDatabaseDriver.php';
-require_once __DIR__ . '/../../../language/class/general/configuration/Lang_Configuration.php';
 /**
  * Centraliza todas as configurações do sistema
  *
@@ -16,6 +15,9 @@ class Configuration {
 	 * @var string
 	 */
 	const MAIN_MODULE_NAME = "main";
+	
+	
+	const MODULE_VAR_NAME = "module";
 	
 	/**
 	 * Extensão padrão do arquivo executável no sistema
@@ -74,27 +76,12 @@ class Configuration {
 	const DATE_FORMAT = "Y-m-d H:i:s";
 	
 	/**
-	 * Indica o nome do módulo que está em ação
-	 *
-	 * @var string
-	 */
-	const QUERY_STRING_MODULE_NAME_VAR_NAME = "module";
-	
-	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 *
 	 * @var string
 	 */
 	private static $systemRootDirectory;
 	
-	/**
-	 * Mensagem exibida quando o sistema pede autenticação
-	 *
-	 * @return string
-	 */
-	static public function getAuthMessage() {
-		return Lang_Configuration::getDescriptions ( 1 );
-	}
 	static public function getSystemRootDirectory() {
 		if (self::$systemRootDirectory == "") {
 			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );

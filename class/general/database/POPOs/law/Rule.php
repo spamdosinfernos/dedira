@@ -1,5 +1,10 @@
 <?php
-class Law extends AStorableObject {
+/**
+ * 
+ * @author ensis
+ *
+ */
+class Rule extends AStorableObject {
 	
 	/**
 	 * The law datetime creation
@@ -115,7 +120,7 @@ class Law extends AStorableObject {
 	 */
 	public function addUpVoterId( $upVotersId ){
 		$this->arrUpVotersIds [] = $upVotersId;
-		$this->AddChange ( "arrUpVotersIds", $upVotersId, AStorableObject::COLLECTION_ADD );
+		$this->AddChange ( "arrUpVotersIds", $upVotersId, self::COLLECTION_ADD );
 		return $this;
 	}
 	
@@ -125,7 +130,7 @@ class Law extends AStorableObject {
 	 */
 	public function removeUpVoterId( $upVotersId ){
 		$this->arrUpVotersIds [] = $upVotersId;
-		$this->AddChange ( "arrUpVotersIds", $upVotersId, AStorableObject::COLLECTION_REMOVE );
+		$this->AddChange ( "arrUpVotersIds", $upVotersId, self::COLLECTION_REMOVE );
 		return $this;
 	}
 	
@@ -153,7 +158,7 @@ class Law extends AStorableObject {
 	 */
 	public function addDowVoterId( $dowVotersId ){
 		$this->arrDowVotersIds [] = $dowVotersId;
-		$this->AddChange ( "arrDowVotersIds", $dowVotersId, AStorableObject::COLLECTION_ADD );
+		$this->AddChange ( "arrDowVotersIds", $dowVotersId, self::COLLECTION_ADD );
 		return $this;
 	}
 	
@@ -163,7 +168,7 @@ class Law extends AStorableObject {
 	 */
 	public function removeDowVoterId( $dowVotersId ){
 		unset ( $this->arrDowVotersIds [$dowVotersId] );
-		$this->AddChange ( "arrDowVotersIds", $dowVotersId, AStorableObject::COLLECTION_REMOVE );
+		$this->AddChange ( "arrDowVotersIds", $dowVotersId, self::COLLECTION_REMOVE );
 		return $this;
 	}
 }

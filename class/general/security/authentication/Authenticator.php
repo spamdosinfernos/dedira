@@ -49,7 +49,9 @@ class Authenticator {
 	 * Desautentica o usuário do sistema
 	 */
 	public function unauthenticate() {
-		if (! isset ( $_SESSION )) session_start ();
+		if (! isset ( $_SESSION )) {
+			session_start ();
+		}
 		unset ( $_SESSION );
 		@session_destroy ();
 	}

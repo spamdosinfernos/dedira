@@ -4,7 +4,7 @@ require_once 'XTemplate.php';
 /**
  * Changes the default behavior of XTemplate class to send all pages using UTF8
  */
-class CustomXtemplate extends XTemplate {
+class TemplateLoader extends XTemplate {
 	const ERROR_1 = 1;
 	public function __construct($file, $tpldir = '', $files = null, $mainblock = 'main', $autosetup = true) {
 		// Manda o charset=utf8

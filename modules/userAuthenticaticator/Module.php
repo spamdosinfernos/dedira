@@ -2,41 +2,40 @@
 
 namespace userAuthenticaticator;
 
+require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/class/UserAuthenticaticatorConf.php';
+require_once __DIR__ . '/../../class/general/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/general/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/general/template/CustomXtemplate.php';
 require_once __DIR__ . '/../../class/general/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/general/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/general/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/general/security/authentication/Authenticator.php';
 /**
- * Responsável por carregar os módulos do sistema
- *
+ * Authenticates the user on system
+ * 
  * @author André Furlan
- *        
  */
 class Module {
 	
 	/**
 	 * Gerencia os templates
-	 *
+	 * 
 	 * @var XTemplate
 	 */
 	protected $xTemplate;
-	public function __construct() {
-		$this->xTemplate = new \CustomXtemplate ( \UserAuthenticaticatorConf::getAutenticationRequestTemplate () );
+	public function __construct(){
+		$this->xTemplate = new \TemplateLoader ( UserAuthenticaticatorConf::getAutenticationRequestTemplate () );
 		
 		$this->handleRequest ();
 	}
 	
 	/**
-	 * Handles authentication request
-	 * If the authenticantion is successful keep executing
-	 * the system otherwise show the authentication screen
-	 *
+	 * Handles authentication request If the authenticantion is successful keep executing the system
+	 * otherwise show the authentication screen
+	 * 
 	 * @return void|boolean
 	 */
-	public function handleRequest() {
+	public function handleRequest(){
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
@@ -70,7 +69,7 @@ class Module {
 		$this->showGui ( $nextModule );
 		exit ( 0 );
 	}
-	private function showGui(string $nextModule) {
+	private function showGui( string $nextModule ){
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle () );
 		$this->xTemplate->assign ( "nextModule", $nextModule );
 		
@@ -78,8 +77,8 @@ class Module {
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
-	public function getTitle() {
-		return \UserAuthenticaticatorConf::getAuthMessage ();
+	public function getTitle(){
+		return Lang_Configuration::getDescriptions ( 0 );
 	}
 }
 new Module ();
