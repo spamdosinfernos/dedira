@@ -16,28 +16,28 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * The database connection
-	 * 
+	 *
 	 * @var MongoDB\Driver\Manager
 	 */
 	private $connection;
 	
 	/**
 	 * Guarda resultado da consulta
-	 * 
+	 *
 	 * @var DatabaseRequestedData
 	 */
 	private $result;
 	
 	/**
 	 * Stores the query that will be executed
-	 * 
+	 *
 	 * @var DatabaseQuery
 	 */
 	private $query;
 	
 	/**
 	 * Stores the entity name manipulated in query
-	 * 
+	 *
 	 * @var string
 	 */
 	private $entityName;
@@ -47,7 +47,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @var MongoDB\Driver\WriteConcern
 	 */
 	private $writeConcern;
-	public function __construct(){
+	public function __construct() {
 		$this->result = new DatabaseRequestedData ();
 		$this->entityName = "";
 	}
@@ -58,7 +58,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @see IDatabaseDriver::connect()
 	 */
-	public function connect(): bool{
+	public function connect(): bool {
 		
 		// Construct a write concern
 		$this->writeConcern = new MongoDB\Driver\WriteConcern ( 
@@ -92,7 +92,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @see IDatabaseDriver::disconnect()
 	 */
-	public function disconnect(): bool{
+	public function disconnect(): bool {
 		// For some reason looks like we cant close the connection
 		return true;
 	}
@@ -103,7 +103,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 *
 	 * @see IDatabaseDriver::execute()
 	 */
-	public function execute( DatabaseQuery $query ): bool{
+	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
 		
 		if (is_null ( $this->connection )) {
@@ -120,14 +120,14 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 */
-	public function getResults(): DatabaseRequestedData{
+	public function getResults(): DatabaseRequestedData {
 		return $this->result;
 	}
 	
 	/**
 	 * Generates the query string
 	 */
-	private function executeQuery(): bool{
+	private function executeQuery(): bool {
 		switch ($this->query->getOperationType ()) {
 			case DatabaseQuery::OPERATION_GET :
 				return $this->doRead ();
@@ -145,10 +145,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the update query
-	 * 
+	 *
 	 * @return string
 	 */
-	private function doUpdate(): string{
+	private function doUpdate(): string {
 		
 		// Create a bulk write object and add our update operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
@@ -173,10 +173,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the insert query
-	 * 
+	 *
 	 * @return string
 	 */
-	private function doInsert(): bool{
+	private function doInsert(): bool {
 		
 		// Create a bulk write object and add our insert operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
@@ -198,10 +198,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the delete query
-	 * 
+	 *
 	 * @return string
 	 */
-	private function doDelete(): string{
+	private function doDelete(): string {
 		// Create a bulk write object and add our update operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
 		
@@ -223,10 +223,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the select query
-	 * 
+	 *
 	 * @return string
 	 */
-	private function doRead(): bool{
+	private function doRead(): bool {
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
 			
@@ -249,17 +249,15 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Build the modifiers for updates
-	 * 
+	 *
 	 * @return array
 	 */
-	protected function buildModifiers(): array{
+	protected function buildModifiers(): array {
 		$arrChanges = $this->query->getObject ()->getArrChanges ();
 		
 		$adders = array ();
 		$setters = array ();
 		$removers = array ();
-		
-		$parans = array ();
 		
 		foreach ( $arrChanges as $changeType => $arrFieldValues ) {
 			
@@ -272,28 +270,32 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			}
 			
 			if ($changeType == AStorableObject::COLLECTION_ADD) {
-				foreach ( $arrFieldValues as $key => $value ) {
-					$adders['$push'][$key]['$each'] = $value;
+				foreach ( $arrFieldValues as $key => $arrValues ) {
+					foreach ( $arrValues as $value ) {
+						$adders ['$addToSet']->$key ['$each'] [] = $value;
+					}
 				}
 				continue;
 			}
 			
 			if ($changeType == AStorableObject::COLLECTION_REMOVE) {
-				foreach ( $arrFieldValues as $key => $value ) {
-					$removers ['$pop'] ['$each']->$key = $value;
+				foreach ( $arrFieldValues as $key => $arrValues ) {
+					foreach ( $arrValues as $value ) {
+						$removers ['$pull']->$key ['$in'] [] = $value;
+					}
 				}
 				continue;
 			}
 		}
 		
-		return $adders;
+		return array_merge($setters, $adders, $removers);
 	}
 	/**
 	 * Builds the filter clause
-	 * 
+	 *
 	 * @return array
 	 */
-	protected function buildFilters(): array{
+	protected function buildFilters(): array {
 		
 		// Filter for documents
 		$arrFilter = array ();

@@ -50,6 +50,10 @@ class Person extends AStorableObject {
 	 * @var array : string
 	 */
 	protected $arrTelephone;
+	public function __construct() {
+		$this->arrEmail = array ();
+		$this->arrTelephone = array ();
+	}
 	public function getName() {
 		return $this->name;
 	}
@@ -85,6 +89,20 @@ class Person extends AStorableObject {
 		$this->arrEmail = $arrEmail;
 		$this->AddChange ( "arrEmail", $arrEmail );
 	}
+	public function addEmail($email) {
+		$this->arrEmail [] = $email;
+		$this->AddChange ( "arrEmail", $email, self::COLLECTION_ADD );
+	}
+	public function removeEmail($email) {
+		$key = array_search ( $email, $this->arrEmail );
+		
+		$this->AddChange ( "arrEmail", $email, self::COLLECTION_REMOVE );
+		
+		// If the key is boolean the item was not found
+		if (is_bool ( $key )) return;
+		
+		unset ( $this->arrEmail [$key] );
+	}
 	public function getArrTelephone() {
 		return $this->arrTelephone;
 	}
@@ -92,10 +110,19 @@ class Person extends AStorableObject {
 		$this->arrTelephone = $arrTelephone;
 		$this->AddChange ( "arrTelephone", $arrTelephone );
 	}
-	
 	public function addTelephone($telephone) {
-		$this->arrTelephone[] = $telephone;
+		$this->arrTelephone [] = $telephone;
 		$this->AddChange ( "arrTelephone", $telephone, self::COLLECTION_ADD );
+	}
+	public function removeTelephone($telephone) {
+		$key = array_search ( $telephone, $this->arrTelephone );
+		
+		$this->AddChange ( "arrTelephone", $telephone, self::COLLECTION_REMOVE );
+		
+		// If the key is boolean the item was not found
+		if (is_bool ( $key )) return;
+		
+		unset ( $this->arrTelephone [$key] );
 	}
 }
 ?>

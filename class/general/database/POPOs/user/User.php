@@ -32,6 +32,7 @@ class User extends Person {
 	 * User constructor
 	 */
 	public function __construct() {
+		parent::__construct();
 		$this->active = true;
 	}
 	

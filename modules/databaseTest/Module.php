@@ -11,25 +11,24 @@ require_once __DIR__ . '/../../class/general/database/DatabaseConditions.php';
 require_once __DIR__ . '/../../class/general/database/drivers/MongoDatabaseDriver.php';
 require_once __DIR__ . '/../../class/general/database/interfaces/IDatabaseDriver.php';
 class Module {
-	public function __construct(){
+	public function __construct() {
 		// Initilizing the database
 		\Database::init ( new \MongoDatabaseDriver () );
 		\Database::connect ();
 		
 		$user = new \User ();
-		// $user->setId ( microtime ( true ) );
-		// $user->setSex ( "masc" );
-		// $user->setLogin ( "root" );
-		// $user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
-		// $user->setName ( "André Furlan" );
-		// $user->setArrEmail ( array (
-		// "ensismoebius@gmail.com"
-		// ) );
-		
-		// $query = new \DatabaseQuery ();
-		// $query->setObject ( $user );
-		// $query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
-		// \Database::execute ( $query );
+// 		$user->setId ( microtime ( true ) );
+// 		$user->setSex ( "masc" );
+// 		$user->setLogin ( "root" );
+// 		$user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
+// 		$user->setName ( "André Furlan" );
+// 		$user->setArrEmail ( array (
+// 				"ensismoebius@gmail.com" 
+// 		) );
+// 		$query = new \DatabaseQuery ();
+// 		$query->setObject ( $user );
+// 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
+// 		\Database::execute ( $query );
 		
 		// Retrieving objects
 		// $c = new \DatabaseConditions ();
@@ -49,17 +48,31 @@ class Module {
 		// }
 		
 		// Updating objects
+		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
-		$c2->addCondition ( \DatabaseConditions::AND, "id", 1476997209.433377 );
+		$c2->addCondition ( \DatabaseConditions::AND, "id", 1477384716.007694 );
 		$user->setLogin ( "root" );
 		$user->setName ( "root" );
-		$user->addTelephone(1223344555);
-		$user->addTelephone(8997776668);
+		$user->addTelephone ( 99999 );
+		$user->addTelephone ( 9999945 );
 		$query3 = new \DatabaseQuery ();
 		$query3->setConditions ( $c2 );
 		$query3->setObject ( $user );
 		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		\Database::execute ( $query3 );
+		
+		
+		$user = new \User ();
+		$c2 = new \DatabaseConditions ();
+		$c2->addCondition ( \DatabaseConditions::AND, "id", 1477384716.007694 );
+		$user->removeTelephone( 99999 );
+		$user->removeTelephone( 9999945 );
+		$query3 = new \DatabaseQuery ();
+		$query3->setConditions ( $c2 );
+		$query3->setObject ( $user );
+		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
+		\Database::execute ( $query3 );
+		
 		
 		// // Deleting objects
 		// $c3 = new DatabaseConditions ();
