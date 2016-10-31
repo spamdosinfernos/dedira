@@ -17,40 +17,40 @@ class Module {
 		\Database::connect ();
 		
 		$user = new \User ();
-// 		$user->setId ( microtime ( true ) );
-// 		$user->setSex ( "masc" );
-// 		$user->setLogin ( "root" );
-// 		$user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
-// 		$user->setName ( "André Furlan" );
-// 		$user->setArrEmail ( array (
-// 				"ensismoebius@gmail.com" 
-// 		) );
-// 		$query = new \DatabaseQuery ();
-// 		$query->setObject ( $user );
-// 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
-// 		\Database::execute ( $query );
+		$user->setId ( 1 );
+		$user->setSex ( "masc" );
+		$user->setLogin ( "root" );
+		$user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
+		$user->setName ( "André Furlan" );
+		$user->setArrEmail ( array (
+				"ensismoebius@gmail.com" 
+		) );
+		$query = new \DatabaseQuery ();
+		$query->setObject ( $user );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
+		\Database::execute ( $query );
 		
-		// Retrieving objects
-		// $c = new \DatabaseConditions ();
-		// $c->addCondition ( \DatabaseConditions::AND, "id", 1476809019.954783 );
-		// $c->addCondition ( \DatabaseConditions::OR, "active", true );
-		// $c->addCondition ( \DatabaseConditions::AND_LIKE, "login", "jac" );
-		// $c->addCondition ( \DatabaseConditions::OR_LIKE, "login", "jac" );
-		// $c->addCondition ( DatabaseConditions::OR, "login", "uga" );
-		// $query = new \DatabaseQuery ();
-		// $query->setConditions ( $c );
-		// $query->setObject ( new \User () );
-		// $query->setOperationType ( \DatabaseQuery::OPERATION_GET );
-		// \Database::execute ( $query );
-		// $res = \Database::getResults ();
-		// while ( $res->next () ) {
-		// echo $res->getRetrivedObject ()->getLogin ();
-		// }
+		//Retrieving objects
+		$c = new \DatabaseConditions ();
+		$c->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$c->addCondition ( \DatabaseConditions::OR, "active", true );
+		$c->addCondition ( \DatabaseConditions::AND_LIKE, "login", "oo" );
+		$c->addCondition ( \DatabaseConditions::OR_LIKE, "login", "oo" );
+		$c->addCondition ( \DatabaseConditions::OR, "sex", "masc" );
+		$query = new \DatabaseQuery ();
+		$query->setConditions ( $c );
+		$query->setObject ( new \User () );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_GET );
+		\Database::execute ( $query );
+		$res = \Database::getResults ();
+		while ( $res->next () ) {
+			echo $res->getRetrivedObject ()->getLogin ();
+		}
 		
 		// Updating objects
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
-		$c2->addCondition ( \DatabaseConditions::AND, "id", 1477384716.007694 );
+		$c2->addCondition ( \DatabaseConditions::AND, "id", 1 );
 		$user->setLogin ( "root" );
 		$user->setName ( "root" );
 		$user->addTelephone ( 99999 );
@@ -61,27 +61,26 @@ class Module {
 		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		\Database::execute ( $query3 );
 		
-		
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
-		$c2->addCondition ( \DatabaseConditions::AND, "id", 1477384716.007694 );
-		$user->removeTelephone( 99999 );
-		$user->removeTelephone( 9999945 );
+		$c2->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$user->removeTelephone ( 99999 );
+		$user->removeTelephone ( 99999 );
 		$query3 = new \DatabaseQuery ();
 		$query3->setConditions ( $c2 );
 		$query3->setObject ( $user );
 		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		\Database::execute ( $query3 );
 		
-		
-		// // Deleting objects
-		// $c3 = new DatabaseConditions ();
-		// $c3->addCondition ( DatabaseConditions::AND, "id", 1 );
-		// $query4 = new DatabaseQuery ();
-		// $query4->setConditions ( $c3 );
-		// $query4->setObject ( $user );
-		// $query4->setOperationType ( DatabaseQuery::OPERATION_ERASE );
-		// Database::execute ( $query4 );
+		// Deleting objects
+		$user = new \User ();
+		$c3 = new \DatabaseConditions ();
+		$c3->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$query4 = new \DatabaseQuery ();
+		$query4->setConditions ( $c3 );
+		$query4->setObject ( $user );
+		$query4->setOperationType ( \DatabaseQuery::OPERATION_ERASE );
+		\Database::execute ( $query4 );
 	}
 }
 new Module ();

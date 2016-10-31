@@ -153,7 +153,6 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		// Create a bulk write object and add our update operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
 		
-		// FIXME implement collections addition and removes, this part is not working!
 		$bulk->update ( $this->buildFilters (), $this->buildModifiers (), [ 
 				'multi' => true,
 				'upsert' => false 

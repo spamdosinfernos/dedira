@@ -1,0 +1,46 @@
+<!-- BEGIN: main -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>{tittle}</title>
+<link rel="stylesheet" type="text/css"	href="./modules/userSignUp/css/css.css">
+</head>
+<body>
+	<p><em>{warning}</em></p>
+	<form action="index.php?module={nextModule}" method="post">
+
+		<label>*{lblActive}</label> <input placeholder="{lblActive}" type="checkbox" name="active">
+		<label>*{lblLogin}</label> <input placeholder="{lblLogin}" type="text" name="login">
+		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password">
+		
+		<label>*{lblName}</label><input placeholder="{lblName}" type="text" name="name">
+		<label>*{lblLastName}</label><input placeholder="{lblLastName}" type="text" name="lastName">
+		
+		<label>{lblSex}</label>
+		<select>
+			<!-- BEGIN: comboSex -->
+			<option value="{sexValue}">{sexText}</option>
+			<!-- END: comboSex -->
+		</select>
+		
+		<label>*{lblBirthdate}</label> <input placeholder="{lblBirthdate}" type="date" name="birthDate">
+
+		<fieldset>
+			<legend><label>*{lblEmail}</label></legend> 
+			<input placeholder="*{lblEmail}" type="email" name="arrEmail">
+			<input placeholder="{lblEmail}" type="email" name="arrEmail">
+		</fieldset>
+			
+		<fieldset>
+			<legend><label>{lblTelephone}</label></legend>
+			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone"> 
+			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone"> 
+		</fieldset>
+		<br><br> 
+		<input type="submit" value={sendText}>
+
+	</form>
+</body>
+</html>
+<!-- END: main -->

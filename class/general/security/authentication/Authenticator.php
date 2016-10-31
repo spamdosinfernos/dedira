@@ -10,29 +10,12 @@ class Authenticator {
 	private $authenticatorDriver;
 	
 	/**
-	 * Id do usuário na sessão
-	 *
-	 * @var int | string
-	 */
-	private $authenticationId;
-	
-	/**
 	 * Incia o autenticado de usuários no sistema
 	 *
 	 * @param IAuthenticationRules $authenticationRules        	
 	 */
 	public function __construct(IAuthenticationRules $authenticationRules = null) {
 		$this->authenticatorDriver = $authenticationRules;
-	}
-	
-	/**
-	 * Retorna a id do usuário na sessão
-	 *
-	 * @return int | string
-	 */
-	public function getUserId() {
-		if (! isset ( $_SESSION )) session_start ();
-		return $_SESSION ['userData'] ['userId'];
 	}
 	
 	/**
@@ -84,8 +67,8 @@ class Authenticator {
 	public function setAuthenticationRules(IAuthenticationRules $authenticatiorDriver) {
 		$this->authenticatorDriver = $authenticatiorDriver;
 	}
-	public function getAuthenticationId() {
-		return $this->authenticationId;
+	public function getAutenticatedEntity() {
+		return $_SESSION ['authData'] ['autenticatedEntity'];
 	}
 }
 ?>

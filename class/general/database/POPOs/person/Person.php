@@ -8,6 +8,10 @@ require_once __DIR__ . '/../abstractions/AStorableObject.php';
  *        
  */
 class Person extends AStorableObject {
+	const SEX_BOTH = 'both';
+	const SEX_FEMALE = 'female';
+	const SEX_IRRELEVANT = 'irrelevant';
+	const SEX_MALE = 'male';
 	
 	/**
 	 * Name
@@ -21,7 +25,7 @@ class Person extends AStorableObject {
 	 *
 	 * @var string
 	 */
-	protected $secondName;
+	protected $lastName;
 	
 	/**
 	 * Birthdate
@@ -61,12 +65,12 @@ class Person extends AStorableObject {
 		$this->name = $name;
 		$this->AddChange ( "name", $name );
 	}
-	public function getSecondName() {
-		return $this->secondName;
+	public function getLastName() {
+		return $this->lastName;
 	}
-	public function setSecondName($secondName) {
-		$this->secondName = $secondName;
-		$this->AddChange ( "secondName", $secondName );
+	public function setLastName($lastName) {
+		$this->lastName = $lastName;
+		$this->AddChange ( "lastName", $lastName );
 	}
 	public function getBirthDate() {
 		return $this->birthDate;
@@ -79,8 +83,14 @@ class Person extends AStorableObject {
 		return $this->sex;
 	}
 	public function setSex($sex) {
-		$this->sex = $sex;
-		$this->AddChange ( "sex", $sex );
+		switch ($sex) {
+			case self::SEX_BOTH :
+			case self::SEX_FEMALE :
+			case self::SEX_IRRELEVANT :
+			case self::SEX_MALE :
+				$this->sex = $sex;
+				$this->AddChange ( "sex", $sex );
+		}
 	}
 	public function getArrEmail() {
 		return $this->arrEmail;

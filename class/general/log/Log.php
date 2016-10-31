@@ -34,7 +34,7 @@ class Log {
 	
 	/**
 	 * Generates a backtrace, helpfull for debugging purposes.
-	 * Thanks to jurchiks101!
+	 * Thanks to jurchiks101 from php.net foruns!
 	 *
 	 * @author jurchiks101 at gmail dot com
 	 * @return string
