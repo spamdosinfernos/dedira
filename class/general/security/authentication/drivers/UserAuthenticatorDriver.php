@@ -23,7 +23,17 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 	public function setUser(User $user) {
 		$this->user = $user;
 	}
+	/**
+	 * Authenticate the user on system
+	 * 
+	 * {@inheritdoc}
+	 *
+	 * @see IAuthenticationRules::checkAuthenticationData()
+	 */
 	public function checkAuthenticationData(): bool {
+		
+		// The user MUST be informed
+		if (is_null ( $this->user )) throw new Exception ( "User not informed! See UserAuthenticatorDriver::setUser" );
 		
 		// We must be pessimistic
 		$this->autenticatedEntity = null;
@@ -46,7 +56,7 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 		$res = Database::getResults ();
 		if (! $res->next ()) return false;
 		
-		// If yes then stores the user id
+		// If yes then stores the user
 		$this->autenticatedEntity = $res->getRetrivedObject ();
 		return true;
 	}
