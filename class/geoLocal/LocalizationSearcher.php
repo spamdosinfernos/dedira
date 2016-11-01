@@ -1,5 +1,5 @@
 <?php
-require_once 'Localization.php';
+require_once '../general/geoLocal/Localization.php';
 require_once __DIR__ . '/../configuration/LocalizationSearcherConf.php';
 /**
  * Responsável por carregar endereços dado algum(ns) dado(s) dos mesmos

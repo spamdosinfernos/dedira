@@ -4,12 +4,12 @@ namespace userSignUp;
 
 require_once __DIR__ . '/class/UserSignUpConf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
-require_once __DIR__ . '/../../class/general/template/TemplateLoader.php';
-require_once __DIR__ . '/../../class/general/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/general/security/PasswordPreparer.php';
-require_once __DIR__ . '/../../class/general/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/general/security/authentication/drivers/UserAuthenticatorDriver.php';
-require_once __DIR__ . '/../../class/general/security/authentication/Authenticator.php';
+require_once __DIR__ . '/../../class/template/TemplateLoader.php';
+require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
+require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
+require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
+require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 /**
  * Register the user on system
  *

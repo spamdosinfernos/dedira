@@ -1,5 +1,5 @@
 <?php
-require_once 'XTemplate.php';
+require_once '../general/template/XTemplate.php';
 
 /**
  * Changes the default behavior of XTemplate class to send all pages using UTF8

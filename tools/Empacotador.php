@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../class/general/filesystem/DirectoryLister.php';
-require_once __DIR__ . '/../class/general/filesystem/File.php';
+require_once __DIR__ . '/../class/filesystem/DirectoryLister.php';
+require_once __DIR__ . '/../class/filesystem/File.php';
 
 class Empacotador {
 

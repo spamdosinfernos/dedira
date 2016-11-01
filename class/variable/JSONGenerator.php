@@ -1,5 +1,5 @@
 <?php
-require_once 'ClassPropertyPublicizator.php';
+require_once '../general/variable/ClassPropertyPublicizator.php';
 
 /**
  * Generates a JSON expression

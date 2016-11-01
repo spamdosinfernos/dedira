@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../../../class/general/security/Shield.php';
+require_once __DIR__ . '/../../security/Shield.php';
 
 /**
  * Replica e recupera a requisição http além de modificá-la.

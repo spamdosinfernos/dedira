@@ -1,10 +1,10 @@
 <?php
-require_once __DIR__ . '/../class/general/log/Log.php';
+require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_Controller.php';
-require_once __DIR__ . '/../class/general/module/Module.php';
-require_once __DIR__ . '/../class/general/security/Shield.php';
-require_once __DIR__ . '/../class/general/database/Database.php';
-require_once __DIR__ . '/../class/general/configuration/Configuration.php';
+require_once __DIR__ . '/../class/module/Module.php';
+require_once __DIR__ . '/../class/security/Shield.php';
+require_once __DIR__ . '/../class/database/Database.php';
+require_once __DIR__ . '/../class/configuration/Configuration.php';
 
 /**
  * Manages all requests and loads the correponding module
