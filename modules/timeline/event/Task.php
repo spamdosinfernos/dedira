@@ -1,5 +1,5 @@
 <?php
-require_once 'AEvent.php';
+require_once '../../class/module_deprecated/timeline/event/AEvent.php';
 /**
  * Descreve tarefas que devem ser realizadas pelo usuário
  * 

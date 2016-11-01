@@ -102,8 +102,6 @@ class Timeline {
 			// TODO Preciso carregar todos os ids dos eventos, preciso criar uma view para isso
 		$database = new Database ();
 		
-		$database->
-		
 		// TODO Para fazer o dito acima preciso ver se a classe event se transforma em uma de suas derivadas, senão acho que terei que colocar os requires de todas as classes derivadas aqui no timeline
 		$this->arrEvents = array ();
 		
