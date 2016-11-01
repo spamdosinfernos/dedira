@@ -20,7 +20,7 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 	 *
 	 * @return string
 	 */
-	public function setUser(User $user) {
+	public function setEntity(User $user) {
 		$this->user = $user;
 	}
 	/**
