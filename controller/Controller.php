@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../class/general/log/Log.php';
-require_once __DIR__ . '/language/Lang_MainController.php';
+require_once __DIR__ . '/language/Lang_Controller.php';
 require_once __DIR__ . '/../class/general/module/Module.php';
 require_once __DIR__ . '/../class/general/security/Shield.php';
 require_once __DIR__ . '/../class/general/database/Database.php';
@@ -11,7 +11,7 @@ require_once __DIR__ . '/../class/general/configuration/Configuration.php';
  *
  * @author André Furlan
  */
-class MainController {
+class Controller {
 	public function __construct() {
 		Shield::treatTextFromForm ();
 		Database::init ( Configuration::getDatabaseDriver () );
@@ -29,5 +29,5 @@ class MainController {
 		Database::disconnect ();
 	}
 }
-new MainController ();
+new Controller ();
 ?>

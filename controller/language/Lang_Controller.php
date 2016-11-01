@@ -1,5 +1,5 @@
 <?php
-final class Lang_MainController {
+final class Lang_Controller {
 	public static function getDescriptions($descriptionId) {
 		
 		// Português Brasil
