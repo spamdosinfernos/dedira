@@ -17,7 +17,7 @@ class Controller {
 		Database::init ( Configuration::getDatabaseDriver () );
 		
 		if (! Database::connect ()) {
-			Log::recordEntry ( Lang_MainController::getDescriptions ( 0 ), true );
+			Log::recordEntry ( Lang_Controller::getDescriptions ( 0 ), true );
 			return;
 		}
 		

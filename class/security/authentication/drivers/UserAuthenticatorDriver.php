@@ -10,9 +10,9 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 	 *
 	 * @var User
 	 */
-	private $user;
+	private $entity;
 	public function __construct(User $user = null) {
-		$this->user = $user;
+		$this->entity = $user;
 	}
 	
 	/**
@@ -20,12 +20,12 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 	 *
 	 * @return string
 	 */
-	public function setEntity(User $user) {
-		$this->user = $user;
+	public function setEntity($entity) {
+		$this->entity = $entity;
 	}
 	/**
 	 * Authenticate the user on system
-	 * 
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IAuthenticationRules::checkAuthenticationData()
@@ -33,20 +33,20 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 	public function checkAuthenticationData(): bool {
 		
 		// The user MUST be informed
-		if (is_null ( $this->user )) throw new Exception ( "User not informed! See UserAuthenticatorDriver::setUser" );
+		if (is_null ( $this->entity )) throw new Exception ( "User not informed! See UserAuthenticatorDriver::setUser" );
 		
 		// We must be pessimistic
 		$this->autenticatedEntity = null;
 		
 		// Setting the conditions
 		$c = new DatabaseConditions ();
-		$c->addCondition ( DatabaseConditions::AND, "login", $this->user->getLogin () );
-		$c->addCondition ( DatabaseConditions::AND, "password", $this->user->getPassword () );
+		$c->addCondition ( DatabaseConditions::AND, "login", $this->entity->getLogin () );
+		$c->addCondition ( DatabaseConditions::AND, "password", $this->entity->getPassword () );
 		
 		// Assembling the querie
 		$query = new DatabaseQuery ();
 		$query->setConditions ( $c );
-		$query->setObject ( $this->user );
+		$query->setObject ( $this->entity );
 		$query->setOperationType ( DatabaseQuery::OPERATION_GET );
 		
 		// Everything is allright?
