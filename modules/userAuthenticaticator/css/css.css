@@ -1,4 +1,4 @@
-body{
+body {
 	background-color: cadetblue;
 	margin: 2em;
 }
@@ -11,16 +11,20 @@ form {
 	margin-right: auto;
 	width: 50%;
 	border-style: none;
-  background-color: blue;
+	background-color: blue;
 	padding: 20px;
 	border-radius: 10px;
 }
 
-form>p{
+form>p {
 	font-size: 2em;
 	font-weight: bolder;
 	text-align: center;
-	
+}
+
+form>a{
+	font-size: 1em;
+	color: white;
 }
 
 form>input {
