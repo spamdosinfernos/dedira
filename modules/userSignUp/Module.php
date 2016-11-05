@@ -24,7 +24,7 @@ class Module {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( UserSignUpConf::getAutenticationRequestTemplate () );
+		$this->xTemplate = new \TemplateLoader ( UserSignUpConf::getSignUpTemplate () );
 		
 		$this->handleRequest ();
 	}
@@ -70,15 +70,43 @@ class Module {
 		$this->showGui ( $nextModule );
 	}
 	
-	// TODO Finish it!
-	private function updateUser(\User $user) {
+	/**
+	 * Updates a user
+	 * 
+	 * @param \User $user        	
+	 * @return bool
+	 */
+	private function updateUser(\User $user): bool {
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
+		// The user modifications only will be valid after a validation
+		$user->setActive ( false );
+		
 		// Creates the user to authenticate
+		$user->setSex ( $postedVars ["sex"] );
+		$user->setName ( $postedVars ["name"] );
 		$user->setLogin ( $postedVars ["login"] );
+		$user->setLastName ( $postedVars ["lastName"] );
+		$user->setArrEmail ( $postedVars ["arrEmail"] );
+		$user->setBirthDate ( new \DateTime ( 
+				$postedVars ["birthDate"]["year"] . "-" . 
+				$postedVars ["birthDate"] ["month"] . "-" . 
+				$postedVars ["birthDate"] ["day"] ) );
+		
+		$user->setArrTelephone ( $postedVars ["arrTelephone"] );
 		$user->setPassword ( \PasswordPreparer::messItUp ( $postedVars ["password"] ) );
-		$user->setActive ( $postedVars ["active"] );
+		
+		// Updating objects
+		$c = new \DatabaseConditions ();
+		$c->addCondition ( \DatabaseConditions::AND, "id", $user->getId () );
+		
+		$query = new \DatabaseQuery ();
+		$query->setConditions ( $c );
+		$query->setObject ( $user );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
+		
+		return \Database::execute ( $query );
 	}
 	
 	// TODO Finish it!
@@ -96,12 +124,12 @@ class Module {
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
-		// Verifies the nullables
-		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] ) || ! isset ( $postedVars ["active"] ) || ! isset ( $postedVars ["name"] ) || ! isset ( $postedVars ["lastName"] ) || ! isset ( $postedVars ["sex"] ) || ! isset ( $postedVars ["birthDate"] ) || ! isset ( $postedVars ["arrEmail"] )) {
-			return false;
+		// Check mandatory fields
+		if (isset ( $postedVars ["login"] ) && isset ( $postedVars ["password"] ) && isset ( $postedVars ["name"] ) && isset ( $postedVars ["lastName"] ) && isset ( $postedVars ["sex"] ) && isset ( $postedVars ["birthDate"] ) && isset ( $postedVars ["arrEmail"] )) {
+			return true;
 		}
 		
-		return true;
+		return false;
 	}
 	private function showGui(string $nextModule) {
 		$this->xTemplate->assign ( "tittle", Lang_Configuration::getDescriptions ( 0 ) );
@@ -110,7 +138,12 @@ class Module {
 		$this->xTemplate->assign ( "lblPassword", Lang_Configuration::getDescriptions ( 3 ) );
 		$this->xTemplate->assign ( "lblName", Lang_Configuration::getDescriptions ( 4 ) );
 		$this->xTemplate->assign ( "lblLastName", Lang_Configuration::getDescriptions ( 5 ) );
-		$this->xTemplate->assign ( "lblBirthdate", Lang_Configuration::getDescriptions ( 7 ) );
+		
+		$this->xTemplate->assign ( "lblBirthday", Lang_Configuration::getDescriptions ( 7 ) );
+		$this->xTemplate->assign ( "lblBirthmonth", Lang_Configuration::getDescriptions ( 18 ) );
+		$this->xTemplate->assign ( "lblBirthyear", Lang_Configuration::getDescriptions ( 19 ) );
+		$this->xTemplate->assign ( "lblBirthDate", Lang_Configuration::getDescriptions ( 20 ) );
+		
 		$this->xTemplate->assign ( "lblEmail", Lang_Configuration::getDescriptions ( 8 ) );
 		$this->xTemplate->assign ( "lblTelephone", Lang_Configuration::getDescriptions ( 9 ) );
 		

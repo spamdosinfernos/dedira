@@ -7,10 +7,9 @@
 <link rel="stylesheet" type="text/css"	href="./modules/userSignUp/css/css.css">
 </head>
 <body>
-	<p><em>{warning}</em></p>
 	<form action="index.php?module={nextModule}" method="post">
+		<p><em>{warning}</em></p>
 
-		<label>*{lblActive}</label> <input placeholder="{lblActive}" type="checkbox" name="active">
 		<label>*{lblLogin}</label> <input placeholder="{lblLogin}" type="text" name="login">
 		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password">
 		
@@ -18,24 +17,28 @@
 		<label>*{lblLastName}</label><input placeholder="{lblLastName}" type="text" name="lastName">
 		
 		<label>{lblSex}</label>
-		<select>
+		<select name="sex">
 			<!-- BEGIN: comboSex -->
 			<option value="{sexValue}">{sexText}</option>
 			<!-- END: comboSex -->
 		</select>
 		
-		<label>*{lblBirthdate}</label> <input placeholder="{lblBirthdate}" type="date" name="birthDate">
-
+		<fieldset>
+			<legend><label>*{lblBirthDate}</label></legend> 
+			<label>*{lblBirthday}</label> <input placeholder="{lblBirthday}" type="number" name="birthDate[day]">
+			<label>*{lblBirthmonth}</label> <input placeholder="{lblBirthmonth}" type="number" name="birthDate[month]">
+			<label>*{lblBirthyear}</label> <input placeholder="{lblBirthyear}" type="number" name="birthDate[year]">
+		</fieldset>
 		<fieldset>
 			<legend><label>*{lblEmail}</label></legend> 
-			<input placeholder="*{lblEmail}" type="email" name="arrEmail">
-			<input placeholder="{lblEmail}" type="email" name="arrEmail">
+			<input placeholder="*{lblEmail}" type="email" name="arrEmail[]">
+			<input placeholder="{lblEmail}" type="email" name="arrEmail[]">
 		</fieldset>
 			
 		<fieldset>
 			<legend><label>{lblTelephone}</label></legend>
-			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone"> 
-			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone"> 
+			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone[]"> 
+			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone[]"> 
 		</fieldset>
 		<br><br> 
 		<input type="submit" value={sendText}>

@@ -129,7 +129,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the query string
-	 * 
+	 *
 	 * @return bool
 	 */
 	private function executeQuery(): bool {
@@ -252,6 +252,16 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
+	 * Converts a regular Datetime object into UTCDateTime mongoDb time
+	 * @param Datetime $time
+	 * @return MongoDB\BSON\UTCDateTime
+	 */
+	private function covertToMongoDbTime(Datetime $time) : MongoDB\BSON\UTCDateTime {
+		return new MongoDB\BSON\UTCDateTime( $time->getTimestamp () * 1000 );
+	}
+	
+	
+	/**
 	 * Build the modifiers for updates
 	 *
 	 * @return array
@@ -268,7 +278,12 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			if ($changeType == AStorableObject::UNITARY) {
 				
 				foreach ( $arrFieldValues as $key => $value ) {
-					$setters ['$set']->$key = $value;
+					
+					if (is_a ( $value, "DateTime" )) {
+						$value = $this->covertToMongoDbTime($value);
+					}
+					
+					@$setters ['$set']->$key = $value;
 				}
 				continue;
 			}
@@ -276,6 +291,11 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			if ($changeType == AStorableObject::COLLECTION_ADD) {
 				foreach ( $arrFieldValues as $key => $arrValues ) {
 					foreach ( $arrValues as $value ) {
+						
+						if (is_a ( $value, "DateTime" )) {
+							$value = $this->covertToMongoDbTime($value);
+						}
+						
 						$adders ['$addToSet']->$key ['$each'] [] = $value;
 					}
 				}
@@ -285,6 +305,11 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			if ($changeType == AStorableObject::COLLECTION_REMOVE) {
 				foreach ( $arrFieldValues as $key => $arrValues ) {
 					foreach ( $arrValues as $value ) {
+						
+						if (is_a ( $value, "DateTime" )) {
+							$value = $this->covertToMongoDbTime($value);
+						}
+						
 						$removers ['$pull']->$key ['$in'] [] = $value;
 					}
 				}
@@ -308,6 +333,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
 			
 			foreach ( $arrToken as $field => $value ) {
+				
+				if (is_a ( $value, "DateTime" )) {
+					$value = $this->covertToMongoDbTime($value);
+				}
 				
 				switch ($type) {
 					case DatabaseConditions::AND :

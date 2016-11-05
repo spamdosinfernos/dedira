@@ -15,8 +15,8 @@ final class Lang_Configuration {
 				4 => "Nome",
 				5 => "Último nome",
 				6 => "Sexo",
-				7 => "Data de nascimento",
-				8 => "Email",
+				7 => "Dia de nascimento",
+				8 => "Email (será usado para validação)",
 				9 => "Telefone",
 				10 => "Enviar",
 				11 => "Ambos",
@@ -25,7 +25,10 @@ final class Lang_Configuration {
 				14 => "Macho",
 				15 => "Todos os campos marcados com * são obrigatórios",
 				16 => "Usuário gravado com sucesso",
-				17 => "Falha no cadastro"
+				17 => "Falha no cadastro",
+				18 => "Mês de nascimento",
+				19 => "Ano de nascimento",
+				20 => "Data de nascimento"
 		);
 		
 		// English United States
@@ -37,8 +40,8 @@ final class Lang_Configuration {
 				4 => "Name",
 				5 => "Last name",
 				6 => "Sex",
-				7 => "Birthdate",
-				8 => "Email",
+				7 => "Birth day",
+				8 => "Email (going to be used for validation)",
 				9 => "Telephone",
 				10 => "Send",
 				11 => "Both",
@@ -47,7 +50,10 @@ final class Lang_Configuration {
 				14 => "Male",
 				15 => "All fields marked with * are mandatory",
 				16 => "User created!",
-				17 => "Fail to create a new user!"
+				17 => "Fail to create a new user!",
+				18 => "Birth month",
+				19 => "Birth year",
+				20 => "Birthdate"
 		);
 		
 		return $languages [UserSignUpConf::getSelectedLanguage ()] [$descriptionId];

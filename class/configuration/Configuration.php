@@ -84,7 +84,7 @@ class Configuration {
 	
 	static public function getSystemRootDirectory() {
 		if (self::$systemRootDirectory == "") {
-			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
+			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
 		}
 		return self::$systemRootDirectory;
 	}
