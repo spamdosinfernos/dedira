@@ -16,7 +16,24 @@ class Configuration {
 	 */
 	const MAIN_MODULE_NAME = "main";
 	
+	/**
+	 * The authentication module name, it should be loaded before authentication
+	 *
+	 * @var string
+	 */
+	const AUTHENTICATION_MODULE_NAME = "userAuthenticaticator";
 	
+	/**
+	 * The sign up module name, it should be loaded when we want to sign up
+	 *
+	 * @var string
+	 */
+	const SIGNUP_MODULE_NAME = "userSignUp";
+	
+	/**
+	 * The file name for the module
+	 * @var string
+	 */
 	const MODULE_VAR_NAME = "module";
 	
 	/**
@@ -81,7 +98,6 @@ class Configuration {
 	 * @var string
 	 */
 	private static $systemRootDirectory;
-	
 	static public function getSystemRootDirectory() {
 		if (self::$systemRootDirectory == "") {
 			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );

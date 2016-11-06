@@ -53,7 +53,7 @@ class Module {
 		
 		// If it does not exists create a new one
 		if (is_null ( $user )) {
-			if ($this->createNewUser ()) {
+			if ($this->saveNewUser ()) {
 				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 16 ) );
 			} else {
 				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 17 ) );
@@ -72,34 +72,16 @@ class Module {
 	
 	/**
 	 * Updates a user
-	 * 
+	 *
 	 * @param \User $user        	
 	 * @return bool
 	 */
 	private function updateUser(\User $user): bool {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
+		$user = $this->createUserObject ( $user );
 		
-		// The user modifications only will be valid after a validation
-		$user->setActive ( false );
-		
-		// Creates the user to authenticate
-		$user->setSex ( $postedVars ["sex"] );
-		$user->setName ( $postedVars ["name"] );
-		$user->setLogin ( $postedVars ["login"] );
-		$user->setLastName ( $postedVars ["lastName"] );
-		$user->setArrEmail ( $postedVars ["arrEmail"] );
-		$user->setBirthDate ( new \DateTime ( 
-				$postedVars ["birthDate"]["year"] . "-" . 
-				$postedVars ["birthDate"] ["month"] . "-" . 
-				$postedVars ["birthDate"] ["day"] ) );
-		
-		$user->setArrTelephone ( $postedVars ["arrTelephone"] );
-		$user->setPassword ( \PasswordPreparer::messItUp ( $postedVars ["password"] ) );
-		
-		// Updating objects
+		// Updating object
 		$c = new \DatabaseConditions ();
-		$c->addCondition ( \DatabaseConditions::AND, "id", $user->getId () );
+		$c->addCondition ( \DatabaseConditions::AND, "id", $user->get_id () );
 		
 		$query = new \DatabaseQuery ();
 		$query->setConditions ( $c );
@@ -109,16 +91,51 @@ class Module {
 		return \Database::execute ( $query );
 	}
 	
-	// TODO Finish it!
-	private function createNewUser() {
+	/**
+	 * Create a new user
+	 *
+	 * @return bool
+	 */
+	private function saveNewUser(): bool {
+		$user = $this->createUserObject ();
+		
+		// Inserting object
+		$query = new \DatabaseQuery ();
+		$query->setObject ( $user );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
+		
+		return \Database::execute ( $query );
+	}
+	
+	/**
+	 * Creates a user object using previous data or not
+	 * 
+	 * @param \User $user        	
+	 * @return \User
+	 */
+	private function createUserObject(\User $user = null): \User {
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
+		// If no user is informed creates a new one
+		$user = is_null ( $user ) ? new \User () : $user;
+		
+		// The user modifications only will be valid after a validation
+		$user->setActive ( false );
+		
 		// Creates the user to authenticate
-		$user = new \User ();
+		$user->set_id(microtime(true));
+		$user->setSex ( $postedVars ["sex"] );
+		$user->setName ( $postedVars ["name"] );
 		$user->setLogin ( $postedVars ["login"] );
+		$user->setLastName ( $postedVars ["lastName"] );
+		$user->setArrEmail ( $postedVars ["arrEmail"] );
+		$user->setBirthDate ( new \DateTime ( $postedVars ["birthDate"] ["year"] . "-" . $postedVars ["birthDate"] ["month"] . "-" . $postedVars ["birthDate"] ["day"] ) );
+		
+		$user->setArrTelephone ( $postedVars ["arrTelephone"] );
 		$user->setPassword ( \PasswordPreparer::messItUp ( $postedVars ["password"] ) );
-		$user->setActive ( $postedVars ["active"] );
+		
+		return $user;
 	}
 	private function checkMandatoryFields(): bool {
 		$httpRequest = new \HttpRequest ();

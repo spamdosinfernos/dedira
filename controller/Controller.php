@@ -1,4 +1,4 @@
-<?php
+	<?php
 require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_Controller.php';
 require_once __DIR__ . '/../class/module/Module.php';
@@ -20,10 +20,6 @@ class Controller {
 			Log::recordEntry ( Lang_Controller::getDescriptions ( 0 ), true );
 			return;
 		}
-		
-		// Loads the authenticator module
-		// If not authenticated the program stops here
-		require_once __DIR__ . '/../modules/userAuthenticaticator/Module.php';
 		
 		Module::loadModule ();
 		Database::disconnect ();

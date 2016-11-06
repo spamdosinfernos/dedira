@@ -68,6 +68,7 @@ class Authenticator {
 		$this->authenticatorDriver = $authenticatiorDriver;
 	}
 	public function getAutenticatedEntity() {
+		if (! isset ( $_SESSION )) session_start ();
 		return $_SESSION ['authData'] ['autenticatedEntity'];
 	}
 }

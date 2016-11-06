@@ -1,8 +1,10 @@
 <?php
+require_once __DIR__ . '/../protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
+require_once __DIR__ . '/../security/authentication/Authenticator.php';
 /**
  * Handles the modules
- * 
+ *
  * @author ensismoebius
  *        
  */
@@ -16,7 +18,7 @@ class Module {
 	public static function loadModule(): bool {
 		$moduleId = self::getModuleId ();
 		
-		// Se o arquivo index.php do módulo não existe pára aqui
+		// Se o arquivo index.php do módulo não existe para aqui
 		if (! file_exists ( Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName () )) return false;
 		
 		// Carrega o módulo
@@ -33,9 +35,20 @@ class Module {
 	 * @return string
 	 */
 	public static function getModuleId() {
+		$auth = new Authenticator ();
 		$httpRequest = new HttpRequest ();
+		
 		$moduleId = $httpRequest->getGetRequest ( Configuration::MODULE_VAR_NAME ) [0];
-		return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
+		
+		if ($auth->isAuthenticated ()) {
+			return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
+		}
+		
+		if ($moduleId != Configuration::SIGNUP_MODULE_NAME) {
+			return Configuration::AUTHENTICATION_MODULE_NAME;
+		}
+		
+		return $moduleId;
 	}
 }
 ?>

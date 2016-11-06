@@ -7,6 +7,7 @@ require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../../configuration/Configuration.php';
 
 require_once __DIR__ . '/../../variable/Caster.php';
+require_once __DIR__ . '/DatetimeToMongoDatePublicizator.php';
 require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
@@ -47,8 +48,17 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @var MongoDB\Driver\WriteConcern
 	 */
 	private $writeConcern;
+	
+	/**
+	 * Publicitize all properties
+	 * 
+	 * @var ClassPropertyPublicizator
+	 */
+	private $classPublicizator;
 	public function __construct() {
 		$this->result = new DatabaseRequestedData ();
+		$this->classPublicizator = new ClassPropertyPublicizator ();
+		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 		$this->entityName = "";
 	}
 	
@@ -186,7 +196,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$bulk = new MongoDB\Driver\BulkWrite ();
 		
 		// To insert we need turn all properties as public
-		$bulk->insert ( ClassPropertyPublicizator::publicizise ( $this->query->getObject () ) );
+		$bulk->insert ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
 		
 		// Retrieves the name of collection to insert
 		$collection = Configuration::DB_NAME . "." . $this->entityName;
@@ -252,16 +262,6 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
-	 * Converts a regular Datetime object into UTCDateTime mongoDb time
-	 * @param Datetime $time
-	 * @return MongoDB\BSON\UTCDateTime
-	 */
-	private function covertToMongoDbTime(Datetime $time) : MongoDB\BSON\UTCDateTime {
-		return new MongoDB\BSON\UTCDateTime( $time->getTimestamp () * 1000 );
-	}
-	
-	
-	/**
 	 * Build the modifiers for updates
 	 *
 	 * @return array
@@ -280,7 +280,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 				foreach ( $arrFieldValues as $key => $value ) {
 					
 					if (is_a ( $value, "DateTime" )) {
-						$value = $this->covertToMongoDbTime($value);
+						$value = $this->datetimeConverter->convert ( $value );
 					}
 					
 					@$setters ['$set']->$key = $value;
@@ -293,7 +293,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 					foreach ( $arrValues as $value ) {
 						
 						if (is_a ( $value, "DateTime" )) {
-							$value = $this->covertToMongoDbTime($value);
+							$value = $this->datetimeConverter->convert ( $value );
 						}
 						
 						$adders ['$addToSet']->$key ['$each'] [] = $value;
@@ -307,7 +307,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 					foreach ( $arrValues as $value ) {
 						
 						if (is_a ( $value, "DateTime" )) {
-							$value = $this->covertToMongoDbTime($value);
+							$value = $this->datetimeConverter->convert ( $value );
 						}
 						
 						$removers ['$pull']->$key ['$in'] [] = $value;
@@ -335,7 +335,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			foreach ( $arrToken as $field => $value ) {
 				
 				if (is_a ( $value, "DateTime" )) {
-					$value = $this->covertToMongoDbTime($value);
+					$value = $this->datetimeConverter->convert ( $value );
 				}
 				
 				switch ($type) {
