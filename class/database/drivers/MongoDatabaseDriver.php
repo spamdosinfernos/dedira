@@ -107,8 +107,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$this->query = $query;
 		
 		if (is_null ( $this->connection )) {
-			// TODO Create a log entry but keep the echo
-			echo "Connect to database!";
+			Log::recordEntry ( "Not connected to database!" );
 			return false;
 		}
 		
@@ -119,6 +118,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	}
 	
 	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see IDatabaseDriver::getResults()
 	 */
 	public function getResults(): DatabaseRequestedData {
 		return $this->result;
@@ -126,6 +129,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Generates the query string
+	 * 
+	 * @return bool
 	 */
 	private function executeQuery(): bool {
 		switch ($this->query->getOperationType ()) {
@@ -287,7 +292,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			}
 		}
 		
-		return array_merge($setters, $adders, $removers);
+		return array_merge ( $setters, $adders, $removers );
 	}
 	/**
 	 * Builds the filter clause
