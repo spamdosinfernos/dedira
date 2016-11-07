@@ -1,8 +1,8 @@
 <?php
-require_once __DIR__ . '/../../variable/ISpecialTypesPublicizator.php';
+require_once __DIR__ . '/../../../variable/ISpecialTypesPublicizator.php';
 /**
  * Converts Datetime to MongoDb UTCDateTime
- * 
+ *
  * @author ensismoebius
  *        
  */
@@ -24,6 +24,6 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 	 * @see ISpecialTypesPublicizator::convert()
 	 */
 	public function convert($type) {
-		return new MongoDB\BSON\UTCDateTime ( $type->format("U.u") );
+		return new MongoDB\BSON\UTCDateTime ( $type->format ( "U.u" ) );
 	}
 }

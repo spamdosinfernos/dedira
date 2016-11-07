@@ -1,7 +1,7 @@
 <?php
-require_once __DIR__ . '/../../variable/ISpecialTypesPublicizator.php';
+require_once __DIR__ . '/../../../variable/ISpecialTypesPublicizator.php';
 /**
- * Converts Datetime to MongoDb UTCDateTime
+ * Converts MongoDb UTCDateTime to Datetime 
  * 
  * @author ensismoebius
  *        

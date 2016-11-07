@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
-require_once __DIR__ . '/../database/drivers/MongoDatabaseDriver.php';
+require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
 /**
  * Centraliza todas as configurações do sistema
  *

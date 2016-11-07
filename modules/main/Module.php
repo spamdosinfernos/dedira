@@ -22,7 +22,7 @@ class Module {
 		$this->xTemplate = new \TemplateLoader ( MainConf::getMainTemplate () );
 		$this->xTemplate->assign ( "wellcomeMessage", Lang_Configuration::getDescriptions ( 0 ) );
 		
-		$this->xTemplate->assign ( "userName", $user->getName () );
+		$this->xTemplate->assign ( "userName", $user->getName () . " " . $user->getLastName () );
 		
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );

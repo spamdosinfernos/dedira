@@ -1,15 +1,15 @@
 <?php
-require_once __DIR__ . '/../../log/Log.php';
+require_once __DIR__ . '/../../DatabaseConditions.php';
+require_once __DIR__ . '/../../DatabaseRequestedData.php';
+require_once __DIR__ . '/../../interfaces/IDatabaseDriver.php';
 
-require_once __DIR__ . '/../DatabaseConditions.php';
-require_once __DIR__ . '/../DatabaseRequestedData.php';
-require_once __DIR__ . '/../interfaces/IDatabaseDriver.php';
-require_once __DIR__ . '/../../configuration/Configuration.php';
+require_once __DIR__ . '/../../../log/Log.php';
+require_once __DIR__ . '/../../../variable/Caster.php';
+require_once __DIR__ . '/../../../configuration/Configuration.php';
+require_once __DIR__ . '/../../../variable/ClassPropertyPublicizator.php';
 
-require_once __DIR__ . '/../../variable/Caster.php';
 require_once __DIR__ . '/DatetimeToMongoDatePublicizator.php';
 require_once __DIR__ . '/MongoDateToDatetimePublicizator.php';
-require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
  * @author ensismoebius
