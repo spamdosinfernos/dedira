@@ -1,4 +1,4 @@
-	<?php
+<?php
 require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_Controller.php';
 require_once __DIR__ . '/../class/module/Module.php';

@@ -54,7 +54,7 @@ class Authenticator {
 				session_start ();
 				session_regenerate_id ();
 				
-				$_SESSION ['authData'] ['autenticatedEntity'] = $this->authenticatorDriver->getAutenticatedEntity ();
+				$_SESSION ['authData'] ['autenticatedEntity'] = serialize ( $this->authenticatorDriver->getAutenticatedEntity () );
 				return true;
 			}
 		} catch ( Exception $e ) {
@@ -69,7 +69,7 @@ class Authenticator {
 	}
 	public function getAutenticatedEntity() {
 		if (! isset ( $_SESSION )) session_start ();
-		return $_SESSION ['authData'] ['autenticatedEntity'];
+		return unserialize ( $_SESSION ['authData'] ['autenticatedEntity'] );
 	}
 }
 ?>
