@@ -15,8 +15,8 @@ class Module {
 	 * @param string $moduleId        	
 	 * @return boolean
 	 */
-	public static function loadModule(): bool {
-		$moduleId = self::getModuleId ();
+	public static function loadModule($moduleId = null): bool {
+		$moduleId = is_null($moduleId) ? self::getModuleId () : $moduleId;
 		
 		// Se o arquivo index.php do módulo não existe para aqui
 		if (! file_exists ( Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName () )) return false;

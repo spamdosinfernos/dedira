@@ -2,7 +2,9 @@
 
 namespace userAuthenticaticator;
 
+require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
+require_once __DIR__ . '/../../class/module/Module.php';
 require_once __DIR__ . '/class/UserAuthenticaticatorConf.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
@@ -11,19 +13,19 @@ require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 /**
- * Authenticates the user on system
- * 
+ * Authenticates the user on system and loads the main module
+ *
  * @author André Furlan
  */
 class Module {
 	
 	/**
 	 * Gerencia os templates
-	 * 
+	 *
 	 * @var XTemplate
 	 */
 	protected $xTemplate;
-	public function __construct(){
+	public function __construct() {
 		$this->xTemplate = new \TemplateLoader ( UserAuthenticaticatorConf::getAutenticationRequestTemplate () );
 		
 		$this->handleRequest ();
@@ -32,10 +34,10 @@ class Module {
 	/**
 	 * Handles authentication request If the authenticantion is successful keep executing the system
 	 * otherwise show the authentication screen
-	 * 
-	 * @return void|boolean
+	 *
+	 * @return void
 	 */
-	public function handleRequest(){
+	public function handleRequest() {
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
@@ -63,13 +65,21 @@ class Module {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
+			$ret = \Module::loadModule ( \Configuration::MAIN_MODULE_NAME );
+			
+			// Crashes if, for some reason, we cant load the main module
+			if (! $ret) {
+				\Log::recordEntry ( Lang_Configuration::getDescriptions ( 2 ), true );
+				exit ( 0 );
+			}
+			
 			return;
 		}
 		
 		$this->showGui ( $nextModule );
 		exit ( 0 );
 	}
-	private function showGui( string $nextModule ){
+	private function showGui(string $nextModule) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle () );
 		$this->xTemplate->assign ( "nextModule", $nextModule );
 		
@@ -77,7 +87,7 @@ class Module {
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
-	public function getTitle(){
+	public function getTitle() {
 		return Lang_Configuration::getDescriptions ( 0 );
 	}
 }

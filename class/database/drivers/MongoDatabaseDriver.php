@@ -8,6 +8,7 @@ require_once __DIR__ . '/../../configuration/Configuration.php';
 
 require_once __DIR__ . '/../../variable/Caster.php';
 require_once __DIR__ . '/DatetimeToMongoDatePublicizator.php';
+require_once __DIR__ . '/MongoDateToDatetimePublicizator.php';
 require_once __DIR__ . '/../../variable/ClassPropertyPublicizator.php';
 /**
  *
@@ -51,14 +52,12 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	
 	/**
 	 * Publicitize all properties
-	 * 
+	 *
 	 * @var ClassPropertyPublicizator
 	 */
 	private $classPublicizator;
 	public function __construct() {
 		$this->result = new DatabaseRequestedData ();
-		$this->classPublicizator = new ClassPropertyPublicizator ();
-		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 		$this->entityName = "";
 	}
 	
@@ -164,6 +163,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doUpdate(): string {
+		$this->classPublicizator = new ClassPropertyPublicizator ();
+		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 		
 		// Create a bulk write object and add our update operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
@@ -191,6 +192,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doInsert(): bool {
+		$this->classPublicizator = new ClassPropertyPublicizator ();
+		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 		
 		// Create a bulk write object and add our insert operation
 		$bulk = new MongoDB\Driver\BulkWrite ();
@@ -241,6 +244,9 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doRead(): bool {
+		$this->classPublicizator = new ClassPropertyPublicizator ();
+		$this->classPublicizator->addSpecialTypePublicizator ( new MongoDateToDatetimePublicizator () );
+		
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
 			
@@ -249,7 +255,13 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 			// Stores all matched documents
 			$result = array ();
 			foreach ( $cursor as $document ) {
-				$result [] = Caster::classToClassCast ( $document, $this->entityName );
+				// Even when all attributes are public we use the publicizator
+				// to convert some mongo types to native types
+				$document = Caster::classToClassCast ( $document, $this->entityName );
+				$document = $this->classPublicizator->publicizise ( $document );
+				$document = Caster::classToClassCast ( $document, $this->entityName );
+				
+				$result [] = $document;
 			}
 			
 			$this->result->setData ( $result );

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../variable/ISpecialTypesPublicizator.php';
  * @author ensismoebius
  *        
  */
-class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
+class MongoDateToDatetimePublicizator implements ISpecialTypesPublicizator {
 	/**
 	 *
 	 * {@inheritdoc}
@@ -14,7 +14,7 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 	 * @see ISpecialTypesPublicizator::getSpecialType()
 	 */
 	public function getSpecialType(): string {
-		return "Datetime";
+		return "MongoDB\BSON\UTCDateTime";
 	}
 	
 	/**
@@ -24,6 +24,6 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 	 * @see ISpecialTypesPublicizator::convert()
 	 */
 	public function convert($type) {
-		return new MongoDB\BSON\UTCDateTime ( $type->format("U.u") );
+		return $type->toDateTime();
 	}
 }
