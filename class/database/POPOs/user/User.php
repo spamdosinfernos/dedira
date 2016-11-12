@@ -49,7 +49,7 @@ class User extends Person {
 	 * @param
 	 *        	$login
 	 */
-	public function setLogin($login) {
+	public function setLogin(string $login) {
 		$this->login = $login;
 		$this->AddChange ( "login", $login );
 		return $this;
@@ -68,7 +68,7 @@ class User extends Person {
 	 * @param
 	 *        	$password
 	 */
-	public function setPassword($password) {
+	public function setPassword(string $password) {
 		$this->password = $password;
 		$this->AddChange ( "password", $password );
 		return $this;
@@ -87,7 +87,7 @@ class User extends Person {
 	 * @param
 	 *        	$active
 	 */
-	public function setActive($active) {
+	public function setActive(bool $active) {
 		$this->active = $active;
 		$this->AddChange ( "active", $active );
 		return $this;

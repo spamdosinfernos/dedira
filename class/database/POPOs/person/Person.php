@@ -37,7 +37,7 @@ class Person extends AStorableObject {
 	/**
 	 * Sex
 	 *
-	 * @var char
+	 * @var string
 	 */
 	protected $sex;
 	
@@ -61,14 +61,14 @@ class Person extends AStorableObject {
 	public function getName() {
 		return $this->name;
 	}
-	public function setName($name) {
+	public function setName(string $name) {
 		$this->name = $name;
 		$this->AddChange ( "name", $name );
 	}
 	public function getLastName() {
 		return $this->lastName;
 	}
-	public function setLastName($lastName) {
+	public function setLastName(string $lastName) {
 		$this->lastName = $lastName;
 		$this->AddChange ( "lastName", $lastName );
 	}
@@ -82,7 +82,7 @@ class Person extends AStorableObject {
 	public function getSex() {
 		return $this->sex;
 	}
-	public function setSex($sex) {
+	public function setSex(string $sex) {
 		switch ($sex) {
 			case self::SEX_BOTH :
 			case self::SEX_FEMALE :
@@ -95,15 +95,15 @@ class Person extends AStorableObject {
 	public function getArrEmail() {
 		return $this->arrEmail;
 	}
-	public function setArrEmail($arrEmail) {
+	public function setArrEmail(array $arrEmail) {
 		$this->arrEmail = $arrEmail;
 		$this->AddChange ( "arrEmail", $arrEmail );
 	}
-	public function addEmail($email) {
+	public function addEmail(string $email) {
 		$this->arrEmail [] = $email;
 		$this->AddChange ( "arrEmail", $email, self::COLLECTION_ADD );
 	}
-	public function removeEmail($email) {
+	public function removeEmail(string $email) {
 		$key = array_search ( $email, $this->arrEmail );
 		
 		$this->AddChange ( "arrEmail", $email, self::COLLECTION_REMOVE );
@@ -116,15 +116,15 @@ class Person extends AStorableObject {
 	public function getArrTelephone() {
 		return $this->arrTelephone;
 	}
-	public function setArrTelephone($arrTelephone) {
+	public function setArrTelephone(string $arrTelephone) {
 		$this->arrTelephone = $arrTelephone;
 		$this->AddChange ( "arrTelephone", $arrTelephone );
 	}
-	public function addTelephone($telephone) {
+	public function addTelephone(string $telephone) {
 		$this->arrTelephone [] = $telephone;
 		$this->AddChange ( "arrTelephone", $telephone, self::COLLECTION_ADD );
 	}
-	public function removeTelephone($telephone) {
+	public function removeTelephone(string $telephone) {
 		$key = array_search ( $telephone, $this->arrTelephone );
 		
 		$this->AddChange ( "arrTelephone", $telephone, self::COLLECTION_REMOVE );
