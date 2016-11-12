@@ -84,6 +84,3 @@ new EntityToHtmlForm ( new User () );
 </body>
 </html>
 <!-- END: main -->
-
-
-
