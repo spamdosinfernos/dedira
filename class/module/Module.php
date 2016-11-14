@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../log/Log.php';
 require_once __DIR__ . '/../protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 require_once __DIR__ . '/../security/authentication/Authenticator.php';
@@ -23,6 +24,14 @@ class Module {
 		
 		// Load module
 		require_once Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName ();
+		
+		// Even the module has the "isRestricted()" method
+		// it MUST implement the IModule interface!
+		if (! in_array ( "IModule", class_implements ( "$moduleId\\Module" ) )) {
+			Log::recordEntry ( "The module MUST implement the IModule interface!" );
+			throw new Exception ( "The module MUST implement the IModule interface!" );
+			exit ( 1 );
+		}
 		
 		// Executes the module!!!!
 		eval ( "new $moduleId\\Module();" );
@@ -52,6 +61,13 @@ class Module {
 		
 		return $moduleId;
 	}
+	
+	/**
+	 * Is the module restricted?
+	 * 
+	 * @param string $moduleId        	
+	 * @return bool
+	 */
 	private static function isARestrictedModule($moduleId): bool {
 		require_once Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName ();
 		

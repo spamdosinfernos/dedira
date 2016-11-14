@@ -21,7 +21,7 @@ final class Lang_Configuration {
 				2 => "Login or password incorrect, or your account are inactive."
 		);
 		
-		return $languages [UserAuthenticaticatorConf::getSelectedLanguage ()] [$descriptionId];
+		return $languages [Conf::getSelectedLanguage ()] [$descriptionId];
 	}
 }
 ?>
