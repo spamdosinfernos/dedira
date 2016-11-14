@@ -4,6 +4,18 @@
 <head>
 <meta charset="UTF-8">
 <title>{tittle}</title>
+<script type="text/javascript">
+var content = [];
+
+function addAnotherField(fieldId){
+
+	if(content[fieldId] == undefined){
+		content[fieldId] = document.getElementById(fieldId).innerHTML;
+	}
+
+	document.getElementById(fieldId).innerHTML += content[fieldId];
+}
+</script>
 <link rel="stylesheet" type="text/css"	href="./modules/userSignUp/css/css.css">
 </head>
 <body>
@@ -31,18 +43,21 @@
 		</fieldset>
 		<fieldset>
 			<legend><label>*{lblEmail}</label></legend> 
+			<div id="{lblEmail}">
 			<input placeholder="*{lblEmail}" type="email" name="arrEmail[]">
-			<input placeholder="{lblEmail}" type="email" name="arrEmail[]">
+			<button onclick="addAnotherField('{lblEmail}')">+</button><br/>
+			</div>
 		</fieldset>
 			
 		<fieldset>
 			<legend><label>{lblTelephone}</label></legend>
+			<div id="{lblTelephone}">
 			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone[]"> 
-			<input placeholder="{lblTelephone}" type="tel" name="arrTelephone[]"> 
+			<button onclick="addAnotherField('{lblTelephone}')">+</button><br/>
+			</div>
 		</fieldset>
 		<br><br> 
 		<input type="submit" value={sendText}>
-
 	</form>
 </body>
 </html>

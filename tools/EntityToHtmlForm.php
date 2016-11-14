@@ -62,9 +62,9 @@ class EntityToHtmlForm {
 			
 			return "
 		<fieldset>
-		<legend>$setterName</legend>
+		<legend>" . "{" . $setterName . "}" . "</legend>
 		<div id=\"$setterName\">
-		<label for=\"$setterName\">*$setterName</label>
+		<label for=\"$setterName\">*" . "{" . $setterName . "}" . "</label>
 		<input type=\"$htmlType\" id=\"$setterName\" name=\"$setterName" . "[]" . "\" placeholder=\"{" . $setterName . "}\"/>
 		<button onclick=\"addAnotherField('$setterName')\">+</button><br/>
 		</div>
@@ -73,13 +73,14 @@ class EntityToHtmlForm {
 		}
 		
 		return "
-		<label for=\"$setterName\">*$setterName</label>
+		<label for=\"$setterName\">*" . "{" . $setterName . "}" . "</label>
 		<input type=\"$htmlType\" name=\"$setterName\" id=\"$setterName\" placeholder=\"{" . $setterName . "}\"/><br/>
 		";
 	}
 }
 new EntityToHtmlForm ( new User () );
 ?>
+<input type="submit" value={sendText}>
 </form>
 </body>
 </html>

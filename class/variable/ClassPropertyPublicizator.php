@@ -76,7 +76,7 @@ class ClassPropertyPublicizator {
 		// Used to read the properties including the private ones
 		$reflection = new ReflectionClass ( $variable );
 		
-		// A genereric object that will turn on json
+		// A genereric object that will represents the public object
 		$obj = new stdClass ();
 		
 		// Creates an additional field that informs the class name

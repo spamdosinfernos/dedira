@@ -33,7 +33,7 @@ class User extends Person {
 	 */
 	public function __construct() {
 		parent::__construct();
-		$this->active = true;
+		$this->active = false;
 	}
 	
 	/**

@@ -116,7 +116,7 @@ class Person extends AStorableObject {
 	public function getArrTelephone() {
 		return $this->arrTelephone;
 	}
-	public function setArrTelephone(string $arrTelephone) {
+	public function setArrTelephone(array $arrTelephone) {
 		$this->arrTelephone = $arrTelephone;
 		$this->AddChange ( "arrTelephone", $arrTelephone );
 	}

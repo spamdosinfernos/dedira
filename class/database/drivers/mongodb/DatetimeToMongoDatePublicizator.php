@@ -24,6 +24,6 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 	 * @see ISpecialTypesPublicizator::convert()
 	 */
 	public function convert($type) {
-		return new MongoDB\BSON\UTCDateTime ( $type->format ( "U.u" ) );
+		return new MongoDB\BSON\UTCDateTime ( $type->format ( "U" ) * 1000 );
 	}
 }
