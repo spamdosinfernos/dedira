@@ -2,7 +2,7 @@
 
 namespace main;
 
-require_once __DIR__ . '/class/MainConf.php';
+require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/IModule.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
@@ -20,7 +20,7 @@ class Module implements \IModule {
 		$auth = new \Authenticator ();
 		$user = $auth->getAutenticatedEntity ();
 		
-		$this->xTemplate = new \TemplateLoader ( MainConf::getMainTemplate () );
+		$this->xTemplate = new \TemplateLoader ( Conf::getMainTemplate () );
 		$this->xTemplate->assign ( "wellcomeMessage", Lang_Configuration::getDescriptions ( 0 ) );
 		
 		$this->xTemplate->assign ( "userName", $user->getName () . " " . $user->getLastName () );

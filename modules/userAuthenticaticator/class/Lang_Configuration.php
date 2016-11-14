@@ -2,7 +2,7 @@
 
 namespace userAuthenticaticator;
 
-require_once __DIR__ . '/UserAuthenticaticatorConf.php';
+require_once __DIR__ . '/Conf.php';
 final class Lang_Configuration {
 	public static function getDescriptions($descriptionId) {
 		$languages = array ();

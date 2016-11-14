@@ -5,7 +5,7 @@ namespace userAuthenticaticator;
 require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/Module.php';
-require_once __DIR__ . '/class/UserAuthenticaticatorConf.php';
+require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
@@ -27,7 +27,7 @@ class Module implements \IModule {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( UserAuthenticaticatorConf::getAutenticationRequestTemplate () );
+		$this->xTemplate = new \TemplateLoader ( Conf::getAutenticationRequestTemplate () );
 		
 		$this->handleRequest ();
 	}

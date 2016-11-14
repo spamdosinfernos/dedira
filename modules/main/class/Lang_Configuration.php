@@ -2,7 +2,7 @@
 
 namespace main;
 
-require_once __DIR__ . '/MainConf.php';
+require_once __DIR__ . '/Conf.php';
 final class Lang_Configuration {
 	public static function getDescriptions( $descriptionId ){
 		$languages = array ();
@@ -17,7 +17,7 @@ final class Lang_Configuration {
 				0 => "Hello" 
 		);
 		
-		return $languages [MainConf::getSelectedLanguage ()] [$descriptionId];
+		return $languages [Conf::getSelectedLanguage ()] [$descriptionId];
 	}
 }
 ?>

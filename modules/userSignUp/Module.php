@@ -2,7 +2,7 @@
 
 namespace userSignUp;
 
-require_once __DIR__ . '/class/UserSignUpConf.php';
+require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/IModule.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
@@ -25,7 +25,7 @@ class Module implements \IModule {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( UserSignUpConf::getSignUpTemplate () );
+		$this->xTemplate = new \TemplateLoader ( Conf::getSignUpTemplate () );
 		
 		$this->handleRequest ();
 	}
