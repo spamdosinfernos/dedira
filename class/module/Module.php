@@ -41,20 +41,13 @@ class Module {
 		$httpRequest = new HttpRequest ();
 		
 		$moduleId = $httpRequest->getGetRequest ( Configuration::MODULE_VAR_NAME ) [0];
+		$moduleId = is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
 		
-		// if ($auth->isAuthenticated ()) {
-		// return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
-		// }
-		
-		// if ($moduleId != Configuration::SIGNUP_MODULE_NAME) {
-		// return Configuration::AUTHENTICATION_MODULE_NAME;
-		// }
-		
-		// TODO We MUST have two kinds of module: Restricted and Open, the open ones does not need authentication
+		// TODO Delete SIGNUP_MODULE_NAME ?
 		if (self::isARestrictedModule ( $moduleId )) {
-			if ($auth->isAuthenticated ()) {
-				return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
-			}
+			if ($auth->isAuthenticated ()) return $moduleId;
+			
+			return Configuration::AUTHENTICATION_MODULE_NAME;
 		}
 		
 		return $moduleId;
