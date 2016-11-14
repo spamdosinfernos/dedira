@@ -2,6 +2,7 @@
 
 namespace databaseTest;
 
+require_once __DIR__ . '/../../class/module/IModule.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/variable/JSONGenerator.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
@@ -10,14 +11,14 @@ require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/database/DatabaseConditions.php';
 require_once __DIR__ . '/../../class/database/drivers/MongoDatabaseDriver.php';
 require_once __DIR__ . '/../../class/database/interfaces/IDatabaseDriver.php';
-class Module {
+class Module implements \IModule {
 	public function __construct() {
 		// Initilizing the database
 		\Database::init ( new \MongoDatabaseDriver () );
 		\Database::connect ();
 		
 		$user = new \User ();
-		$user->setId ( 1 );
+		$user->set_Id ( 1 );
 		$user->setSex ( "masc" );
 		$user->setLogin ( "root" );
 		$user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
@@ -30,9 +31,9 @@ class Module {
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		\Database::execute ( $query );
 		
-		//Retrieving objects
+		// Retrieving objects
 		$c = new \DatabaseConditions ();
-		$c->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$c->addCondition ( \DatabaseConditions::AND, "_id", 1 );
 		$c->addCondition ( \DatabaseConditions::OR, "active", true );
 		$c->addCondition ( \DatabaseConditions::AND_LIKE, "login", "oo" );
 		$c->addCondition ( \DatabaseConditions::OR_LIKE, "login", "oo" );
@@ -50,7 +51,7 @@ class Module {
 		// Updating objects
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
-		$c2->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$c2->addCondition ( \DatabaseConditions::AND, "_id", 1 );
 		$user->setLogin ( "root" );
 		$user->setName ( "root" );
 		$user->addTelephone ( 99999 );
@@ -63,7 +64,7 @@ class Module {
 		
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
-		$c2->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$c2->addCondition ( \DatabaseConditions::AND, "_id", 1 );
 		$user->removeTelephone ( 99999 );
 		$user->removeTelephone ( 99999 );
 		$query3 = new \DatabaseQuery ();
@@ -75,12 +76,15 @@ class Module {
 		// Deleting objects
 		$user = new \User ();
 		$c3 = new \DatabaseConditions ();
-		$c3->addCondition ( \DatabaseConditions::AND, "id", 1 );
+		$c3->addCondition ( \DatabaseConditions::AND, "_id", 1 );
 		$query4 = new \DatabaseQuery ();
 		$query4->setConditions ( $c3 );
 		$query4->setObject ( $user );
 		$query4->setOperationType ( \DatabaseQuery::OPERATION_ERASE );
 		\Database::execute ( $query4 );
+	}
+	public static function isRestricted(): bool {
+		return true;
 	}
 }
 new Module ();

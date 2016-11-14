@@ -16,12 +16,12 @@ class Module {
 	 * @return boolean
 	 */
 	public static function loadModule($moduleId = null): bool {
-		$moduleId = is_null($moduleId) ? self::getModuleId () : $moduleId;
+		$moduleId = is_null ( $moduleId ) ? self::getModuleId () : $moduleId;
 		
-		// Se o arquivo index.php do módulo não existe para aqui
+		// Checks if the module exists
 		if (! file_exists ( Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName () )) return false;
 		
-		// Carrega o módulo
+		// Load module
 		require_once Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName ();
 		
 		// Se chegou até aqui deu tudo certo
@@ -35,6 +35,8 @@ class Module {
 	 * @return string
 	 */
 	public static function getModuleId() {
+		
+		// TODO We MUST have two kinds of module: Restricted and Open, the open ones does not need authentication
 		$auth = new Authenticator ();
 		$httpRequest = new HttpRequest ();
 		

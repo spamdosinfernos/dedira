@@ -56,6 +56,9 @@ class UserAuthenticatorDriver implements IAuthenticationRules {
 		$res = Database::getResults ();
 		if (! $res->next ()) return false;
 		
+		// The user is active?
+		if (! $res->getRetrivedObject ()->getActive ()) return false;
+		
 		// If yes then stores the user
 		$this->autenticatedEntity = $res->getRetrivedObject ();
 		return true;

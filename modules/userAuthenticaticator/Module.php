@@ -10,6 +10,7 @@ require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/module/IModule.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 /**
@@ -17,7 +18,7 @@ require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
  *
  * @author André Furlan
  */
-class Module {
+class Module implements \IModule {
 	
 	/**
 	 * Gerencia os templates
@@ -76,19 +77,22 @@ class Module {
 			return;
 		}
 		
-		$this->showGui ( $nextModule );
+		$this->showGui ( $nextModule, true );
 		exit ( 0 );
 	}
-	private function showGui(string $nextModule) {
-		$this->xTemplate->assign ( "systemMessage", $this->getTitle () );
+	private function showGui(string $nextModule, bool $failToAuthenticate = false) {
+		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
 		$this->xTemplate->assign ( "nextModule", $nextModule );
 		
 		// Mostra o bloco principal
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
-	public function getTitle() {
-		return Lang_Configuration::getDescriptions ( 0 );
+	public function getTitle(bool $failToAuthenticate) {
+		return $failToAuthenticate ? Lang_Configuration::getDescriptions ( 2 ) : Lang_Configuration::getDescriptions ( 0 );
+	}
+	public static function isRestricted(): bool {
+		return false;
 	}
 }
 new Module ();
