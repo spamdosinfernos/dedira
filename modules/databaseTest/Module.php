@@ -87,5 +87,4 @@ class Module implements \IModule {
 		return true;
 	}
 }
-new Module ();
 ?>

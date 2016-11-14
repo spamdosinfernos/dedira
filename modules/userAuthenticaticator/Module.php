@@ -95,5 +95,4 @@ class Module implements \IModule {
 		return false;
 	}
 }
-new Module ();
 ?>

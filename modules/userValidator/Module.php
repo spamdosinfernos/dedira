@@ -27,7 +27,7 @@ class Module {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( UserAuthenticaticatorConf::getAutenticationRequestTemplate () );
+		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate() );
 		
 		$this->handleRequest ();
 	}
@@ -86,5 +86,4 @@ class Module {
 		return false;
 	}
 }
-new Module ();
 ?>

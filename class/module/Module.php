@@ -24,7 +24,9 @@ class Module {
 		// Load module
 		require_once Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName ();
 		
-		// Se chegou até aqui deu tudo certo
+		// Executes the module!!!!
+		eval ( "new $moduleId\\Module();" );
+		
 		return true;
 	}
 	
@@ -34,23 +36,35 @@ class Module {
 	 *
 	 * @return string
 	 */
-	public static function getModuleId() {
-		
-		// TODO We MUST have two kinds of module: Restricted and Open, the open ones does not need authentication
+	private static function getModuleId() {
 		$auth = new Authenticator ();
 		$httpRequest = new HttpRequest ();
 		
 		$moduleId = $httpRequest->getGetRequest ( Configuration::MODULE_VAR_NAME ) [0];
 		
-		if ($auth->isAuthenticated ()) {
-			return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
-		}
+		// if ($auth->isAuthenticated ()) {
+		// return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
+		// }
 		
-		if ($moduleId != Configuration::SIGNUP_MODULE_NAME) {
-			return Configuration::AUTHENTICATION_MODULE_NAME;
+		// if ($moduleId != Configuration::SIGNUP_MODULE_NAME) {
+		// return Configuration::AUTHENTICATION_MODULE_NAME;
+		// }
+		
+		// TODO We MUST have two kinds of module: Restricted and Open, the open ones does not need authentication
+		if (self::isARestrictedModule ( $moduleId )) {
+			if ($auth->isAuthenticated ()) {
+				return is_null ( $moduleId ) ? Configuration::MAIN_MODULE_NAME : $moduleId;
+			}
 		}
 		
 		return $moduleId;
+	}
+	private static function isARestrictedModule($moduleId): bool {
+		require_once Configuration::getModuleDiretory () . DIRECTORY_SEPARATOR . $moduleId . DIRECTORY_SEPARATOR . Configuration::getUserModuleStarterFileName ();
+		
+		$restricted = true;
+		eval ( "\$restricted =  $moduleId\\Module::isRestricted();" );
+		return $restricted;
 	}
 }
 ?>
