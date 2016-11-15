@@ -1,0 +1,22 @@
+@CHARSET "UTF-8";
+
+em{
+	color: red;
+	font-weight: bolder;
+}
+
+input {
+	width: 96%;
+	float right;
+}
+
+label, select{
+	width: 96%;
+	float: left;
+}
+
+form{
+	max-width: 400px;
+	margin-right: auto;
+	margin-left: auto;
+}

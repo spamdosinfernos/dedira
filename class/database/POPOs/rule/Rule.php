@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../abstractions/AStorableObject.php';
 /**
  * 
  * @author ensis

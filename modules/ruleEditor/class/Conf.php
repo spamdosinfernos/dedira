@@ -1,6 +1,6 @@
 <?php
 
-namespace userSignUp;
+namespace ruleEditor;
 
 require_once __DIR__ . '/../../../class/configuration/Configuration.php';
 final class Conf extends \Configuration {

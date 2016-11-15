@@ -1,8 +1,6 @@
 <?php
 
-namespace userSignUp;
-
-print_r($_POST);
+namespace ruleEditor;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
@@ -14,7 +12,7 @@ require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 /**
- * Register the user on system
+ * Register a rule on system
  *
  * @author André Furlan
  */
@@ -192,7 +190,7 @@ class Module implements \IModule {
 		$this->xTemplate->out ( "main" );
 	}
 	public static function isRestricted(): bool {
-		return false;
+		return true;
 	}
 }
 ?>
