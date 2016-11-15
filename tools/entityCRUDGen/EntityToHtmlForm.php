@@ -22,7 +22,7 @@ function addAnotherField(fieldId){
 <form action="index.php?module={nextModule}" method="post">
 <p><em>{warning}</em></p>
 <?php
-require __DIR__ . "/../class/database/POPOs/user/User.php";
+require __DIR__ . "/../class/database/POPOs/rule/Rule.php";
 class EntityToHtmlForm {
 	
 	/**
@@ -78,7 +78,7 @@ class EntityToHtmlForm {
 		";
 	}
 }
-new EntityToHtmlForm ( new User () );
+new EntityToHtmlForm ( new Rule () );
 ?>
 <input type="submit" value={sendText}>
 </form>
