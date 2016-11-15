@@ -125,7 +125,7 @@ class Module implements \IModule {
 		$user->setActive ( false );
 		
 		// Creates the user to authenticate
-		$user->set_id ( microtime ( true ) );
+		$user->set_id ( dechex(microtime ( true )) );
 		$user->setSex ( $postedVars ["sex"] );
 		$user->setName ( $postedVars ["name"] );
 		$user->setLogin ( $postedVars ["login"] );

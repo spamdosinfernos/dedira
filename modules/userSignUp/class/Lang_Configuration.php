@@ -56,7 +56,7 @@ final class Lang_Configuration {
 				20 => "Birthdate"
 		);
 		
-		return $languages [UserSignUpConf::getSelectedLanguage ()] [$descriptionId];
+		return $languages [Conf::getSelectedLanguage ()] [$descriptionId];
 	}
 }
 ?>

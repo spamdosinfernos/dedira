@@ -24,13 +24,6 @@ class Configuration {
 	const AUTHENTICATION_MODULE_NAME = "userAuthenticaticator";
 	
 	/**
-	 * The sign up module name, it should be loaded when we want to sign up
-	 *
-	 * @var string
-	 */
-	const SIGNUP_MODULE_NAME = "userSignUp";
-	
-	/**
 	 * The file name for the module
 	 * @var string
 	 */

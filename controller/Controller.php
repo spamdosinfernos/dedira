@@ -3,7 +3,7 @@ require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_Controller.php';
 require_once __DIR__ . '/../class/module/Module.php';
 require_once __DIR__ . '/../class/security/Shield.php';
-require_once __DIR__ . '/../class/database/Database.php';
+require_once __DIR__ . '/../class/database/drivers/mongodb/GridFs.php';
 require_once __DIR__ . '/../class/configuration/Configuration.php';
 
 /**
@@ -13,6 +13,9 @@ require_once __DIR__ . '/../class/configuration/Configuration.php';
  */
 class Controller {
 	public function __construct() {
+		
+		new GridFs();
+		
 		Shield::treatTextFromForm ();
 		Database::init ( Configuration::getDatabaseDriver () );
 		
@@ -21,7 +24,10 @@ class Controller {
 			return;
 		}
 		
-		Module::loadModule ();
+		if(!Module::loadModule ()){
+			Log::recordEntry(Lang_Controller::getDescriptions ( 1 ), true );
+		}
+		
 		Database::disconnect ();
 	}
 }

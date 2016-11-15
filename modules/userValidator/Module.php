@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
  *
  * @author André Furlan
  */
-class Module {
+class Module implements \IModule{
 	
 	/**
 	 * Manages os templates

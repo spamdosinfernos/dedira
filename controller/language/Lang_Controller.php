@@ -4,12 +4,14 @@ final class Lang_Controller {
 		
 		// Português Brasil
 		$languages ["pt-br"] = array (
-				0 => "O sistema não pode conectar ao banco de dados." 
+				0 => "O sistema não pode conectar ao banco de dados.",
+				1 => "Falha ao carregar módulo!"
 		);
 		
 		// English United States
 		$languages ["en-us"] = array (
-				0 => "The system can't connect to database." 
+				0 => "The system can't connect to database.", 
+				1 => "Fail on load a module!"
 		);
 		
 		return $languages [Configuration::getSelectedLanguage ()] [$descriptionId];

@@ -44,18 +44,23 @@ abstract class AStorableObject {
 	/**
 	 * Gets the id
 	 *
-	 * @return mixed
+	 * @return string
 	 */
-	public function get_id() {
+	public function get_id() : string {
 		return $this->_id;
 	}
 	
 	/**
 	 * Sets the id
+	 * WTF?? Id is a string???
+	 * Yes you MUST use a hexadecimal number as the id!
+	 * It avoids problems with really large numbers
 	 *
-	 * @param mixed $id        	
+	 * @param string $id        	
 	 */
-	public function set_id($id) {
+	public function set_id(string $id) {
+		if (! ctype_xdigit ( $id )) throw new Exception ( "The id must be an hex number" );
+		
 		$this->_id = $id;
 		$this->AddChange ( "_id", $id );
 		return $this;

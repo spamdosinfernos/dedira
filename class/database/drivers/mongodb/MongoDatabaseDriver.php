@@ -85,7 +85,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 					"dbstats" => 1 
 			] );
 			$this->connection->executeCommand ( "testdb", $stats );
-			
+
 			// If nothing goes wrong so everything goes well ;)
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
@@ -348,6 +348,11 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 				
 				if (is_a ( $value, "DateTime" )) {
 					$value = $this->datetimeConverter->convert ( $value );
+				}
+				
+				if (is_numeric ( $value )) {
+					if(is_int($value)) $value = intval($value);
+					if(is_float($value)) $value = floatval($value);
 				}
 				
 				switch ($type) {
