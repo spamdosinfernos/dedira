@@ -1,44 +1,45 @@
 <?php
 
-namespace ruleEditor;
+namespace rulesEditor;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/IModule.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
-require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
+require_once __DIR__ . '/../../class/database/POPOs/user/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
-require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 /**
- * Register a rule on system
- *
+ * Register the Rule on system
  * @author André Furlan
  */
 class Module implements \IModule {
 	
 	/**
-	 * Gerencia os templates
-	 *
-	 * @var XTemplate
+	 * Manages the templates
+	 * @var \TemplateLoader
 	 */
 	protected $xTemplate;
+
+	/**
+	 * Handles the requests
+	 * @var \HttpRequest
+	 */
+	protected $httpRequest;
+	
 	public function __construct() {
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		
+		$this->reflector = new ReflectionClass ( "Rule" );
+		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();
 	}
 	
 	/**
-	 * Handles authentication request If the authenticantion is successful keep executing the system
-	 * otherwise show the authentication screen
-	 *
-	 * @return void|boolean
+	 * Handles request
+	 * @return void | boolean
 	 */
 	public function handleRequest() {
 		
-		// get the module user wants
+		// get the next module
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
 		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_MODULE_NAME;
@@ -48,23 +49,23 @@ class Module implements \IModule {
 			return;
 		}
 		
-		// Gets the user id
+		// Gets the obj id
 		$authenticator = new \Authenticator ();
-		$user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
+		$id = isset($gotVars["_id"]) ? $gotVars["_id"] : null;
 		
 		// If it does not exists create a new one
-		if (is_null ( $user )) {
-			if ($this->saveNewUser ()) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 16 ) );
+		if (is_null ( $id )) {
+			if ($this->save()){
+				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 17 ) );
+				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
 			}
 		} else {
 			// Otherwise just updates
-			if ($this->updateUser ( $user )) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 16 ) );
+			if ($this->update ( $id )) {
+				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 17 ) );
+				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
 			}
 		}
 		
@@ -72,125 +73,96 @@ class Module implements \IModule {
 	}
 	
 	/**
-	 * Updates a user
+	 * Updates Rule
 	 *
-	 * @param \User $user        	
+	 * @param \Rule $user        	
 	 * @return bool
 	 */
-	private function updateUser(\User $user): bool {
-		$user = $this->createUserObject ( $user );
+	private function update( $int ): bool {
+		$obj = $this->createEntityObject ( $int );
 		
 		// Updating object
 		$c = new \DatabaseConditions ();
-		$c->addCondition ( \DatabaseConditions::AND, "id", $user->get_id () );
+		$c->addCondition ( \DatabaseConditions::AND, "_id", $obj->get_id () );
 		
 		$query = new \DatabaseQuery ();
 		$query->setConditions ( $c );
-		$query->setObject ( $user );
+		$query->setObject ( $obj );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		
 		return \Database::execute ( $query );
 	}
 	
 	/**
-	 * Create a new user
-	 *
+	 * Create a new Rule
 	 * @return bool
 	 */
-	private function saveNewUser(): bool {
-		$user = $this->createUserObject ();
+	private function save(): bool {
+		$obj->createEntityObject ();
 		
 		// Inserting object
 		$query = new \DatabaseQuery ();
-		$query->setObject ( $user );
+		$query->setObject ( $obj );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
 		return \Database::execute ( $query );
 	}
 	
 	/**
-	 * Creates a user object using previous data or not
-	 *
-	 * @param \User $user        	
-	 * @return \User
+	 * Creates a Rule object using previous data or not
+	 * @param $id        	
+	 * @return \Rule
 	 */
-	private function createUserObject(\User $user = null): \User {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
+	private function createEntityObject($id = null): \Rule {
+
+		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
+		$postedVars = $this->httpRequest->getPostRequest();
 		
-		// If no user is informed creates a new one
-		$user = is_null ( $user ) ? new \User () : $user;
-		
-		// The user modifications only will be valid after a validation
-		$user->setActive ( false );
-		
-		// Creates the user to authenticate
-		$user->set_id ( dechex(microtime ( true )) );
-		$user->setSex ( $postedVars ["sex"] );
-		$user->setName ( $postedVars ["name"] );
-		$user->setLogin ( $postedVars ["login"] );
-		$user->setLastName ( $postedVars ["lastName"] );
-		$user->setArrEmail ( $postedVars ["arrEmail"] );
-		$user->setBirthDate ( new \DateTime ( $postedVars ["birthDate"] ["year"] . "-" . $postedVars ["birthDate"] ["month"] . "-" . $postedVars ["birthDate"] ["day"] ) );
-		
-		$user->setArrTelephone ( $postedVars ["arrTelephone"] );
-		$user->setPassword ( \PasswordPreparer::messItUp ( $postedVars ["password"] ) );
-		
-		return $user;
-	}
-	private function checkMandatoryFields(): bool {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
-		
-		// Check mandatory fields
-		if (isset ( $postedVars ["login"] ) && isset ( $postedVars ["password"] ) && isset ( $postedVars ["name"] ) && isset ( $postedVars ["lastName"] ) && isset ( $postedVars ["sex"] ) && isset ( $postedVars ["birthDate"] ) && isset ( $postedVars ["arrEmail"] )) {
-			return true;
+		// Creates a new object
+		$obj = new \Rule();
+		if (!is_null($id)){
+			$obj->set_id($id);
 		}
 		
-		return false;
+		foreach ( $arrMethods as $method ) {
+			if ($method->getNumberOfParameters () == 1){
+					
+				if (substr ( $method->getName (), 0, 3 ) == "set"){
+					$method->invoke($obj, $postedVars[$method->getParameters()[0]]);
+				}
+			}
+		}
+		return obj;
 	}
+
+	private function checkMandatoryFields(): bool {
+		$postedVars = $this->httpRequest->getPostRequest ();
+		
+		// Check mandatory fields
+		foreach($postedVars as $var){
+			if (trim($var) == ""){
+				return false;
+			}
+		}
+
+		return true;
+	}
+		
 	private function showGui(string $nextModule) {
-		$this->xTemplate->assign ( "tittle", Lang_Configuration::getDescriptions ( 0 ) );
-		$this->xTemplate->assign ( "lblActive", Lang_Configuration::getDescriptions ( 1 ) );
-		$this->xTemplate->assign ( "lblLogin", Lang_Configuration::getDescriptions ( 2 ) );
-		$this->xTemplate->assign ( "lblPassword", Lang_Configuration::getDescriptions ( 3 ) );
-		$this->xTemplate->assign ( "lblName", Lang_Configuration::getDescriptions ( 4 ) );
-		$this->xTemplate->assign ( "lblLastName", Lang_Configuration::getDescriptions ( 5 ) );
 		
-		$this->xTemplate->assign ( "lblBirthday", Lang_Configuration::getDescriptions ( 7 ) );
-		$this->xTemplate->assign ( "lblBirthmonth", Lang_Configuration::getDescriptions ( 18 ) );
-		$this->xTemplate->assign ( "lblBirthyear", Lang_Configuration::getDescriptions ( 19 ) );
-		$this->xTemplate->assign ( "lblBirthDate", Lang_Configuration::getDescriptions ( 20 ) );
-		
-		$this->xTemplate->assign ( "lblEmail", Lang_Configuration::getDescriptions ( 8 ) );
-		$this->xTemplate->assign ( "lblTelephone", Lang_Configuration::getDescriptions ( 9 ) );
-		
-		$this->xTemplate->assign ( "sendText", Lang_Configuration::getDescriptions ( 10 ) );
-		
-		$this->xTemplate->assign ( "lblSex", Lang_Configuration::getDescriptions ( 6 ) );
-		
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 13 ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_IRRELEVANT );
-		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 11 ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_BOTH );
-		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 12 ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_FEMALE );
-		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 14 ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_MALE );
-		$this->xTemplate->parse ( "main.comboSex" );
-		
-		$this->xTemplate->assign ( "warning", Lang_Configuration::getDescriptions ( 15 ) );
+		$postedVars = $this->httpRequest->getPostRequest ();
+	
+		foreach($postedVars as $name => $value){
+			$this->xTemplate->assign ( $name, $value );
+		}
 		
 		$this->xTemplate->assign ( "nextModule", $nextModule );
-		
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
+	
 	public static function isRestricted(): bool {
-		return true;
+		return false;
 	}
 }
 ?>

@@ -52,7 +52,7 @@ class Module implements \IModule {
 		
 		// Gets the obj id
 		$authenticator = new \Authenticator ();
-		$id = isset($gotVars["_id"]) ? $gotVars["_id"] : null;
+		$id = isset($gotVars["id"]) ? $gotVars["id"] : null;
 		
 		// If it does not exists create a new one
 		if (is_null ( $id )) {
@@ -84,7 +84,7 @@ class Module implements \IModule {
 		
 		// Updating object
 		$c = new \DatabaseConditions ();
-		$c->addCondition ( \DatabaseConditions::AND, "_id", $obj->get_id () );
+		$c->addCondition ( \DatabaseConditions::AND, "id", $obj->get_id () );
 		
 		$query = new \DatabaseQuery ();
 		$query->setConditions ( $c );
@@ -111,7 +111,7 @@ class Module implements \IModule {
 	
 	/**
 	 * Creates a {class} object using previous data or not
-	 * @param \{class} $obj        	
+	 * @param $id        	
 	 * @return \{class}
 	 */
 	private function createEntityObject($id = null): \{class} {

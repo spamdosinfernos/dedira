@@ -249,7 +249,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
-			
+			// TODO create a mongodb object id publicizator
+			$this->classPublicizator->addSpecialTypePublicizator($specialPublicizator);
 			$cursor = $this->connection->executeQuery ( Configuration::DB_NAME . "." . $this->entityName, $query );
 			
 			// Stores all matched documents

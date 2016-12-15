@@ -110,7 +110,7 @@ class Module implements \IModule {
 	
 	/**
 	 * Creates a Rule object using previous data or not
-	 * @param \Rule $obj        	
+	 * @param $id        	
 	 * @return \Rule
 	 */
 	private function createEntityObject($id = null): \Rule {

@@ -3,7 +3,7 @@ require_once __DIR__ . '/../class/log/Log.php';
 require_once __DIR__ . '/language/Lang_Controller.php';
 require_once __DIR__ . '/../class/module/Module.php';
 require_once __DIR__ . '/../class/security/Shield.php';
-require_once __DIR__ . '/../class/database/drivers/mongodb/GridFs.php';
+require_once __DIR__ . '/../class/database/Database.php';
 require_once __DIR__ . '/../class/configuration/Configuration.php';
 
 /**
