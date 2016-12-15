@@ -2,8 +2,6 @@
 
 namespace userSignUp;
 
-print_r($_POST);
-
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/IModule.php';

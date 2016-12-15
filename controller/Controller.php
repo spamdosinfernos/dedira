@@ -14,8 +14,6 @@ require_once __DIR__ . '/../class/configuration/Configuration.php';
 class Controller {
 	public function __construct() {
 		
-		new GridFs();
-		
 		Shield::treatTextFromForm ();
 		Database::init ( Configuration::getDatabaseDriver () );
 		
