@@ -35,10 +35,10 @@ class EntityToHtmlForm {
 		require_once $pathToClass;
 		
 		$this->reflector = new ReflectionClass ( $class );
-		$this->templateLang = new XTemplate ( "./template/Lang_Configuration.php" );
-		$this->templateHtml = new XTemplate ( "./template/template.html" );
-		$this->templatePhp = new XTemplate ( "./template/Module.php" );
-		$this->templateConf = new XTemplate ( "./template/Conf.php" );
+		$this->templateLang = new XTemplate ( "./template/Lang_Configuration.tmpl" );
+		$this->templateHtml = new XTemplate ( "./template/template.tmpl" );
+		$this->templatePhp = new XTemplate ( "./template/Module.tmpl" );
+		$this->templateConf = new XTemplate ( "./template/Conf.tmpl" );
 		
 		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
 		
@@ -65,7 +65,7 @@ class EntityToHtmlForm {
 		$this->templateHtml->assign ( "sendText", "Enviar" );
 		$this->templateHtml->assign ( "class", $class );
 		$this->templateHtml->parse ( "main" );
-		$this->templateHtml->out_file ( "main", __DIR__ . "/result/template/Template.html" );
+		$this->templateHtml->out_file ( "main", __DIR__ . "/result/template/template.html" );
 		
 		$this->generateConfClass ( $moduleName );
 		$this->generateLangClass ( $moduleName );
