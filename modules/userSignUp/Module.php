@@ -25,7 +25,7 @@ class Module implements \IModule {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( Conf::getSignUpTemplate () );
+		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		
 		$this->handleRequest ();
 	}

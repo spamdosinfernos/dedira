@@ -1,11 +1,11 @@
+<!-- BEGIN: main -->
 <?php
-
-namespace userSignUp;
-
+namespace {moduleName};
 require_once __DIR__ . '/../../../class/configuration/Configuration.php';
 final class Conf extends \Configuration {
 	public static function getTemplate() {
-		return __DIR__ . "/../template/template.html";
+		return __DIR__ . "/../template/Template.html";
 	}
 }
 ?>
+<!-- END: main -->

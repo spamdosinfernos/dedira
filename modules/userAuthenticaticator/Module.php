@@ -42,9 +42,10 @@ class Module implements \IModule {
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
-		if ($authenticator->isAuthenticated ()) return;
-		
-		// get login and password if any
+		if ($authenticator->isAuthenticated ())
+			return;
+			
+			// get login and password if any
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		

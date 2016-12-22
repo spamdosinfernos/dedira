@@ -1,0 +1,42 @@
+<!-- BEGIN: main -->
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>{tittle}</title>
+	<script type="text/javascript">
+	var content = [];
+	
+	function addAnotherField(fieldId){
+	
+		if(content[fieldId] == undefined){
+			content[fieldId] = document.getElementById(fieldId).innerHTML;
+		}
+	
+		document.getElementById(fieldId).innerHTML += content[fieldId];
+	}
+	</script>
+	<link rel="stylesheet" type="text/css"	href="./modules/userSignUp/css/css.css">
+</head>
+<body>
+	<form action="index.php?module={nextModule}" method="post">
+		<p><em>{warning}</em></p>
+		<!-- BEGIN: fieldgroup -->
+		<fieldset>
+		<legend>{setterName}</legend>
+			<div id="{setterName}">
+				<label for="{setterName}">*{setterName}</label>
+				<input type="{htmlType}" id="{setterName}" name="{setterName}" placeholder="{setterName}"/>
+				<button onclick="addAnotherField('{setterName}')">+</button><br/>
+			</div>
+		</fieldset>
+		<!-- END: fieldgroup -->
+		<!-- BEGIN: field -->
+		<label for="{setterName}">*{setterName}</label>
+		<input type={htmlType}" name="{setterName}" id="{setterName}" placeholder="{setterName}"/><br/>
+		<!-- END: field -->
+		<input type="submit" value="{sendText}">
+	</form>
+</body>
+</html>
+<!-- END: main -->

@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 namespace ruleEditor;
 
 require_once __DIR__ . '/class/Conf.php';
