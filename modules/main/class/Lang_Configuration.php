@@ -8,12 +8,12 @@ final class Lang_Configuration {
 		$languages = array ();
 		
 		// Português Brasil
-		$languages ["pt-br"] = array (
+		$languages ["pt_BR"] = array (
 				0 => "Olá" 
 		);
 		
 		// English United States
-		$languages ["en-us"] = array (
+		$languages ["en_US"] = array (
 				0 => "Hello" 
 		);
 		

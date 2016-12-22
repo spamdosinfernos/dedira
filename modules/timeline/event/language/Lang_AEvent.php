@@ -4,7 +4,7 @@ final class Lang_AEvent {
 	public static function getDescriptions($descriptionId) {
 		
 		// Português Brasil
-		$languages ["pt-br"] = array (
+		$languages ["pt_BR"] = array (
 				Event::RECORRENCY_NO => "Não recorrente",
 				Event::RECORRENCY_DAY => "Todo dia",
 				Event::RECORRENCY_WEEK => "Toda semana",
@@ -25,7 +25,7 @@ final class Lang_AEvent {
 		);
 		
 		// English United States
-		$languages ["en-us"] = array (
+		$languages ["en_US"] = array (
 				Event::RECORRENCY_NO => "No recorrencies",
 				Event::RECORRENCY_DAY => "Every day",
 				Event::RECORRENCY_WEEK => "Every week",

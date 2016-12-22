@@ -7,14 +7,14 @@ final class Lang_Configuration {
 		$languages = array ();
 		
 		// Português Brasil
-		$languages ["pt-br"] = array (
+		$languages ["pt_BR"] = array (
 				0 => "Digite uma proposta de regra",
 				1 => "Enviar",
 				2 => "Nova regra inserida!"
 		);
 		
 		// English United States
-		$languages ["en-us"] = array (
+		$languages ["en_US"] = array (
 				0 => "Write a rule proposal",
 				1 => "Send",
 				2 => "New rule added!"

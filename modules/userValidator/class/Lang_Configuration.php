@@ -9,14 +9,14 @@ final class Lang_Configuration {
 		$languages = array ();
 		
 		// Português Brasil
-		$languages ["pt-br"] = array (
+		$languages ["pt_BR"] = array (
 				0 => "O usuário validado com sucesso!",
 				1 => "O usuário não pode ser validado pois não está cadastrado",
 				2 => "Entrar no sistema"
 		);
 		
 		// English United States
-		$languages ["en-us"] = array (
+		$languages ["en_US"] = array (
 				0 => "User validated!",
 				1 => "Theres no such user in database",
 				2 => "Login"

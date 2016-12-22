@@ -7,7 +7,7 @@ final class Lang_Configuration {
 		$languages = array ();
 		
 		// Português Brasil
-		$languages ["pt-br"] = array (
+		$languages ["pt_BR"] = array (
 				0 => "Cadastro de usuário",
 				1 => "Usuário ativo",
 				2 => "Login",
@@ -32,7 +32,7 @@ final class Lang_Configuration {
 		);
 		
 		// English United States
-		$languages ["en-us"] = array (
+		$languages ["en_US"] = array (
 				0 => "User sign up",
 				1 => "Active user",
 				2 => "Login",

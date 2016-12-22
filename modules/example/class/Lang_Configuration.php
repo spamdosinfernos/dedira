@@ -7,14 +7,14 @@ final class Lang_Configuration {
 		
 		// Português Brasil
 		$languages ["pt_BR"] = array (
-				0 => "Salvo com sucesso", 
-				1 => "Falha ao salvar",
+				0 => "Mensagem", 
+				1 => "Mensagem2",
 		);
 		
 		// English United States
 		$languages ["en_US"] = array (
-				0 => "Saved!",
-				1 => "Fail to save!"
+				0 => "Message",
+				1 => "Message2"
 		);
 		
 		return $languages [Conf::getSelectedLanguage ()] [$descriptionId];

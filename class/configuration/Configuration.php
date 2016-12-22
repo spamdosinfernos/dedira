@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
+
 /**
  * Centraliza todas as configurações do sistema
  *
@@ -139,7 +140,7 @@ class Configuration {
 		return "month";
 	}
 	static public function getSelectedLanguage() {
-		return "pt-br";
+		return "pt_BR";
 	}
 	
 	/**
