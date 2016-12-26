@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-26 02:11-0200\n"
-"PO-Revision-Date: 2016-12-26 02:11-0200\n"
+"POT-Creation-Date: 2016-12-26 02:29-0200\n"
+"PO-Revision-Date: 2016-12-26 02:34-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -10,23 +10,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Poedit-Basepath: ../../../../template\n"
+"X-Poedit-Basepath: ../../..\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: Page.php\n"
 
-#: Page.php:61 Page.php:68
-msgid "Saved!"
-msgstr "Salvo!"
+#: Page.php:74
+msgid "Something very wrong happens: Fail to load the main module!"
+msgstr "Algo de muito errado aconteceu: Falha ao carregar módulo principal!"
 
-#: Page.php:63
-msgid "Fail to save!"
-msgstr "Falha ao salvar!"
+#: Page.php:93
+msgid "Login or password incorrect, or your account are inactive"
+msgstr "Login ou senha incorretos, ou sua conta pode estar inativa"
 
-#: Page.php:70
-msgid "Fail on update!"
-msgstr "Falha ao atualizar!"
+#: Page.php:93
+msgid "Please, type your login and password"
+msgstr "Por favor, digite login e senha"
+
+#~ msgid "Hello"
+#~ msgstr "Olá"
 
 #~ msgid "My example module!!!!!!!!!!<br>"
 #~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"

@@ -2,19 +2,20 @@
 
 namespace userAuthenticaticator;
 
-require_once __DIR__ . '/../../class/log/Log.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
-require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/class/Conf.php';
+require_once __DIR__ . '/../../class/log/Log.php';
+require_once __DIR__ . '/../../class/page/Page.php';
+require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
+
 /**
- * Authenticates the user on system and loads the main module
+ * Authenticates the user on system and loads the main page
  *
  * @author André Furlan
  */
@@ -27,8 +28,8 @@ class Page implements \IPage {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( Conf::getAutenticationRequestTemplate () );
-		
+		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->handleRequest ();
 	}
 	
@@ -42,20 +43,19 @@ class Page implements \IPage {
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
-		if ($authenticator->isAuthenticated ())
-			return;
-			
-			// get login and password if any
+		if ($authenticator->isAuthenticated ()) return;
+		
+		// get login and password if any
 		$httpRequest = new \HttpRequest ();
 		$postedVars = $httpRequest->getPostRequest ();
 		
-		// get the module user wants
+		// get the page user wants
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
+		$nextPage = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
-			$this->showGui ( $nextModule );
+			$this->showGui ( $nextPage );
 			exit ( 0 );
 		}
 		
@@ -67,30 +67,28 @@ class Page implements \IPage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \Module::loadPage ( \Configuration::MAIN_PAGE_NAME );
+			$ret = \Page::loadPage ( \Configuration::MAIN_PAGE_NAME );
 			
-			// Crashes if, for some reason, we cant load the main module
+			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {
-				\Log::recordEntry ( Lang_Configuration::getDescriptions ( 2 ), true );
+				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the main module!" ), true );
 				exit ( 0 );
 			}
 			
 			return;
 		}
 		
-		$this->showGui ( $nextModule, true );
+		$this->showGui ( $nextPage, true );
 		exit ( 0 );
 	}
-	private function showGui(string $nextModule, bool $failToAuthenticate = false) {
+	private function showGui(string $nextPage, bool $failToAuthenticate = false) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
-		$this->xTemplate->assign ( "nextModule", $nextModule );
-		
-		// Mostra o bloco principal
+		$this->xTemplate->assign ( "nextPage", $nextPage );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
 	public function getTitle(bool $failToAuthenticate) {
-		return $failToAuthenticate ? Lang_Configuration::getDescriptions ( 2 ) : Lang_Configuration::getDescriptions ( 0 );
+		return $failToAuthenticate ? __ ( "Login or password incorrect, or your account are inactive" ) : __ ( "Please, type your login and password" );
 	}
 	public static function isRestricted(): bool {
 		return false;

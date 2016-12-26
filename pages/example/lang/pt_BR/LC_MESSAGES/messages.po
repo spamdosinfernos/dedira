@@ -14,13 +14,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __\n"
-"X-Poedit-SearchPath-0: Module.php\n"
+"X-Poedit-SearchPath-0: Page.php\n"
 
-#: Module.php:12
+#: Page.php:12
 msgid "My example module!!!!!!!!!!<br>"
 msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
 
-#: Module.php:16
+#: Page.php:16
 msgid "Hello "
 msgstr "Olá "
 

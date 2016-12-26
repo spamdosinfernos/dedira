@@ -1,6 +1,6 @@
 Stores the system modules:
 
-- The module file name MUST be Module.php
+- The module file name MUST be Page.php
 - The module namespace MUST be the same in all module files
 - If you want to create sub namespaces its ok
 - The module MUST have the folowing FOLDERS structure:

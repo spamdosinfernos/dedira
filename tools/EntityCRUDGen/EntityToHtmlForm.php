@@ -37,7 +37,7 @@ class EntityToHtmlForm {
 		$this->reflector = new ReflectionClass ( $class );
 		$this->templateLang = new XTemplate ( "./template/Lang_Configuration.tmpl" );
 		$this->templateHtml = new XTemplate ( "./template/template.tmpl" );
-		$this->templatePhp = new XTemplate ( "./template/Module.tmpl" );
+		$this->templatePhp = new XTemplate ( "./template/Page.tmpl" );
 		$this->templateConf = new XTemplate ( "./template/Conf.tmpl" );
 		
 		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
@@ -58,7 +58,7 @@ class EntityToHtmlForm {
 		$this->templatePhp->assign ( "author", $author );
 		$this->templatePhp->assign ( "class", $class );
 		$this->templatePhp->parse ( "main" );
-		$this->templatePhp->out_file ( "main", __DIR__ . "/result/Module.php" );
+		$this->templatePhp->out_file ( "main", __DIR__ . "/result/Page.php" );
 		
 		$this->templateHtml->assign ( "moduleName", $moduleName );
 		$this->templateHtml->assign ( "author", $author );

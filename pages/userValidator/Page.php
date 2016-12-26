@@ -72,8 +72,8 @@ class Page implements \IPage{
 	}
 	private function showGui(bool $validated) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $validated ) );
-		$this->xTemplate->assign ( "nextModule", \Configuration::MAIN_PAGE_NAME );
-		$this->xTemplate->assign ( "mainModuleMessage", Lang_Configuration::getDescriptions ( 2 ) );
+		$this->xTemplate->assign ( "nextPage", \Configuration::MAIN_PAGE_NAME );
+		$this->xTemplate->assign ( "mainPageMessage", Lang_Configuration::getDescriptions ( 2 ) );
 		
 		// Mostra o bloco principal
 		$this->xTemplate->parse ( "main" );

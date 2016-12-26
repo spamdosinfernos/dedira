@@ -42,10 +42,10 @@ class Page implements \IPage {
 		// get the next module user wants
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
+		$nextPage = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
 		
 		if (! $this->checkMandatoryFields ()) {
-			$this->showGui ( $nextModule );
+			$this->showGui ( $nextPage );
 			return;
 		}
 		
@@ -57,7 +57,7 @@ class Page implements \IPage {
 			$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 3 ) );
 		}
 		
-		$this->showGui ( $nextModule );
+		$this->showGui ( $nextPage );
 	}
 	
 	/**
@@ -107,9 +107,9 @@ class Page implements \IPage {
 		
 		return false;
 	}
-	private function showGui(string $nextModule) {
+	private function showGui(string $nextPage) {
 		$this->xTemplate->assign ( "lawcontents", Lang_Configuration::getDescriptions ( 0 ) );
-		$this->xTemplate->assign ( "nextModule", $nextModule );
+		$this->xTemplate->assign ( "nextPage", $nextPage );
 		$this->xTemplate->assign ( "sendText", Lang_Configuration::getDescriptions ( 1 ) );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
