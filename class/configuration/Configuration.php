@@ -10,6 +10,13 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
  */
 class Configuration {
 	
+	
+	/**
+	 * Default name for translantions file
+	 * @var string
+	 */
+	const LOCALE_DIR_NAME = "lang";
+	
 	/**
 	 * The main module name, it should be loaded after authentication
 	 *

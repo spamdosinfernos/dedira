@@ -9,7 +9,7 @@ require_once __DIR__ . '/../security/authentication/Authenticator.php';
  * @author ensismoebius
  *        
  */
-class Module {
+class Page {
 	/**
 	 * Carrega e executa o módulo expecificado
 	 *
@@ -24,9 +24,9 @@ class Module {
 			return false;
 		}
 		// Even the module has the "isRestricted()" method
-		// it MUST implement the IModule interface!
-		if (! in_array ( "IModule", class_implements ( "$moduleId\\Module" ) )) {
-			Log::recordEntry ( "The module MUST implement the IModule interface!" );
+		// it MUST implement the IPage interface!
+		if (! in_array ( "IPage", class_implements ( "$moduleId\\Module" ) )) {
+			Log::recordEntry ( "The module MUST implement the IPage interface!" );
 			return false;
 		}
 		

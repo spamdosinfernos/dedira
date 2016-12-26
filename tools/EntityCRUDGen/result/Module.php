@@ -4,7 +4,7 @@ namespace rulesEditor;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
-require_once __DIR__ . '/../../class/module/IModule.php';
+require_once __DIR__ . '/../../class/module/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
  * Register the Rule on system
  * @author André Furlan
  */
-class Module implements \IModule {
+class Page implements \IPage {
 	
 	/**
 	 * Manages the templates

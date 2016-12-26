@@ -1,4 +1,4 @@
 <?php
-interface IModule {
+interface IPage {
 	public static function isRestricted() : bool;
 }
