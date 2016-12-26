@@ -4,15 +4,16 @@ namespace userValidator;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/log/Log.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
+
 /**
  * Validates an existing user
  *
@@ -27,8 +28,8 @@ class Page implements \IPage{
 	 */
 	protected $xTemplate;
 	public function __construct() {
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate() );
-		
 		$this->handleRequest ();
 	}
 	
@@ -64,7 +65,7 @@ class Page implements \IPage{
 		// If something goes wrong informs the user
 		if (! \Database::execute ( $query )) {
 			$this->showGui ( false );
-			\Log::recordEntry ( "Fail on validating the user id: $userId" );
+			\Log::recordEntry ( __("Fail on validating the user id: ") .  $userId );
 			return;
 		}
 		
@@ -73,14 +74,14 @@ class Page implements \IPage{
 	private function showGui(bool $validated) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $validated ) );
 		$this->xTemplate->assign ( "nextPage", \Configuration::MAIN_PAGE_NAME );
-		$this->xTemplate->assign ( "mainPageMessage", Lang_Configuration::getDescriptions ( 2 ) );
+		$this->xTemplate->assign ( "mainPageMessage", __( "Login" ) );
 		
 		// Mostra o bloco principal
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
 	public function getTitle(bool $validated) {
-		return $validated ? Lang_Configuration::getDescriptions ( 0 ) : Lang_Configuration::getDescriptions ( 1 );
+		return $validated ? __( "User validated" ) : __( "Theres no such user in database" );
 	}
 	public static function isRestricted(): bool {
 		return false;
