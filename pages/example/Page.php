@@ -1,7 +1,7 @@
 <?php
 namespace example;
 
-require_once __DIR__ . '/../../class/module/IPage.php';
+require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 
 class Page implements \IPage{

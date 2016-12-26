@@ -2,7 +2,7 @@
 
 namespace databaseTest;
 
-require_once __DIR__ . '/../../class/module/IPage.php';
+require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/variable/JSONGenerator.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
