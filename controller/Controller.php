@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../class/log/Log.php';
-require_once __DIR__ . '/../class/module/Module.php';
+require_once __DIR__ . '/../class/page/Page.php';
 require_once __DIR__ . '/../class/security/Shield.php';
 
 require_once __DIR__ . '/../class/database/Database.php';
@@ -24,7 +24,7 @@ class Controller {
 			return;
 		}
 		
-		if (! Module::loadModule ()) {
+		if (! Page::loadPage ()) {
 			Log::recordEntry ( __("Fail on load the page!"), true );
 		}
 		

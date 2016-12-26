@@ -4,7 +4,7 @@ namespace userAuthenticaticator;
 
 require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
-require_once __DIR__ . '/../../class/module/Module.php';
+require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
@@ -51,7 +51,7 @@ class Page implements \IPage {
 		
 		// get the module user wants
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_MODULE_NAME;
+		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
@@ -67,7 +67,7 @@ class Page implements \IPage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \Module::loadModule ( \Configuration::MAIN_MODULE_NAME );
+			$ret = \Module::loadPage ( \Configuration::MAIN_PAGE_NAME );
 			
 			// Crashes if, for some reason, we cant load the main module
 			if (! $ret) {

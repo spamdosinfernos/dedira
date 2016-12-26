@@ -42,7 +42,7 @@ class Page implements \IPage {
 		// get the next module user wants
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_MODULE_NAME;
+		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
 		
 		if (! $this->checkMandatoryFields ()) {
 			$this->showGui ( $nextModule );

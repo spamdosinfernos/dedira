@@ -22,20 +22,20 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const MAIN_MODULE_NAME = "main";
+	const MAIN_PAGE_NAME = "main";
 	
 	/**
 	 * The authentication module name, it should be loaded before authentication
 	 *
 	 * @var string
 	 */
-	const AUTHENTICATION_MODULE_NAME = "userAuthenticaticator";
+	const AUTHENTICATION_PAGE_NAME = "userAuthenticaticator";
 	
 	/**
 	 * The file name for the module
 	 * @var string
 	 */
-	const MODULE_VAR_NAME = "module";
+	const PAGE_VAR_NAME = "page";
 	
 	/**
 	 * Extensão padrão do arquivo executável no sistema
@@ -105,14 +105,11 @@ class Configuration {
 		}
 		return self::$systemRootDirectory;
 	}
-	static public function getUserModuleStarterFileName() {
-		return "Module.php";
+	static public function getPageFileName() {
+		return "Page.php";
 	}
-	static public function getModuleDiretory() {
-		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "modules";
-	}
-	static public function getUserModuleTestDiretory() {
-		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "modules" . DIRECTORY_SEPARATOR . "teste";
+	static public function getPagesDiretory() {
+		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "pages";
 	}
 	
 	/**

@@ -5,7 +5,7 @@ namespace userValidator;
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/class/Lang_Configuration.php';
-require_once __DIR__ . '/../../class/module/Module.php';
+require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/../../class/module/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
@@ -72,7 +72,7 @@ class Page implements \IPage{
 	}
 	private function showGui(bool $validated) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $validated ) );
-		$this->xTemplate->assign ( "nextModule", \Configuration::MAIN_MODULE_NAME );
+		$this->xTemplate->assign ( "nextModule", \Configuration::MAIN_PAGE_NAME );
 		$this->xTemplate->assign ( "mainModuleMessage", Lang_Configuration::getDescriptions ( 2 ) );
 		
 		// Mostra o bloco principal

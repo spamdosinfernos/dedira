@@ -4,11 +4,11 @@
 namespace {moduleName};
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/module/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/{class}.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 /**
  * Register the {class} on system
  * @author {author}
@@ -28,6 +28,7 @@ class Page implements \IPage {
 	protected $httpRequest;
 	
 	public function __construct() {
+		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->reflector = new ReflectionClass ( "{class}" );
 		$this->httpRequest = new \HttpRequest ();
@@ -43,7 +44,7 @@ class Page implements \IPage {
 		// get the next module
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_MODULE_NAME;
+		$nextModule = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
 		
 		if (! $this->checkMandatoryFields ()) {
 			$this->showGui ( $nextModule );
@@ -57,16 +58,16 @@ class Page implements \IPage {
 		// If it does not exists create a new one
 		if (is_null ( $id )) {
 			if ($this->save()){
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
+				$this->xTemplate->assign ( "message", __("Saved!") );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
+				$this->xTemplate->assign ( "message", __("Fail to save!") );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->update ( $id )) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
+				$this->xTemplate->assign ( "message", __("Saved!") );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
+				$this->xTemplate->assign ( "message", __("Fail on update!") );
 			}
 		}
 		
