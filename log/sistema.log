@@ -1,0 +1,8 @@
+2016-12-26 16:45:38	No suitable servers found (`serverselectiontryonce` set): [Failed connecting to '127.0.0.1:27017': Connection refused]
+	1) /var/www/MiliSystem/index.php(3): require_once('/var/www/MiliSy...')
+	2) /var/www/MiliSystem/controller/Controller.php(34): Controller->__construct()
+	3) /var/www/MiliSystem/controller/Controller.php(22): Database::connect()
+	4) /var/www/MiliSystem/class/database/Database.php(26): MongoDatabaseDriver->connect()
+2016-12-26 16:45:38	O sistema não pôde conectar ao banco de dados
+	1) /var/www/MiliSystem/index.php(3): require_once('/var/www/MiliSy...')
+	2) /var/www/MiliSystem/controller/Controller.php(34): Controller->__construct()
