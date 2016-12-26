@@ -768,7 +768,7 @@ class XTemplate {
      */
 	public function out_file ($bname, $fname) {
 
-		if (!empty($bname) && !empty($fname) && is_writeable($fname)) {
+		if (!empty($bname) && !empty($fname) ) {
 
 			$fp = fopen($fname, 'w');
 			fwrite($fp, $this->text($bname));

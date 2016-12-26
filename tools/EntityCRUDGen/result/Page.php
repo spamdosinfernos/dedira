@@ -3,11 +3,11 @@
 namespace rulesEditor;
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 /**
  * Register the Rule on system
  * @author André Furlan
@@ -27,6 +27,7 @@ class Page implements \IPage {
 	protected $httpRequest;
 	
 	public function __construct() {
+		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->reflector = new ReflectionClass ( "Rule" );
 		$this->httpRequest = new \HttpRequest ();
@@ -51,21 +52,21 @@ class Page implements \IPage {
 		
 		// Gets the obj id
 		$authenticator = new \Authenticator ();
-		$id = isset($gotVars["_id"]) ? $gotVars["_id"] : null;
+		$id = isset($gotVars["id"]) ? $gotVars["id"] : null;
 		
 		// If it does not exists create a new one
 		if (is_null ( $id )) {
 			if ($this->save()){
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
+				$this->xTemplate->assign ( "message", __("Saved!") );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
+				$this->xTemplate->assign ( "message", __("Fail to save!") );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->update ( $id )) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 0 ) );
+				$this->xTemplate->assign ( "message", __("Saved!") );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 1 ) );
+				$this->xTemplate->assign ( "message", __("Fail on update!") );
 			}
 		}
 		
@@ -83,7 +84,7 @@ class Page implements \IPage {
 		
 		// Updating object
 		$c = new \DatabaseConditions ();
-		$c->addCondition ( \DatabaseConditions::AND, "_id", $obj->get_id () );
+		$c->addCondition ( \DatabaseConditions::AND, "id", $obj->get_id () );
 		
 		$query = new \DatabaseQuery ();
 		$query->setConditions ( $c );

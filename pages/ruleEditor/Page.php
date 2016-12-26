@@ -1,45 +1,46 @@
 <?php
 
-namespace ruleEditor;
+namespace rulesEditor;
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
-require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/database/POPOs/rule/Rule.php';
-require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
+require_once __DIR__ . '/../../class/database/POPOs/user/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
-require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 /**
- * Register a rule on system
- *
+ * Register the Rule on system
  * @author André Furlan
  */
 class Page implements \IPage {
 	
 	/**
-	 * Gerencia os templates
-	 *
-	 * @var XTemplate
+	 * Manages the templates
+	 * @var \TemplateLoader
 	 */
 	protected $xTemplate;
+
+	/**
+	 * Handles the requests
+	 * @var \HttpRequest
+	 */
+	protected $httpRequest;
+	
 	public function __construct() {
+		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		
+		$this->reflector = new ReflectionClass ( "Rule" );
+		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();
 	}
 	
 	/**
-	 * Handles authentication request If the authenticantion is successful keep executing the system
-	 * otherwise show the authentication screen
-	 *
-	 * @return void|boolean
+	 * Handles request
+	 * @return void | boolean
 	 */
-	public function handleRequest() : void {
+	public function handleRequest() {
 		
-		// get the next page user wants
+		// get the next page
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::MAIN_PAGE_NAME;
@@ -49,71 +50,118 @@ class Page implements \IPage {
 			return;
 		}
 		
-		$postVars = $httpRequest->getPostRequest ();
+		// Gets the obj id
+		$authenticator = new \Authenticator ();
+		$id = isset($gotVars["id"]) ? $gotVars["id"] : null;
 		
-		if ($this->saveNewRule ( $postVars )) {
-			$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 2 ) );
+		// If it does not exists create a new one
+		if (is_null ( $id )) {
+			if ($this->save()){
+				$this->xTemplate->assign ( "message", __("Saved!") );
+			} else {
+				$this->xTemplate->assign ( "message", __("Fail to save!") );
+			}
 		} else {
-			$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 3 ) );
+			// Otherwise just updates
+			if ($this->update ( $id )) {
+				$this->xTemplate->assign ( "message", __("Saved!") );
+			} else {
+				$this->xTemplate->assign ( "message", __("Fail on update!") );
+			}
 		}
 		
 		$this->showGui ( $nextPage );
 	}
 	
 	/**
-	 * Create a new user
+	 * Updates Rule
 	 *
+	 * @param \Rule $user        	
 	 * @return bool
 	 */
-	private function saveNewRule($postData): bool {
-		$rule = $this->createRuleObject ($postData);
+	private function update( $int ): bool {
+		$obj = $this->createEntityObject ( $int );
+		
+		// Updating object
+		$c = new \DatabaseConditions ();
+		$c->addCondition ( \DatabaseConditions::AND, "id", $obj->get_id () );
+		
+		$query = new \DatabaseQuery ();
+		$query->setConditions ( $c );
+		$query->setObject ( $obj );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
+		
+		return \Database::execute ( $query );
+	}
+	
+	/**
+	 * Create a new Rule
+	 * @return bool
+	 */
+	private function save(): bool {
+		$obj->createEntityObject ();
 		
 		// Inserting object
 		$query = new \DatabaseQuery ();
-		$query->setObject ( $rule );
+		$query->setObject ( $obj );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
 		return \Database::execute ( $query );
 	}
 	
 	/**
-	 * Creates a rule object 
-	 *
-	 * @param mixed $postedVars        	
+	 * Creates a Rule object using previous data or not
+	 * @param $id        	
 	 * @return \Rule
 	 */
-	private function createRuleObject($postedVars): \Rule {
-		$auth = new \Authenticator ();
-		$user = $auth->getAutenticatedEntity ();
+	private function createEntityObject($id = null): \Rule {
+
+		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
+		$postedVars = $this->httpRequest->getPostRequest();
 		
-		$rule = new \Rule ();
-		// The rule is not approved by default
-		$rule->setApproved ( false );
-		$rule->set_id ( dechex ( microtime ( true ) ) );
-		$rule->setAuthorId ( $user->get_id () );
-		$rule->setCreationDatetime ( new \DateTime () );
-		$rule->setLawContents ( $postedVars ["lawcontents"] );
-		
-		return $rule;
-	}
-	private function checkMandatoryFields(): bool {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
-		
-		// Check mandatory fields
-		if (isset ( $postedVars ["lawcontents"] )) {
-			return true;
+		// Creates a new object
+		$obj = new \Rule();
+		if (!is_null($id)){
+			$obj->set_id($id);
 		}
 		
-		return false;
+		foreach ( $arrMethods as $method ) {
+			if ($method->getNumberOfParameters () == 1){
+					
+				if (substr ( $method->getName (), 0, 3 ) == "set"){
+					$method->invoke($obj, $postedVars[$method->getParameters()[0]]);
+				}
+			}
+		}
+		return obj;
 	}
+
+	private function checkMandatoryFields(): bool {
+		$postedVars = $this->httpRequest->getPostRequest ();
+		
+		// Check mandatory fields
+		foreach($postedVars as $var){
+			if (trim($var) == ""){
+				return false;
+			}
+		}
+
+		return true;
+	}
+		
 	private function showGui(string $nextPage) {
-		$this->xTemplate->assign ( "lawcontents", Lang_Configuration::getDescriptions ( 0 ) );
+		
+		$postedVars = $this->httpRequest->getPostRequest ();
+	
+		foreach($postedVars as $name => $value){
+			$this->xTemplate->assign ( $name, $value );
+		}
+		
 		$this->xTemplate->assign ( "nextPage", $nextPage );
-		$this->xTemplate->assign ( "sendText", Lang_Configuration::getDescriptions ( 1 ) );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
+	
 	public static function isRestricted(): bool {
 		return true;
 	}

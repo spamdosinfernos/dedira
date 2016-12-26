@@ -35,7 +35,6 @@ class EntityToHtmlForm {
 		require_once $pathToClass;
 		
 		$this->reflector = new ReflectionClass ( $class );
-		$this->templateLang = new XTemplate ( "./template/Lang_Configuration.tmpl" );
 		$this->templateHtml = new XTemplate ( "./template/template.tmpl" );
 		$this->templatePhp = new XTemplate ( "./template/Page.tmpl" );
 		$this->templateConf = new XTemplate ( "./template/Conf.tmpl" );
@@ -68,7 +67,6 @@ class EntityToHtmlForm {
 		$this->templateHtml->out_file ( "main", __DIR__ . "/result/template/template.html" );
 		
 		$this->generateConfClass ( $pageName );
-		$this->generateLangClass ( $pageName );
 	}
 	private function generateField($setterName, $paramType) {
 		$setterName = strtolower ( str_ireplace ( "set", "", $setterName ) );
@@ -120,11 +118,6 @@ class EntityToHtmlForm {
 		$this->templateConf->assign ( "pageName", $pageName );
 		$this->templateConf->parse ( "main" );
 		$this->templateConf->out_file ( "main", __DIR__ . "/result/class/Conf.php" );
-	}
-	private function generateLangClass($pageName) {
-		$this->templateLang->assign ( "pageName", $pageName );
-		$this->templateLang->parse ( "main" );
-		$this->templateLang->out_file ( "main", __DIR__ . "/result/class/Lang_Configuration.php" );
 	}
 }
 new EntityToHtmlForm ( "Rule", __DIR__ . '/../../class/database/POPOs/rule/Rule.php', "André Furlan", "rulesEditor" );

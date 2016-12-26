@@ -2,31 +2,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script type="text/javascript">
-var content = [];
-
-function addAnotherField(fieldId){
-
-	if(content[fieldId] == undefined){
-		content[fieldId] = document.getElementById(fieldId).innerHTML;
+	<meta charset="UTF-8">
+	<title></title>
+	<script type="text/javascript">
+	var content = [];
+	
+	function addAnotherField(fieldId){
+	
+		if(content[fieldId] == undefined){
+			content[fieldId] = document.getElementById(fieldId).innerHTML;
+		}
+	
+		document.getElementById(fieldId).innerHTML += content[fieldId];
 	}
-
-	document.getElementById(fieldId).innerHTML += content[fieldId];
-}
-</script>
-<meta charset="UTF-8">
-<title>{tittle}</title>
-<link rel="stylesheet" type="text/css"	href="../pages/userSignUp/css/css.css">
+	</script>
+	<link rel="stylesheet" type="text/css"	href="./css/css.css">
 </head>
 <body>
-<form action="index.php?page={nextPage}" method="post">
-<p><em>{warning}</em></p>
-
-	    <label for="lawcontents">*{lawcontents}</label><br>
-		<textarea name="lawcontents" id="lawcontents" placeholder="{lawcontents}"></textarea>
-		<br/>
-		<input type="submit" value={sendText}>
-</form>
+	<form action="index.php?page=ruleEditor" method="post">
+		<p><em></em></p>
+		<fieldset>
+		<legend>arrupvotersids</legend>
+			<div id="arrupvotersids">
+				<label for="arrupvotersids">*arrupvotersids</label>
+				<input type="text" id="arrupvotersids" name="arrupvotersids" placeholder="arrupvotersids"/>
+				<button onclick="addAnotherField('arrupvotersids')">+</button><br/>
+			</div>
+		</fieldset>
+		
+		<fieldset>
+		<legend>arrdowvotersids</legend>
+			<div id="arrdowvotersids">
+				<label for="arrdowvotersids">*arrdowvotersids</label>
+				<input type="text" id="arrdowvotersids" name="arrdowvotersids" placeholder="arrdowvotersids"/>
+				<button onclick="addAnotherField('arrdowvotersids')">+</button><br/>
+			</div>
+		</fieldset>
+		
+		<label for="creationdatetime">*creationdatetime</label>
+		<input type="text" name="creationdatetime" id="creationdatetime" placeholder="creationdatetime"/><br/>
+		
+		<label for="authorid">*authorid</label>
+		<input type="text" name="authorid" id="authorid" placeholder="authorid"/><br/>
+		
+		<label for="approved">*approved</label>
+		<input type="text" name="approved" id="approved" placeholder="approved"/><br/>
+		
+		<label for="lawcontents">*lawcontents</label>
+		<input type="text" name="lawcontents" id="lawcontents" placeholder="lawcontents"/><br/>
+		
+		<label for="_id">*_id</label>
+		<input type="text" name="_id" id="_id" placeholder="_id"/><br/>
+		
+		<input type="submit" value="Enviar">
+	</form>
 </body>
 </html>
 <!-- END: main -->
