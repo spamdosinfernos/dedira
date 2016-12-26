@@ -10,6 +10,8 @@ require_once __DIR__ . '/../../../variable/ClassPropertyPublicizator.php';
 
 require_once __DIR__ . '/DatetimeToMongoDatePublicizator.php';
 require_once __DIR__ . '/MongoDateToDatetimePublicizator.php';
+require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
+
 /**
  *
  * @author ensismoebius
@@ -85,7 +87,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 					"dbstats" => 1 
 			] );
 			$this->connection->executeCommand ( "testdb", $stats );
-
+			
 			// If nothing goes wrong so everything goes well ;)
 			return true;
 		} catch ( MongoDB\Driver\Exception\Exception $e ) {
@@ -246,11 +248,10 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 	private function doRead(): bool {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
 		$this->classPublicizator->addSpecialTypePublicizator ( new MongoDateToDatetimePublicizator () );
+		$this->classPublicizator->addSpecialTypePublicizator ( new MongoObjectIdPublicizatorToSimpleID () );
 		
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
-			// TODO create a mongodb object id publicizator
-			$this->classPublicizator->addSpecialTypePublicizator($specialPublicizator);
 			$cursor = $this->connection->executeQuery ( Configuration::DB_NAME . "." . $this->entityName, $query );
 			
 			// Stores all matched documents
@@ -352,8 +353,8 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 				}
 				
 				if (is_numeric ( $value )) {
-					if(is_int($value)) $value = intval($value);
-					if(is_float($value)) $value = floatval($value);
+					if (is_int ( $value )) $value = intval ( $value );
+					if (is_float ( $value )) $value = floatval ( $value );
 				}
 				
 				switch ($type) {
