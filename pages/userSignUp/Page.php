@@ -38,10 +38,10 @@ class Page implements \IPage {
 	 */
 	public function handleRequest() {
 		
-		// get the module user wants
+		// get the page user wants
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::MAIN_PAGE_NAME;
 		
 		if (! $this->checkMandatoryFields ()) {
 			$this->showGui ( $nextPage );

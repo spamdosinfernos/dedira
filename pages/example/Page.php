@@ -9,7 +9,7 @@ class Page implements \IPage{
 		
 		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		
-		echo __("My example module!!!!!!!!!!<br>");
+		echo __("My example page!!!!!!!!!!<br>");
 		
 		$user = $_SESSION['authData'] ['autenticatedEntity'];
 		

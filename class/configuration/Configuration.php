@@ -18,21 +18,21 @@ class Configuration {
 	const LOCALE_DIR_NAME = "lang";
 	
 	/**
-	 * The main module name, it should be loaded after authentication
+	 * The main page name, it should be loaded after authentication
 	 *
 	 * @var string
 	 */
 	const MAIN_PAGE_NAME = "main";
 	
 	/**
-	 * The authentication module name, it should be loaded before authentication
+	 * The authentication page name, it should be loaded before authentication
 	 *
 	 * @var string
 	 */
 	const AUTHENTICATION_PAGE_NAME = "userAuthenticaticator";
 	
 	/**
-	 * The file name for the module
+	 * The file name for the page
 	 * @var string
 	 */
 	const PAGE_VAR_NAME = "page";

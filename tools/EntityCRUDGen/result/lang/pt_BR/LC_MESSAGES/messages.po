@@ -28,7 +28,7 @@ msgstr "Falha ao salvar!"
 msgid "Fail on update!"
 msgstr "Falha ao atualizar!"
 
-#~ msgid "My example module!!!!!!!!!!<br>"
+#~ msgid "My example page!!!!!!!!!!<br>"
 #~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
 
 #~ msgid "Hello "
@@ -40,5 +40,5 @@ msgstr "Falha ao atualizar!"
 #~ msgid "Fail on load the page!"
 #~ msgstr "Falha ao carregar a página!"
 
-#~ msgid "Fail on load a module!"
+#~ msgid "Fail on load a page!"
 #~ msgstr "Falha ao carregar o pagina"

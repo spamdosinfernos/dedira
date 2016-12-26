@@ -51,7 +51,7 @@ class Page implements \IPage {
 		
 		// get the page user wants
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::MAIN_PAGE_NAME;
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
@@ -71,7 +71,7 @@ class Page implements \IPage {
 			
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {
-				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the main module!" ), true );
+				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the main page!" ), true );
 				exit ( 0 );
 			}
 			
@@ -83,6 +83,7 @@ class Page implements \IPage {
 	}
 	private function showGui(string $nextPage, bool $failToAuthenticate = false) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
+		$this->xTemplate->assign ( "signUpMessage", __("Or signup!") );
 		$this->xTemplate->assign ( "nextPage", $nextPage );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );

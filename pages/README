@@ -1,17 +1,17 @@
-Stores the system modules:
+Stores the system pages:
 
-- The module file name MUST be Page.php
-- The module namespace MUST be the same in all module files
+- The page file name MUST be Page.php
+- The page namespace MUST be the same in all page files
 - If you want to create sub namespaces its ok
-- The module MUST have the folowing FOLDERS structure:
+- The page MUST have the folowing FOLDERS structure:
 
-<module name> : All module files
+<page name> : All page files
   |_class	: Classes
   |_css		: CSS files
   |_doc		: The documenta
-  |_img		: All module images
+  |_img		: All page images
   |_js		: The javascript files 
   |_lang	: The language files
   |_template: Stores the templates
   
- For an example of module see /modules/example folder. 
+ For an example of page see /pages/example folder. 

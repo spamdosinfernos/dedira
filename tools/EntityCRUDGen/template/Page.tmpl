@@ -1,7 +1,7 @@
 <!-- BEGIN: main -->
 <?php
 
-namespace {moduleName};
+namespace {pageName};
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
@@ -41,10 +41,10 @@ class Page implements \IPage {
 	 */
 	public function handleRequest() {
 		
-		// get the next module
+		// get the next page
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["module"] ) ? $gotVars ["module"] : \Configuration::MAIN_PAGE_NAME;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::MAIN_PAGE_NAME;
 		
 		if (! $this->checkMandatoryFields ()) {
 			$this->showGui ( $nextPage );

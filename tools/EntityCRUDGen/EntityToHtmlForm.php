@@ -31,7 +31,7 @@ class EntityToHtmlForm {
 	 * @var ReflectionClass
 	 */
 	private $reflector;
-	public function __construct($class, $pathToClass, $author, $moduleName) {
+	public function __construct($class, $pathToClass, $author, $pageName) {
 		require_once $pathToClass;
 		
 		$this->reflector = new ReflectionClass ( $class );
@@ -54,21 +54,21 @@ class EntityToHtmlForm {
 			$this->generateFieldPHP ( $method->getName (), $method->getParameters () [0]->getType () );
 		}
 		
-		$this->templatePhp->assign ( "moduleName", $moduleName );
+		$this->templatePhp->assign ( "pageName", $pageName );
 		$this->templatePhp->assign ( "author", $author );
 		$this->templatePhp->assign ( "class", $class );
 		$this->templatePhp->parse ( "main" );
 		$this->templatePhp->out_file ( "main", __DIR__ . "/result/Page.php" );
 		
-		$this->templateHtml->assign ( "moduleName", $moduleName );
+		$this->templateHtml->assign ( "pageName", $pageName );
 		$this->templateHtml->assign ( "author", $author );
 		$this->templateHtml->assign ( "sendText", "Enviar" );
 		$this->templateHtml->assign ( "class", $class );
 		$this->templateHtml->parse ( "main" );
 		$this->templateHtml->out_file ( "main", __DIR__ . "/result/template/template.html" );
 		
-		$this->generateConfClass ( $moduleName );
-		$this->generateLangClass ( $moduleName );
+		$this->generateConfClass ( $pageName );
+		$this->generateLangClass ( $pageName );
 	}
 	private function generateField($setterName, $paramType) {
 		$setterName = strtolower ( str_ireplace ( "set", "", $setterName ) );
@@ -116,13 +116,13 @@ class EntityToHtmlForm {
 		}
 		$this->templatePhp->parse ( "main.field" );
 	}
-	private function generateConfClass($moduleName) {
-		$this->templateConf->assign ( "moduleName", $moduleName );
+	private function generateConfClass($pageName) {
+		$this->templateConf->assign ( "pageName", $pageName );
 		$this->templateConf->parse ( "main" );
 		$this->templateConf->out_file ( "main", __DIR__ . "/result/class/Conf.php" );
 	}
-	private function generateLangClass($moduleName) {
-		$this->templateLang->assign ( "moduleName", $moduleName );
+	private function generateLangClass($pageName) {
+		$this->templateLang->assign ( "pageName", $pageName );
 		$this->templateLang->parse ( "main" );
 		$this->templateLang->out_file ( "main", __DIR__ . "/result/class/Lang_Configuration.php" );
 	}

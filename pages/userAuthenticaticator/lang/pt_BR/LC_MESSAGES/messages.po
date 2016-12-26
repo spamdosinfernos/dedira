@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-26 02:29-0200\n"
-"PO-Revision-Date: 2016-12-26 02:34-0200\n"
+"POT-Creation-Date: 2016-12-26 02:48-0200\n"
+"PO-Revision-Date: 2016-12-26 02:48-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -17,21 +17,25 @@ msgstr ""
 "X-Poedit-SearchPath-0: Page.php\n"
 
 #: Page.php:74
-msgid "Something very wrong happens: Fail to load the main module!"
+msgid "Something very wrong happens: Fail to load the main page!"
 msgstr "Algo de muito errado aconteceu: Falha ao carregar módulo principal!"
 
-#: Page.php:93
+#: Page.php:86
+msgid "Or signup!"
+msgstr "Ou se cadastre!"
+
+#: Page.php:92
 msgid "Login or password incorrect, or your account are inactive"
 msgstr "Login ou senha incorretos, ou sua conta pode estar inativa"
 
-#: Page.php:93
+#: Page.php:92
 msgid "Please, type your login and password"
 msgstr "Por favor, digite login e senha"
 
 #~ msgid "Hello"
 #~ msgstr "Olá"
 
-#~ msgid "My example module!!!!!!!!!!<br>"
+#~ msgid "My example page!!!!!!!!!!<br>"
 #~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
 
 #~ msgid "Hello "
@@ -43,5 +47,5 @@ msgstr "Por favor, digite login e senha"
 #~ msgid "Fail on load the page!"
 #~ msgstr "Falha ao carregar a página!"
 
-#~ msgid "Fail on load a module!"
+#~ msgid "Fail on load a page!"
 #~ msgstr "Falha ao carregar o pagina"

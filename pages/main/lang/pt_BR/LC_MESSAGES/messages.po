@@ -20,7 +20,7 @@ msgstr ""
 msgid "Hello"
 msgstr "Olá"
 
-#~ msgid "My example module!!!!!!!!!!<br>"
+#~ msgid "My example page!!!!!!!!!!<br>"
 #~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
 
 #~ msgid "Hello "
@@ -32,5 +32,5 @@ msgstr "Olá"
 #~ msgid "Fail on load the page!"
 #~ msgstr "Falha ao carregar a página!"
 
-#~ msgid "Fail on load a module!"
+#~ msgid "Fail on load a page!"
 #~ msgstr "Falha ao carregar o pagina"

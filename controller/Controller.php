@@ -8,7 +8,7 @@ require_once __DIR__ . '/../class/configuration/Configuration.php';
 
 require_once __DIR__ . '/../class/internationalization/i18n.php';
 /**
- * Manages all requests and loads the correponding module
+ * Manages all requests and loads the correponding page
  *
  * @author André Furlan
  */

@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: Page.php\n"
 
 #: Page.php:12
-msgid "My example module!!!!!!!!!!<br>"
+msgid "My example page!!!!!!!!!!<br>"
 msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
 
 #: Page.php:16
@@ -30,5 +30,5 @@ msgstr "Olá "
 #~ msgid "Fail on load the page!"
 #~ msgstr "Falha ao carregar a página!"
 
-#~ msgid "Fail on load a module!"
+#~ msgid "Fail on load a page!"
 #~ msgstr "Falha ao carregar o pagina"
