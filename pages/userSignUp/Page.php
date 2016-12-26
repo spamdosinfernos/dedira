@@ -3,11 +3,11 @@
 namespace userSignUp;
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/class/Lang_Configuration.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
+require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
@@ -25,8 +25,8 @@ class Page implements \IPage {
 	 */
 	protected $xTemplate;
 	public function __construct() {
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		
 		$this->handleRequest ();
 	}
 	
@@ -52,19 +52,22 @@ class Page implements \IPage {
 		$authenticator = new \Authenticator ();
 		$user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
 		
+		// Default message
+		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
+		
 		// If it does not exists create a new one
 		if (is_null ( $user )) {
 			if ($this->saveNewUser ()) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 16 ) );
+				$this->xTemplate->assign ( "message", __ ( "User created a mail was sended to your mail box in order to confirm your account." ) );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 17 ) );
+				$this->xTemplate->assign ( "message", __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->updateUser ( $user )) {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 16 ) );
+				$this->xTemplate->assign ( "message", __ ( "User updated!" ) );
 			} else {
-				$this->xTemplate->assign ( "message", Lang_Configuration::getDescriptions ( 17 ) );
+				$this->xTemplate->assign ( "message", __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
 		
@@ -125,7 +128,7 @@ class Page implements \IPage {
 		$user->setActive ( false );
 		
 		// Creates the user to authenticate
-		$user->set_id ( dechex(microtime ( true )) );
+		$user->set_id ( dechex ( microtime ( true ) ) );
 		$user->setSex ( $postedVars ["sex"] );
 		$user->setName ( $postedVars ["name"] );
 		$user->setLogin ( $postedVars ["login"] );
@@ -143,46 +146,44 @@ class Page implements \IPage {
 		$postedVars = $httpRequest->getPostRequest ();
 		
 		// Check mandatory fields
-		if (isset ( $postedVars ["login"] ) && isset ( $postedVars ["password"] ) && isset ( $postedVars ["name"] ) && isset ( $postedVars ["lastName"] ) && isset ( $postedVars ["sex"] ) && isset ( $postedVars ["birthDate"] ) && isset ( $postedVars ["arrEmail"] )) {
+		if (isset ( $postedVars ["login"] ) && isset ( $postedVars ["password"] ) && isset ( $postedVars ["name"] ) && isset ( $postedVars ["lastName"] ) && isset ( $postedVars ["birthDate"] ) && isset ( $postedVars ["arrEmail"] )) {
 			return true;
 		}
 		
 		return false;
 	}
 	private function showGui(string $nextPage) {
-		$this->xTemplate->assign ( "tittle", Lang_Configuration::getDescriptions ( 0 ) );
-		$this->xTemplate->assign ( "lblActive", Lang_Configuration::getDescriptions ( 1 ) );
-		$this->xTemplate->assign ( "lblLogin", Lang_Configuration::getDescriptions ( 2 ) );
-		$this->xTemplate->assign ( "lblPassword", Lang_Configuration::getDescriptions ( 3 ) );
-		$this->xTemplate->assign ( "lblName", Lang_Configuration::getDescriptions ( 4 ) );
-		$this->xTemplate->assign ( "lblLastName", Lang_Configuration::getDescriptions ( 5 ) );
+		$this->xTemplate->assign ( "tittle", __ ( "User sign up" ) );
+		$this->xTemplate->assign ( "lblActive", __ ( "Active user" ) );
+		$this->xTemplate->assign ( "lblLogin", __ ( "Login" ) );
+		$this->xTemplate->assign ( "lblPassword", __ ( "Password" ) );
+		$this->xTemplate->assign ( "lblName", __ ( "Name" ) );
+		$this->xTemplate->assign ( "lblLastName", __ ( "Last name" ) );
 		
-		$this->xTemplate->assign ( "lblBirthday", Lang_Configuration::getDescriptions ( 7 ) );
-		$this->xTemplate->assign ( "lblBirthmonth", Lang_Configuration::getDescriptions ( 18 ) );
-		$this->xTemplate->assign ( "lblBirthyear", Lang_Configuration::getDescriptions ( 19 ) );
-		$this->xTemplate->assign ( "lblBirthDate", Lang_Configuration::getDescriptions ( 20 ) );
+		$this->xTemplate->assign ( "lblBirthday", __ ( "Birth day" ) );
+		$this->xTemplate->assign ( "lblBirthmonth", __ ( "Birth month" ) );
+		$this->xTemplate->assign ( "lblBirthyear", __ ( "Birth year" ) );
+		$this->xTemplate->assign ( "lblBirthDate", __ ( "Birthdate" ) );
 		
-		$this->xTemplate->assign ( "lblEmail", Lang_Configuration::getDescriptions ( 8 ) );
-		$this->xTemplate->assign ( "lblTelephone", Lang_Configuration::getDescriptions ( 9 ) );
+		$this->xTemplate->assign ( "lblEmail", __ ( "Email (going to be used for validation)" ) );
+		$this->xTemplate->assign ( "lblTelephone", __ ( "Telephone" ) );
 		
-		$this->xTemplate->assign ( "sendText", Lang_Configuration::getDescriptions ( 10 ) );
+		$this->xTemplate->assign ( "sendText", __ ( "Send" ) );
 		
-		$this->xTemplate->assign ( "lblSex", Lang_Configuration::getDescriptions ( 6 ) );
+		$this->xTemplate->assign ( "lblSex", __ ( "Sex" ) );
 		
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 13 ) );
+		$this->xTemplate->assign ( "sexText", __ ( "Irrelevant" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_IRRELEVANT );
 		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 11 ) );
+		$this->xTemplate->assign ( "sexText", __ ( "Both" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_BOTH );
 		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 12 ) );
+		$this->xTemplate->assign ( "sexText", __ ( "Female" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_FEMALE );
 		$this->xTemplate->parse ( "main.comboSex" );
-		$this->xTemplate->assign ( "sexText", Lang_Configuration::getDescriptions ( 14 ) );
+		$this->xTemplate->assign ( "sexText", __ ( "Male" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_MALE );
 		$this->xTemplate->parse ( "main.comboSex" );
-		
-		$this->xTemplate->assign ( "warning", Lang_Configuration::getDescriptions ( 15 ) );
 		
 		$this->xTemplate->assign ( "nextPage", $nextPage );
 		

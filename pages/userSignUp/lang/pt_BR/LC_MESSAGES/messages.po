@@ -1,0 +1,135 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Page\n"
+"POT-Creation-Date: 2016-12-26 17:57-0200\n"
+"PO-Revision-Date: 2016-12-26 17:57-0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: Page.php\n"
+
+#: Page.php:56
+msgid "All fields marked with * are mandatory"
+msgstr "Todos os campos marcados com * são obrigatórios"
+
+#: Page.php:61
+msgid ""
+"User created a mail was sended to your mail box in order to confirm your "
+"account."
+msgstr ""
+"Cadastro feito com sucesso um e-mail foi mandado para você, acesse a "
+"mensagem e siga as instruções de confirmação"
+
+#: Page.php:63
+msgid "Fail to create a new user! Remeber: All fields with * are mandatory!"
+msgstr ""
+"Falha ao cadastrar! Lembre-se: Todos os campos marcados com * são "
+"obrigatórios"
+
+#: Page.php:68
+msgid "User updated!"
+msgstr "Cadastro atualizado"
+
+#: Page.php:70
+msgid "Fail to update user! Remeber: All fields with * are mandatory!"
+msgstr ""
+"Falha ao atualizar! Lembre-se: Todos os campos marcados com * são "
+"obrigatórios"
+
+#: Page.php:156
+msgid "User sign up"
+msgstr "Cadastro"
+
+#: Page.php:157
+msgid "Active user"
+msgstr "Cadastro ativo"
+
+#: Page.php:158
+msgid "Login"
+msgstr "Login"
+
+#: Page.php:159
+msgid "Password"
+msgstr "Senha"
+
+#: Page.php:160
+msgid "Name"
+msgstr "Nome"
+
+#: Page.php:161
+msgid "Last name"
+msgstr "Último nome"
+
+#: Page.php:163
+msgid "Birth day"
+msgstr "Dia de nascimento"
+
+#: Page.php:164
+msgid "Birth month"
+msgstr "Mês de nascimento"
+
+#: Page.php:165
+msgid "Birth year"
+msgstr "Ano de nascimento"
+
+#: Page.php:166
+msgid "Birthdate"
+msgstr "Data de nascimento"
+
+#: Page.php:168
+msgid "Email (going to be used for validation)"
+msgstr "E-mail (será usado para validar seu cadastro)"
+
+#: Page.php:169
+msgid "Telephone"
+msgstr "Telefone"
+
+#: Page.php:171
+msgid "Send"
+msgstr "Enviar"
+
+#: Page.php:173
+msgid "Sex"
+msgstr "Sexo"
+
+#: Page.php:175
+msgid "Irrelevant"
+msgstr "Irrelevante"
+
+#: Page.php:178
+msgid "Both"
+msgstr "Ambos"
+
+#: Page.php:181
+msgid "Female"
+msgstr "Fêmea"
+
+#: Page.php:184
+msgid "Male"
+msgstr "Macho"
+
+#~ msgid "Hello"
+#~ msgstr "Olá"
+
+#~ msgid "My example page!!!!!!!!!!<br>"
+#~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
+
+#~ msgid "Hello "
+#~ msgstr "Olá "
+
+#~ msgid "The system can't connect to database"
+#~ msgstr "O sistema não pôde conectar ao banco de dados"
+
+#~ msgid "Fail on load the page!"
+#~ msgstr "Falha ao carregar a página!"
+
+#~ msgid "Fail on load a page!"
+#~ msgstr "Falha ao carregar o pagina"
