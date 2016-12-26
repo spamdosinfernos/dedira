@@ -65,6 +65,7 @@ class FTPClient implements InterfaceEnviador {
 		$status = true;
 		
 		foreach ( $arrLetrasDoCaminho as $letra ) {
+			$matches = null;
 			preg_match ( "/[a-z0-9]*/i", $letra, $matches );
 			if ($matches [0] == "") {
 				$letra = "dot";

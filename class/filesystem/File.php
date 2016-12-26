@@ -74,10 +74,6 @@ class File {
 	public function saveAs($newFilePath) {
 		$bytesWrote = file_put_contents ( $newFilePath, $this->temporaryContents );
 		
-		// TODO Pesquisar as duas funções abaixo
-		// set_error_handler()
-		// set_exception_handler()
-		
 		if (is_bool ( $bytesWrote )) throw new Exception ( "Fail to save the file!" );
 		
 		$this->setCaminhoDoArquivo ( $newFilePath );
@@ -285,7 +281,7 @@ class File {
 		do {
 			$quantidadeMaxDeTentativas --;
 			
-			$criouPacote = $zip->open ( $caminhoDoPacote, ZIPARCHIVE::OVERWRITE );
+			$criouPacote = $zip->open ( $caminhoDoPacote, ZipArchive::OVERWRITE );
 			
 			if ($criouPacote) {
 				$zip->addFile ( $this->filePath, $this->getFileName () );
@@ -294,7 +290,7 @@ class File {
 			
 			if ($quantidadeMaxDeTentativas == 0) {
 				@$this->unlink ( $caminhoDoPacote );
-				throw new Exception ( "Fail to compact: " . join ( "\r\n", $arrOutPut ) );
+				throw new Exception ( "Fail to compact" );
 			}
 		} while ( ! $fechouPacote );
 		

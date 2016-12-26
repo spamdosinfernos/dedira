@@ -75,7 +75,7 @@ class Person extends AStorableObject {
 	public function getBirthDate() {
 		return $this->birthDate;
 	}
-	public function setBirthDate(Datetime $birthDate) {
+	public function setBirthDate(DateTime $birthDate) {
 		$this->birthDate = $birthDate;
 		$this->AddChange ( "birthDate", $birthDate );
 	}

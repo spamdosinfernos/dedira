@@ -29,7 +29,7 @@ class Page implements \IPage {
 	public function __construct() {
 		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		$this->reflector = new ReflectionClass ( "Rule" );
+		$this->reflector = new \ReflectionClass ( "Rule" );
 		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();
 	}
@@ -51,7 +51,6 @@ class Page implements \IPage {
 		}
 		
 		// Gets the obj id
-		$authenticator = new \Authenticator ();
 		$id = isset($gotVars["id"]) ? $gotVars["id"] : null;
 		
 		// If it does not exists create a new one
@@ -99,7 +98,7 @@ class Page implements \IPage {
 	 * @return bool
 	 */
 	private function save(): bool {
-		$obj->createEntityObject ();
+		$obj = $this->createEntityObject ();
 		
 		// Inserting object
 		$query = new \DatabaseQuery ();
@@ -116,7 +115,7 @@ class Page implements \IPage {
 	 */
 	private function createEntityObject($id = null): \Rule {
 
-		$arrMethods = $this->reflector->getMethods ( ReflectionMethod::IS_PUBLIC );
+		$arrMethods = $this->reflector->getMethods ( \ReflectionMethod::IS_PUBLIC );
 		$postedVars = $this->httpRequest->getPostRequest();
 		
 		// Creates a new object
