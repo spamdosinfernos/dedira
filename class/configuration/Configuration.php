@@ -42,21 +42,21 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const SYSTEM_PROTOCOL = "smtp";
+	const MAIL_PROTOCOL = "smtp";
 	
 	/**
 	 * Default username when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_USERNAME = "mail@server.com";
+	const MAIL_USERNAME = "mail@gmail.com";
 	
 	/**
 	 * Default email when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_SERVER = "smtp.server.com";
+	const MAIL_SERVER = "smtp.gmail.com";
 	
 	/**
 	 * Default email when sending something

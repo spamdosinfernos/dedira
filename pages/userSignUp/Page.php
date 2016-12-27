@@ -3,6 +3,7 @@
 namespace userSignUp;
 
 require_once __DIR__ . '/class/Conf.php';
+require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
@@ -67,8 +68,8 @@ class Page implements \IPage {
 		if (is_null ( $this->user )) {
 			if ($this->saveNewUser ()) {
 				
+				// If we cant send a check email we delete the user
 				$email = $this->sendMail ();
-				
 				if (empty ( $email )) {
 					$this->deleteUser ();
 					$this->xTemplate->assign ( "message", __ ( "None of your mail account is valid! Try another mail address!" ) );
@@ -76,7 +77,7 @@ class Page implements \IPage {
 					return;
 				}
 				
-				$this->xTemplate->assign ( "message", __ ( "User created! a mail was sended to your mail box in order to confirm your account: " . $email ) );
+				$this->xTemplate->assign ( "message", __ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
 				$this->showMessageGui ();
 				return;
 			} else {
@@ -101,18 +102,20 @@ class Page implements \IPage {
 	 *
 	 * @return string - email which receives the confirmation
 	 */
-	private function sendMail(): bool {
+	private function sendMail(): string {
 		
-		$message = __ ( "<html><body><p><a href='%s?page=userSignUp&_id=%u'>Click here to confirm your account</a></body></html>" );
+		// TODO use a template?
+		$message = __ ( "<html><body><p><a href='%s?page=userSignUp&_id=%s'>Click here to confirm your account</a></body></html>" );
 		
+		\MailSender::setSubject ( __ ( "Confirmation mail" ) );
 		\MailSender::setFrom ( Conf::MAIL );
 		\MailSender::setPort ( Conf::MAIL_PORT );
 		\MailSender::setHost ( Conf::MAIL_SERVER );
 		\MailSender::setCrypto ( Conf::MAIL_CRYPTO );
-		\MailSender::setProtocol ( Conf::SYSTEM_PROTOCOL );
+		\MailSender::setProtocol ( Conf::MAIL_PROTOCOL );
 		\MailSender::setUserName ( Conf::MAIL_USERNAME );
 		\MailSender::setUserPassword ( Conf::MAIL_PASSWORD );
-		\MailSender::setMessage ( printf($message, Conf::HOST_ADDRESS, $this->user->get_id()) );
+		\MailSender::setMessage ( sprintf ( $message, Conf::HOST_ADDRESS, $this->user->get_id () ) );
 		
 		// Tries to send the confirmation to all mails, stops when succeed
 		foreach ( $this->user->getArrEmail () as $userMail ) {
@@ -120,6 +123,9 @@ class Page implements \IPage {
 			if (\MailSender::sendMail ()) {
 				return $userMail;
 			}
+			
+			// If somethig goes wrong log it
+			\Log::recordEntry ( \MailSender::getError () );
 		}
 		
 		// All fails!!

@@ -8,6 +8,13 @@ require_once __DIR__ . '/../../../lib/php-mailer/PHPMailerAutoload.php';
 class MailSender {
 	
 	/**
+	 * Error messages if any
+	 *
+	 * @var string
+	 */
+	private static $error;
+	
+	/**
 	 * Port
 	 *
 	 * @var int
@@ -78,6 +85,13 @@ class MailSender {
 	private static $attachment;
 	
 	/**
+	 * The subject
+	 *
+	 * @var string
+	 */
+	private static $subject;
+	
+	/**
 	 *
 	 * @param string $to        	
 	 */
@@ -145,7 +159,7 @@ class MailSender {
 	
 	/**
 	 * Sets the port of the server
-	 * 
+	 *
 	 * @param int $port        	
 	 */
 	public static function setPort(int $port) {
@@ -154,44 +168,66 @@ class MailSender {
 	
 	/**
 	 * Sets the cryptography method of the server
-	 * 
+	 *
 	 * @param string $crypto        	
 	 */
 	public static function setCrypto(string $crypto) {
 		self::$crypto = $crypto;
 	}
+	
+	/**
+	 * Gets the errors if any
+	 * 
+	 * @return string
+	 */
+	public static function getError() {
+		return self::$error;
+	}
+	
+	/**
+	 * Sets the subject
+	 * @param string $subject
+	 */
+	public static function setSubject(string $subject) {
+		self::$subject = $subject;
+	}
+	
 	/**
 	 * Sends the email
 	 *
 	 * @return bool
 	 */
 	public static function sendMail(): bool {
-		$mail = new PHPMailer ();
+		$mail = new PHPMailer();
 		
 		// All fields must be informed
 		if (empty ( trim ( self::$protocol ) ) && empty ( trim ( self::$from ) ) && empty ( trim ( self::$host ) ) && empty ( trim ( self::$message ) ) && empty ( trim ( self::$to ) ) && empty ( trim ( self::$userName ) ) && empty ( trim ( self::$userPassword ) )) {
 			return false;
 		}
+		$mail->SMTPAuth = true;
 		
 		$mail->Mailer = self::$protocol;
 		$mail->setFrom ( self::$from );
 		$mail->Host = self::$host;
-		$mail->Body = self::$message;
+		$mail->msgHTML( self::$message );
 		$mail->addAddress ( self::$to );
 		
 		$mail->Username = self::$userName; // usuário SMTP
 		$mail->Password = self::$userPassword; // senha SMTP
-		$mail->SMTPSecure = 'tls'; // Habilita encriptação TLS, SSL também é aceito
-		$mail->Port = 587;
+		$mail->SMTPSecure = self::$crypto; // Habilita encriptação TLS, SSL também é aceito
+		$mail->Port = self::$port;
+		$mail->Subject = self::$subject;
 		
 		if ($mail->send ()) {
 			$mail->clearAddresses ();
 			$mail->clearAttachments ();
 			return true;
 		}
-		
+		self::$error = $mail->ErrorInfo;
 		$mail->clearAddresses ();
 		$mail->clearAttachments ();
 		return false;
 	}
+
+	
 }
