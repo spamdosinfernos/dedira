@@ -19,9 +19,12 @@ function addAnotherField(fieldId){
 <link rel="stylesheet" type="text/css"	href="./pages/userSignUp/css/css.css">
 </head>
 <body>
+	<!-- BEGIN: message -->
+	<p><em>{message}</em></p>
+	<!-- END: message -->
+	<!-- BEGIN: dataEditing -->
 	<form action="index.php?page={nextPage}" method="post">
 		<p><em>{message}</em></p>
-
 		<label>*{lblLogin}</label> <input placeholder="{lblLogin}" type="text" name="login">
 		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password">
 		
@@ -59,6 +62,7 @@ function addAnotherField(fieldId){
 		<br><br> 
 		<input type="submit" value={sendText}>
 	</form>
+	<!-- END: dataEditing -->
 </body>
 </html>
 <!-- END: main -->

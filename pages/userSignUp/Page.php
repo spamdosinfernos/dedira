@@ -43,8 +43,11 @@ class Page implements \IPage {
 		$gotVars = $httpRequest->getGetRequest ();
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::MAIN_PAGE_NAME;
 		
+		// Default message
+		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
+		
 		if (! $this->checkMandatoryFields ()) {
-			$this->showGui ( $nextPage );
+			$this->showEditionGui ( $nextPage );
 			return;
 		}
 		
@@ -52,13 +55,12 @@ class Page implements \IPage {
 		$authenticator = new \Authenticator ();
 		$user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
 		
-		// Default message
-		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
-		
 		// If it does not exists create a new one
 		if (is_null ( $user )) {
 			if ($this->saveNewUser ()) {
 				$this->xTemplate->assign ( "message", __ ( "User created a mail was sended to your mail box in order to confirm your account." ) );
+				$this->showMessageGui ();
+				return;
 			} else {
 				$this->xTemplate->assign ( "message", __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
@@ -66,12 +68,23 @@ class Page implements \IPage {
 			// Otherwise just updates
 			if ($this->updateUser ( $user )) {
 				$this->xTemplate->assign ( "message", __ ( "User updated!" ) );
+				$this->showMessageGui ();
+				return;
 			} else {
 				$this->xTemplate->assign ( "message", __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
 		
-		$this->showGui ( $nextPage );
+		$this->showEditionGui ( $nextPage );
+	}
+	
+	/**
+	 * Shows the message GUI
+	 */
+	private function showMessageGui() {
+		$this->xTemplate->parse ( "main.message" );
+		$this->xTemplate->parse ( "main" );
+		$this->xTemplate->out ( "main" );
 	}
 	
 	/**
@@ -152,7 +165,7 @@ class Page implements \IPage {
 		
 		return false;
 	}
-	private function showGui(string $nextPage) {
+	private function showEditionGui(string $nextPage) {
 		$this->xTemplate->assign ( "tittle", __ ( "User sign up" ) );
 		$this->xTemplate->assign ( "lblActive", __ ( "Active user" ) );
 		$this->xTemplate->assign ( "lblLogin", __ ( "Login" ) );
@@ -174,19 +187,20 @@ class Page implements \IPage {
 		
 		$this->xTemplate->assign ( "sexText", __ ( "Irrelevant" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_IRRELEVANT );
-		$this->xTemplate->parse ( "main.comboSex" );
+		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
 		$this->xTemplate->assign ( "sexText", __ ( "Both" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_BOTH );
-		$this->xTemplate->parse ( "main.comboSex" );
+		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
 		$this->xTemplate->assign ( "sexText", __ ( "Female" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_FEMALE );
-		$this->xTemplate->parse ( "main.comboSex" );
+		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
 		$this->xTemplate->assign ( "sexText", __ ( "Male" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_MALE );
-		$this->xTemplate->parse ( "main.comboSex" );
+		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
 		
 		$this->xTemplate->assign ( "nextPage", $nextPage );
 		
+		$this->xTemplate->parse ( "main.dataEditing" );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );
 	}
