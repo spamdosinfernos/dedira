@@ -35,7 +35,7 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const MAIL_PASSWORD = "password";
+	const MAIL_PASSWORD = "tatu7172";
 	
 	/**
 	 * Default email protocol
@@ -49,7 +49,7 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	const MAIL_USERNAME = "mail@gmail.com";
+	const MAIL_USERNAME = "ensismoebius@gmail.com";
 	
 	/**
 	 * Default email when sending something using email
