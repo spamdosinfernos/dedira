@@ -103,9 +103,11 @@ class Page implements \IPage {
 	 * @return string - email which receives the confirmation
 	 */
 	private function sendMail(): string {
-		
-		// TODO use a template?
-		$message = __ ( "<html><body><p><a href='%s?page=userSignUp&_id=%s'>Click here to confirm your account</a></body></html>" );
+		$mailTemplate = new \TemplateLoader ( Conf::getMailTemplate () );
+		$mailTemplate->assign ( "hostAddress", Conf::HOST_ADDRESS );
+		$mailTemplate->assign ( "userId", $this->user->get_id () );
+		$mailTemplate->assign ( "message", __ ( "Click here to confirm your account" ) );
+		$mailTemplate->parse ( "main" );
 		
 		\MailSender::setSubject ( __ ( "Confirmation mail" ) );
 		\MailSender::setFrom ( Conf::MAIL );
@@ -115,7 +117,7 @@ class Page implements \IPage {
 		\MailSender::setProtocol ( Conf::MAIL_PROTOCOL );
 		\MailSender::setUserName ( Conf::MAIL_USERNAME );
 		\MailSender::setUserPassword ( Conf::MAIL_PASSWORD );
-		\MailSender::setMessage ( sprintf ( $message, Conf::HOST_ADDRESS, $this->user->get_id () ) );
+		\MailSender::setMessage ( $mailTemplate->text ( "main" ) );
 		
 		// Tries to send the confirmation to all mails, stops when succeed
 		foreach ( $this->user->getArrEmail () as $userMail ) {

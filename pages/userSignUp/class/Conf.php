@@ -7,5 +7,9 @@ final class Conf extends \Configuration {
 	public static function getTemplate() {
 		return __DIR__ . "/../template/template.html";
 	}
+	
+	public static function getMailTemplate() {
+		return __DIR__ . "/../template/mailTemplate.html";
+	}
 }
 ?>

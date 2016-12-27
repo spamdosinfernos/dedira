@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-27 02:26-0200\n"
-"PO-Revision-Date: 2016-12-27 02:26-0200\n"
+"POT-Creation-Date: 2016-12-27 02:56-0200\n"
+"PO-Revision-Date: 2016-12-27 02:57-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -50,90 +50,92 @@ msgstr ""
 "Falha ao atualizar! Lembre-se: Todos os campos marcados com * são "
 "obrigatórios"
 
-#: Page.php:107
+#: Page.php:109
+msgid "Click here to confirm your account"
+msgstr "Clique aqui para confirmar seu cadastro"
+
+#: Page.php:112
 msgid "Confirmation mail"
 msgstr "E-mail de confirmação"
 
-#: Page.php:109
-#, php-format
-msgid ""
-"<html><body><p><a href='%s?page=userSignUp&_id=%s'>Click here to confirm "
-"your account</a></body></html>"
-msgstr ""
-"<html><body><p><a href='%s?page=userSignUp&_id=%s'>Clique aqui para "
-"confirmar seu cadastro</a></body></html>"
-
-#: Page.php:240
+#: Page.php:241
 msgid "User sign up"
 msgstr "Cadastro"
 
-#: Page.php:241
+#: Page.php:242
 msgid "Active user"
 msgstr "Cadastro ativo"
 
-#: Page.php:242
+#: Page.php:243
 msgid "Login"
 msgstr "Login"
 
-#: Page.php:243
+#: Page.php:244
 msgid "Password"
 msgstr "Senha"
 
-#: Page.php:244
+#: Page.php:245
 msgid "Name"
 msgstr "Nome"
 
-#: Page.php:245
+#: Page.php:246
 msgid "Last name"
 msgstr "Último nome"
 
-#: Page.php:247
+#: Page.php:248
 msgid "Birth day"
 msgstr "Dia de nascimento"
 
-#: Page.php:248
+#: Page.php:249
 msgid "Birth month"
 msgstr "Mês de nascimento"
 
-#: Page.php:249
+#: Page.php:250
 msgid "Birth year"
 msgstr "Ano de nascimento"
 
-#: Page.php:250
+#: Page.php:251
 msgid "Birthdate"
 msgstr "Data de nascimento"
 
-#: Page.php:252
+#: Page.php:253
 msgid "Email (going to be used for validation)"
 msgstr "E-mail (será usado para validar seu cadastro)"
 
-#: Page.php:253
+#: Page.php:254
 msgid "Telephone"
 msgstr "Telefone"
 
-#: Page.php:255
+#: Page.php:256
 msgid "Send"
 msgstr "Enviar"
 
-#: Page.php:257
+#: Page.php:258
 msgid "Sex"
 msgstr "Sexo"
 
-#: Page.php:259
+#: Page.php:260
 msgid "Irrelevant"
 msgstr "Irrelevante"
 
-#: Page.php:262
+#: Page.php:263
 msgid "Both"
 msgstr "Ambos"
 
-#: Page.php:265
+#: Page.php:266
 msgid "Female"
 msgstr "Fêmea"
 
-#: Page.php:268
+#: Page.php:269
 msgid "Male"
 msgstr "Macho"
+
+#~ msgid ""
+#~ "<html><body><p><a href='%s?page=userSignUp&_id=%s'>Click here to confirm "
+#~ "your account</a></body></html>"
+#~ msgstr ""
+#~ "<html><body><p><a href='%s?page=userSignUp&_id=%s'>Clique aqui para "
+#~ "confirmar seu cadastro</a></body></html>"
 
 #~ msgid ""
 #~ "<html><body><p><a href='%s?page=userSignUp&_id=%u'>Click here to confirm "
