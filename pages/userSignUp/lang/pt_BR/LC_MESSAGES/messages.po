@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-27 02:56-0200\n"
-"PO-Revision-Date: 2016-12-27 02:57-0200\n"
+"POT-Creation-Date: 2016-12-27 13:42-0200\n"
+"PO-Revision-Date: 2016-12-27 13:43-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -16,17 +16,26 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: Page.php\n"
 
-#: Page.php:56
+#: Page.php:63
 msgid "All fields marked with * are mandatory"
 msgstr "Todos os campos marcados com * são obrigatórios"
 
-#: Page.php:75
+#: Page.php:69
+#, php-format
+msgid "User %s activated!"
+msgstr "O login %s foi ativado!"
+
+#: Page.php:74
+msgid "Theres no such user on database!"
+msgstr "Não existe nenhum cadastro que corresponda a sua requisição!"
+
+#: Page.php:98
 msgid "None of your mail account is valid! Try another mail address!"
 msgstr ""
 "Nenhuma das suas contas de e-mail parece válida. Tente outro endereço de e-"
 "mail."
 
-#: Page.php:80
+#: Page.php:103
 msgid ""
 "User created! a mail was sended to your mail box in order to confirm your "
 "account: "
@@ -34,99 +43,99 @@ msgstr ""
 "Cadastro feito com sucesso um e-mail foi mandado para você, acesse a "
 "mensagem e siga as instruções de confirmação: "
 
-#: Page.php:84
+#: Page.php:107
 msgid "Fail to create a new user! Remeber: All fields with * are mandatory!"
 msgstr ""
 "Falha ao cadastrar! Lembre-se: Todos os campos marcados com * são "
 "obrigatórios"
 
-#: Page.php:89
+#: Page.php:112
 msgid "User updated!"
 msgstr "Cadastro atualizado"
 
-#: Page.php:93
+#: Page.php:116
 msgid "Fail to update user! Remeber: All fields with * are mandatory!"
 msgstr ""
 "Falha ao atualizar! Lembre-se: Todos os campos marcados com * são "
 "obrigatórios"
 
-#: Page.php:109
+#: Page.php:132
 msgid "Click here to confirm your account"
 msgstr "Clique aqui para confirmar seu cadastro"
 
-#: Page.php:112
+#: Page.php:135
 msgid "Confirmation mail"
 msgstr "E-mail de confirmação"
 
-#: Page.php:241
+#: Page.php:313
 msgid "User sign up"
 msgstr "Cadastro"
 
-#: Page.php:242
+#: Page.php:314
 msgid "Active user"
 msgstr "Cadastro ativo"
 
-#: Page.php:243
+#: Page.php:315
 msgid "Login"
 msgstr "Login"
 
-#: Page.php:244
+#: Page.php:316
 msgid "Password"
 msgstr "Senha"
 
-#: Page.php:245
+#: Page.php:317
 msgid "Name"
 msgstr "Nome"
 
-#: Page.php:246
+#: Page.php:318
 msgid "Last name"
 msgstr "Último nome"
 
-#: Page.php:248
+#: Page.php:320
 msgid "Birth day"
 msgstr "Dia de nascimento"
 
-#: Page.php:249
+#: Page.php:321
 msgid "Birth month"
 msgstr "Mês de nascimento"
 
-#: Page.php:250
+#: Page.php:322
 msgid "Birth year"
 msgstr "Ano de nascimento"
 
-#: Page.php:251
+#: Page.php:323
 msgid "Birthdate"
 msgstr "Data de nascimento"
 
-#: Page.php:253
+#: Page.php:325
 msgid "Email (going to be used for validation)"
 msgstr "E-mail (será usado para validar seu cadastro)"
 
-#: Page.php:254
+#: Page.php:326
 msgid "Telephone"
 msgstr "Telefone"
 
-#: Page.php:256
+#: Page.php:328
 msgid "Send"
 msgstr "Enviar"
 
-#: Page.php:258
+#: Page.php:330
 msgid "Sex"
 msgstr "Sexo"
 
-#: Page.php:260
+#: Page.php:332
 msgid "Irrelevant"
 msgstr "Irrelevante"
 
-#: Page.php:263
+#: Page.php:335
 msgid "Both"
 msgstr "Ambos"
 
-#: Page.php:266
+#: Page.php:338
 msgid "Female"
 msgstr "Fêmea"
 
-#: Page.php:269
+#: Page.php:341
 msgid "Male"
 msgstr "Macho"
 

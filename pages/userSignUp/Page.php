@@ -33,17 +33,24 @@ class Page implements \IPage {
 	 * @var \User
 	 */
 	protected $user;
+	
+	/**
+	 * Stores the http requests
+	 *
+	 * @var HttpRequest
+	 */
+	protected $httpRequest;
 	public function __construct() {
 		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
+		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();
 	}
 	
 	/**
-	 * Handles authentication request If the authenticantion is successful keep executing the system
-	 * otherwise show the authentication screen
+	 * Handles requests
 	 *
-	 * @return void|boolean
+	 * @return void
 	 */
 	public function handleRequest() {
 		
@@ -55,15 +62,31 @@ class Page implements \IPage {
 		// Default message
 		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
 		
-		if (! $this->checkMandatoryFields ()) {
+		// If it is just a user confimation request, activate the user and stops
+		// otherwise warns that theres is not such user and stops
+		if ($this->isUserConfirmationRequest ()) {
+			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
+				$this->xTemplate->assign ( "message", sprintf ( __ ( "User %s activated!" ), $this->user->getLogin() ) );
+				$this->showMessageGui ();
+				return;
+			}
+			
+			$this->xTemplate->assign ( "message", __ ( "Theres no such user on database!" ) );
+			$this->showMessageGui ();
+			return;
+		}
+		
+		// If nothing was posted so we just show the form and stops
+		if (! $this->isUserDataPosted ()) {
 			$this->showEditionGui ( $nextPage );
 			return;
 		}
 		
-		// Gets the user id
+		// Gets the autheticated user if any
 		$authenticator = new \Authenticator ();
 		$this->user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
 		
+		// Here we create or updates the user data
 		// If it does not exists create a new one
 		if (is_null ( $this->user )) {
 			if ($this->saveNewUser ()) {
@@ -197,6 +220,46 @@ class Page implements \IPage {
 	}
 	
 	/**
+	 * Activates a user
+	 *
+	 * @return bool
+	 */
+	private function activateUser(string $userId): bool {
+		$cond = new \DatabaseConditions ();
+		$cond->addCondition ( \DatabaseConditions::AND, "_id", $userId );
+		
+		// Retrieves the user
+		$query = new \DatabaseQuery ();
+		$query->setObject ( new \User () );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_GET );
+		$query->setConditions ( $cond );
+		
+		if (! \Database::execute ( $query )) {
+			return false;
+		}
+		
+		$res = \Database::getResults ();
+		if (! $res->first ()) {
+			return false;
+		}
+		
+		$this->user = $res->getRetrivedObject ();
+		
+		// Updates the user
+		$this->user->setActive ( true );
+		$query = new \DatabaseQuery ();
+		$query->setObject ( $this->user );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
+		$query->setConditions ( $cond );
+		
+		if (! \Database::execute ( $query )) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Creates a user object using previous data or not
 	 *
 	 * @param \User $user        	
@@ -226,12 +289,21 @@ class Page implements \IPage {
 		
 		return $user;
 	}
-	private function checkMandatoryFields(): bool {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
+	private function isUserDataPosted(): bool {
+		$postedVars = $this->httpRequest->getPostRequest ();
 		
-		// Check mandatory fields
+		// Check mandatory data
 		if (isset ( $postedVars ["login"] ) && isset ( $postedVars ["password"] ) && isset ( $postedVars ["name"] ) && isset ( $postedVars ["lastName"] ) && isset ( $postedVars ["birthDate"] ) && isset ( $postedVars ["arrEmail"] )) {
+			return true;
+		}
+		
+		return false;
+	}
+	private function isUserConfirmationRequest(): bool {
+		$gotVars = $this->httpRequest->getGetRequest ();
+		
+		// Check mandatory data
+		if (isset ( $gotVars ["_id"] )) {
 			return true;
 		}
 		
