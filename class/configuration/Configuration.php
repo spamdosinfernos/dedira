@@ -10,9 +10,64 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
  */
 class Configuration {
 	
+	/**
+	 * The host address
+	 * @var string
+	 */
+	const HOST_ADDRESS = "http://localhost/MiliSystem";
+	
+	/**
+	 * Default cryptography when sending something using email
+	 *
+	 * @var string
+	 */
+	const MAIL_CRYPTO = "tls";
+	
+	/**
+	 * Default server port
+	 *
+	 * @var int
+	 */
+	const MAIL_PORT = 587;
+	
+	/**
+	 * Default password when sending something using email
+	 *
+	 * @var string
+	 */
+	const MAIL_PASSWORD = "password";
+	
+	/**
+	 * Default email protocol
+	 *
+	 * @var string
+	 */
+	const SYSTEM_PROTOCOL = "smtp";
+	
+	/**
+	 * Default username when sending something using email
+	 *
+	 * @var string
+	 */
+	const MAIL_USERNAME = "mail@server.com";
+	
+	/**
+	 * Default email when sending something using email
+	 *
+	 * @var string
+	 */
+	const MAIL_SERVER = "smtp.server.com";
+	
+	/**
+	 * Default email when sending something
+	 *
+	 * @var string
+	 */
+	const MAIL = "libertas@libertas.org";
 	
 	/**
 	 * Default name for translantions file
+	 *
 	 * @var string
 	 */
 	const LOCALE_DIR_NAME = "lang";
@@ -33,6 +88,7 @@ class Configuration {
 	
 	/**
 	 * The file name for the page
+	 *
 	 * @var string
 	 */
 	const PAGE_VAR_NAME = "page";

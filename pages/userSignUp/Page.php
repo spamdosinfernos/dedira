@@ -6,6 +6,7 @@ require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
+require_once __DIR__ . '/../../class/protocols/mail/MailSender.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
@@ -24,6 +25,13 @@ class Page implements \IPage {
 	 * @var XTemplate
 	 */
 	protected $xTemplate;
+	
+	/**
+	 * Stores the user
+	 *
+	 * @var \User
+	 */
+	protected $user;
 	public function __construct() {
 		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
@@ -53,12 +61,22 @@ class Page implements \IPage {
 		
 		// Gets the user id
 		$authenticator = new \Authenticator ();
-		$user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
+		$this->user = $authenticator->isAuthenticated () ? $authenticator->getAutenticatedEntity () : null;
 		
 		// If it does not exists create a new one
-		if (is_null ( $user )) {
+		if (is_null ( $this->user )) {
 			if ($this->saveNewUser ()) {
-				$this->xTemplate->assign ( "message", __ ( "User created a mail was sended to your mail box in order to confirm your account." ) );
+				
+				$email = $this->sendMail ();
+				
+				if (empty ( $email )) {
+					$this->deleteUser ();
+					$this->xTemplate->assign ( "message", __ ( "None of your mail account is valid! Try another mail address!" ) );
+					$this->showEditionGui ( $nextPage );
+					return;
+				}
+				
+				$this->xTemplate->assign ( "message", __ ( "User created! a mail was sended to your mail box in order to confirm your account: " . $email ) );
 				$this->showMessageGui ();
 				return;
 			} else {
@@ -66,7 +84,7 @@ class Page implements \IPage {
 			}
 		} else {
 			// Otherwise just updates
-			if ($this->updateUser ( $user )) {
+			if ($this->updateUser ( $this->user )) {
 				$this->xTemplate->assign ( "message", __ ( "User updated!" ) );
 				$this->showMessageGui ();
 				return;
@@ -76,6 +94,36 @@ class Page implements \IPage {
 		}
 		
 		$this->showEditionGui ( $nextPage );
+	}
+	
+	/**
+	 * Sends an confirmation mail to user
+	 *
+	 * @return string - email which receives the confirmation
+	 */
+	private function sendMail(): bool {
+		
+		$message = __ ( "<html><body><p><a href='%s?page=userSignUp&_id=%u'>Click here to confirm your account</a></body></html>" );
+		
+		\MailSender::setFrom ( Conf::MAIL );
+		\MailSender::setPort ( Conf::MAIL_PORT );
+		\MailSender::setHost ( Conf::MAIL_SERVER );
+		\MailSender::setCrypto ( Conf::MAIL_CRYPTO );
+		\MailSender::setProtocol ( Conf::SYSTEM_PROTOCOL );
+		\MailSender::setUserName ( Conf::MAIL_USERNAME );
+		\MailSender::setUserPassword ( Conf::MAIL_PASSWORD );
+		\MailSender::setMessage ( printf($message, Conf::HOST_ADDRESS, $this->user->get_id()) );
+		
+		// Tries to send the confirmation to all mails, stops when succeed
+		foreach ( $this->user->getArrEmail () as $userMail ) {
+			\MailSender::setTo ( $userMail );
+			if (\MailSender::sendMail ()) {
+				return $userMail;
+			}
+		}
+		
+		// All fails!!
+		return "";
 	}
 	
 	/**
@@ -114,13 +162,29 @@ class Page implements \IPage {
 	 * @return bool
 	 */
 	private function saveNewUser(): bool {
-		$user = $this->createUserObject ();
+		$this->user = $this->createUserObject ();
 		
 		// Inserting object
 		$query = new \DatabaseQuery ();
-		$query->setObject ( $user );
+		$query->setObject ( $this->user );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
+		return \Database::execute ( $query );
+	}
+	
+	/**
+	 * Deletes a user
+	 *
+	 * @return bool
+	 */
+	private function deleteUser(): bool {
+		$cond = new \DatabaseConditions ();
+		$cond->addCondition ( \DatabaseConditions::AND, "_id", $this->user->get_id () );
+		
+		$query = new \DatabaseQuery ();
+		$query->setObject ( $this->user );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_ERASE );
+		$query->setConditions ( $cond );
 		return \Database::execute ( $query );
 	}
 	
