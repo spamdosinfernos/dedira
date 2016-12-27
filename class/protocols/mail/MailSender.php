@@ -8,6 +8,12 @@ require_once __DIR__ . '/../../../lib/php-mailer/PHPMailerAutoload.php';
 class MailSender {
 	
 	/**
+	 * The charset of the message
+	 * @var string
+	 */
+	private static $charset;
+	
+	/**
 	 * Error messages if any
 	 *
 	 * @var string
@@ -193,6 +199,14 @@ class MailSender {
 	}
 	
 	/**
+	 * Sets the charset
+	 * @param string $charset
+	 */
+	public static function setCharset($charset) {
+		self::$charset = $charset;
+	}
+	
+	/**
 	 * Sends the email
 	 *
 	 * @return bool
@@ -217,6 +231,7 @@ class MailSender {
 		$mail->SMTPSecure = self::$crypto; // Habilita encriptação TLS, SSL também é aceito
 		$mail->Port = self::$port;
 		$mail->Subject = self::$subject;
+		$mail->CharSet = self::$charset;
 		
 		if ($mail->send ()) {
 			$mail->clearAddresses ();
@@ -228,6 +243,8 @@ class MailSender {
 		$mail->clearAttachments ();
 		return false;
 	}
+
+	
 
 	
 }

@@ -11,6 +11,12 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
 class Configuration {
 	
 	/**
+	 * System default charset
+	 * @var string
+	 */
+	const CHARSET = "UTF-8";
+	
+	/**
 	 * The host address
 	 * @var string
 	 */

@@ -66,7 +66,7 @@ class Page implements \IPage {
 		// otherwise warns that theres is not such user and stops
 		if ($this->isUserConfirmationRequest ()) {
 			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
-				$this->xTemplate->assign ( "message", sprintf ( __ ( "User %s activated!" ), $this->user->getLogin() ) );
+				$this->xTemplate->assign ( "message", sprintf ( __ ( "User %s activated!" ), $this->user->getLogin () ) );
 				$this->showMessageGui ();
 				return;
 			}
@@ -135,6 +135,7 @@ class Page implements \IPage {
 		\MailSender::setSubject ( __ ( "Confirmation mail" ) );
 		\MailSender::setFrom ( Conf::MAIL );
 		\MailSender::setPort ( Conf::MAIL_PORT );
+		\MailSender::setCharset ( Conf::CHARSET );
 		\MailSender::setHost ( Conf::MAIL_SERVER );
 		\MailSender::setCrypto ( Conf::MAIL_CRYPTO );
 		\MailSender::setProtocol ( Conf::MAIL_PROTOCOL );
