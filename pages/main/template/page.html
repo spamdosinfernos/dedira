@@ -1,28 +1,29 @@
 <!-- BEGIN: main -->
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<!-- BEGIN: css -->
-<link rel="stylesheet" type="text/css" href="{cssPath}">
-<!-- END: css -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{title}</title>
+	<link rel="stylesheet" type="text/css" href="./lib/purecss/base-min.css">
+	<link rel="stylesheet" type="text/css" href="./lib/purecss/pure-min.css">
+	<link rel="stylesheet" type="text/css" href="./lib/uijs/side-menu.css">
 </head>
-<body>
-	<header>{wellcomeMessage} {userName}</header>
-	<menu>
+<body id="layout">
+	<!-- Menu toggle -->
+    <a href="#menu" id="menuLink" class="menu-link">
+        <!-- Hamburger icon -->
+        <span></span>
+    </a>
+	<menu id="menu" class="pure-menu-list">
 		<!-- BEGIN: menu -->
-		<menuitem><a href="{menuAddress}">{menuText}<sup>{updatesAmount}</sup></a></menuitem>
+		<menuitem class="pure-menu-item"><a target="content" href="{menuAddress}" class="pure-menu-link">{menuText}<sup>{updatesAmount}</a></menuitem>
 		<!-- END: menu -->
 	</menu>
-	<section>
-		<!-- BEGIN: article -->
-		<article>
-			<header> {title} </header>
-			{article}
-		</article>
-		<!-- END: article -->
+	
+	<section id="main">
+		  <iframe name="content" src="" width="99%" height = "99%" allowfullscreen></iframe>
 	</section>
+	<script src="./lib/uijs/ui.js"></script>
 </body>
 </html>
 <!-- END: main -->

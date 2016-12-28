@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-26 02:16-0200\n"
-"PO-Revision-Date: 2016-12-26 16:57-0200\n"
+"POT-Creation-Date: 2016-12-28 15:52-0200\n"
+"PO-Revision-Date: 2016-12-28 15:53-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -16,9 +16,33 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: Page.php\n"
 
-#: Page.php:23
+#: Page.php:26
 msgid "Hello"
 msgstr "Olá"
+
+#: Page.php:47
+msgid "Suggestions"
+msgstr "Sugestões"
+
+#: Page.php:53
+msgid "Rate"
+msgstr "Avalie"
+
+#: Page.php:59
+msgid "Vote"
+msgstr "Vote"
+
+#: Page.php:65
+msgid "Ranking"
+msgstr "Ranking"
+
+#: Page.php:71
+msgid "Rules"
+msgstr "Regras"
+
+#: Page.php:77
+msgid "Priorities map"
+msgstr "Mapa de prioridades"
 
 #~ msgid "My example page!!!!!!!!!!<br>"
 #~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
