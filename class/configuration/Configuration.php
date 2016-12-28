@@ -155,6 +155,12 @@ class Configuration {
 	 */
 	const DATE_FORMAT = "Y-m-d H:i:s";
 	
+	
+	/**
+	 * Path to default css files
+	 */
+	const CSS_PATH = "./lib/purecss/";
+	
 	/**
 	 * Indica o caminho do diretório raiz do sistema
 	 *

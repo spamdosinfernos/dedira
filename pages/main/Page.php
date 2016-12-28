@@ -35,8 +35,8 @@ class Page implements \IPage {
 		return true;
 	}
 	public function createMenu() {
-		$this->createSuggestionsMenuEntry ();
 		$this->createPrioritiesMapMenuEntry();
+		$this->createSuggestionsMenuEntry ();
 		$this->createRankingMenuEntry();
 		$this->createRateMenuEntry();
 		$this->createRulesMenuEntry();
