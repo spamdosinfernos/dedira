@@ -84,6 +84,8 @@ class Page implements \IPage {
 	private function showGui(string $nextPage, bool $failToAuthenticate = false) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
 		$this->xTemplate->assign ( "signUpMessage", __("Or signup!") );
+		$this->xTemplate->assign ( "login", __("E-mail or login") );
+		$this->xTemplate->assign ( "password", __("Password") );
 		$this->xTemplate->assign ( "nextPage", $nextPage );
 		$this->xTemplate->parse ( "main" );
 		$this->xTemplate->out ( "main" );

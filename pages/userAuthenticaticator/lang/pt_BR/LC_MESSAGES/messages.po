@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2016-12-26 02:48-0200\n"
-"PO-Revision-Date: 2016-12-26 02:48-0200\n"
+"POT-Creation-Date: 2016-12-28 18:51-0200\n"
+"PO-Revision-Date: 2016-12-28 18:51-0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -24,13 +24,24 @@ msgstr "Algo de muito errado aconteceu: Falha ao carregar módulo principal!"
 msgid "Or signup!"
 msgstr "Ou se cadastre!"
 
-#: Page.php:92
+#: Page.php:87
+msgid "E-mail or login"
+msgstr "E-mail ou login"
+
+#: Page.php:88
+msgid "Password"
+msgstr "Senha"
+
+#: Page.php:94
 msgid "Login or password incorrect, or your account are inactive"
 msgstr "Login ou senha incorretos, ou sua conta pode estar inativa"
 
-#: Page.php:92
+#: Page.php:94
 msgid "Please, type your login and password"
 msgstr "Por favor, digite login e senha"
+
+#~ msgid "Login"
+#~ msgstr "Login ou email"
 
 #~ msgid "Hello"
 #~ msgstr "Olá"

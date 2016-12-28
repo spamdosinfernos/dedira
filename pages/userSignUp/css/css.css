@@ -1,22 +1,19 @@
 @CHARSET "UTF-8";
-
-em{
-	color: red;
-	font-weight: bolder;
+body {
+	background-color: cadetblue;
 }
 
-input {
-	width: 96%;
-	float right;
-}
-
-label, select{
-	width: 96%;
-	float: left;
-}
-
-form{
-	max-width: 400px;
-	margin-right: auto;
+form {
+	margin-top: 1em;
 	margin-left: auto;
+	margin-right: auto;
+	border-style: none;
+	background-color: blue;
+	padding: 1em;
+	border-radius: 10px;
 }
+
+form>a,p,label{
+	color: white;
+}
+

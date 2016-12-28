@@ -5,9 +5,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<!-- BEGIN: css -->
-<link rel="stylesheet" type="text/css" href="{cssPath}">
-<!-- END: css -->
+<link rel="stylesheet" type="text/css" href="./lib/purecss/base-min.css">
+<link rel="stylesheet" type="text/css" href="./lib/purecss/pure-min.css">
+<link rel="stylesheet" type="text/css" href="./lib/purecss/forms-min.css">
+<link rel="stylesheet" type="text/css" href="./lib/purecss/grids-responsive-min.css">
 <script type="text/javascript">
 var content = [];
 
@@ -27,31 +28,44 @@ function addAnotherField(fieldId){
 	<p><em>{message}</em></p>
 	<!-- END: message -->
 	<!-- BEGIN: dataEditing -->
-	<form action="index.php?page={nextPage}" method="post">
+	<form action="index.php?page={nextPage}" method="post" class="pure-form pure-form-aligned">
 		<p><em>{message}</em></p>
-		<label>*{lblLogin}</label> <input placeholder="{lblLogin}" type="text" name="login">
-		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password">
 		
-		<label>*{lblName}</label><input placeholder="{lblName}" type="text" name="name">
-		<label>*{lblLastName}</label><input placeholder="{lblLastName}" type="text" name="lastName">
+		<div class="pure-control-group">
+		<label>*{lblLogin}</label><input placeholder="{lblLogin}" type="text" name="login" required="required">
+		</div>
 		
+		<div class="pure-control-group">
+		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password"  required="required">
+		</div>
+		
+		<div class="pure-control-group">
+		<label>*{lblName}</label><input placeholder="{lblName}" type="text" name="name" required="required">
+		</div>
+		
+		<div class="pure-control-group">
+		<label>*{lblLastName}</label><input placeholder="{lblLastName}" type="text" name="lastName" required="required">
+		</div>
+		
+		<div class="pure-control-group">
 		<label>{lblSex}</label>
 		<select name="sex">
 			<!-- BEGIN: comboSex -->
 			<option value="{sexValue}">{sexText}</option>
 			<!-- END: comboSex -->
 		</select>
+		</div>
 		
-		<fieldset>
+		<fieldset class="pure-group">
 			<legend><label>*{lblBirthDate}</label></legend> 
-			<label>*{lblBirthday}</label> <input placeholder="{lblBirthday}" type="number" name="birthDate[day]">
-			<label>*{lblBirthmonth}</label> <input placeholder="{lblBirthmonth}" type="number" name="birthDate[month]">
-			<label>*{lblBirthyear}</label> <input placeholder="{lblBirthyear}" type="number" name="birthDate[year]">
+			<input placeholder="{lblBirthday}" type="number" name="birthDate[day]" required="required">
+			<input placeholder="{lblBirthmonth}" type="number" name="birthDate[month]" required="required">
+			<input placeholder="{lblBirthyear}" type="number" name="birthDate[year]" required="required">
 		</fieldset>
 		<fieldset>
 			<legend><label>*{lblEmail}</label></legend> 
 			<div id="{lblEmail}">
-			<input placeholder="*{lblEmail}" type="email" name="arrEmail[]">
+			<input placeholder="*{lblEmail}" type="email" name="arrEmail[]" required="required">
 			<button onclick="addAnotherField('{lblEmail}')">+</button><br/>
 			</div>
 		</fieldset>
@@ -64,7 +78,7 @@ function addAnotherField(fieldId){
 			</div>
 		</fieldset>
 		<br><br> 
-		<input type="submit" value={sendText}>
+		<input type="submit" value={sendText} class="pure-button pure-button-primary">
 	</form>
 	<!-- END: dataEditing -->
 </body>
