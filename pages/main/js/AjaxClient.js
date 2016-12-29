@@ -1,7 +1,7 @@
 /**
- * 
+ * An ajax client that do post and gets automatilly
  */
-function PageLoader() {
+function AjaxClient() {
 	
 	/* properties */
 	this.xhttp = null;
@@ -34,17 +34,4 @@ function PageLoader() {
 		this.xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 		this.xhttp.send(request);
 	}
-
 }
-
-function test() {
-	if (this.readyState == 4 && this.status == 200) {
-		alert(this.responseText);
-		// document.getElementById("demo").innerHTML = this.responseText;
-	}
-};
-
-var req = "login=root&password=1234";
-var a = new PageLoader();
-a.sendRequestTo("http://localhost/_index.php", test, req );
-

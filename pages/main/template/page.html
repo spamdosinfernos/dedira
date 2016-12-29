@@ -16,15 +16,16 @@
     </a>
 	<menu id="menu" class="pure-menu-list">
 		<!-- BEGIN: menu -->
-		<menuitem class="pure-menu-item"><a target="content" href="{menuAddress}" class="pure-menu-link">{menuText}<sup>{updatesAmount}</a></menuitem>
+		<menuitem class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="request('{menuAddress}')">{menuText}<sup>{updatesAmount}</a></menuitem>
 		<!-- END: menu -->
 	</menu>
 	
 	<section id="main">
-		  <iframe name="content" src="" width="99%" height = "99%" allowfullscreen></iframe>
+		  <!-- <iframe name="content" src="" width="99%" height = "99%" allowfullscreen></iframe>  -->
 	</section>
 	<script src="./lib/uijs/ui.js"></script>
-	<script src="./pages/main/js/pageLoader.js"></script>
+	<script src="./pages/main/js/AjaxClient.js"></script>
+	<script src="./pages/main/js/PageLoader.js"></script>
 </body>
 </html>
 <!-- END: main -->

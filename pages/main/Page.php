@@ -42,6 +42,7 @@ class Page implements \IPage {
 		$this->createRulesMenuEntry();
 		$this->createSuggestionsMenuEntry();
 		$this->createVoteMenuEntry();
+		$this->test();
 	}
 	public function createSuggestionsMenuEntry() {
 		$this->xTemplate->assign ( "menuText", __ ( "Suggestions" ) );
@@ -76,6 +77,12 @@ class Page implements \IPage {
 	public function createPrioritiesMapMenuEntry() {
 		$this->xTemplate->assign ( "menuText", __ ( "Priorities map" ) );
 		$this->xTemplate->assign ( "menuAddress", "index.php?page=prioritiesMap" );
+		$this->xTemplate->assign ( "updatesAmount", 0 );
+		$this->xTemplate->parse ( "main.menu" );
+	}
+	public function test() {
+		$this->xTemplate->assign ( "menuText", __ ( "test" ) );
+		$this->xTemplate->assign ( "menuAddress", "index.php?page=userSignUp" );
 		$this->xTemplate->assign ( "updatesAmount", 0 );
 		$this->xTemplate->parse ( "main.menu" );
 	}
