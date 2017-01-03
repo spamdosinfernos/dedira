@@ -81,6 +81,18 @@ function addAnotherField(fieldId){
 		<input type="submit" value={sendText} class="pure-button pure-button-primary">
 	</form>
 	<!-- END: dataEditing -->
+	<script src="./js/AjaxClient.js"></script>
+	<script src="./js/FormOverwriter.js"></script>
+	
+	<script type="text/javascript">
+	var loadPage = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			document.getElementsByTagName("form")[0].innerHTML = this.responseText;
+		}
+	}
+	
+	new FormOverwriter(loadPage);
+	</script>
 </body>
 </html>
 <!-- END: main -->

@@ -6,7 +6,7 @@ function AjaxClient() {
 	/* properties */
 	this.xhttp = null;
 
-	/* constructors */
+	/* top constructors */
 	if (window.XMLHttpRequest) {
 		// code for modern browsers
 		this.xhttp = new XMLHttpRequest();
@@ -16,12 +16,12 @@ function AjaxClient() {
 	}
 
 	/* methods */
-	this.sendRequestTo = function sendRequestTo(url, callbackFunction,  request = null, cached = false ) {
+	this.sendRequestTo = function sendRequestTo(url, callbackFunction, request = null, cached = false ) {
 		this.xhttp.onreadystatechange = callbackFunction;
 		
 		// if no cache add a unique ID
 		if(!cached){
-			url += url.indexOf("?") > 0 ? "&rnd=Math.random()" : "?rnd=Math.random()";
+			url += url.indexOf("?") > 0 ? "&rnd=" + Math.random() : "?rnd=" + Math.random();
 		}
 		
 		// Requests are made only by POST
