@@ -163,8 +163,7 @@ class Page implements \IPage {
 	 */
 	private function showMessageGui() {
 		$this->xTemplate->parse ( "main.message" );
-		$this->xTemplate->parse ( "main" );
-		$this->xTemplate->out ( "main" );
+		$this->xTemplate->out ( "main.message" );
 	}
 	
 	/**

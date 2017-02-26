@@ -71,7 +71,7 @@ class Page implements \IPage {
 	public function createRulesMenuEntry() {
 		$this->xTemplate->assign ( "menuText", __ ( "Rules" ) );
 		$this->xTemplate->assign ( "menuAddress", "index.php?page=rules" );
-		$this->xTemplate->assign ( "updatesAmount", "" );
+		$this->xTemplate->assign ( "updatesAmount", 0 );
 		$this->xTemplate->parse ( "main.menu" );
 	}
 	public function createPrioritiesMapMenuEntry() {
