@@ -12,7 +12,7 @@ require_once __DIR__ . '/../abstractions/AStorableObject.php';
  * @author ensismoebius
  *        
  */
-class CostUnit extends AStorableObject {
+class CostsCenter extends AStorableObject {
 	
 	/**
 	 *

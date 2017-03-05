@@ -120,5 +120,5 @@ class EntityToHtmlForm {
 		$this->templateConf->out_file ( "main", __DIR__ . "/result/class/Conf.php" );
 	}
 }
-new EntityToHtmlForm ( "Rule", __DIR__ . '/../../class/database/POPOs/rule/Rule.php', "André Furlan", "rulesEditor" );
+new EntityToHtmlForm ( "CostsCenter", __DIR__ . '/../../class/database/POPOs/costs/CostsCenter.php', "André Furlan", "CostsCenterEditor" );
 ?>
