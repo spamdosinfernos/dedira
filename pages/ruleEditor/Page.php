@@ -5,7 +5,7 @@ namespace rulesEditor;
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/page/IPage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
-require_once __DIR__ . '/../../class/database/POPOs/user/Rule.php';
+require_once __DIR__ . '/../../class/database/POPOs/rule/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 /**
