@@ -1,4 +1,4 @@
 <?php
-// Chama o controlador-mor do sistema, mais nada
+// Call the main controler
 require_once __DIR__ . '/controller/Controller.php';
 ?>
