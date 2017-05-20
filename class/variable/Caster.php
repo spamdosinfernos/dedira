@@ -19,10 +19,17 @@ class Caster {
 		$destinationReflection = new ReflectionObject ( $destination );
 		
 		// Get the properties to be translated
-		$sourceProperties = $sourceReflection->getProperties ();
+		$sourceProperties = $destinationReflection->getProperties ();
+		
+		Caster::retriveParentProperties ( $destinationReflection, $sourceProperties );
 		
 		// translate!
 		foreach ( $sourceProperties as $sourceProperty ) {
+			
+			// Only updates the existing properties in the destiny
+			if (! $sourceReflection->hasProperty ( $sourceProperty->getName () )) {
+				continue;
+			}
 			
 			// Get the name and values to be translated
 			$sourceProperty->setAccessible ( true );
@@ -42,15 +49,27 @@ class Caster {
 			}
 			
 			// Set the corresponding values
-			if ($destinationReflection->hasProperty ( $name )) {
-				$propDest = $destinationReflection->getProperty ( $name );
-				$propDest->setAccessible ( true );
-				$propDest->setValue ( $destination, $value );
-			}
+			$propDest = $destinationReflection->getProperty ( $name );
+			$propDest->setAccessible ( true );
+			$propDest->setValue ( $destination, $value );
 		}
 		
 		// Returns the translated object!
 		return $destination;
+	}
+	
+	/**
+	 * Retrieve all parent properties if any
+	 * @param ReflectionClass $obj
+	 * @param array $sourceProperties - the list of properties to add
+	 */
+	private static function retriveParentProperties(ReflectionClass $obj, array &$sourceProperties) {
+		if ($parentClass = $obj->getParentClass ()) {
+			
+			//Recursing
+			Caster::retriveParentProperties ( $parentClass, $sourceProperties );
+			$sourceProperties = array_merge ( $parentClass->getProperties (), $sourceProperties );
+		}
 	}
 	
 	/**

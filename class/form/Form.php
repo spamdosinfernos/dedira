@@ -2,8 +2,9 @@
 require_once __DIR__ . '/../variable/Caster.php';
 /**
  * Retrives fields from form and return a desired object from it
+ * 
  * @author ensismoebius
- *
+ *        
  */
 final class Form {
 	
@@ -169,6 +170,7 @@ final class Form {
 
 require_once __DIR__ . '/../database/POPOs/user/User.php';
 
+$_GET ["_id"] = "12fb34";
 $_GET ["login"] = "André";
 $_GET ["password"] = "123445667";
 $_GET ["arrEmail"] [] = "teste@teste.com.br";
@@ -181,7 +183,8 @@ $f->setTargetObject ( new User () );
 $f->registerField ( "login", FILTER_SANITIZE_STRING );
 $f->registerField ( "password", FILTER_SANITIZE_STRING );
 $f->registerField ( "arrEmail", FILTER_SANITIZE_EMAIL );
+$f->registerField ( "_id", FILTER_SANITIZE_STRING );
 $f->generateObject ();
-print_r ($f->getObject());
+print_r ( $f->getObject () );
 ?>
 
