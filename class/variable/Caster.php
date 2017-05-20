@@ -46,8 +46,6 @@ class Caster {
 				$propDest = $destinationReflection->getProperty ( $name );
 				$propDest->setAccessible ( true );
 				$propDest->setValue ( $destination, $value );
-			} else {
-				$destination->$name = $value;
 			}
 		}
 		
