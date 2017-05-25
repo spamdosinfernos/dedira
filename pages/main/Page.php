@@ -17,7 +17,7 @@ class Page implements \IPage {
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::LOCALE_DIR_NAME );
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::localeDirName );
 		
 		$auth = new \Authenticator ();
 		$user = $auth->getAutenticatedEntity ();

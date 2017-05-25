@@ -79,7 +79,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 				1000 );
 		
 		try {
-			$url = Configuration::DB_HOST_PROTOCOL . "://" . Configuration::DB_HOST_ADDRESS . ":" . Configuration::DB_PORT;
+			$url = Configuration::databaseHostProtocol . "://" . Configuration::databaseHostAddress . ":" . Configuration::databasePort;
 			$this->connection = new MongoDB\Driver\Manager ( $url );
 			
 			// Execute an connection test, it may or may not throw an exception
@@ -177,7 +177,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		] );
 		
 		// Retrieves the name of collection to insert
-		$collection = Configuration::DB_NAME . "." . $this->entityName;
+		$collection = Configuration::databaseNAme . "." . $this->entityName;
 		
 		try {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
@@ -204,7 +204,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		$bulk->insert ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
 		
 		// Retrieves the name of collection to insert
-		$collection = Configuration::DB_NAME . "." . $this->entityName;
+		$collection = Configuration::databaseNAme . "." . $this->entityName;
 		
 		try {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
@@ -229,7 +229,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		) );
 		
 		// Retrieves the name of collection to insert
-		$collection = Configuration::DB_NAME . "." . $this->entityName;
+		$collection = Configuration::databaseNAme . "." . $this->entityName;
 		
 		try {
 			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
@@ -252,7 +252,7 @@ class MongoDatabaseDriver implements IDatabaseDriver {
 		
 		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
 		try {
-			$cursor = $this->connection->executeQuery ( Configuration::DB_NAME . "." . $this->entityName, $query );
+			$cursor = $this->connection->executeQuery ( Configuration::databaseNAme . "." . $this->entityName, $query );
 			
 			// Stores all matched documents
 			$result = array ();

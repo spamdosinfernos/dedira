@@ -10,156 +10,156 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
  */
 class Configuration {
 	
+	
+
+	public static function init(): boolean {
+		parse_ini_file ( "./config.ini", true );
+	}
+	
 	/**
 	 * System default charset
+	 * 
 	 * @var string
 	 */
-	const CHARSET = "UTF-8";
+	private static $charset = "UTF-8";
 	
 	/**
 	 * The host address
+	 * 
 	 * @var string
 	 */
-	const HOST_ADDRESS = "http://localhost/MiliSystem";
+	public static $hostAddress = "http://localhost/MiliSystem";
 	
 	/**
 	 * Default cryptography when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_CRYPTO = "tls";
+	public static $mailCryptography = "tls";
 	
 	/**
 	 * Default server port
 	 *
 	 * @var int
 	 */
-	const MAIL_PORT = 587;
+	public static $mailPort = 587;
 	
 	/**
 	 * Default password when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_PASSWORD = "tatu7172";
+	public static $mailPassword = "tatu7172";
 	
 	/**
 	 * Default email protocol
 	 *
 	 * @var string
 	 */
-	const MAIL_PROTOCOL = "smtp";
+	public static $mailProtocol = "smtp";
 	
 	/**
 	 * Default username when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_USERNAME = "ensismoebius@gmail.com";
+	public static $mailUsername = "ensismoebius@gmail.com";
 	
 	/**
 	 * Default email when sending something using email
 	 *
 	 * @var string
 	 */
-	const MAIL_SERVER = "smtp.gmail.com";
+	public static $mailServer = "smtp.gmail.com";
 	
 	/**
 	 * Default email when sending something
 	 *
 	 * @var string
 	 */
-	const MAIL = "libertas@libertas.org";
+	public static $mailFrom = "libertas@libertas.org";
 	
 	/**
 	 * Default name for translantions file
 	 *
 	 * @var string
 	 */
-	const LOCALE_DIR_NAME = "lang";
+	public static $localeDirName = "lang";
 	
 	/**
 	 * The main page name, it should be loaded after authentication
 	 *
 	 * @var string
 	 */
-	const MAIN_PAGE_NAME = "main";
+	public static $mainPageName = "main";
 	
 	/**
 	 * The authentication page name, it should be loaded before authentication
 	 *
 	 * @var string
 	 */
-	const AUTHENTICATION_PAGE_NAME = "userAuthenticaticator";
+	public static $authenticationPageName = "userAuthenticaticator";
 	
 	/**
 	 * The file name for the page
 	 *
 	 * @var string
 	 */
-	const PAGE_VAR_NAME = "page";
-	
-	/**
-	 * Extensão padrão do arquivo executável no sistema
-	 *
-	 * @var string
-	 */
-	const DEFAULT_EXECUTABLE_FILE_EXTENSION = "php";
+	public static $pageFileName = "page";
 	
 	/**
 	 * Usuário do banco de dados
 	 *
 	 * @var string
 	 */
-	const DB_LOGIN = "root";
+	public static $databaseUsername = "root";
 	
 	/**
 	 * Senha do banco de dados
 	 *
 	 * @var string
 	 */
-	const DB_PASSWORD = "1234";
+	public static $databasePassword = "1234";
 	
 	/**
 	 * Nome dabBase de dados
 	 *
 	 * @var string
 	 */
-	const DB_NAME = "milisystem";
+	public static $databaseNAme = "milisystem";
 	
 	/**
 	 * Endereço do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	const DB_HOST_ADDRESS = "127.0.0.1";
+	public static $databaseHostAddress = "127.0.0.1";
 	
 	/**
 	 * Protocolo do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	const DB_HOST_PROTOCOL = "mongodb";
+	public static $databaseHostProtocol = "mongodb";
 	
 	/**
 	 * Porta np servidor de banco de dados
 	 *
 	 * @var int
 	 */
-	const DB_PORT = 27017;
+	public static $databasePort = 27017;
 	
 	/**
 	 * Formato da data no arquivo de log
 	 *
 	 * @var string
 	 */
-	const DATE_FORMAT = "Y-m-d H:i:s";
-	
+	public static $dateformat = "Y-m-d H:i:s";
 	
 	/**
 	 * Path to default css files
 	 */
-	const CSS_PATH = "./lib/purecss/";
+	public static $cssPath = "./lib/purecss/";
 	
 	/**
 	 * Indica o caminho do diretório raiz do sistema

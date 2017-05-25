@@ -107,7 +107,7 @@ class Timeline {
 		
 		foreach ( $arrEventsData as $eventData ) {
 			$event = new Event ();
-			$event->setDataBaseName ( Configuration::DB_NAME );
+			$event->setDataBaseName ( Configuration::databaseNAme );
 			$event->setId ( $eventId );
 			$event = $event->load ();
 			

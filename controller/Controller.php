@@ -14,7 +14,7 @@ require_once __DIR__ . '/../class/internationalization/i18n.php';
  */
 class Controller {
 	public function __construct() {
-		I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Configuration::LOCALE_DIR_NAME );
+		I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Configuration::localeDirName );
 		
 		Shield::treatTextFromForm ();
 		Database::init ( Configuration::getDatabaseDriver () );
