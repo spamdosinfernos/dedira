@@ -14,6 +14,18 @@ class Configuration {
 
 	public static function init(): boolean {
 		parse_ini_file ( "./config.ini", true );
+		
+		
+		$reflection = new ReflectionClass($this);
+		
+		$statics = $reflection->getStaticProperties();
+		
+		foreach ($statics as $staticProperty) {
+			$staticProperty-
+		}
+		
+		
+		
 	}
 	
 	/**
