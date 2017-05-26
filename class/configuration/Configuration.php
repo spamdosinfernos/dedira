@@ -195,7 +195,7 @@ class Configuration {
 	
 	/**
 	 * Indicates where the pages of the system are
-	 * 
+	 *
 	 * @var string
 	 */
 	public static $pagesDirectory;
@@ -228,7 +228,7 @@ class Configuration {
 		$statics = $reflection->getStaticProperties ();
 		foreach ( $statics as $name => $value ) {
 			
-			// If there is no such entry in ini file ignore
+			// If there is no such entry in ini file just ignore and go on
 			if (! isset ( $arrValues [$name] ))
 				continue;
 				// Sets the value from ini file
