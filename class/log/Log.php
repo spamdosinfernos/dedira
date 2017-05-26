@@ -15,15 +15,26 @@ class Log {
 	 * Saves the log entries
 	 */
 	public static function recordEntry(string $message, $exposeMessage = false) {
-		if (trim ( $message ) == "") return;
+		if (trim ( $message ) == "")
+			return;
 		
-		if ($exposeMessage) echo $message;
+		if ($exposeMessage)
+			echo $message;
 		
 		$message = date ( "Y-m-d H:i:s" ) . self::FIELD_SEPARATOR . $message . PHP_EOL;
 		
 		try {
-			if (is_file ( $logFilePath )) {
-				file_put_contents ( Configuration::$logFilePath, $message . self::generateCallTrace (), FILE_APPEND );
+			if (! is_file ( Configuration::$logFilePath )) {
+				echo "Fatal error!! The log system are not working! Theres no log file.";
+				exit ( 3 );
+			}
+			
+			// Tryes to write the log file
+			$ret = file_put_contents ( Configuration::$logFilePath, $message . self::generateCallTrace (), FILE_APPEND );
+			
+			if (is_bool ( $ret )) {
+				echo "Fatal error!! The log system are not working! Theres no permission to write the log file.";
+				exit ( 3 );
 			}
 		} catch ( Exception $error ) {
 			echo "Fatal error!! The log system are not working!";
