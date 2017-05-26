@@ -19,12 +19,11 @@ class Log {
 		
 		if ($exposeMessage) echo $message;
 		
-		$logFilePath = Configuration::getLogFilePath ();
 		$message = date ( "Y-m-d H:i:s" ) . self::FIELD_SEPARATOR . $message . PHP_EOL;
 		
 		try {
 			if (is_file ( $logFilePath )) {
-				file_put_contents ( $logFilePath, $message . self::generateCallTrace (), FILE_APPEND );
+				file_put_contents ( Configuration::$logFilePath, $message . self::generateCallTrace (), FILE_APPEND );
 			}
 		} catch ( Exception $error ) {
 			echo "Fatal error!! The log system are not working!";

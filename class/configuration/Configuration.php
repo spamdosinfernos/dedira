@@ -3,7 +3,7 @@ require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
 require_once __DIR__ . '/../database/drivers/mongodb/MongoDb.php';
 
 /**
- * Centraliza todas as configurações do sistema
+ * Centralizes all system configurations
  *
  * @author André Furlan
  *        
@@ -102,53 +102,46 @@ class Configuration {
 	public static $pageParameterName;
 	
 	/**
-	 * Usuário do banco de dados
+	 * Database user
 	 *
 	 * @var string
 	 */
 	public static $databaseUsername;
 	
 	/**
-	 * Senha do banco de dados
-	 *
+	 * Database password
+	 * 
 	 * @var string
 	 */
 	public static $databasePassword;
 	
 	/**
-	 * Nome dabBase de dados
+	 * Database name
 	 *
 	 * @var string
 	 */
 	public static $databaseNAme;
 	
 	/**
-	 * Endereço do servidor de banco de dados
+	 * Database address
 	 *
 	 * @var string
 	 */
 	public static $databaseHostAddress;
 	
 	/**
-	 * Protocolo do servidor de banco de dados
+	 * Database communication protocol
 	 *
 	 * @var string
 	 */
 	public static $databaseHostProtocol;
 	
 	/**
-	 * Porta np servidor de banco de dados
+	 * Database communication port
 	 *
 	 * @var int
 	 */
 	public static $databasePort;
-	
-	/**
-	 * Formato da data no arquivo de log
-	 *
-	 * @var string
-	 */
-	public static $dateformat;
 	
 	/**
 	 * Path to default css files
@@ -156,7 +149,7 @@ class Configuration {
 	public static $cssPath;
 	
 	/**
-	 * Indica o caminho do diretório raiz do sistema
+	 * Site root directory path
 	 *
 	 * @var string
 	 */
@@ -170,10 +163,7 @@ class Configuration {
 	public static $defaultPageFileName;
 	
 	/**
-	 * O caminho do log não pode ser modificado pois os erros podem
-	 * ocorrer e devem ser gravados antes mesmo das configurações
-	 * serem carregadas, sendo assim o caminho do log é definido
-	 * no próprio código
+	 * The path of the log file
 	 *
 	 * @var string
 	 */
@@ -210,7 +200,7 @@ class Configuration {
 		
 		// Auto generated configuration values
 		self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
-		self::$logFilePath = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
+		self::$logFilePath = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "system.log";
 		self::$pagesDirectory = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "pages";
 		
 		// This is mandatory! if some error occurs stop all!
@@ -237,7 +227,7 @@ class Configuration {
 	}
 	
 	/**
-	 * Loads the database driver (this is mandatory)
+	 * Loads the database driver (this is mandatory!)
 	 *
 	 * @param string $driver        	
 	 * @return IDatabaseDriver
