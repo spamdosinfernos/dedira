@@ -9,35 +9,32 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
  *        
  */
 class Configuration {
-	
-	
-
-	public static function init(): boolean {
-		parse_ini_file ( "./config.ini", true );
+	public static function init() {
+		$arrValues = parse_ini_file ( "./class/configuration/config.ini", true );
 		
+		$reflection = new ReflectionClass ( "Configuration" );
 		
-		$reflection = new ReflectionClass($this);
+		$statics = $reflection->getStaticProperties ();
 		
-		$statics = $reflection->getStaticProperties();
-		
-		foreach ($statics as $staticProperty) {
-			$staticProperty-
+		foreach ( $statics as $name => $value ) {
+			
+			if (! isset ( $arrValues [$name] ))
+				continue;
+			
+			$reflection->setStaticPropertyValue ( $name, $arrValues [$name] );
 		}
-		
-		
-		
 	}
 	
 	/**
 	 * System default charset
-	 * 
+	 *
 	 * @var string
 	 */
-	private static $charset = "UTF-8";
+	public static $charset = "UTF-86";
 	
 	/**
 	 * The host address
-	 * 
+	 *
 	 * @var string
 	 */
 	public static $hostAddress = "http://localhost/MiliSystem";
@@ -178,7 +175,8 @@ class Configuration {
 	 *
 	 * @var string
 	 */
-	private static $systemRootDirectory;
+	public static $systemRootDirectory;
+	
 	static public function getSystemRootDirectory() {
 		if (self::$systemRootDirectory == "") {
 			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );

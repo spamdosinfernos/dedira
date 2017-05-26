@@ -28,7 +28,7 @@ class Page implements \IPage{
 	 */
 	protected $xTemplate;
 	public function __construct() {
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::localeDirName );
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate() );
 		$this->handleRequest ();
 	}
@@ -73,7 +73,7 @@ class Page implements \IPage{
 	}
 	private function showGui(bool $validated) {
 		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $validated ) );
-		$this->xTemplate->assign ( "nextPage", \Configuration::mainPageName );
+		$this->xTemplate->assign ( "nextPage", \Configuration::$mainPageName );
 		$this->xTemplate->assign ( "mainPageMessage", __( "Login" ) );
 		
 		// Mostra o bloco principal

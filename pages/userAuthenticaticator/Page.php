@@ -29,7 +29,7 @@ class Page implements \IPage {
 	protected $xTemplate;
 	public function __construct() {
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::localeDirName );
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
 		$this->handleRequest ();
 	}
 	
@@ -51,7 +51,7 @@ class Page implements \IPage {
 		
 		// get the page user wants
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::mainPageName;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
@@ -67,7 +67,7 @@ class Page implements \IPage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \Page::loadPage ( \Configuration::mainPageName );
+			$ret = \Page::loadPage ( \Configuration::$mainPageName );
 			
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {

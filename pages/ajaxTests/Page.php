@@ -41,7 +41,7 @@ class Page implements \IPage {
 	 */
 	protected $httpRequest;
 	public function __construct() {
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::localeDirName );
+		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();
@@ -57,7 +57,7 @@ class Page implements \IPage {
 		// get the page user wants
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::mainPageName;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
 		// Default message
 		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
@@ -127,20 +127,20 @@ class Page implements \IPage {
 	 */
 	private function sendMail(): string {
 		$mailTemplate = new \TemplateLoader ( Conf::getMailTemplate () );
-		$mailTemplate->assign ( "hostAddress", Conf::hostAddress );
+		$mailTemplate->assign ( "hostAddress", Conf::$hostAddress );
 		$mailTemplate->assign ( "userId", $this->user->get_id () );
 		$mailTemplate->assign ( "message", __ ( "Click here to confirm your account" ) );
 		$mailTemplate->parse ( "main" );
 		
 		\MailSender::setSubject ( __ ( "Confirmation mail" ) );
-		\MailSender::setFrom ( Conf::mailFrom );
-		\MailSender::setPort ( Conf::mailPort );
-		\MailSender::setCharset ( Conf::charset );
-		\MailSender::setHost ( Conf::mailServer );
-		\MailSender::setCrypto ( Conf::mailCryptography );
-		\MailSender::setProtocol ( Conf::mailProtocol );
-		\MailSender::setUserName ( Conf::mailUsername );
-		\MailSender::setUserPassword ( Conf::mailPassword );
+		\MailSender::setFrom ( Conf::$mailFrom );
+		\MailSender::setPort ( Conf::$mailPort );
+		\MailSender::setCharset ( Conf::$charset );
+		\MailSender::setHost ( Conf::$mailServer );
+		\MailSender::setCrypto ( Conf::$mailCryptography );
+		\MailSender::setProtocol ( Conf::$mailProtocol );
+		\MailSender::setUserName ( Conf::$mailUsername );
+		\MailSender::setUserPassword ( Conf::$mailPassword );
 		\MailSender::setMessage ( $mailTemplate->text ( "main" ) );
 		
 		// Tries to send the confirmation to all mails, stops when succeed

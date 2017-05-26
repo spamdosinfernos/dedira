@@ -28,7 +28,7 @@ class Page implements \IPage {
 	protected $httpRequest;
 	
 	public function __construct() {
-		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::localeDirName );
+		\I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->reflector = new \ReflectionClass ( "{class}" );
 		$this->httpRequest = new \HttpRequest ();
@@ -44,7 +44,7 @@ class Page implements \IPage {
 		// get the next page
 		$httpRequest = new \HttpRequest ();
 		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::mainPageName;
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
 		if (! $this->checkMandatoryFields ()) {
 			$this->showGui ( $nextPage );

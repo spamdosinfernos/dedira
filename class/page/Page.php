@@ -48,8 +48,8 @@ class Page {
 		
 		// If no page id was informed retrieves one
 		if (is_null ( $pageId )) {
-			$pageId = $httpRequest->getGetRequest ( Configuration::pageFileName ) [0];
-			$pageId = is_null ( $pageId ) ? Configuration::mainPageName : $pageId;
+			$pageId = $httpRequest->getGetRequest ( Configuration::$pageFileName ) [0];
+			$pageId = is_null ( $pageId ) ? Configuration::$mainPageName : $pageId;
 		}
 		
 		// Checks if the page exists if no returns the authentication page
@@ -65,7 +65,7 @@ class Page {
 			if ($auth->isAuthenticated ()) return $pageId;
 			
 			// Otherwise go to authentication page
-			$pageId = Configuration::authenticationPageName;
+			$pageId = Configuration::$authenticationPageName;
 			require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::getPageFileName ();
 		}
 		
