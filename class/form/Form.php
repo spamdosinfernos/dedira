@@ -167,24 +167,5 @@ final class Form {
 		return $this->generatedObject;
 	}
 }
-
-require_once __DIR__ . '/../database/POPOs/user/User.php';
-
-$_GET ["_id"] = "12fb34";
-$_GET ["login"] = "André";
-$_GET ["password"] = "123445667";
-$_GET ["arrEmail"] [] = "teste@teste.com.br";
-$_GET ["arrEmail"] [] = "uga@teste.com.br";
-$_GET ["arrEmail"] [] = "ytateste.com.br";
-
-$f = new Form ();
-$f->setType ( Form::TYPE_GET );
-$f->setTargetObject ( new User () );
-$f->registerField ( "login", FILTER_SANITIZE_STRING );
-$f->registerField ( "password", FILTER_SANITIZE_STRING );
-$f->registerField ( "arrEmail", FILTER_SANITIZE_EMAIL );
-$f->registerField ( "_id", FILTER_SANITIZE_STRING );
-$f->generateObject ();
-print_r ( $f->getObject () );
 ?>
 
