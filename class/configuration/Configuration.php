@@ -164,7 +164,7 @@ class Configuration {
 	
 	/**
 	 * The default file name for new pages on system
-	 * 
+	 *
 	 * @var string
 	 */
 	public static $defaultPageFileName;
@@ -181,7 +181,7 @@ class Configuration {
 	
 	/**
 	 * The default system language
-	 * 
+	 *
 	 * @var string
 	 */
 	public static $defaultLanguage;
@@ -194,6 +194,13 @@ class Configuration {
 	public static $databaseDriver;
 	
 	/**
+	 * Indicates where the pages of the system are
+	 * 
+	 * @var string
+	 */
+	public static $pagesDirectory;
+	
+	/**
 	 * Initializes the configuration of the system
 	 */
 	public static function init() {
@@ -202,8 +209,9 @@ class Configuration {
 		$arrValues = parse_ini_file ( "./class/configuration/config.ini", true );
 		
 		// Auto generated configuration values
-		self::$logFilePath = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
 		self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
+		self::$logFilePath = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
+		self::$pagesDirectory = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "pages";
 		
 		// This is mandatory! if some error occurs stop all!
 		self::loadDataBaseDriver ( $arrValues ["databaseDriverName"] );
@@ -236,7 +244,7 @@ class Configuration {
 	 */
 	private static function loadDataBaseDriver(string $driver) {
 		try {
-			require_once self::$systemRootDirectory . DIRECTORY_SEPARATOR . "class" . DIRECTORY_SEPARATOR . "database" . DIRECTORY_SEPARATOR . "drivers" . DIRECTORY_SEPARATOR . strtolower($driver) . DIRECTORY_SEPARATOR . $driver . ".php";
+			require_once self::$systemRootDirectory . DIRECTORY_SEPARATOR . "class" . DIRECTORY_SEPARATOR . "database" . DIRECTORY_SEPARATOR . "drivers" . DIRECTORY_SEPARATOR . strtolower ( $driver ) . DIRECTORY_SEPARATOR . $driver . ".php";
 			$class = new ReflectionClass ( $driver );
 			self::$databaseDriver = $class->newInstance ( null );
 		} catch ( Exception $e ) {

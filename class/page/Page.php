@@ -53,20 +53,21 @@ class Page {
 		}
 		
 		// Checks if the page exists if no returns the authentication page
-		if (! file_exists ( Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName () )) {
+		if (! file_exists ( Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName )) {
 			throw new Exception ( "There is not such page" );
 		}
 		
 		// Loads the page
-		require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName ();
+		require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		
 		// If page is restricted we have to be authenticated to use it
 		if (self::isRestrictedPage ( $pageId )) {
-			if ($auth->isAuthenticated ()) return $pageId;
-			
-			// Otherwise go to authentication page
+			if ($auth->isAuthenticated ())
+				return $pageId;
+				
+				// Otherwise go to authentication page
 			$pageId = Configuration::$authenticationPageName;
-			require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName ();
+			require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		}
 		
 		// If is a open page, just open it

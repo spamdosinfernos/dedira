@@ -45,7 +45,7 @@ final class Lang_AEvent {
 				Event::ERROR_2 => "ERROR_2 - To inform if an event is private or not use a boolean value" 
 		);
 		
-		return $languages [Configuration::getSelectedLanguage ()] [$descriptionId];
+		return $languages [Configuration::$defaultLanguage] [$descriptionId];
 	}
 }
 ?>

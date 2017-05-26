@@ -7,7 +7,7 @@ require_once __DIR__ . '/../../class/internationalization/i18n.php';
 class Page implements \IPage{
 	public function __construct() {
 		
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
+		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		
 		echo __("My example page!!!!!!!!!!<br>");
 		

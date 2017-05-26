@@ -17,7 +17,7 @@ final class Lang_Timeline {
 				Timeline::ERROR_3 => "ERROR_3 - Final date must be informed" 
 		);
 		
-		return $languages [Configuration::getSelectedLanguage ()] [$descriptionId];
+		return $languages [Configuration::$defaultLanguage] [$descriptionId];
 	}
 }
 ?>

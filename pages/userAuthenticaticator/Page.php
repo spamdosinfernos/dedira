@@ -29,7 +29,7 @@ class Page implements \IPage {
 	protected $xTemplate;
 	public function __construct() {
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
+		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$this->handleRequest ();
 	}
 	

@@ -29,7 +29,7 @@ class Page implements \IPage {
 	 */
 	protected $httpRequest;
 	public function __construct() {
-		\I18n::init ( Conf::getSelectedLanguage (), __DIR__ . "/" . Conf::$localeDirName );
+		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->reflector = new \ReflectionClass ( "CostsCenter" );
 		$this->httpRequest = new \HttpRequest ();
