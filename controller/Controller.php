@@ -16,10 +16,10 @@ class Controller {
 	public function __construct() {
 		Configuration::init ();
 		
-		I18n::init ( Configuration::getSelectedLanguage (), __DIR__ . "/" . Configuration::$localeDirName );
+		I18n::init ( Configuration::$defaultLanguage, __DIR__ . "/" . Configuration::$localeDirName );
 		
 		Shield::treatTextFromForm ();
-		Database::init ( Configuration::getDatabaseDriver () );
+		Database::init ( Configuration::$databaseDriver );
 		
 		if (! Database::connect ()) {
 			Log::recordEntry ( __ ( "The system can't connect to database" ), true );

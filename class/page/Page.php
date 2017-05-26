@@ -48,17 +48,17 @@ class Page {
 		
 		// If no page id was informed retrieves one
 		if (is_null ( $pageId )) {
-			$pageId = $httpRequest->getGetRequest ( Configuration::$pageFileName ) [0];
+			$pageId = $httpRequest->getGetRequest ( Configuration::$pageParameterName ) [0];
 			$pageId = is_null ( $pageId ) ? Configuration::$mainPageName : $pageId;
 		}
 		
 		// Checks if the page exists if no returns the authentication page
-		if (! file_exists ( Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::getPageFileName () )) {
+		if (! file_exists ( Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName () )) {
 			throw new Exception ( "There is not such page" );
 		}
 		
 		// Loads the page
-		require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::getPageFileName ();
+		require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName ();
 		
 		// If page is restricted we have to be authenticated to use it
 		if (self::isRestrictedPage ( $pageId )) {
@@ -66,7 +66,7 @@ class Page {
 			
 			// Otherwise go to authentication page
 			$pageId = Configuration::$authenticationPageName;
-			require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::getPageFileName ();
+			require_once Configuration::getPagesDiretory () . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName ();
 		}
 		
 		// If is a open page, just open it

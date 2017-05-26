@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
-require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
+require_once __DIR__ . '/../database/drivers/mongodb/MongoDb.php';
 
 /**
  * Centraliza todas as configurações do sistema
@@ -9,166 +9,151 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDatabaseDriver.php';
  *        
  */
 class Configuration {
-	public static function init() {
-		$arrValues = parse_ini_file ( "./class/configuration/config.ini", true );
-		
-		$reflection = new ReflectionClass ( "Configuration" );
-		
-		$statics = $reflection->getStaticProperties ();
-		
-		foreach ( $statics as $name => $value ) {
-			
-			if (! isset ( $arrValues [$name] ))
-				continue;
-			
-			$reflection->setStaticPropertyValue ( $name, $arrValues [$name] );
-		}
-	}
 	
 	/**
 	 * System default charset
 	 *
 	 * @var string
 	 */
-	public static $charset = "UTF-86";
+	public static $charset;
 	
 	/**
 	 * The host address
 	 *
 	 * @var string
 	 */
-	public static $hostAddress = "http://localhost/MiliSystem";
+	public static $hostAddress;
 	
 	/**
 	 * Default cryptography when sending something using email
 	 *
 	 * @var string
 	 */
-	public static $mailCryptography = "tls";
+	public static $mailCryptography;
 	
 	/**
 	 * Default server port
 	 *
 	 * @var int
 	 */
-	public static $mailPort = 587;
+	public static $mailPort;
 	
 	/**
 	 * Default password when sending something using email
 	 *
 	 * @var string
 	 */
-	public static $mailPassword = "tatu7172";
+	public static $mailPassword;
 	
 	/**
 	 * Default email protocol
 	 *
 	 * @var string
 	 */
-	public static $mailProtocol = "smtp";
+	public static $mailProtocol;
 	
 	/**
 	 * Default username when sending something using email
 	 *
 	 * @var string
 	 */
-	public static $mailUsername = "ensismoebius@gmail.com";
+	public static $mailUsername;
 	
 	/**
 	 * Default email when sending something using email
 	 *
 	 * @var string
 	 */
-	public static $mailServer = "smtp.gmail.com";
+	public static $mailServer;
 	
 	/**
 	 * Default email when sending something
 	 *
 	 * @var string
 	 */
-	public static $mailFrom = "libertas@libertas.org";
+	public static $mailFrom;
 	
 	/**
 	 * Default name for translantions file
 	 *
 	 * @var string
 	 */
-	public static $localeDirName = "lang";
+	public static $localeDirName;
 	
 	/**
 	 * The main page name, it should be loaded after authentication
 	 *
 	 * @var string
 	 */
-	public static $mainPageName = "main";
+	public static $mainPageName;
 	
 	/**
 	 * The authentication page name, it should be loaded before authentication
 	 *
 	 * @var string
 	 */
-	public static $authenticationPageName = "userAuthenticaticator";
+	public static $authenticationPageName;
 	
 	/**
 	 * The file name for the page
 	 *
 	 * @var string
 	 */
-	public static $pageFileName = "page";
+	public static $pageParameterName;
 	
 	/**
 	 * Usuário do banco de dados
 	 *
 	 * @var string
 	 */
-	public static $databaseUsername = "root";
+	public static $databaseUsername;
 	
 	/**
 	 * Senha do banco de dados
 	 *
 	 * @var string
 	 */
-	public static $databasePassword = "1234";
+	public static $databasePassword;
 	
 	/**
 	 * Nome dabBase de dados
 	 *
 	 * @var string
 	 */
-	public static $databaseNAme = "milisystem";
+	public static $databaseNAme;
 	
 	/**
 	 * Endereço do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	public static $databaseHostAddress = "127.0.0.1";
+	public static $databaseHostAddress;
 	
 	/**
 	 * Protocolo do servidor de banco de dados
 	 *
 	 * @var string
 	 */
-	public static $databaseHostProtocol = "mongodb";
+	public static $databaseHostProtocol;
 	
 	/**
 	 * Porta np servidor de banco de dados
 	 *
 	 * @var int
 	 */
-	public static $databasePort = 27017;
+	public static $databasePort;
 	
 	/**
 	 * Formato da data no arquivo de log
 	 *
 	 * @var string
 	 */
-	public static $dateformat = "Y-m-d H:i:s";
+	public static $dateformat;
 	
 	/**
 	 * Path to default css files
 	 */
-	public static $cssPath = "./lib/purecss/";
+	public static $cssPath;
 	
 	/**
 	 * Indica o caminho do diretório raiz do sistema
@@ -177,18 +162,12 @@ class Configuration {
 	 */
 	public static $systemRootDirectory;
 	
-	static public function getSystemRootDirectory() {
-		if (self::$systemRootDirectory == "") {
-			self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
-		}
-		return self::$systemRootDirectory;
-	}
-	static public function getPageFileName() {
-		return "Page.php";
-	}
-	static public function getPagesDiretory() {
-		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "pages";
-	}
+	/**
+	 * The default file name for new pages on system
+	 * 
+	 * @var string
+	 */
+	public static $defaultPageFileName;
 	
 	/**
 	 * O caminho do log não pode ser modificado pois os erros podem
@@ -196,42 +175,74 @@ class Configuration {
 	 * serem carregadas, sendo assim o caminho do log é definido
 	 * no próprio código
 	 *
-	 * @return string
+	 * @var string
 	 */
-	static public function getLogFilePath() {
-		return self::getSystemRootDirectory () . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
-	}
+	public static $logFilePath;
 	
 	/**
-	 * Retorna o intervalo de tempo padrão que o sistema adota
-	 *
-	 * @return string - (um sinal [+ ou -] mais um número indicando a quantidade)
+	 * The default system language
+	 * 
+	 * @var string
 	 */
-	static public function getDefaultTimeInterval() {
-		return array (
-				"+1" 
-		);
-	}
-	
-	/**
-	 * Retorna o tipo intervalo de tempo padrão que o sistema adota
-	 *
-	 * @return string - (year = ano, month = mês, day = dia, hour = hora, minute = minuto, segundo = second)
-	 */
-	static public function getDefaultTimeIntervalType() {
-		return "month";
-	}
-	static public function getSelectedLanguage() {
-		return "pt_BR";
-	}
+	public static $defaultLanguage;
 	
 	/**
 	 * Returns the default database driver
 	 *
+	 * @var IDatabaseDriver
+	 */
+	public static $databaseDriver;
+	
+	/**
+	 * Initializes the configuration of the system
+	 */
+	public static function init() {
+		
+		// Read the ini file
+		$arrValues = parse_ini_file ( "./class/configuration/config.ini", true );
+		
+		// Auto generated configuration values
+		self::$logFilePath = self::$systemRootDirectory . DIRECTORY_SEPARATOR . "log" . DIRECTORY_SEPARATOR . "sistema.log";
+		self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );
+		
+		// This is mandatory! if some error occurs stop all!
+		self::loadDataBaseDriver ( $arrValues ["databaseDriverName"] );
+		
+		// Default settings (may be override)
+		self::$mainPageName = "main";
+		self::$defaultLanguage = "pt_BR";
+		self::$pageParameterName = "page";
+		self::$defaultPageFileName = "Page.php";
+		self::$authenticationPageName = "userAuthenticaticator";
+		
+		// Read and set the configurations
+		$reflection = new ReflectionClass ( "Configuration" );
+		$statics = $reflection->getStaticProperties ();
+		foreach ( $statics as $name => $value ) {
+			
+			// If there is no such entry in ini file ignore
+			if (! isset ( $arrValues [$name] ))
+				continue;
+				// Sets the value from ini file
+			$reflection->setStaticPropertyValue ( $name, $arrValues [$name] );
+		}
+	}
+	
+	/**
+	 * Loads the database driver (this is mandatory)
+	 *
+	 * @param string $driver        	
 	 * @return IDatabaseDriver
 	 */
-	static public function getDatabaseDriver(): IDatabaseDriver {
-		return new MongoDatabaseDriver ();
+	private static function loadDataBaseDriver(string $driver) {
+		try {
+			require_once self::$systemRootDirectory . DIRECTORY_SEPARATOR . "class" . DIRECTORY_SEPARATOR . "database" . DIRECTORY_SEPARATOR . "drivers" . DIRECTORY_SEPARATOR . strtolower($driver) . DIRECTORY_SEPARATOR . $driver . ".php";
+			$class = new ReflectionClass ( $driver );
+			self::$databaseDriver = $class->newInstance ( null );
+		} catch ( Exception $e ) {
+			echo Log::recordEntry ( "Fail on load the database driver!" . $e->getMessage () );
+			exit ( 2 );
+		}
 	}
 }
 ?>

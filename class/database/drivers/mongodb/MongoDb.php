@@ -16,7 +16,7 @@ require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
  *
  * @author ensismoebius
  */
-class MongoDatabaseDriver implements IDatabaseDriver {
+class MongoDb implements IDatabaseDriver {
 	
 	/**
 	 * The database connection

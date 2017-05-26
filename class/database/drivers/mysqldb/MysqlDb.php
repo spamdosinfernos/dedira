@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../configuration/Configuration.php';
  * @author ensismoebius
  *        
  */
-class MysqlDatabaseDriver implements IDatabaseDriver {
+class MysqlDb implements IDatabaseDriver {
 	
 	/**
 	 * The database connection
