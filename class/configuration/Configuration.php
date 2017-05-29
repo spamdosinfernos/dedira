@@ -1,7 +1,5 @@
 <?php
 require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
-require_once __DIR__ . '/../database/drivers/mongodb/MongoDb.php';
-
 /**
  * Centralizes all system configurations
  *
@@ -9,6 +7,12 @@ require_once __DIR__ . '/../database/drivers/mongodb/MongoDb.php';
  *        
  */
 class Configuration {
+	
+	/**
+	 * Directory files must be uploaded
+	 * @var string
+	 */
+	public static $uploadPath;
 	
 	/**
 	 * System default charset

@@ -74,7 +74,8 @@ class File {
 	public function saveAs($newFilePath) {
 		$bytesWrote = file_put_contents ( $newFilePath, $this->temporaryContents );
 		
-		if (is_bool ( $bytesWrote )) throw new Exception ( "Fail to save the file!" );
+		if (is_bool ( $bytesWrote ))
+			throw new Exception ( "Fail to save the file!" );
 		
 		$this->setCaminhoDoArquivo ( $newFilePath );
 		
@@ -123,9 +124,10 @@ class File {
 			return false;
 		}
 		
-		if (file_exists ( $filePath )) return false;
-		
-		// Se chegar até aqui beleza
+		if (file_exists ( $filePath ))
+			return false;
+			
+			// Se chegar até aqui beleza
 		return true;
 	}
 	public function getMd5() {
@@ -224,11 +226,17 @@ class File {
 	 * @param string $filePath        	
 	 * @throws Exception
 	 */
-	public function setCaminhoDoArquivo($filePath) {
-		if (is_file ( $filePath ) == FALSE) {
-			throw new Exception ( "There is not " . $filePath . " file, verify your permissions and try again." );
+	public function setCaminhoDoArquivo($filePath, bool $real = true) {
+		if ($real) {
+			
+			if (is_file ( $filePath ) == FALSE) {
+				throw new Exception ( "There is not " . $filePath . " file, verify your permissions and try again." );
+			}
+			$this->filePath = realpath ( $filePath );
+			return;
 		}
-		$this->filePath = realpath ( $filePath );
+		
+		$this->filePath = $filePath;
 	}
 	
 	/**
@@ -257,9 +265,11 @@ class File {
 			$filePathDestiny = substr ( $filePathDestiny, 0, - 1 );
 		}
 		
-		if ($this->getFileName () == "") throw new Exception ( "Empty file name!" );
+		if ($this->getFileName () == "")
+			throw new Exception ( "Empty file name!" );
 		
-		if (! $this->sender->connect ()) throw new Exception ( "Fail on stablish connection to send the file!" );
+		if (! $this->sender->connect ())
+			throw new Exception ( "Fail on stablish connection to send the file!" );
 		
 		$status = $this->sender->upload ( $this->getFilePath (), $filePathDestiny, $this->getFileName (), $callBackFunction );
 		
@@ -317,7 +327,8 @@ class File {
 		
 		$zip = new ZipArchive ();
 		try {
-			if (! ($zip->open ( $this->filePath ) === TRUE)) throw new Exception ( "Fail to open compressed file " . $this->filePath . " verify your permissions" );
+			if (! ($zip->open ( $this->filePath ) === TRUE))
+				throw new Exception ( "Fail to open compressed file " . $this->filePath . " verify your permissions" );
 			$qtdeDeArquivosNoArquivoCompactado = $zip->numFiles;
 			if ($qtdeDeArquivosNoArquivoCompactado > 1) {
 				
@@ -363,7 +374,6 @@ class File {
 		$this->filePath = $novoCaminho;
 	}
 	private function renamePersonalizado($caminhoDeDestino) {
-		
 		do {
 			copy ( $this->filePath, $caminhoDeDestino );
 		} while ( ! file_exists ( $caminhoDeDestino ) );
@@ -406,9 +416,11 @@ class File {
 			$this->unlink ( $this->filePath );
 		} while ( file_exists ( $this->filePath ) );
 		
-		if (file_exists ( $this->filePath )) throw new Exception ( "Fail on moving file, the original file was not erased: " . $this->filePath );
+		if (file_exists ( $this->filePath ))
+			throw new Exception ( "Fail on moving file, the original file was not erased: " . $this->filePath );
 		
-		if (! file_exists ( $caminhoDeDestino )) throw new Exception ( "Fail on moving file, the destiny file was not created: " . $caminhoDeDestino );
+		if (! file_exists ( $caminhoDeDestino ))
+			throw new Exception ( "Fail on moving file, the destiny file was not created: " . $caminhoDeDestino );
 		
 		$this->filePath = $caminhoDeDestino;
 	}

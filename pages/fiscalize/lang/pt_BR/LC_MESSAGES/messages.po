@@ -1,0 +1,85 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Page\n"
+"POT-Creation-Date: 2017-05-27 10:35-0300\n"
+"PO-Revision-Date: 2017-05-27 10:37-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Poedit-Basepath: ../../..\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __\n"
+"X-Poedit-SearchPath-0: Page.php\n"
+
+#: Page.php:25
+msgid "gps coordinates"
+msgstr "Coordenadas de gps"
+
+#: Page.php:26
+msgid "Type the address"
+msgstr "Digite o endereço"
+
+#: Page.php:28
+msgid "Address number"
+msgstr "Digite o numero do endereço"
+
+#: Page.php:29
+msgid "Address complement"
+msgstr "Complemento (se houver)"
+
+#: Page.php:30
+msgid "Take a picture of the wrong thing"
+msgstr "Tire um foto do que está errado"
+
+#: Page.php:31
+msgid "Problem description"
+msgstr "Descreva o problema"
+
+#: Page.php:32
+msgid "Describe how to solve the problem"
+msgstr "Descreva como resolver o problema"
+
+#: Page.php:33
+msgid "Send report"
+msgstr "Enviar relatório"
+
+#~ msgid "Hello"
+#~ msgstr "Olá"
+
+#~ msgid "Suggestions"
+#~ msgstr "Sugestões"
+
+#~ msgid "Rate"
+#~ msgstr "Avalie"
+
+#~ msgid "Vote"
+#~ msgstr "Vote"
+
+#~ msgid "Ranking"
+#~ msgstr "Ranking"
+
+#~ msgid "Rules"
+#~ msgstr "Regras"
+
+#~ msgid "Priorities map"
+#~ msgstr "Mapa de prioridades"
+
+#~ msgid "My example page!!!!!!!!!!<br>"
+#~ msgstr "Meu módulo de exemplo!!!!!!!!!!<br>"
+
+#~ msgid "Hello "
+#~ msgstr "Olá "
+
+#~ msgid "The system can't connect to database"
+#~ msgstr "O sistema não pôde conectar ao banco de dados"
+
+#~ msgid "Fail on load the page!"
+#~ msgstr "Falha ao carregar a página!"
+
+#~ msgid "Fail on load a page!"
+#~ msgstr "Falha ao carregar o pagina"

@@ -1,0 +1,23 @@
+<!-- BEGIN: main -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title}</title>
+<link rel="stylesheet" type="text/css" href="{cssPath}">
+</head>
+<body>
+	<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post">
+		<input type="text" name="coordinates" placeholder="{coordLabel}"/><br>
+		<input type="text" name="address" placeholder="{addressLabel}"/><br>
+		<input type="text" name="number" placeholder="{numberLabel}"/><br>
+		<input type="text" name="complement"  placeholder="{complementLabel}"/><br>
+		<input type="file" name="reportImage"  placeholder="{reportImageLabel}" value="{reportImageLabel}"/><br>
+		<textarea rows="5" cols="10" name="problemDescription"  placeholder="{problemLabel}"></textarea><br>
+		<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}"></textarea><br>
+		<input type="submit" value="{sendText}"/>
+	</form>
+</body>
+</html>
+<!-- END: main -->
