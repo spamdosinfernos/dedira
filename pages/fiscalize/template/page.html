@@ -18,6 +18,22 @@
 		<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}"></textarea><br>
 		<input type="submit" value="{sendText}"/>
 	</form>
+	<script>
+	function showPosition(position) {
+		document.coordinates.value = position.coords.latitude + ","
+				+ position.coords.longitude;
+	}
+	
+	function getLocation() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showPosition);
+			} else {
+				document.coordinates.value = "{noGeolocalizationSupportMessage}";
+			}
+	}
+
+	getLocation();
+	</script>
 </body>
 </html>
 <!-- END: main -->

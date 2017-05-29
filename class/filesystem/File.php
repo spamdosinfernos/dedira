@@ -224,6 +224,8 @@ class File {
 	 * Seta o caminho do arquivo
 	 *
 	 * @param string $filePath        	
+	 * @param boolean $real
+	 *        	- Specifies if its a real file or a not created one
 	 * @throws Exception
 	 */
 	public function setCaminhoDoArquivo($filePath, bool $real = true) {
