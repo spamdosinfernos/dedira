@@ -66,6 +66,12 @@ final class Form {
 	 */
 	const TYPE_POST = 1;
 	
+	// Constants for requests
+	const SUCCESS = 1;
+	const BAD_DATA = 2;
+	const NO_REQUEST_DETECTED = 3;
+	const NO_GET_OR_POST_SPECIFIED = 4;
+	
 	/**
 	 * path for file upload
 	 *
@@ -100,11 +106,37 @@ final class Form {
 	}
 	
 	/**
+	 * Informs if a request was made
+	 *
+	 * @return bool
+	 */
+	public function hasRequest(): bool {
+		switch ($this->getOrPost) {
+			case self::TYPE_GET :
+				return count ( $_GET ) > 0 ? true : false;
+				break;
+			
+			case self::TYPE_POST :
+				return count ( $_POST ) > 0 ? true : false;
+				break;
+			
+			default :
+				return false;
+		}
+	}
+	
+	/**
 	 * Generates the object from form data
 	 *
-	 * @return boolean
+	 * @return int
 	 */
-	public function generateObject() {
+	public function generateObject(): int {
+		
+		// No request detected
+		if (! $this->hasRequest ()) {
+			return self::NO_REQUEST_DETECTED;
+		}
+		
 		$dataSource = null;
 		
 		// You must set the source of data you will retrieve from
@@ -119,17 +151,17 @@ final class Form {
 				break;
 			
 			default :
-				return false;
+				return self::NO_GET_OR_POST_SPECIFIED;
 		}
 		
 		// If object is a boolean something goes wrong
 		if (is_bool ( $generatedObject )) {
-			return false;
+			return self::BAD_DATA;
 		}
 		
 		// Sets the generated object
 		$this->generatedObject = $generatedObject;
-		return true;
+		return self::SUCCESS;
 	}
 	
 	/**
@@ -161,8 +193,8 @@ final class Form {
 			foreach ( $arrFiltersAndFieldNames as $fieldName => $filterType ) {
 				
 				if ($isMandatory) {
-					// Choosing the source of the data for mandatory fields
 					
+					// Choosing the source of the data for mandatory fields
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
@@ -173,7 +205,6 @@ final class Form {
 						
 						$file = new File ();
 						$file->setCaminhoDoArquivo ( $fileDataSource [$fieldName] ['name'], false );
-						
 						$filename = $this->renameAndMoveFile ( $fileDataSource [$fieldName] ['tmp_name'], $file->getFileExtension () );
 						
 						if (is_bool ( $filename )) {
@@ -217,6 +248,11 @@ final class Form {
 				if (is_array ( $manipulatedDataSource [$fieldName] )) {
 					
 					foreach ( $manipulatedDataSource [$fieldName] as &$value ) {
+						
+						if ($isMandatory && trim ( $value ) == "") {
+							return false;
+						}
+						
 						$result = filter_var ( trim ( $value ), $filterType );
 						
 						// If result is boolean the filtering has failed
@@ -231,6 +267,9 @@ final class Form {
 					continue;
 				}
 				
+				if ($isMandatory && trim ( $manipulatedDataSource [$fieldName] ) == "") {
+					return false;
+				}
 				$result = filter_var ( trim ( $manipulatedDataSource [$fieldName] ), $filterType );
 				
 				// If result is boolean the filtering has failed

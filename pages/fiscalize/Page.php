@@ -19,40 +19,51 @@ class Page implements \IPage {
 	 *
 	 * @var XTemplate
 	 */
-	protected $xTemplate;
+	protected $template;
 	
 	/**
 	 * The logged user
-	 * 
+	 *
 	 * @var \User
 	 */
 	protected $user;
+
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$auth = new \Authenticator ();
 		$this->user = $auth->getAutenticatedEntity ();
 		
+		$this->template = new \TemplateLoader ( Conf::getTemplate () );
+		
 		$this->handleRequest ();
 		
-		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		
-		$this->xTemplate->assign ( "pageParam", Conf::$pageParameterName );
-		$this->xTemplate->assign ( "pageId", "fiscalize" );
-		
-		$this->xTemplate->assign ( "coordLabel", __ ( "gps coordinates" ) );
-		$this->xTemplate->assign ( "addressLabel", __ ( "Type the address" ) );
-		$this->xTemplate->assign ( "numberLabel", __ ( "Address number" ) );
-		$this->xTemplate->assign ( "complementLabel", __ ( "Address complement" ) );
-		$this->xTemplate->assign ( "reportImageLabel", __ ( "Take a picture of the wrong thing" ) );
-		$this->xTemplate->assign ( "problemLabel", __ ( "Problem description" ) );
-		$this->xTemplate->assign ( "solvingLabel", __ ( "Describe how to solve the problem" ) );
-		
-		$this->xTemplate->assign ( "sendText", __ ( "Send report" ) );
-		
-		$this->xTemplate->parse ( "main" );
-		$this->xTemplate->out ( "main" );
+		$this->template->assign ( "pageId", "fiscalize" );
+		$this->template->assign ( "sendText", __ ( "Send report" ) );
+		$this->template->assign ( "pageParam", Conf::$pageParameterName );
+		$this->template->parse ( "main" );
+		$this->template->out ( "main" );
 	}
-	private function handleRequest(): bool {
+	private function showMessage(string $message) {
+		$this->template->assign ( "messageLabel", $message );
+		$this->template->parse ( "main.messages" );
+	}
+	private function createForm() {
+		$this->template->assign ( "coordLabel", __ ( "gps coordinates" ) );
+		$this->template->assign ( "addressLabel", __ ( "Type the address" ) );
+		$this->template->assign ( "numberLabel", __ ( "Address number" ) );
+		$this->template->assign ( "complementLabel", __ ( "Address complement" ) );
+		$this->template->assign ( "reportImageLabel", __ ( "Take a picture of the wrong thing" ) );
+		$this->template->assign ( "problemLabel", __ ( "Problem description" ) );
+		$this->template->assign ( "solvingLabel", __ ( "Describe how to solve the problem" ) );
+	}
+	
+	/**
+	 * Handles the request if any
+	 */
+	private function handleRequest() {
 		$form = new \Form ();
 		
 		$form->setType ( \Form::TYPE_POST );
@@ -68,17 +79,29 @@ class Page implements \IPage {
 		$form->registerField ( "solvingSuggestion", FILTER_SANITIZE_STRING );
 		$form->registerField ( "problemDescription", FILTER_SANITIZE_STRING );
 		
-		if ($form->generateObject ()) {
-			$query = new \DatabaseQuery ();
-			$query->setObject ( $form->getObject () );
-			$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
-			
-			if (\Database::execute ( $query )) {
-				return true;
-			}
+		// Verifying if there is some errors
+		switch ($form->generateObject ()) {
+			case \Form::BAD_DATA :
+				$this->showMessage ( __ ( "Incorrect data! Send it again." ) );
+				return;
+			case \Form::NO_REQUEST_DETECTED :
+				$this->createForm ();
+				return;
 		}
 		
-		return false;
+		// Its ok, lets try to to record the problem on database
+		$query = new \DatabaseQuery ();
+		$query->setObject ( $form->getObject () );
+		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
+		
+		if (! \Database::execute ( $query )) {
+			$this->showMessage ( __ ( "Fail to record the problem! Try again later." ) );
+			return;
+		}
+		
+		// Yay!! Everithing worked!
+		$this->showMessage ( __ ( "Problem succefully reported!" ) );
+		$this->createForm ();
 	}
 	public static function isRestricted(): bool {
 		return true;
