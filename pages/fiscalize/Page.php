@@ -27,7 +27,7 @@ class Page implements \IPage {
 	 * @var \User
 	 */
 	protected $user;
-
+	
 	/**
 	 * Constructor
 	 */
@@ -51,12 +51,12 @@ class Page implements \IPage {
 		$this->template->parse ( "main.messages" );
 	}
 	private function createForm() {
-		$this->template->assign ( "coordLabel", __ ( "gps coordinates" ) );
+		$this->template->assign ( "coordLabel", __ ( "GPS coordinates" ) );
 		$this->template->assign ( "addressLabel", __ ( "Type the address" ) );
 		$this->template->assign ( "numberLabel", __ ( "Address number" ) );
 		$this->template->assign ( "complementLabel", __ ( "Address complement" ) );
 		$this->template->assign ( "reportImageLabel", __ ( "Take a picture of the wrong thing" ) );
-		$this->template->assign ( "problemLabel", __ ( "Problem description" ) );
+		$this->template->assign ( "problemLabel", __ ( "Problem description please be polite" ) );
 		$this->template->assign ( "solvingLabel", __ ( "Describe how to solve the problem" ) );
 	}
 	
@@ -64,13 +64,15 @@ class Page implements \IPage {
 	 * Handles the request if any
 	 */
 	private function handleRequest() {
+
+		// Creating the object generator
 		$form = new \Form ();
-		
 		$form->setType ( \Form::TYPE_POST );
 		$form->setTargetObject ( new \Problem () );
 		$form->setPathForFileUpload ( Conf::$uploadPath );
 		$form->setUploadedFilePrefix ( $this->user->get_id () );
 		
+		// Registering filds for validation
 		$form->registerField ( "number", FILTER_SANITIZE_STRING );
 		$form->registerField ( "address", FILTER_SANITIZE_STRING );
 		$form->registerField ( "complement", FILTER_SANITIZE_STRING );
@@ -89,7 +91,7 @@ class Page implements \IPage {
 				return;
 		}
 		
-		// Its ok, lets try to to record the problem on database
+		// Its ok, lets try to record the problem on database
 		$query = new \DatabaseQuery ();
 		$query->setObject ( $form->getObject () );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
@@ -100,7 +102,7 @@ class Page implements \IPage {
 		}
 		
 		// Yay!! Everithing worked!
-		$this->showMessage ( __ ( "Problem succefully reported!" ) );
+		$this->showMessage ( __ ( "Problem succefully reported! Thank you!" ) );
 		$this->createForm ();
 	}
 	public static function isRestricted(): bool {

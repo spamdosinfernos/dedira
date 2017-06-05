@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Page\n"
-"POT-Creation-Date: 2017-05-30 15:50-0300\n"
-"PO-Revision-Date: 2017-05-30 15:50-0300\n"
+"POT-Creation-Date: 2017-06-05 15:17-0300\n"
+"PO-Revision-Date: 2017-06-05 15:18-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -16,49 +16,58 @@ msgstr ""
 "X-Poedit-KeywordsList: __\n"
 "X-Poedit-SearchPath-0: Page.php\n"
 
-#: Page.php:53
-msgid "gps coordinates"
-msgstr "Coordenadas de gps"
-
-#: Page.php:54
-msgid "Type the address"
-msgstr "Digite o endereço"
-
-#: Page.php:55
-msgid "Address number"
-msgstr "Digite o numero do endereço"
-
-#: Page.php:56
-msgid "Address complement"
-msgstr "Complemento (se houver)"
-
-#: Page.php:57
-msgid "Take a picture of the wrong thing"
-msgstr "Tire um foto do que está errado"
-
-#: Page.php:58
-msgid "Problem description"
-msgstr "Descreva o problema"
-
-#: Page.php:59
-msgid "Describe how to solve the problem"
-msgstr "Descreva como resolver o problema"
-
-#: Page.php:60
+#: Page.php:44
 msgid "Send report"
 msgstr "Enviar relatório"
 
-#: Page.php:85
+#: Page.php:54
+msgid "GPS coordinates"
+msgstr "Coordenadas de GPS"
+
+#: Page.php:55
+msgid "Type the address"
+msgstr "Digite o endereço"
+
+#: Page.php:56
+msgid "Address number"
+msgstr "Digite o numero do endereço"
+
+#: Page.php:57
+msgid "Address complement"
+msgstr "Complemento (se houver)"
+
+#: Page.php:58
+msgid "Take a picture of the wrong thing"
+msgstr "Tire um foto do que está errado"
+
+#: Page.php:59
+msgid "Problem description please be polite"
+msgstr "Descreva o problema seja educada(o)"
+
+#: Page.php:60
+msgid "Describe how to solve the problem"
+msgstr "Descreva como resolver o problema"
+
+#: Page.php:87
 msgid "Incorrect data! Send it again."
 msgstr "Dados incorretos! Envie novamente."
 
-#: Page.php:98
+#: Page.php:100
 msgid "Fail to record the problem! Try again later."
 msgstr "Falha ao gravar relatório, tente novamente."
 
-#: Page.php:103
-msgid "Problem succefully reported!"
-msgstr "Problema informado com sucesso!"
+#: Page.php:105
+msgid "Problem succefully reported! Thank you!"
+msgstr "Problema informado com sucesso! Obrigado!"
+
+#~ msgid "gps coordinates"
+#~ msgstr "Coordenadas de gps"
+
+#~ msgid "Problem description"
+#~ msgstr "Descreva o problema"
+
+#~ msgid "Problem succefully reported!"
+#~ msgstr "Problema informado com sucesso!"
 
 #~ msgid "Suspicious data send! Try again."
 #~ msgstr "Dados suspeitos enviados! Tente novamente!"
