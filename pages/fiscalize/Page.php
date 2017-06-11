@@ -39,12 +39,7 @@ class Page implements \IPage {
 		$this->template = new \TemplateLoader ( Conf::getTemplate () );
 		
 		$this->handleRequest ();
-		
-		$this->template->assign ( "pageId", "fiscalize" );
-		$this->template->assign ( "sendText", __ ( "Send report" ) );
-		$this->template->assign ( "pageParam", Conf::$pageParameterName );
-		$this->template->parse ( "main" );
-		$this->template->out ( "main" );
+		$this->createForm();
 	}
 	private function showMessage(string $message) {
 		$this->template->assign ( "messageLabel", $message );
@@ -58,6 +53,11 @@ class Page implements \IPage {
 		$this->template->assign ( "reportImageLabel", __ ( "Take a picture of the wrong thing" ) );
 		$this->template->assign ( "problemLabel", __ ( "Problem description please be polite" ) );
 		$this->template->assign ( "solvingLabel", __ ( "Describe how to solve the problem" ) );
+		$this->template->assign ( "pageId", "fiscalize" );
+		$this->template->assign ( "sendText", __ ( "Send report" ) );
+		$this->template->assign ( "pageParam", Conf::$pageParameterName );
+		$this->template->parse ( "main" );
+		$this->template->out ( "main" );
 	}
 	
 	/**
@@ -84,10 +84,14 @@ class Page implements \IPage {
 		// Verifying if there is some errors
 		switch ($form->generateObject ()) {
 			case \Form::BAD_DATA :
-				$this->showMessage ( __ ( "Incorrect data! Send it again." ) );
+				$this->showMessage ( __ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ) );
+				
+				// Highlight all invalid fields
+				foreach ( $form->getAllInvalidFields () as $fieldName ) {
+					$this->highlightField ( $fieldName );
+				}
 				return;
 			case \Form::NO_REQUEST_DETECTED :
-				$this->createForm ();
 				return;
 		}
 		
@@ -103,7 +107,16 @@ class Page implements \IPage {
 		
 		// Yay!! Everithing worked!
 		$this->showMessage ( __ ( "Problem succefully reported! Thank you!" ) );
-		$this->createForm ();
+	}
+	
+	/**
+	 * Creates a script that hightlights the fields
+	 *
+	 * @param string $fieldName        	
+	 */
+	private function highlightField($fieldName) {
+		$this->template->assign ( "fieldName", $fieldName );
+		$this->template->parse ( "main.highlightField" );
 	}
 	public static function isRestricted(): bool {
 		return true;

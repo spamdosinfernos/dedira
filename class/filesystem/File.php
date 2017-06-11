@@ -229,6 +229,11 @@ class File {
 	 * @throws Exception
 	 */
 	public function setCaminhoDoArquivo($filePath, bool $real = true) {
+		
+		if(trim($filePath) == ""){
+			throw new Exception ( "Empty file name!" );
+		}
+		
 		if ($real) {
 			
 			if (is_file ( $filePath ) == FALSE) {

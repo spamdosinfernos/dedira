@@ -137,17 +137,18 @@ final class Form {
 			return self::NO_REQUEST_DETECTED;
 		}
 		
-		$dataSource = null;
-		
 		// You must set the source of data you will retrieve from
 		switch ($this->getOrPost) {
 			case self::TYPE_GET :
-				$generatedObject = $this->validateAndSanitize ( $this->arrFilters, $_GET );
+				// Sanitize data and generate the object
+				// Try to validate all invalid fields
+				$generatedObject = $this->validateAndSanitize ( $_GET );
 				break;
 			
 			case self::TYPE_POST :
 				// Sanitize data and generate the object
-				$generatedObject = $this->validateAndSanitize ( $this->arrFilters, $_POST, $_FILES );
+				// Try to validate all invalid fields
+				$generatedObject = $this->validateAndSanitize ( $_POST, $_FILES );
 				break;
 			
 			default :
@@ -171,7 +172,22 @@ final class Form {
 	 * @param integer $filterType        	
 	 */
 	public function registerField(string $fieldName, int $filterType, bool $mandatory = true) {
-		$this->arrFilters [$mandatory] [$fieldName] = $filterType;
+		
+		// This "false" means that, by default, all fields are invalid
+		$this->arrFilters [false] [$mandatory] [$fieldName] = $filterType;
+	}
+
+	/**
+	 * Set the filter of the field as valid 
+	 * @param boolean $isMandatory
+	 * @param string $fieldName
+	 */
+	private function validateField($isMandatory, $fieldName) {
+		if (isset ( $this->arrFilters [true] [$isMandatory] [$fieldName] )) return;
+		
+		// Validates the field
+		$this->arrFilters [true] [$isMandatory] [$fieldName] = $this->arrFilters [false] [$isMandatory] [$fieldName];
+		unset ( $this->arrFilters [false] [$isMandatory] [$fieldName] );
 	}
 	
 	/**
@@ -181,24 +197,25 @@ final class Form {
 	 * @param array $dataSource        	
 	 * @return boolean|object
 	 */
-	private function validateAndSanitize($arrAllData, &$dataSource, &$fileDataSource = null) {
+	private function validateAndSanitize(&$dataSource, &$fileDataSource = null) {
 		
 		// We start manipulating the default datasource ($_POS or $_GET)
 		$manipulatedDataSource = &$dataSource;
 		
 		// Iterate over mandatory / non mandatory data
-		foreach ( $arrAllData as $isMandatory => $arrFiltersAndFieldNames ) {
+		foreach ( $this->arrFilters [false] as $isMandatory => $arrFiltersAndFieldNames ) {
 			
 			// Iterates over filters
 			foreach ( $arrFiltersAndFieldNames as $fieldName => $filterType ) {
 				
 				if ($isMandatory) {
+					// Filtering mandatory fields
 					
 					// Choosing the source of the data for mandatory fields
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
-					} elseif (isset ( $fileDataSource [$fieldName] )) {
+					} elseif (isset ( $fileDataSource [$fieldName] ) && trim($fileDataSource [$fieldName]['name']) != "") {
 						
 						// Im sending files too
 						$manipulatedDataSource = &$fileDataSource;
@@ -207,25 +224,28 @@ final class Form {
 						$file->setCaminhoDoArquivo ( $fileDataSource [$fieldName] ['name'], false );
 						$filename = $this->renameAndMoveFile ( $fileDataSource [$fieldName] ['tmp_name'], $file->getFileExtension () );
 						
+						// Keep the field invalidated and go to the next filter
 						if (is_bool ( $filename )) {
-							// TODO fill a list with all invalid fields
-							return false;
+							continue;
 						}
 						
 						// Updates the file name
 						$fileDataSource [$fieldName] = $filename;
+						
+						// Validates the field
+						$this->validateField ( $isMandatory, $fieldName );
 					} else {
 						// I send nothing so all fields are invalid
-						// TODO fill a list with all invalid fields
 						return false;
 					}
 				} else {
+					// Filtering non mandatory fields
 					
 					// Choosing the source of the data for non mandatory fields
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
-					} elseif (isset ( $fileDataSource [$fieldName] )) {
+					} elseif (isset ( $fileDataSource [$fieldName] ) && trim($fileDataSource [$fieldName]['name']) != "") {
 						// Im sending files too
 						$manipulatedDataSource = &$fileDataSource;
 						
@@ -234,13 +254,16 @@ final class Form {
 						
 						$filename = $this->renameAndMoveFile ( $fileDataSource [$fieldName] ['tmp_name'], $file->getFileExtension () );
 						
+						// Keep the field invalidated and go to the next filter
 						if (is_bool ( $filename )) {
-							// TODO fill a list with all invalid fields
-							return false;
+							continue;
 						}
 						
 						// Updates the file name
-						$fileDataSource [$fieldName] = $file;
+						$fileDataSource [$fieldName] = $filename;
+						
+						// Validates the field
+						$this->validateField ( $isMandatory, $fieldName );
 					}
 					
 					// Well... we find nothing, but the field is not mandatory anyway...
@@ -253,44 +276,47 @@ final class Form {
 					$manipulatedDataSource [$fieldName] = null;
 				}
 				
+				// Filtering array data from data source
 				if (is_array ( $manipulatedDataSource [$fieldName] )) {
 					
 					foreach ( $manipulatedDataSource [$fieldName] as &$value ) {
 						
+						// Keep the field invalidated and go to the next filter
 						if ($isMandatory && trim ( $value ) == "") {
-							// TODO fill a list with all invalid fields
-							return false;
+							continue;
 						}
 						
 						$result = filter_var ( trim ( $value ), $filterType );
 						
 						// If result is boolean the filtering has failed
-						// So stops everything and return false
+						// So keep the field invalidated and go to the next filter
 						if (is_bool ( $result )) {
-							// TODO fill a list with all invalid fields
-							return false;
+							continue;
 						}
 						
 						// Filter is ok, go on
+						$this->validateField ( $isMandatory, $fieldName );
 						$value = $result;
 					}
+					
+					// got to next field
 					continue;
 				}
 				
 				if ($isMandatory && trim ( $manipulatedDataSource [$fieldName] ) == "") {
-					// TODO fill a list with all invalid fields
-					return false;
+					// Keep the field invalidated and go to the next filter
+					continue;
 				}
 				$result = filter_var ( trim ( $manipulatedDataSource [$fieldName] ), $filterType );
 				
 				// If result is boolean the filtering has failed
-				// So stops everything and return false
+				// So keep the field invalidated and go to the next filter
 				if (is_bool ( $result )) {
-					// TODO fill a list with all invalid fields
-					return false;
+					continue;
 				}
 				
 				// Filter is ok, go on
+				$this->validateField ( $isMandatory, $fieldName );
 				$manipulatedDataSource [$fieldName] = $result;
 			}
 		}
@@ -298,6 +324,19 @@ final class Form {
 		$dataSource = array_merge ( $dataSource, $fileDataSource );
 		
 		return Caster::arrayToClassCast ( $dataSource, $this->targetObject );
+	}
+	
+	
+	/**
+	 * Return all invalid fields
+	 * @return Generator
+	 */
+	public function getAllInvalidFields(){
+		foreach ($this->arrFilters[false] as $arrFilters) {
+			foreach ($arrFilters as $fieldName => $filterType) {
+				yield $fieldName;
+			}
+		}
 	}
 	
 	// Rename and move file
