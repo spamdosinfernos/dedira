@@ -208,19 +208,20 @@ final class Form {
 						$filename = $this->renameAndMoveFile ( $fileDataSource [$fieldName] ['tmp_name'], $file->getFileExtension () );
 						
 						if (is_bool ( $filename )) {
+							// TODO fill a list with all invalid fields
 							return false;
 						}
 						
 						// Updates the file name
 						$fileDataSource [$fieldName] = $filename;
 					} else {
-						// I send nothing
+						// I send nothing so all fields are invalid
+						// TODO fill a list with all invalid fields
 						return false;
 					}
 				} else {
 					
 					// Choosing the source of the data for non mandatory fields
-					
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
@@ -234,6 +235,7 @@ final class Form {
 						$filename = $this->renameAndMoveFile ( $fileDataSource [$fieldName] ['tmp_name'], $file->getFileExtension () );
 						
 						if (is_bool ( $filename )) {
+							// TODO fill a list with all invalid fields
 							return false;
 						}
 						
@@ -245,11 +247,18 @@ final class Form {
 					$manipulatedDataSource = &$dataSource;
 				}
 				
+				// If the expected field does not exist create it with
+				// a null value just to simplify the algorithm
+				if (! isset ( $manipulatedDataSource [$fieldName] )) {
+					$manipulatedDataSource [$fieldName] = null;
+				}
+				
 				if (is_array ( $manipulatedDataSource [$fieldName] )) {
 					
 					foreach ( $manipulatedDataSource [$fieldName] as &$value ) {
 						
 						if ($isMandatory && trim ( $value ) == "") {
+							// TODO fill a list with all invalid fields
 							return false;
 						}
 						
@@ -258,6 +267,7 @@ final class Form {
 						// If result is boolean the filtering has failed
 						// So stops everything and return false
 						if (is_bool ( $result )) {
+							// TODO fill a list with all invalid fields
 							return false;
 						}
 						
@@ -268,6 +278,7 @@ final class Form {
 				}
 				
 				if ($isMandatory && trim ( $manipulatedDataSource [$fieldName] ) == "") {
+					// TODO fill a list with all invalid fields
 					return false;
 				}
 				$result = filter_var ( trim ( $manipulatedDataSource [$fieldName] ), $filterType );
@@ -275,6 +286,7 @@ final class Form {
 				// If result is boolean the filtering has failed
 				// So stops everything and return false
 				if (is_bool ( $result )) {
+					// TODO fill a list with all invalid fields
 					return false;
 				}
 				

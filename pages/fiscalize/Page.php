@@ -64,7 +64,7 @@ class Page implements \IPage {
 	 * Handles the request if any
 	 */
 	private function handleRequest() {
-
+		
 		// Creating the object generator
 		$form = new \Form ();
 		$form->setType ( \Form::TYPE_POST );
@@ -73,10 +73,10 @@ class Page implements \IPage {
 		$form->setUploadedFilePrefix ( $this->user->get_id () );
 		
 		// Registering filds for validation
-		$form->registerField ( "number", FILTER_SANITIZE_STRING );
-		$form->registerField ( "address", FILTER_SANITIZE_STRING );
-		$form->registerField ( "complement", FILTER_SANITIZE_STRING );
-		$form->registerField ( "coordinates", FILTER_SANITIZE_STRING );
+		$form->registerField ( "number", FILTER_SANITIZE_STRING, false );
+		$form->registerField ( "address", FILTER_SANITIZE_STRING, false );
+		$form->registerField ( "complement", FILTER_SANITIZE_STRING, false );
+		$form->registerField ( "coordinates", FILTER_SANITIZE_STRING, false );
 		$form->registerField ( "reportImage", FILTER_SANITIZE_ENCODED );
 		$form->registerField ( "solvingSuggestion", FILTER_SANITIZE_STRING );
 		$form->registerField ( "problemDescription", FILTER_SANITIZE_STRING );
