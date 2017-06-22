@@ -8,99 +8,102 @@
 <link rel="stylesheet" type="text/css" href="{cssPath}">
 </head>
 <body>
-	<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post" name="problemForm">
-		<input type="text" name="coordinates" placeholder="{coordLabel}"/><br>
-		<div id="address">
-			<input type="text" name="address" placeholder="{addressLabel}"/><br>
-			<input type="text" name="number" placeholder="{numberLabel}"/><br>
-		</div>
-		<input type="file" name="reportImage"  placeholder="{reportImageLabel}" value="{reportImageLabel}"/><br>
-		<textarea rows="5" cols="10" name="problemDescription"  placeholder="{problemLabel}"></textarea><br>
-		<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}"></textarea><br>
-		<input type="submit" value="{sendText}"/>
-		<!-- BEGIN: messages -->
-		<p>{messageLabel}</p>
-		<!-- END: messages -->
-	</form>
-	<script>
-		var wpid = false, map, z, op, prev_lat, prev_long, min_speed = 0, max_speed = 0, min_altitude = 0, max_altitude = 0, distance_travelled = 0, min_accuracy = 150, date_pos_updated = "", info_string = "";
-		op = document.problemForm.coordinates;
-		function format_time_component(time_component) {
-			if (time_component < 10)
-				time_component = "0" + time_component;
-			else if (time_component.length < 2)
-				time_component = time_component + "0";
-			return time_component;
-		}
-		function geo_success(position) {
-			info_string = "";
-			var d = new Date();
-			var h = d.getHours();
-			var m = d.getMinutes();
-			var s = d.getSeconds();
-			var current_datetime = format_time_component(h) + ":"
-					+ format_time_component(m) + ":" + format_time_component(s);
-			if (position.coords.accuracy <= min_accuracy) {
-				if (prev_lat != position.coords.latitude
-						|| prev_long != position.coords.longitude) {
-					if (position.coords.speed > max_speed)
-						max_speed = position.coords.speed;
-					else if (position.coords.speed < min_speed)
-						min_speed = position.coords.speed;
-					if (position.coords.altitude > max_altitude)
-						max_altitude = position.coords.altitude;
-					else if (position.coords.altitude < min_altitude)
-						min_altitude = position.coords.altitude;
-						prev_lat = position.coords.latitude;
-						prev_long = position.coords.longitude;
-						info_string = position.coords.latitude + ","
-							+ position.coords.longitude + ","
-							+ Math.round(position.coords.accuracy, 1);
-					}
-			} else
+	<div class="container">
+		
+		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post" name="problemForm">
+			<input type="text" name="coordinates" placeholder="{coordLabel}" class="form-control"/><br>
+			<div id="address" class="form-group">
+				<input type="text" name="address" placeholder="{addressLabel}" class="form-control"/><br>
+				<input type="text" name="number" placeholder="{numberLabel}" class="form-control"/><br>
+			</div>
+			<input type="file" name="reportImage"  placeholder="{reportImageLabel}" value="{reportImageLabel}" class="form-control"/><br>
+			<textarea rows="5" cols="10" name="problemDescription"  placeholder="{problemLabel}" class="form-control"></textarea><br>
+			<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}" class="form-control"></textarea><br>
+			<br/>
+			<input type="submit" value="{sendText}" class="btn btn-primary btn-lg btn-block"/>
+			<!-- BEGIN: messages -->
+			<div class="alert alert-info">
+				<p>{messageLabel}</p>
+			</div>
+			<!-- END: messages -->
+		</form>
+		<script>
+			var wpid = false, map, z, op, prev_lat, prev_long, min_speed = 0, max_speed = 0, min_altitude = 0, max_altitude = 0, distance_travelled = 0, min_accuracy = 150, date_pos_updated = "", info_string = "";
+			op = document.problemForm.coordinates;
+			function format_time_component(time_component) {
+				if (time_component < 10)
+					time_component = "0" + time_component;
+				else if (time_component.length < 2)
+					time_component = time_component + "0";
+				return time_component;
+			}
+			function geo_success(position) {
 				info_string = "";
-			if (info_string)
-				op.value = info_string;
-		}
-		function geo_error(error) {
-			switch (error.code) {
-			case error.TIMEOUT:
-				document.getElementById("address").style.display = "block";
-				op.value = "Timeout!";
-				break;
-			}
-		}
-		function get_pos() {
-
-			op.value = "Aquiring position...";
-			
-			if (!!navigator.geolocation){
-				wpid = navigator.geolocation.watchPosition(geo_success,	geo_error, {
-							enableHighAccuracy : true,
-							maximumAge : 30000,
-							timeout : 27000
-						});
-				document.getElementById("address").style.display = "none";
+				var d = new Date();
+				var h = d.getHours();
+				var m = d.getMinutes();
+				var s = d.getSeconds();
+				var current_datetime = format_time_component(h) + ":"
+						+ format_time_component(m) + ":" + format_time_component(s);
+				if (position.coords.accuracy <= min_accuracy) {
+					if (prev_lat != position.coords.latitude
+							|| prev_long != position.coords.longitude) {
+						if (position.coords.speed > max_speed)
+							max_speed = position.coords.speed;
+						else if (position.coords.speed < min_speed)
+							min_speed = position.coords.speed;
+						if (position.coords.altitude > max_altitude)
+							max_altitude = position.coords.altitude;
+						else if (position.coords.altitude < min_altitude)
+							min_altitude = position.coords.altitude;
+							prev_lat = position.coords.latitude;
+							prev_long = position.coords.longitude;
+							info_string = position.coords.latitude + ","
+								+ position.coords.longitude + ","
+								+ Math.round(position.coords.accuracy, 1);
+						}
+				} else
+					info_string = "";
+				if (info_string)
+					op.value = info_string;
 				
-			} else {
-				document.getElementById("address").style.display = "block";
-				op.value = "ERROR: Your Browser doesnt support GPS";
+				document.getElementById("address").style.display = "none";
 			}
-			if (wpid) {
-				navigator.geolocation.clearWatch(wpid);
-				wpid = false;
-			} else {
-				get_pos();
+			function geo_error(error) {
+				switch (error.code) {
+				case error.TIMEOUT:
+					document.getElementById("address").style.display = "block";
+					op.value = "Timeout!";
+					break;
+				}
 			}
-		}
-		window.onload = get_pos;
-	</script>
-	
-	<!-- BEGIN: highlightField -->
-	<script>
-		document.problemForm.{fieldName}.style.background="yellow";
-	</script>
-	<!-- END: highlightField -->
+			function get_pos() {
+				if (!!navigator.geolocation){
+					wpid = navigator.geolocation.watchPosition(geo_success,	geo_error, {
+								enableHighAccuracy : true,
+								maximumAge : 30000,
+								timeout : 27000
+							});
+				} else {
+					document.getElementById("address").style.display = "block";
+					op.value = "ERROR: Your Browser doesnt support GPS";
+				}
+				if (wpid) {
+					navigator.geolocation.clearWatch(wpid);
+					wpid = false;
+				} else {
+					get_pos();
+				}
+			}
+			window.onload = get_pos;
+		</script>
+		
+		<!-- BEGIN: highlightField -->
+		<script>
+			document.problemForm.{fieldName}.style.background="yellow";
+		</script>
+		<!-- END: highlightField -->
+	</div>
 </body>
 </html>
 <!-- END: main -->

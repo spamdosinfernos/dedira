@@ -37,9 +37,10 @@ class Page implements \IPage {
 		$this->user = $auth->getAutenticatedEntity ();
 		
 		$this->template = new \TemplateLoader ( Conf::getTemplate () );
+		$this->template->assign ( "cssPath", Conf::$cssPath );
 		
-		$this->handleRequest ();
-		$this->createForm();
+		$this->handleRequest 	();
+		$this->createForm ();
 	}
 	private function showMessage(string $message) {
 		$this->template->assign ( "messageLabel", $message );
