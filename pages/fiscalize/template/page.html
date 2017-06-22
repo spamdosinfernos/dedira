@@ -10,6 +10,11 @@
 <body>
 	<div class="container">
 		
+		<!-- BEGIN: messages -->
+		<div class="alert alert-info">
+			<p>{messageLabel}</p>
+		</div>
+		<!-- END: messages -->
 		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post" name="problemForm">
 			<input type="text" name="coordinates" placeholder="{coordLabel}" class="form-control"/><br>
 			<div id="address" class="form-group">
@@ -21,11 +26,6 @@
 			<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}" class="form-control"></textarea><br>
 			<br/>
 			<input type="submit" value="{sendText}" class="btn btn-primary btn-lg btn-block"/>
-			<!-- BEGIN: messages -->
-			<div class="alert alert-info">
-				<p>{messageLabel}</p>
-			</div>
-			<!-- END: messages -->
 		</form>
 		<script>
 			var wpid = false, map, z, op, prev_lat, prev_long, min_speed = 0, max_speed = 0, min_altitude = 0, max_altitude = 0, distance_travelled = 0, min_accuracy = 150, date_pos_updated = "", info_string = "";
