@@ -1,58 +1,49 @@
-/**
- * Holds the callback function
- */
-var formOverwriterCallback = null;
+var ajaxClient = new AjaxClient();
+var FormOverwriter = Object.create(ajaxClient);
+
 /**
  * Overwrites the default form method with an routine
  */
-function FormOverwriter(callbackFunction) {
+FormOverwriter.create = function() {
+	for (var i = 0; i < document.forms.length; i++) {
 
-	/**
-	 * Top contructors
-	 */
-	formOverwriterCallback = callbackFunction;
+		// WARNING!! Here we alters the context of this function to the
+		// form!
+		document.forms[i].onsubmit = this.sendFunction;
+	}
+	
+	return Object.create(this);
+}
 
-	/**
-	 * WARNING!! The context of this function is the form! Not the
-	 * FormOverwriter object!
-	 */
-	this.sendFunction = function() {
+/**
+ * WARNING!! The context of this function is the form! Not the FormOverwriter
+ * object!
+ */
+FormOverwriter.sendFunction = function(event) {
 
-		// Data will be send
-		var data = "";
+	//event.defaultPrevented();
 
-		// Retrieves the inputs
-		var inputs = this.getElementsByTagName("input");
-		for (var i = 0; i < inputs.length; i++) {
-			if (inputs[i].name == "")
-				continue; // Ignore inputs without name
-			data += inputs[i].name + "=" + inputs[i].value + "&";
-		}
+	// Data will be send
+	var data = "";
 
-		// Retrieves the selects
-		var selects = this.getElementsByTagName("select");
-		for (var i = 0; i < selects.length; i++) {
-			if (selects[i].name == "")
-				continue;// Ignore selects without name
-			data += selects[i].name + "=" + selects[i].value + "&";
-		}
-
-		var ac = new AjaxClient();
-		ac.sendRequestTo(this.action, formOverwriterCallback, data);
-		return false;
+	// Retrieves the inputs
+	var inputs = this.getElementsByTagName("input");
+	for (var i = 0; i < inputs.length; i++) {
+		if (inputs[i].name == "")
+			continue; // Ignore inputs without name
+		data += inputs[i].name + "=" + inputs[i].value + "&";
 	}
 
-	/**
-	 * Overwrites the default form method with an routine
-	 */
-	this.overwriteFormMethod = function() {
-		for (var i = 0; i < document.forms.length; i++) {
-			document.forms[i].onsubmit = this.sendFunction;
-		}
+	// Retrieves the selects
+	var selects = this.getElementsByTagName("select");
+	for (var i = 0; i < selects.length; i++) {
+		if (selects[i].name == "")
+			continue;// Ignore selects without name
+		data += selects[i].name + "=" + selects[i].value + "&";
 	}
 
-	/**
-	 * Bottom constructors
-	 */
-	this.overwriteFormMethod();
+	// Due to the new context is the form, we should call the sendRequest
+	// function directly
+	FormOverwriter.sendRequestTo(this.action, data, false);
+	return false;
 }
