@@ -176,11 +176,12 @@ final class Form {
 		// This "false" means that, by default, all fields are invalid
 		$this->arrFilters [false] [$mandatory] [$fieldName] = $filterType;
 	}
-
+	
 	/**
-	 * Set the filter of the field as valid 
-	 * @param boolean $isMandatory
-	 * @param string $fieldName
+	 * Set the filter of the field as valid
+	 * 
+	 * @param boolean $isMandatory        	
+	 * @param string $fieldName        	
 	 */
 	private function validateField($isMandatory, $fieldName) {
 		if (isset ( $this->arrFilters [true] [$isMandatory] [$fieldName] )) return;
@@ -215,7 +216,7 @@ final class Form {
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
-					} elseif (isset ( $fileDataSource [$fieldName] ) && trim($fileDataSource [$fieldName]['name']) != "") {
+					} elseif (isset ( $fileDataSource [$fieldName] ) && trim ( $fileDataSource [$fieldName] ['name'] ) != "") {
 						
 						// Im sending files too
 						$manipulatedDataSource = &$fileDataSource;
@@ -245,7 +246,7 @@ final class Form {
 					if (isset ( $dataSource [$fieldName] )) {
 						// There is a field in the default datasource
 						$manipulatedDataSource = &$dataSource;
-					} elseif (isset ( $fileDataSource [$fieldName] ) && trim($fileDataSource [$fieldName]['name']) != "") {
+					} elseif (isset ( $fileDataSource [$fieldName] ) && trim ( $fileDataSource [$fieldName] ['name'] ) != "") {
 						// Im sending files too
 						$manipulatedDataSource = &$fileDataSource;
 						
@@ -326,17 +327,21 @@ final class Form {
 		return Caster::arrayToClassCast ( $dataSource, $this->targetObject );
 	}
 	
-	
 	/**
 	 * Return all invalid fields
-	 * @return Generator
+	 * 
+	 * @return array
 	 */
-	public function getAllInvalidFields(){
-		foreach ($this->arrFilters[false] as $arrFilters) {
-			foreach ($arrFilters as $fieldName => $filterType) {
-				yield $fieldName;
+	public function getAllInvalidFields() {
+		$arrInvalid = array ();
+		
+		foreach ( $this->arrFilters [false] as $arrFilters ) {
+			foreach ( $arrFilters as $fieldName => $filterType ) {
+				$arrInvalid [] = $fieldName;
 			}
 		}
+		
+		return $arrInvalid;
 	}
 	
 	// Rename and move file

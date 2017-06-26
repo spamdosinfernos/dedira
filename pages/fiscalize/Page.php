@@ -85,13 +85,7 @@ class Page extends \APage {
 		// Verifying if there is some errors
 		switch ($form->generateObject ()) {
 			case \Form::BAD_DATA :
-				$this->showMessage ( __ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ) );
-				
-				// Highlight all invalid fields
-				foreach ( $form->getAllInvalidFields () as $fieldName ) {
-					$this->highlightField ( $fieldName );
-				}
-				return;
+				return $this->createNotification ( __ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
 			case \Form::NO_REQUEST_DETECTED :
 				return;
 		}
@@ -102,26 +96,17 @@ class Page extends \APage {
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
 		if (! \Database::execute ( $query )) {
-			$this->showMessage ( __ ( "Fail to record the problem! Try again later." ) );
-			return;
+			return $this->createNotification ( __ ( "Fail to record the problem! Try again later." ) );
 		}
 		
 		// Yay!! Everithing worked!
-		$this->showMessage ( __ ( "Problem succefully reported! Thank you!" ) );
+		return $this->createNotification ( __ ( "Problem succefully reported! Thank you!" ) );
 	}
-	private function showMessage(string $message) {
-		$this->template->assign ( "messageLabel", $message );
-		$this->template->parse ( "main.messages" );
-	}
-	
-	/**
-	 * Creates a script that hightlights the fields
-	 *
-	 * @param string $fieldName        	
-	 */
-	private function highlightField($fieldName) {
-		$this->template->assign ( "fieldName", $fieldName );
-		$this->template->parse ( "main.highlightField" );
+	private function createNotification(string $message, array $moreInfo = array()) {
+		$notification = new \Notification ();
+		$notification->setMessage ( $message );
+		$notification->setArrMoreInfomation ( $moreInfo );
+		return $notification;
 	}
 }
 ?>
