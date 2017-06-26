@@ -15,7 +15,7 @@ class Configuration {
 	 * (generally a browser)
 	 * @var integer
 	 */
-	public static $isHTMLGetParamName;
+	public static $jsonRequestGetName;
 	
 	/**
 	 * Directory files must be uploaded

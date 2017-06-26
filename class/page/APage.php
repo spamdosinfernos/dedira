@@ -4,7 +4,7 @@ require_once __DIR__ . '/../configuration/Configuration.php';
 
 /**
  * The base for a page (or module if you prefer) in system
- * 
+ *
  * @author ensismoebius
  *        
  */
@@ -16,12 +16,12 @@ abstract class APage {
 	 * the result in json format
 	 */
 	public function __construct() {
-		if (! $this->isAHTMLRequest ()) {
+		if ($this->isJsonRequest ()) {
 			echo JSONGenerator::objectToJson ( $this->handleRequest () );
 			return;
 		}
 		
-		$this->generateHTML ( $this->handleRequest () );
+		echo $this->generateHTML ( $this->handleRequest () );
 	}
 	
 	/**
@@ -33,8 +33,8 @@ abstract class APage {
 	 *
 	 * @return bool
 	 */
-	private function isAHTMLRequest(): bool {
-		if (isset ( $_GET [Configuration::isHTMLGetParamName] )) {
+	private function isJsonRequest(): bool {
+		if (isset ( $_GET [Configuration::$jsonRequestGetName] )) {
 			return true;
 		}
 		return false;
@@ -42,6 +42,7 @@ abstract class APage {
 	
 	/**
 	 * Gets an object from <b> handleRequest </b> and return the HTML
+	 * 
 	 * @see handleRequest
 	 * @param object $object        	
 	 * @return string
@@ -50,6 +51,7 @@ abstract class APage {
 	
 	/**
 	 * Handles the client request and returns an result object
+	 * 
 	 * @tutorial NOTE: This method is ALWAYS called before generateHTML
 	 * @see generateHTML
 	 * @return object

@@ -24,11 +24,12 @@ class Notification {
 	/**
 	 * Adds more information about the notification (optional)
 	 *
-	 * @param string $info        	
+	 * @param string $info 
+	 * @param string $key      	
 	 * @return Notification
 	 */
-	public function addInformation(string $info): Notification {
-		$this->arrMoreInfomation [] = $info;
+	public function addInformation(string $key, string $info): Notification {
+		$this->arrMoreInfomation [$key] = $info;
 		return $this;
 	}
 	

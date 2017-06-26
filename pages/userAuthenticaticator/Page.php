@@ -11,9 +11,9 @@ require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
+require_once __DIR__ . '/../../class/page/notification/Notification.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
-
+require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 /**
  * Authenticates the user on system and loads the main page
  *
@@ -27,10 +27,25 @@ class Page extends \APage {
 	 * @var XTemplate
 	 */
 	protected $xTemplate;
+	const NEXT_PAGE_VAR_NAME = "nextPage";
+	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
 	public function __construct() {
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
-		$this->handleRequest ();
+		parent::__construct ();
+	}
+	protected function generateHTML($object): string {
+		$arrInfo = $object->getArrMoreInfomation ();
+		$nextPage = $arrInfo [self::NEXT_PAGE_VAR_NAME];
+		$failToAuthenticate = isset ( $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] ) ? $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] : false;
+		
+		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
+		$this->xTemplate->assign ( "signUpMessage", __ ( "Or signup!" ) );
+		$this->xTemplate->assign ( "login", __ ( "E-mail or login" ) );
+		$this->xTemplate->assign ( "password", __ ( "Password" ) );
+		$this->xTemplate->assign ( "nextPage", $nextPage );
+		$this->xTemplate->parse ( "main" );
+		return $this->xTemplate->text ( "main" );
 	}
 	
 	/**
@@ -39,7 +54,7 @@ class Page extends \APage {
 	 *
 	 * @return void
 	 */
-	public function handleRequest() {
+	protected function handleRequest() {
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
@@ -53,10 +68,13 @@ class Page extends \APage {
 		$gotVars = $httpRequest->getGetRequest ();
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
+		// Creates a notification that will be returned
+		$notification = new \Notification ();
+		$notification->addInformation ( self::NEXT_PAGE_VAR_NAME, $nextPage );
+		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
-			$this->showGui ( $nextPage );
-			exit ( 0 );
+			return $notification;
 		}
 		
 		// Creates the user to authenticate
@@ -74,21 +92,11 @@ class Page extends \APage {
 				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the main page!" ), true );
 				exit ( 0 );
 			}
-			
-			return;
 		}
 		
-		$this->showGui ( $nextPage, true );
-		exit ( 0 );
-	}
-	private function showGui(string $nextPage, bool $failToAuthenticate = false) {
-		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
-		$this->xTemplate->assign ( "signUpMessage", __("Or signup!") );
-		$this->xTemplate->assign ( "login", __("E-mail or login") );
-		$this->xTemplate->assign ( "password", __("Password") );
-		$this->xTemplate->assign ( "nextPage", $nextPage );
-		$this->xTemplate->parse ( "main" );
-		$this->xTemplate->out ( "main" );
+		// Fail to authenticate!! informing it on notification
+		$notification->addInformation ( self::FAIL_AUTHENTICATION_VAR_NAME, true );
+		return $notification;
 	}
 	public function getTitle(bool $failToAuthenticate) {
 		return $failToAuthenticate ? __ ( "Login or password incorrect, or your account are inactive" ) : __ ( "Please, type your login and password" );

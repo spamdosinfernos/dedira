@@ -55,7 +55,7 @@ class Page extends \APage {
 		$this->template->assign ( "sendText", __ ( "Send report" ) );
 		$this->template->assign ( "pageParam", Conf::$pageParameterName );
 		$this->template->parse ( "main" );
-		$this->template->out ( "main" );
+		return $this->template->text ( "main" );
 	}
 	public static function isRestricted(): bool {
 		return true;

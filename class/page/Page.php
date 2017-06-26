@@ -25,7 +25,7 @@ class Page {
 		}
 		// Even the page has the "isRestricted()" method
 		// it MUST implement the APage interface!
-		if (! in_array ( "APage", class_implements ( "$pageId\\Page" ) )) {
+		if (! is_subclass_of ( "$pageId\\Page", "APage" )) {
 			Log::recordEntry ( "The page MUST implement the APage interface!" );
 			return false;
 		}
@@ -62,10 +62,9 @@ class Page {
 		
 		// If page is restricted we have to be authenticated to use it
 		if (self::isRestrictedPage ( $pageId )) {
-			if ($auth->isAuthenticated ())
-				return $pageId;
-				
-				// Otherwise go to authentication page
+			if ($auth->isAuthenticated ()) return $pageId;
+			
+			// Otherwise go to authentication page
 			$pageId = Configuration::$authenticationPageName;
 			require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		}
