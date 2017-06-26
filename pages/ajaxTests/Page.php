@@ -4,7 +4,7 @@ namespace userSignUp;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/log/Log.php';
-require_once __DIR__ . '/../../class/page/IPage.php';
+require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/protocols/mail/MailSender.php';
@@ -18,7 +18,7 @@ require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
  *
  * @author André Furlan
  */
-class Page implements \IPage {
+class Page extends \APage {
 	
 	/**
 	 * Gerencia os templates

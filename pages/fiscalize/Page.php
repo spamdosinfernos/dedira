@@ -4,7 +4,7 @@ namespace fiscalize;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/form/Form.php';
-require_once __DIR__ . '/../../class/page/IPage.php';
+require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
-class Page implements \IPage {
+class Page extends \APage {
 	
 	/**
 	 * Gerencia os templates
@@ -35,18 +35,15 @@ class Page implements \IPage {
 		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$auth = new \Authenticator ();
 		$this->user = $auth->getAutenticatedEntity ();
+		parent::__construct ();
+	}
+	protected function generateHTML($object): string {
 		
+		// Load the template manager
 		$this->template = new \TemplateLoader ( Conf::getTemplate () );
 		$this->template->assign ( "cssPath", Conf::$cssPath );
 		
-		$this->handleRequest 	();
-		$this->createForm ();
-	}
-	private function showMessage(string $message) {
-		$this->template->assign ( "messageLabel", $message );
-		$this->template->parse ( "main.messages" );
-	}
-	private function createForm() {
+		// Creates the form
 		$this->template->assign ( "coordLabel", __ ( "GPS coordinates" ) );
 		$this->template->assign ( "addressLabel", __ ( "Type the address" ) );
 		$this->template->assign ( "numberLabel", __ ( "Address number" ) );
@@ -60,11 +57,14 @@ class Page implements \IPage {
 		$this->template->parse ( "main" );
 		$this->template->out ( "main" );
 	}
+	public static function isRestricted(): bool {
+		return true;
+	}
 	
 	/**
 	 * Handles the request if any
 	 */
-	private function handleRequest() {
+	protected function handleRequest() {
 		
 		// Creating the object generator
 		$form = new \Form ();
@@ -73,7 +73,7 @@ class Page implements \IPage {
 		$form->setPathForFileUpload ( Conf::$uploadPath );
 		$form->setUploadedFilePrefix ( $this->user->get_id () );
 		
-		// Registering filds for validation
+		// Registering fields for validation
 		$form->registerField ( "number", FILTER_SANITIZE_STRING, false );
 		$form->registerField ( "address", FILTER_SANITIZE_STRING, false );
 		$form->registerField ( "complement", FILTER_SANITIZE_STRING, false );
@@ -109,6 +109,10 @@ class Page implements \IPage {
 		// Yay!! Everithing worked!
 		$this->showMessage ( __ ( "Problem succefully reported! Thank you!" ) );
 	}
+	private function showMessage(string $message) {
+		$this->template->assign ( "messageLabel", $message );
+		$this->template->parse ( "main.messages" );
+	}
 	
 	/**
 	 * Creates a script that hightlights the fields
@@ -118,9 +122,6 @@ class Page implements \IPage {
 	private function highlightField($fieldName) {
 		$this->template->assign ( "fieldName", $fieldName );
 		$this->template->parse ( "main.highlightField" );
-	}
-	public static function isRestricted(): bool {
-		return true;
 	}
 }
 ?>

@@ -10,11 +10,9 @@
 <body>
 	<div class="container">
 		<br/>
-		<!-- BEGIN: messages -->
-		<div class="alert alert-info">
+		<div class="alert alert-info" style="display: none" id="status">
 			<p>{messageLabel}</p>
 		</div>
-		<!-- END: messages -->
 		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post" name="problemForm">
 			<input type="text" name="coordinates" placeholder="{coordLabel}" class="form-control"/><br>
 			<div id="address" class="form-group">
@@ -27,6 +25,31 @@
 			<br/>
 			<input type="submit" value="{sendText}" class="btn btn-primary btn-lg btn-block"/>
 		</form>
+		<script type="text/javascript" src="AjaxClient.js"></script>
+		<script type="text/javascript" src="FormOverwriter.js"></script>
+		<script type="text/javascript">
+			form = FormOverwriter.create();
+			
+			form.setOnProcessing(function(xhttp) {
+				document.getElementById("status").style.display = "block";
+				document.getElementById("status").innerHTML = "Processando sua requisição...";
+			});
+			
+			form.setOnConnection(function(xhttp) {
+				document.getElementById("status").style.display = "block";
+				document.getElementById("status").innerHTML = "Conectado!";
+			});
+			
+			form.setOnRequestSend(function(xhttp) {
+				document.getElementById("status").style.display = "block";
+				document.getElementById("status").innerHTML = "Dados enviados";
+			});
+			
+			form.setOnResponse(function(xhttp) {
+				document.getElementById("status").style.display = "block";
+				document.getElementById("status").innerHTML = xhttp.response;
+			});
+		</script>
 		<script>
 			var wpid = false, map, z, op, prev_lat, prev_long, min_speed = 0, max_speed = 0, min_altitude = 0, max_altitude = 0, distance_travelled = 0, min_accuracy = 150, date_pos_updated = "", info_string = "";
 			op = document.problemForm.coordinates;

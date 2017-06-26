@@ -3,12 +3,12 @@
 namespace main;
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/../../class/page/IPage.php';
+require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
-class Page implements \IPage {
+class Page extends \APage {
 	
 	/**
 	 * Gerencia os templates

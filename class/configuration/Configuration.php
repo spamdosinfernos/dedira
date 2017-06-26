@@ -9,6 +9,15 @@ require_once __DIR__ . '/../database/interfaces/IDatabaseDriver.php';
 class Configuration {
 	
 	/**
+	 * The of the parameter that, if informed,
+	 * informs that the system must generate
+	 * an HTML to client application
+	 * (generally a browser)
+	 * @var integer
+	 */
+	public static $isHTMLGetParamName;
+	
+	/**
 	 * Directory files must be uploaded
 	 * @var string
 	 */

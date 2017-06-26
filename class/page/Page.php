@@ -24,9 +24,9 @@ class Page {
 			return false;
 		}
 		// Even the page has the "isRestricted()" method
-		// it MUST implement the IPage interface!
-		if (! in_array ( "IPage", class_implements ( "$pageId\\Page" ) )) {
-			Log::recordEntry ( "The page MUST implement the IPage interface!" );
+		// it MUST implement the APage interface!
+		if (! in_array ( "APage", class_implements ( "$pageId\\Page" ) )) {
+			Log::recordEntry ( "The page MUST implement the APage interface!" );
 			return false;
 		}
 		

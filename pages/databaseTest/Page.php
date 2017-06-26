@@ -2,7 +2,7 @@
 
 namespace databaseTest;
 
-require_once __DIR__ . '/../../class/page/IPage.php';
+require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/variable/JSONGenerator.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/database/DatabaseConditions.php';
 require_once __DIR__ . '/../../class/database/drivers/MongoDb.php';
 require_once __DIR__ . '/../../class/database/interfaces/IDatabaseDriver.php';
-class Page implements \IPage {
+class Page extends \APage {
 	public function __construct() {
 		// Initilizing the database
 		\Database::init ( new \MongoDb () );

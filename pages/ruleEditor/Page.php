@@ -3,7 +3,7 @@
 namespace rulesEditor;
 
 require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/../../class/page/IPage.php';
+require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/rule/Rule.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../class/internationalization/i18n.php';
  * Register the Rule on system
  * @author André Furlan
  */
-class Page implements \IPage {
+class Page extends \APage {
 	
 	/**
 	 * Manages the templates
