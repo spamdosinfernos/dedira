@@ -62,6 +62,8 @@ class ClassPropertyPublicizator {
 	 */
 	public function publicizise($variable) {
 		
+		if(is_null($variable)) return null;
+		
 		// If the informed variable is NOT an object we must prepare this in another ways
 		if (! is_object ( $variable )) {
 			

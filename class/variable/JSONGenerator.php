@@ -18,10 +18,12 @@ class JSONGenerator {
 	// FIXME not perfect some structures can not be converted
 	public static function objectToJson($object, $pretty = false): string {
 		
+		$cpp = new ClassPropertyPublicizator();
+		
 		// Returns the json
 		if ($pretty) {
-			return json_encode ( ClassPropertyPublicizator::publicizise ( $object ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT );
+			return json_encode ( $cpp->publicizise ( $object ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK | JSON_PRETTY_PRINT );
 		}
-		return json_encode ( ClassPropertyPublicizator::publicizise ( $object ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK );
+		return json_encode ( $cpp->publicizise ( $object ), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_NUMERIC_CHECK );
 	}
 }
