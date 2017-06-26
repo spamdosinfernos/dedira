@@ -6,7 +6,6 @@ require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/../../class/page/APage.php';
-require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
@@ -20,32 +19,26 @@ require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthent
  * @author André Furlan
  */
 class Page extends \APage {
-	
-	/**
-	 * Gerencia os templates
-	 *
-	 * @var XTemplate
-	 */
-	protected $xTemplate;
 	const NEXT_PAGE_VAR_NAME = "nextPage";
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
+	
 	public function __construct() {
-		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
-		parent::__construct ();
+		parent::__construct ( Conf::getTemplate () );
 	}
 	protected function generateHTML($object): string {
 		$arrInfo = $object->getArrMoreInfomation ();
 		$nextPage = $arrInfo [self::NEXT_PAGE_VAR_NAME];
 		$failToAuthenticate = isset ( $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] ) ? $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] : false;
 		
-		$this->xTemplate->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
-		$this->xTemplate->assign ( "signUpMessage", __ ( "Or signup!" ) );
-		$this->xTemplate->assign ( "login", __ ( "E-mail or login" ) );
-		$this->xTemplate->assign ( "password", __ ( "Password" ) );
-		$this->xTemplate->assign ( "nextPage", $nextPage );
-		$this->xTemplate->parse ( "main" );
-		return $this->xTemplate->text ( "main" );
+		// the "template" property comes from APage class
+		$this->template->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
+		$this->template->assign ( "signUpMessage", __ ( "Or signup!" ) );
+		$this->template->assign ( "login", __ ( "E-mail or login" ) );
+		$this->template->assign ( "password", __ ( "Password" ) );
+		$this->template->assign ( "nextPage", $nextPage );
+		$this->template->parse ( "main" );
+		return $this->template->text ( "main" );
 	}
 	
 	/**

@@ -15,13 +15,6 @@ require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
 	
 	/**
-	 * Gerencia os templates
-	 *
-	 * @var XTemplate
-	 */
-	protected $template;
-	
-	/**
 	 * The logged user
 	 *
 	 * @var \User
@@ -35,12 +28,11 @@ class Page extends \APage {
 		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$auth = new \Authenticator ();
 		$this->user = $auth->getAutenticatedEntity ();
-		parent::__construct ();
+		parent::__construct ( Conf::getTemplate () );
 	}
 	protected function generateHTML($object): string {
 		
-		// Load the template manager
-		$this->template = new \TemplateLoader ( Conf::getTemplate () );
+		// the "template" property comes from APage class
 		$this->template->assign ( "cssPath", Conf::$cssPath );
 		
 		// Creates the form

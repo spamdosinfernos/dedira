@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../variable/JSONGenerator.php';
+require_once __DIR__ . '/../template/TemplateLoader.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 
 /**
@@ -11,16 +12,24 @@ require_once __DIR__ . '/../configuration/Configuration.php';
 abstract class APage {
 	
 	/**
+	 * Manages the templates
+	 *
+	 * @var TemplateLoader
+	 */
+	protected $template;
+	
+	/**
 	 * If the client is NOT requesting an HTML
 	 * So just handle the request and give it
 	 * the result in json format
 	 */
-	public function __construct() {
+	public function __construct(string $templateFilePath) {
 		if ($this->isJsonRequest ()) {
 			echo JSONGenerator::objectToJson ( $this->handleRequest () );
 			return;
 		}
 		
+		$this->template = new \TemplateLoader ( $templateFilePath );
 		echo $this->generateHTML ( $this->handleRequest () );
 	}
 	
