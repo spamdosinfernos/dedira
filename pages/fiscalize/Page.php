@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../class/form/Form.php';
 require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
-require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
