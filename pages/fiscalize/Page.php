@@ -8,7 +8,6 @@ require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
@@ -24,10 +23,9 @@ class Page extends \APage {
 	 * Constructor
 	 */
 	public function __construct() {
-		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$auth = new \Authenticator ();
 		$this->user = $auth->getAutenticatedEntity ();
-		parent::__construct ( Conf::getTemplate () );
+		parent::__construct ( Conf::getTemplate (), __DIR__ );
 	}
 	protected function generateHTML($object): string {
 		

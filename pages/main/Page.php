@@ -5,9 +5,7 @@ namespace main;
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
-require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
-require_once __DIR__ . '/../../class/internationalization/i18n.php';
 class Page extends \APage {
 	
 	/**
@@ -15,76 +13,77 @@ class Page extends \APage {
 	 *
 	 * @var XTemplate
 	 */
-	protected $xTemplate;
+	protected $template;
 	public function __construct() {
-		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
-		
-		$auth = new \Authenticator ();
-		$user = $auth->getAutenticatedEntity ();
-		
-		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
-		$this->xTemplate->assign ( "wellcomeMessage", __ ( "Hello" ) );
-		$this->xTemplate->assign ( "userName", $user->getName () . " " . $user->getLastName () );
+		parent::__construct ( Conf::getTemplate (), __DIR__ );
+	}
+	public function generateHTML($object): string {
+		$this->template->assign ( "wellcomeMessage", __ ( "Hello" ) );
+		$this->template->assign ( "userName", $object->getName () . " " . $object->getLastName () );
 		
 		$this->createMenu ();
 		
-		$this->xTemplate->parse ( "main" );
-		$this->xTemplate->out ( "main" );
+		$this->template->parse ( "main" );
+		return $this->template->text ( "main" );
+	}
+	public function handleRequest() {
+		$auth = new \Authenticator ();
+		return $auth->getAutenticatedEntity ();
 	}
 	public static function isRestricted(): bool {
 		return true;
 	}
 	public function createMenu() {
-		$this->createPrioritiesMapMenuEntry();
+		$this->createPrioritiesMapMenuEntry ();
 		$this->createSuggestionsMenuEntry ();
-		$this->createRankingMenuEntry();
-		$this->createRateMenuEntry();
-		$this->createRulesMenuEntry();
-		$this->createSuggestionsMenuEntry();
-		$this->createVoteMenuEntry();
-		$this->test();
+		$this->createRankingMenuEntry ();
+		$this->createRateMenuEntry ();
+		$this->createRulesMenuEntry ();
+		$this->createSuggestionsMenuEntry ();
+		$this->createVoteMenuEntry ();
+		$this->test ();
 	}
 	public function createSuggestionsMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Suggestions" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=suggestions" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Suggestions" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=suggestions" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function createRateMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Rate" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=rate" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Rate" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=rate" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function createVoteMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Vote" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=vote" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Vote" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=vote" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function createRankingMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Ranking" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=ranking" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Ranking" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=ranking" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function createRulesMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Rules" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=rules" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Rules" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=rules" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function createPrioritiesMapMenuEntry() {
-		$this->xTemplate->assign ( "menuText", __ ( "Priorities map" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=prioritiesMap" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "Priorities map" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=prioritiesMap" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 	public function test() {
-		$this->xTemplate->assign ( "menuText", __ ( "test" ) );
-		$this->xTemplate->assign ( "menuAddress", "index.php?page=userSignUp" );
-		$this->xTemplate->assign ( "updatesAmount", 0 );
-		$this->xTemplate->parse ( "main.menu" );
+		$this->template->assign ( "menuText", __ ( "test" ) );
+		$this->template->assign ( "menuAddress", "index.php?page=userSignUp" );
+		$this->template->assign ( "updatesAmount", 0 );
+		$this->template->parse ( "main.menu" );
 	}
 }
 ?>

@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../class/template/TemplateLoader.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/protocols/mail/MailSender.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
-require_once __DIR__ . '/../../class/internationalization/i18n.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
@@ -41,7 +40,6 @@ class Page extends \APage {
 	 */
 	protected $httpRequest;
 	public function __construct() {
-		\I18n::init ( Conf::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->httpRequest = new \HttpRequest ();
 		$this->handleRequest ();

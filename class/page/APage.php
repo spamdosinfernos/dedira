@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../variable/JSONGenerator.php';
 require_once __DIR__ . '/../template/TemplateLoader.php';
+require_once __DIR__ . '/../internationalization/i18n.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 
 /**
@@ -23,7 +24,9 @@ abstract class APage {
 	 * So just handle the request and give it
 	 * the result in json format
 	 */
-	public function __construct(string $templateFilePath) {
+	public function __construct(string $templateFilePath, string $currentDir) {
+		\I18n::init ( Configuration::$defaultLanguage, $currentDir . "/" . Configuration::$localeDirName );
+		
 		if ($this->isJsonRequest ()) {
 			echo JSONGenerator::objectToJson ( $this->handleRequest () );
 			return;
@@ -51,7 +54,7 @@ abstract class APage {
 	
 	/**
 	 * Gets an object from <b> handleRequest </b> and return the HTML
-	 * 
+	 *
 	 * @see handleRequest
 	 * @param object $object        	
 	 * @return string
@@ -60,7 +63,7 @@ abstract class APage {
 	
 	/**
 	 * Handles the client request and returns an result object
-	 * 
+	 *
 	 * @tutorial NOTE: This method is ALWAYS called before generateHTML
 	 * @see generateHTML
 	 * @return object
