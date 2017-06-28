@@ -19,13 +19,6 @@ require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
 	
 	/**
-	 * Gerencia os templates
-	 *
-	 * @var \TemplateLoader
-	 */
-	protected $template;
-	
-	/**
 	 * Stores the user
 	 *
 	 * @var \User
@@ -46,7 +39,7 @@ class Page extends \APage {
 	 */
 	protected $notification;
 	public function __construct() {
-		parent::__construct ( Conf::getTemplate () );
+		parent::__construct ( Conf::getTemplate (), __DIR__ );
 	}
 	
 	/**
@@ -68,7 +61,7 @@ class Page extends \APage {
 	 * @see APage::generateHTML()
 	 */
 	public function generateHTML($object): string {
-		// $object = new \Notification ();
+		// TODO Parei aqui estou adaptando todos as páginas para seguir o esquema setup, handle e generateb estava prestes a testar esta página
 		
 		// Process a notification
 		if (is_a ( $object, "Notification" )) {
@@ -266,7 +259,6 @@ class Page extends \APage {
 		
 		// Updates the user
 		$this->user->setActive ( true );
-		$query = new \DatabaseQuery ();
 		$query->setObject ( $this->user );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		$query->setConditions ( $cond );
@@ -290,7 +282,7 @@ class Page extends \APage {
 		// If no user is informed creates a new one
 		$user = is_null ( $user ) ? new \User () : $user;
 		
-		// The user modifications only will be valid after a validation
+		// The user only will be valid after a validation
 		$user->setActive ( false );
 		
 		// Creates the user to authenticate

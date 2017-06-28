@@ -20,11 +20,31 @@ require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthent
 class Page extends \APage {
 	const NEXT_PAGE_VAR_NAME = "nextPage";
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
-	
 	public function __construct() {
 		parent::__construct ( Conf::getTemplate (), __DIR__ );
 	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::setup()
+	 */
+	protected function setup(): bool {
+		return true;
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::generateHTML()
+	 */
 	protected function generateHTML($object): string {
+		if ($object->getType () == \Notification::SUCCESS) {
+			return "";
+		}
+		
 		$arrInfo = $object->getArrMoreInfomation ();
 		$nextPage = $arrInfo [self::NEXT_PAGE_VAR_NAME];
 		$failToAuthenticate = isset ( $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] ) ? $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] : false;
@@ -65,6 +85,7 @@ class Page extends \APage {
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
+			$notification->setType ( \Notification::FAIL );
 			return $notification;
 		}
 		
@@ -76,17 +97,16 @@ class Page extends \APage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \Page::loadPage ( \Configuration::$mainPageName );
+			$ret = \Page::loadPage ( $nextPage );
 			
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {
-				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the main page!" ), true );
+				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the page!" ), true );
 				exit ( 0 );
 			}
 		}
 		
-		// Fail to authenticate!! informing it on notification
-		$notification->addInformation ( self::FAIL_AUTHENTICATION_VAR_NAME, true );
+		// Success on authentication!!
 		return $notification;
 	}
 	public function getTitle(bool $failToAuthenticate) {

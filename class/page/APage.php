@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../variable/JSONGenerator.php';
 require_once __DIR__ . '/../template/TemplateLoader.php';
 require_once __DIR__ . '/../internationalization/i18n.php';
+require_once __DIR__ . '/../protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 
 /**
@@ -11,6 +12,13 @@ require_once __DIR__ . '/../configuration/Configuration.php';
  *        
  */
 abstract class APage {
+	
+	/**
+	 * Manges the http requests
+	 * 
+	 * @var HttpRequest
+	 */
+	protected $httpRequest;
 	
 	/**
 	 * Manages the templates
@@ -40,14 +48,17 @@ abstract class APage {
 		}
 		
 		// get the page user wants
+		$this->httpRequest = new HttpRequest();
 		$gotVars = $this->httpRequest->getGetRequest ();
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
-		// If theres no "next page" in the template we are ok, that why the @ at the begin
-		@$this->template->assign ( "nextPage", $nextPage );
 		
 		// If we got here we have to show some html
 		$this->template = new \TemplateLoader ( $templateFilePath );
+
+		// If theres no "next page" in the template we are ok, that why the @ at the begin
+		@$this->template->assign ( "nextPage", $nextPage );
+		
 		echo $this->generateHTML ( $this->handleRequest () );
 	}
 	

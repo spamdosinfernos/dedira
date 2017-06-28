@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
+require_once __DIR__ . '/../../class/page/notification/Notification.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
 	
@@ -23,10 +24,27 @@ class Page extends \APage {
 	 * Constructor
 	 */
 	public function __construct() {
-		$auth = new \Authenticator ();
-		$this->user = $auth->getAutenticatedEntity ();
 		parent::__construct ( Conf::getTemplate (), __DIR__ );
 	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::setup()
+	 */
+	protected function setup(): bool {
+		$auth = new \Authenticator ();
+		$this->user = $auth->getAutenticatedEntity ();
+		return true;
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::generateHTML()
+	 */
 	protected function generateHTML($object): string {
 		
 		// the "template" property comes from APage class
@@ -51,7 +69,10 @@ class Page extends \APage {
 	}
 	
 	/**
-	 * Handles the request if any
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::handleRequest()
 	 */
 	protected function handleRequest() {
 		

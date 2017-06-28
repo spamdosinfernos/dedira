@@ -179,7 +179,7 @@ final class Form {
 	
 	/**
 	 * Set the filter of the field as valid
-	 * 
+	 *
 	 * @param boolean $isMandatory        	
 	 * @param string $fieldName        	
 	 */
@@ -324,12 +324,18 @@ final class Form {
 		
 		$dataSource = array_merge ( $dataSource, $fileDataSource );
 		
+		// If there is some invalid fields returns false
+		if (count ( $this->getAllInvalidFields () ) > 0) {
+			return false;
+		}
+		
+		// Its is all ok!! Return the object!
 		return Caster::arrayToClassCast ( $dataSource, $this->targetObject );
 	}
 	
 	/**
 	 * Return all invalid fields
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getAllInvalidFields() {
@@ -355,8 +361,10 @@ final class Form {
 		$finalFileName = $this->uploadedFilePrefix . "." . microtime ( true ) . "." . $extension;
 		
 		try {
-			move_uploaded_file ( $filename, $this->pathForFileUpload . DIRECTORY_SEPARATOR . $finalFileName );
-			return $finalFileName;
+			if (@move_uploaded_file ( $filename, $this->pathForFileUpload . DIRECTORY_SEPARATOR . $finalFileName )) {
+				return $finalFileName;
+			}
+			return false;
 		} catch ( Exception $e ) {
 			// The file naming and creation cant goes wrong
 			return false;
