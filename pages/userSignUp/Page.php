@@ -21,9 +21,9 @@ class Page extends \APage {
 	/**
 	 * Gerencia os templates
 	 *
-	 * @var XTemplate
+	 * @var \TemplateLoader
 	 */
-	protected $xTemplate;
+	protected $template;
 	
 	/**
 	 * Stores the user
@@ -35,47 +35,79 @@ class Page extends \APage {
 	/**
 	 * Stores the http requests
 	 *
-	 * @var HttpRequest
+	 * @var \HttpRequest
 	 */
 	protected $httpRequest;
+	
+	/**
+	 * Stores the nofication
+	 *
+	 * @var \Notification
+	 */
+	protected $notification;
 	public function __construct() {
-		$this->httpRequest = new \HttpRequest ();
 		parent::__construct ( Conf::getTemplate () );
 	}
 	
 	/**
-	 * Handles requests
 	 *
-	 * @return void
+	 * {@inheritdoc}
+	 *
+	 * @see APage::setup()
+	 */
+	public function setup(): bool {
+		$this->httpRequest = new \HttpRequest ();
+		$this->notification = new \Notification ();
+		return is_null ( $this->httpRequest ) || is_null ( $this->notification ) ? false : true;
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::generateHTML()
+	 */
+	public function generateHTML($object): string {
+		// $object = new \Notification ();
+		
+		// Process a notification
+		if (is_a ( $object, "Notification" )) {
+			
+			// If nothing was posted so we just show the form and stops
+			if ($object->getType () == \Notification::NONE) {
+				return $this->createEditionGui ();
+			}
+			
+			$this->template->assign ( "message", $object->getMessage () );
+			$this->template->parse ( "main.message" );
+			return $this->template->text ( "main.message" );
+		}
+	}
+	
+	/**
+	 *
+	 * {@inheritdoc}
+	 *
+	 * @see APage::handleRequest()
 	 */
 	public function handleRequest() {
-		
-		// get the page user wants
-		$httpRequest = new \HttpRequest ();
-		$gotVars = $httpRequest->getGetRequest ();
-		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
-		
-		// Default message
-		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
 		
 		// If it is just a user confimation request, activate the user and stops
 		// otherwise warns that theres is not such user and stops
 		if ($this->isUserConfirmationRequest ()) {
 			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
-				$this->xTemplate->assign ( "message", sprintf ( __ ( "User %s activated!" ), $this->user->getLogin () ) );
-				$this->showMessageGui ();
-				return;
+				$this->notification->setType ( \Notification::SUCCESS );
+				return $this->notification->setMessage ( sprintf ( __ ( "User %s activated!" ), $this->user->getLogin () ) );
 			}
 			
-			$this->xTemplate->assign ( "message", __ ( "Theres no such user on database!" ) );
-			$this->showMessageGui ();
-			return;
+			// FAIL!!
+			$this->notification->setType ( \Notification::FAIL );
+			return $this->notification->setMessage ( __ ( "Theres no such user on database!" ) );
 		}
 		
 		// If nothing was posted so we just show the form and stops
 		if (! $this->isUserDataPosted ()) {
-			$this->showEditionGui ( $nextPage );
-			return;
+			return $this->notification;
 		}
 		
 		// Gets the autheticated user if any
@@ -91,29 +123,28 @@ class Page extends \APage {
 				$email = $this->sendMail ();
 				if (empty ( $email )) {
 					$this->deleteUser ();
-					$this->xTemplate->assign ( "message", __ ( "None of your mail account is valid! Try another mail address!" ) );
-					$this->showEditionGui ( $nextPage );
-					return;
+					
+					$this->notification->setType ( \Notification::FAIL );
+					return $this->notification->setMessage ( __ ( "None of your mail account is valid! Try another mail address!" ) );
 				}
 				
-				$this->xTemplate->assign ( "message", __ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
-				$this->showMessageGui ();
-				return;
+				$this->notification->setType ( \Notification::SUCCESS );
+				return $this->notification->setMessage ( __ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
 			} else {
-				$this->xTemplate->assign ( "message", __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
+				
+				$this->notification->setType ( \Notification::FAIL );
+				return $this->notification->setMessage ( __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->updateUser ( $this->user )) {
-				$this->xTemplate->assign ( "message", __ ( "User updated!" ) );
-				$this->showMessageGui ();
-				return;
+				$this->notification->setType ( \Notification::SUCCESS );
+				return $this->notification->setMessage ( __ ( "User updated!" ) );
 			} else {
-				$this->xTemplate->assign ( "message", __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
+				$this->notification->setType ( \Notification::SUCCESS );
+				return $this->notification->setMessage ( __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
-		
-		$this->showEditionGui ( $nextPage );
 	}
 	
 	/**
@@ -152,14 +183,6 @@ class Page extends \APage {
 		
 		// All fails!!
 		return "";
-	}
-	
-	/**
-	 * Shows the message GUI
-	 */
-	private function showMessageGui() {
-		$this->xTemplate->parse ( "main.message" );
-		$this->xTemplate->out ( "main.message" );
 	}
 	
 	/**
@@ -262,8 +285,7 @@ class Page extends \APage {
 	 * @return \User
 	 */
 	private function createUserObject(\User $user = null): \User {
-		$httpRequest = new \HttpRequest ();
-		$postedVars = $httpRequest->getPostRequest ();
+		$postedVars = $this->httpRequest->getPostRequest ();
 		
 		// If no user is informed creates a new one
 		$user = is_null ( $user ) ? new \User () : $user;
@@ -305,44 +327,42 @@ class Page extends \APage {
 		
 		return false;
 	}
-	private function showEditionGui(string $nextPage) {
-		$this->xTemplate->assign ( "tittle", __ ( "User sign up" ) );
-		$this->xTemplate->assign ( "lblActive", __ ( "Active user" ) );
-		$this->xTemplate->assign ( "lblLogin", __ ( "Login" ) );
-		$this->xTemplate->assign ( "lblPassword", __ ( "Password" ) );
-		$this->xTemplate->assign ( "lblName", __ ( "Name" ) );
-		$this->xTemplate->assign ( "lblLastName", __ ( "Last name" ) );
+	private function createEditionGui(): string {
+		$this->template->assign ( "tittle", __ ( "User sign up" ) );
+		$this->template->assign ( "lblActive", __ ( "Active user" ) );
+		$this->template->assign ( "lblLogin", __ ( "Login" ) );
+		$this->template->assign ( "lblPassword", __ ( "Password" ) );
+		$this->template->assign ( "lblName", __ ( "Name" ) );
+		$this->template->assign ( "lblLastName", __ ( "Last name" ) );
 		
-		$this->xTemplate->assign ( "lblBirthday", __ ( "Birth day" ) );
-		$this->xTemplate->assign ( "lblBirthmonth", __ ( "Birth month" ) );
-		$this->xTemplate->assign ( "lblBirthyear", __ ( "Birth year" ) );
-		$this->xTemplate->assign ( "lblBirthDate", __ ( "Birthdate" ) );
+		$this->template->assign ( "lblBirthday", __ ( "Birth day" ) );
+		$this->template->assign ( "lblBirthmonth", __ ( "Birth month" ) );
+		$this->template->assign ( "lblBirthyear", __ ( "Birth year" ) );
+		$this->template->assign ( "lblBirthDate", __ ( "Birthdate" ) );
 		
-		$this->xTemplate->assign ( "lblEmail", __ ( "Email (going to be used for validation)" ) );
-		$this->xTemplate->assign ( "lblTelephone", __ ( "Telephone" ) );
+		$this->template->assign ( "lblEmail", __ ( "Email (going to be used for validation)" ) );
+		$this->template->assign ( "lblTelephone", __ ( "Telephone" ) );
 		
-		$this->xTemplate->assign ( "sendText", __ ( "Send" ) );
+		$this->template->assign ( "sendText", __ ( "Send" ) );
 		
-		$this->xTemplate->assign ( "lblSex", __ ( "Sex" ) );
+		$this->template->assign ( "lblSex", __ ( "Sex" ) );
 		
-		$this->xTemplate->assign ( "sexText", __ ( "Irrelevant" ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_IRRELEVANT );
-		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Both" ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_BOTH );
-		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Female" ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_FEMALE );
-		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Male" ) );
-		$this->xTemplate->assign ( "sexValue", \User::SEX_MALE );
-		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
+		$this->template->assign ( "sexText", __ ( "Irrelevant" ) );
+		$this->template->assign ( "sexValue", \User::SEX_IRRELEVANT );
+		$this->template->parse ( "main.dataEditing.comboSex" );
+		$this->template->assign ( "sexText", __ ( "Both" ) );
+		$this->template->assign ( "sexValue", \User::SEX_BOTH );
+		$this->template->parse ( "main.dataEditing.comboSex" );
+		$this->template->assign ( "sexText", __ ( "Female" ) );
+		$this->template->assign ( "sexValue", \User::SEX_FEMALE );
+		$this->template->parse ( "main.dataEditing.comboSex" );
+		$this->template->assign ( "sexText", __ ( "Male" ) );
+		$this->template->assign ( "sexValue", \User::SEX_MALE );
+		$this->template->parse ( "main.dataEditing.comboSex" );
 		
-		$this->xTemplate->assign ( "nextPage", $nextPage );
-		
-		$this->xTemplate->parse ( "main.dataEditing" );
-		$this->xTemplate->parse ( "main" );
-		$this->xTemplate->out ( "main" );
+		$this->template->parse ( "main.dataEditing" );
+		$this->template->parse ( "main" );
+		return $this->template->text ( "main" );
 	}
 	public static function isRestricted(): bool {
 		return false;

@@ -27,11 +27,26 @@ abstract class APage {
 	public function __construct(string $templateFilePath, string $currentDir) {
 		\I18n::init ( Configuration::$defaultLanguage, $currentDir . "/" . Configuration::$localeDirName );
 		
+		// If something fails on setup, just stops and show a message
+		if (! $this->setup ()) {
+			Log::recordEntry ( __ ( "Sorry, Fail on process your request" ), true );
+			return;
+		}
+		
+		// If we have to produce a Json statement, just do it and stop
 		if ($this->isJsonRequest ()) {
 			echo JSONGenerator::objectToJson ( $this->handleRequest () );
 			return;
 		}
 		
+		// get the page user wants
+		$gotVars = $this->httpRequest->getGetRequest ();
+		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
+		
+		// If theres no "next page" in the template we are ok, that why the @ at the begin
+		@$this->template->assign ( "nextPage", $nextPage );
+		
+		// If we got here we have to show some html
 		$this->template = new \TemplateLoader ( $templateFilePath );
 		echo $this->generateHTML ( $this->handleRequest () );
 	}
@@ -51,6 +66,13 @@ abstract class APage {
 		}
 		return false;
 	}
+	
+	/**
+	 * Prepares the page to perform whatever task it should do
+	 *
+	 * @return bool
+	 */
+	protected abstract function setup(): bool;
 	
 	/**
 	 * Gets an object from <b> handleRequest </b> and return the HTML

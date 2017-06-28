@@ -1,10 +1,25 @@
 <?php
 /**
- * Used to represent a system notification in a page
+ * Used to represent a system notification in a page, 
+ * by default the notification type is NONE
+ * 
  * @author ensismoebius
  *
  */
 class Notification {
+	
+	// Indicates the type of notification
+	const FAIL = 0;
+	const NONE = 1;
+	const SUCCESS = 2;
+	const WARNNING = 3;
+	
+	/**
+	 * The type of notification
+	 *
+	 * @var FAIL | SUCCESS | WARNNING
+	 */
+	protected $type;
 	
 	/**
 	 * Holds the notification message
@@ -22,10 +37,19 @@ class Notification {
 	protected $arrMoreInfomation;
 	
 	/**
+	 * Used to represent a system notification in a page, 
+	 * by default the notification type is NONE
+	 */
+	public function __construct() {
+		// By default the notification is of a success :)
+		$this->type = self::SUCCESS;
+	}
+	
+	/**
 	 * Adds more information about the notification (optional)
 	 *
-	 * @param string $info 
-	 * @param string $key      	
+	 * @param string $info        	
+	 * @param string $key        	
 	 * @return Notification
 	 */
 	public function addInformation(string $key, string $info): Notification {
@@ -35,7 +59,8 @@ class Notification {
 	
 	/**
 	 * Set more informations
-	 * @param array $arrMoreInfomation
+	 *
+	 * @param array $arrMoreInfomation        	
 	 * @return Notification
 	 */
 	public function setArrMoreInfomation(array $arrMoreInfomation) {
@@ -45,7 +70,7 @@ class Notification {
 	
 	/**
 	 * Returns more information about the notification
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getArrMoreInfomation(): array {
@@ -54,7 +79,7 @@ class Notification {
 	
 	/**
 	 * Return the message
-	 * 
+	 *
 	 * @return string
 	 */
 	public function getMessage(): string {
@@ -63,12 +88,33 @@ class Notification {
 	
 	/**
 	 * Sets the message
-	 * 
+	 *
 	 * @param string $message        	
 	 * @return Notification
 	 */
 	public function setMessage(string $message): Notification {
 		$this->message = $message;
+		return $this;
+	}
+	
+	/**
+	 * Sets the type of notification
+	 *
+	 * @return FAIL | SUCCESS | WARNNING
+	 */
+	public function getType() {
+		return $this->type;
+	}
+	
+	/**
+	 * Sets the type of notification
+	 *
+	 * @param
+	 *        	FAIL | SUCCESS | WARNNING $type
+	 * @return Notification
+	 */
+	public function setType($type) {
+		$this->type = $type;
 		return $this;
 	}
 }
