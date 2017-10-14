@@ -260,10 +260,9 @@ class File {
 	 *
 	 * @param string $filePathDestiny
 	 *        	: Diretório de destino do arquivo no local remoto
-	 * @param pointer $callBackFunction
+	 * @param callBackFunction
 	 *        	: Ponteiro para a função de callback
 	 * @see setSender()
-	 * @see IFileSender
 	 */
 	public function send($filePathDestiny, $callBackFunction = null) {
 		

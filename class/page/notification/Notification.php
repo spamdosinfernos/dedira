@@ -17,7 +17,9 @@ class Notification {
 	/**
 	 * The type of notification
 	 *
-	 * @var FAIL | SUCCESS | WARNNING
+	 * @var Notification::FAIL
+	 * @var Notification::SUCCESS
+	 * @var Notification::WARNNING
 	 */
 	protected $type;
 	
@@ -37,7 +39,7 @@ class Notification {
 	protected $arrMoreInfomation;
 	
 	/**
-	 * Used to represent a system notification in a page, 
+	 * Used to represent a system notification in a page,
 	 * by default the notification type is NONE
 	 */
 	public function __construct() {
@@ -48,8 +50,8 @@ class Notification {
 	/**
 	 * Adds more information about the notification (optional)
 	 *
-	 * @param string $info        	
-	 * @param string $key        	
+	 * @param string $info
+	 * @param string $key
 	 * @return Notification
 	 */
 	public function addInformation(string $key, string $info): Notification {
@@ -60,7 +62,7 @@ class Notification {
 	/**
 	 * Set more informations
 	 *
-	 * @param array $arrMoreInfomation        	
+	 * @param array $arrMoreInfomation
 	 * @return Notification
 	 */
 	public function setArrMoreInfomation(array $arrMoreInfomation) {
@@ -89,7 +91,7 @@ class Notification {
 	/**
 	 * Sets the message
 	 *
-	 * @param string $message        	
+	 * @param string $message
 	 * @return Notification
 	 */
 	public function setMessage(string $message): Notification {
@@ -100,7 +102,9 @@ class Notification {
 	/**
 	 * Sets the type of notification
 	 *
-	 * @return FAIL | SUCCESS | WARNNING
+	 * @return Notification::FAIL
+	 * @return Notification::SUCCESS
+	 * @return Notification::WARNNING
 	 */
 	public function getType() {
 		return $this->type;

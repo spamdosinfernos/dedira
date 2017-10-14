@@ -28,7 +28,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::setup()
+	 * @see \APage::setup()
 	 */
 	protected function setup(): bool {
 		return true;
@@ -38,7 +38,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::generateHTML()
+	 * @see \APage::generateHTML()
 	 */
 	protected function generateHTML($object): string {
 		if ($object->getType () == \Notification::SUCCESS) {

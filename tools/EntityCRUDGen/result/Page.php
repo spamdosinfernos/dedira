@@ -27,7 +27,7 @@ class Page extends \APage {
 	protected $httpRequest;
 	
 	public function __construct() {
-		\I18n::init ( Configuration::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
+		\I18n::init ( \Configuration::$defaultLanguage, __DIR__ . "/" . Conf::$localeDirName );
 		$this->xTemplate = new \TemplateLoader ( Conf::getTemplate () );
 		$this->reflector = new \ReflectionClass ( "CostsCenter" );
 		$this->httpRequest = new \HttpRequest ();
@@ -164,5 +164,11 @@ class Page extends \APage {
 	public static function isRestricted(): bool {
 		return false;
 	}
+	protected function generateHTML($object): string {
+	}
+
+	protected function setup(): bool {
+	}
+
 }
 ?>

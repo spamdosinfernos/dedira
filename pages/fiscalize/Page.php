@@ -31,7 +31,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::setup()
+	 * @see \APage::setup()
 	 */
 	protected function setup(): bool {
 		$auth = new \Authenticator ();
@@ -43,7 +43,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::generateHTML()
+	 * @see \APage::generateHTML()
 	 */
 	protected function generateHTML($object): string {
 		
@@ -72,7 +72,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::handleRequest()
+	 * @see \APage::handleRequest()
 	 */
 	protected function handleRequest() {
 		

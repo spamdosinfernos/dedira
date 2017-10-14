@@ -13,7 +13,7 @@
 		<div class="alert alert-info" style="display: none" id="status">
 			<p>{messageLabel}</p>
 		</div>
-		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}" method="post" name="problemForm">
+		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}&json=1" method="post" name="problemForm">
 			<input type="text" name="coordinates" placeholder="{coordLabel}" class="form-control"/><br>
 			<div id="address" class="form-group">
 				<input type="text" name="address" placeholder="{addressLabel}" class="form-control"/><br>
@@ -25,8 +25,8 @@
 			<br/>
 			<input type="submit" value="{sendText}" class="btn btn-primary btn-lg btn-block"/>
 		</form>
-		<script type="text/javascript" src="AjaxClient.js"></script>
-		<script type="text/javascript" src="FormOverwriter.js"></script>
+		<script type="text/javascript" src="./js/Uploader.js"></script>
+		<script type="text/javascript" src="./js/FormOverwriter.js"></script>
 		<script type="text/javascript">
 			form = FormOverwriter.create();
 			

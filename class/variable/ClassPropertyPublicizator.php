@@ -20,6 +20,8 @@ class ClassPropertyPublicizator {
 	 */
 	private function isConvertable($variable): bool {
 		// Testing if variable is a special type
+		if (is_null ( $this->arrSpecialPublicizators )) return false;
+		
 		foreach ( $this->arrSpecialPublicizators as $publicizators ) {
 			if (is_a ( $variable, $publicizators->getSpecialType () )) {
 				return true;
@@ -61,8 +63,7 @@ class ClassPropertyPublicizator {
 	 * @return mixed
 	 */
 	public function publicizise($variable) {
-		
-		if(is_null($variable)) return null;
+		if (is_null ( $variable )) return null;
 		
 		// If the informed variable is NOT an object we must prepare this in another ways
 		if (! is_object ( $variable )) {

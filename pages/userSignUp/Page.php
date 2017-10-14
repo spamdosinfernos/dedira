@@ -46,7 +46,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::setup()
+	 * @see \APage::setup()
 	 */
 	public function setup(): bool {
 		$this->httpRequest = new \HttpRequest ();
@@ -58,7 +58,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::generateHTML()
+	 * @see \APage::generateHTML()
 	 */
 	public function generateHTML($object): string {
 		// TODO Parei aqui estou adaptando todos as páginas para seguir o esquema setup, handle e generateb estava prestes a testar esta página
@@ -81,7 +81,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::handleRequest()
+	 * @see \APage::handleRequest()
 	 */
 	public function handleRequest() {
 		

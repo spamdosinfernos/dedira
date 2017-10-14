@@ -22,7 +22,7 @@ class Page extends \APage{
 	/**
 	 * Manages os templates
 	 *
-	 * @var XTemplate
+	 * @var \XTemplate
 	 */
 	protected $xTemplate;
 	public function __construct() {
@@ -84,5 +84,11 @@ class Page extends \APage{
 	public static function isRestricted(): bool {
 		return false;
 	}
+	protected function generateHTML($object): string {
+	}
+
+	protected function setup(): bool {
+	}
+
 }
 ?>

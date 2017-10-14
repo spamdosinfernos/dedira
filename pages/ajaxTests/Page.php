@@ -22,7 +22,7 @@ class Page extends \APage {
 	/**
 	 * Gerencia os templates
 	 *
-	 * @var XTemplate
+	 * @var \XTemplate
 	 */
 	protected $xTemplate;
 	
@@ -36,7 +36,7 @@ class Page extends \APage {
 	/**
 	 * Stores the http requests
 	 *
-	 * @var HttpRequest
+	 * @var \HttpRequest
 	 */
 	protected $httpRequest;
 	public function __construct() {
@@ -350,5 +350,11 @@ class Page extends \APage {
 	public static function isRestricted(): bool {
 		return false;
 	}
+	protected function generateHTML($object): string {
+	}
+
+	protected function setup(): bool {
+	}
+
 }
 ?>

@@ -43,7 +43,7 @@ class XTemplate {
 	/**
 	 * Parsed blocks
 	 *
-	 * @var unknown_type
+	 * @var array
 	 */
 	public $parsed_blocks = array();
 

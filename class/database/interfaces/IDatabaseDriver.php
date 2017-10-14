@@ -26,7 +26,7 @@ interface IDatabaseDriver {
 	/**
 	 * The query that must be executed
 	 *
-	 * @param IDatabaseQuery $query        	
+	 * @param DatabaseQuery $query        	
 	 * @return bool
 	 */
 	public function execute(DatabaseQuery $query): bool;

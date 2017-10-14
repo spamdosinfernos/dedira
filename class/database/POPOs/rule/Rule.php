@@ -96,7 +96,7 @@ class Rule extends AStorableObject {
 	
 	/**
 	 *
-	 * @param boll $approved        	
+	 * @param bool $approved        	
 	 *
 	 */
 	public function setApproved(bool $approved) {

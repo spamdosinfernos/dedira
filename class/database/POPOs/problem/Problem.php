@@ -91,7 +91,7 @@ class Problem {
 	/**
 	 * reportImage
 	 *
-	 * @return image
+	 * @return mixed
 	 */
 	public function getReportImage() {
 		return $this->reportImage;
@@ -100,7 +100,7 @@ class Problem {
 	/**
 	 * reportImage
 	 *
-	 * @param image $reportImage        	
+	 * @param mixed $reportImage        	
 	 * @return Problem
 	 */
 	public function setReportImage($reportImage): Problem {

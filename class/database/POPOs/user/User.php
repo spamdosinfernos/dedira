@@ -32,13 +32,13 @@ class User extends Person {
 	 * User constructor
 	 */
 	public function __construct() {
-		parent::__construct();
+		parent::__construct ();
 		$this->active = false;
 	}
 	
 	/**
 	 *
-	 * @return the string
+	 * @return string
 	 */
 	public function getLogin() {
 		return $this->login;
@@ -57,7 +57,7 @@ class User extends Person {
 	
 	/**
 	 *
-	 * @return the string
+	 * @return string
 	 */
 	public function getPassword() {
 		return $this->password;
@@ -76,7 +76,7 @@ class User extends Person {
 	
 	/**
 	 *
-	 * @return the boolean
+	 * @return boolean
 	 */
 	public function getActive() {
 		return $this->active;

@@ -88,7 +88,7 @@ abstract class APage {
 	/**
 	 * Gets an object from <b> handleRequest </b> and return the HTML
 	 *
-	 * @see handleRequest
+	 * @see APage:handleRequest
 	 * @param object $object        	
 	 * @return string
 	 */
@@ -98,7 +98,7 @@ abstract class APage {
 	 * Handles the client request and returns an result object
 	 *
 	 * @tutorial NOTE: This method is ALWAYS called before generateHTML
-	 * @see generateHTML
+	 * @see APage::generateHTML
 	 * @return object
 	 */
 	protected abstract function handleRequest();

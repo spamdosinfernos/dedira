@@ -18,7 +18,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::setup()
+	 * @see \APage::setup()
 	 */
 	public function setup(): bool {
 		return true;
@@ -28,7 +28,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::generateHTML()
+	 * @see \APage::generateHTML()
 	 */
 	public function generateHTML($object): string {
 		$this->template->assign ( "wellcomeMessage", __ ( "Hello" ) );
@@ -44,7 +44,7 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see APage::handleRequest()
+	 * @see \APage::handleRequest()
 	 */
 	public function handleRequest() {
 		$auth = new \Authenticator ();
