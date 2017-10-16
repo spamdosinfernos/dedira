@@ -23,10 +23,9 @@ class Page {
 			Log::recordEntry ( "There is not such page" );
 			return false;
 		}
-		// Even the page has the "isRestricted()" method
-		// it MUST implement the APage interface!
+		// it MUST implement the APage abstraction!
 		if (! is_subclass_of ( "$pageId\\Page", "APage" )) {
-			Log::recordEntry ( "The page MUST implement the APage interface!" );
+			Log::recordEntry ( "The page MUST implement the APage abstraction!" );
 			return false;
 		}
 		
