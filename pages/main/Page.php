@@ -7,26 +7,16 @@ require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
+	
+	/**
+	 * Gerencia os templates
+	 *
+	 * @var XTemplate
+	 */
+	protected $template;
 	public function __construct() {
 		parent::__construct ( Conf::getTemplate (), __DIR__ );
 	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \APage::setup()
-	 */
-	public function setup(): bool {
-		return true;
-	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \APage::generateHTML()
-	 */
 	public function generateHTML($object): string {
 		$this->template->assign ( "wellcomeMessage", __ ( "Hello" ) );
 		$this->template->assign ( "userName", $object->getName () . " " . $object->getLastName () );
@@ -36,23 +26,10 @@ class Page extends \APage {
 		$this->template->parse ( "main" );
 		return $this->template->text ( "main" );
 	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 * @see \APage::handleRequest()
-	 */
 	public function handleRequest() {
 		$auth = new \Authenticator ();
 		return $auth->getAutenticatedEntity ();
 	}
-	
-	/**
-	 *
-	 * {@inheritdoc}
-	 *
-	 */
 	public static function isRestricted(): bool {
 		return true;
 	}
@@ -108,5 +85,8 @@ class Page extends \APage {
 		$this->template->assign ( "updatesAmount", 0 );
 		$this->template->parse ( "main.menu" );
 	}
+	protected function setup(): bool {
+	}
+
 }
 ?>
