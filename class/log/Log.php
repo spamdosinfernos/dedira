@@ -25,7 +25,7 @@ class Log {
 		
 		try {
 			if (! is_file ( Configuration::$logFilePath )) {
-				echo "Fatal error!! The log system are not working! Theres no log file.";
+				echo "Fatal error!! The log system are not working! Theres no log file. CREATE ONE!";
 				exit ( 3 );
 			}
 			
