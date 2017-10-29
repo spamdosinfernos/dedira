@@ -20,6 +20,7 @@ class Page extends \APage{
 	}
 
 	protected function setup(): bool {
+		return true;
 	}
 
 	protected function handleRequest() {

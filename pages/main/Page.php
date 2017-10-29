@@ -86,7 +86,7 @@ class Page extends \APage {
 		$this->template->parse ( "main.menu" );
 	}
 	protected function setup(): bool {
+		return true;
 	}
-
 }
 ?>

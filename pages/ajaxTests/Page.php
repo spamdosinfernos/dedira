@@ -354,6 +354,7 @@ class Page extends \APage {
 	}
 
 	protected function setup(): bool {
+		return true;
 	}
 
 }

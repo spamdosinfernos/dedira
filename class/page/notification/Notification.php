@@ -43,8 +43,8 @@ class Notification {
 	 * by default the notification type is NONE
 	 */
 	public function __construct() {
-		// By default the notification is of a success :)
-		$this->type = self::SUCCESS;
+		// By default the notification is of a NONE
+		$this->type = self::NONE;
 	}
 	
 	/**
@@ -85,7 +85,7 @@ class Notification {
 	 * @return string
 	 */
 	public function getMessage(): string {
-		return $this->message;
+		return $this->message != null ? $this->message : "";
 	}
 	
 	/**

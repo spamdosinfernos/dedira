@@ -14,7 +14,7 @@ require_once __DIR__ . '/../class/internationalization/i18n.php';
  */
 class Controller {
 	public function __construct() {
-		Configuration::init ();	
+		Configuration::init ();
 		
 		I18n::init ( Configuration::$defaultLanguage, __DIR__ . "/" . Configuration::$localeDirName );
 		

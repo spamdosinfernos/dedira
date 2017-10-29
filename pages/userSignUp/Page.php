@@ -9,8 +9,10 @@ require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/protocols/mail/MailSender.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/page/notification/Notification.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
+
 /**
  * Register the user on system
  *
@@ -61,7 +63,6 @@ class Page extends \APage {
 	 * @see \APage::generateHTML()
 	 */
 	public function generateHTML($object): string {
-		// TODO Parei aqui estou adaptando todos as páginas para seguir o esquema setup, handle e generateb estava prestes a testar esta página
 		
 		// Process a notification
 		if (is_a ( $object, "Notification" )) {
