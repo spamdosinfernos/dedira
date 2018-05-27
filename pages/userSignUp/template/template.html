@@ -5,10 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{title}</title>
-<link rel="stylesheet" type="text/css" href="./lib/purecss/base-min.css">
-<link rel="stylesheet" type="text/css" href="./lib/purecss/pure-min.css">
-<link rel="stylesheet" type="text/css" href="./lib/purecss/forms-min.css">
-<link rel="stylesheet" type="text/css" href="./lib/purecss/grids-responsive-min.css">
 <script type="text/javascript">
 var content = [];
 
@@ -31,23 +27,23 @@ function addAnotherField(fieldId){
 	<form action="index.php?page={nextPage}" method="post" class="pure-form pure-form-aligned">
 		<p><em>{message}</em></p>
 		
-		<div class="pure-control-group">
+		<div>
 		<label>*{lblLogin}</label><input placeholder="{lblLogin}" type="text" name="login" required="required">
 		</div>
 		
-		<div class="pure-control-group">
+		<div>
 		<label>*{lblPassword}</label><input placeholder="{lblPassword}" type="password" name="password"  required="required">
 		</div>
 		
-		<div class="pure-control-group">
+		<div>
 		<label>*{lblName}</label><input placeholder="{lblName}" type="text" name="name" required="required">
 		</div>
 		
-		<div class="pure-control-group">
+		<div>
 		<label>*{lblLastName}</label><input placeholder="{lblLastName}" type="text" name="lastName" required="required">
 		</div>
 		
-		<div class="pure-control-group">
+		<div>
 		<label>{lblSex}</label>
 		<select name="sex">
 			<!-- BEGIN: comboSex -->
@@ -56,7 +52,7 @@ function addAnotherField(fieldId){
 		</select>
 		</div>
 		
-		<fieldset class="pure-group">
+		<fieldset>
 			<legend><label>*{lblBirthDate}</label></legend> 
 			<input placeholder="{lblBirthday}" type="number" name="birthDate[day]" required="required">
 			<input placeholder="{lblBirthmonth}" type="number" name="birthDate[month]" required="required">
