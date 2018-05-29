@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../../../lib/php-mailer/PHPMailerAutoload.php';
+use PHPMailer\PHPMailer\PHPMailer;
+
+require_once __DIR__ . '/../../../lib/vendor/autoload.php';
 /**
  * Sends a e-mail, currently uses PHPMailer as sender
  *
@@ -212,7 +214,7 @@ class MailSender {
 	 * @return bool
 	 */
 	public static function sendMail(): bool {
-		$mail = new PHPMailer();
+	    $mail = new PHPMailer();
 		
 		// All fields must be informed
 		if (empty ( trim ( self::$protocol ) ) && empty ( trim ( self::$from ) ) && empty ( trim ( self::$host ) ) && empty ( trim ( self::$message ) ) && empty ( trim ( self::$to ) ) && empty ( trim ( self::$userName ) ) && empty ( trim ( self::$userPassword ) )) {
