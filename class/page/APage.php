@@ -89,10 +89,10 @@ abstract class APage {
 	 * Gets an object from <b> handleRequest </b> and return the HTML
 	 *
 	 * @see APage:handleRequest
-	 * @param object $object        	
+	 * @param object $dataObject        	
 	 * @return string
 	 */
-	protected abstract function generateHTML($object): string;
+	protected abstract function generateHTML(object $dataObject): string;
 	
 	/**
 	 * Handles the client request and returns an result object
@@ -101,7 +101,7 @@ abstract class APage {
 	 * @see APage::generateHTML
 	 * @return object
 	 */
-	protected abstract function handleRequest();
+	protected abstract function handleRequest() : object;
 	
 	/**
 	 * Informs if the page is restricted or public
