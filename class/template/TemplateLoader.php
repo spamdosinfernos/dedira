@@ -1,17 +1,38 @@
 <?php
-require_once 'XTemplate.php';
 
 /**
- * Changes the default behavior of XTemplate class to send all pages using UTF8
+ * Changes the default behavior of template class
  */
-class TemplateLoader extends XTemplate {
+class TemplateLoader extends Twig_Environment {
 	const ERROR_1 = 1;
-	public function __construct($file, $tpldir = '', $files = null, $mainblock = 'main', $autosetup = true) {
-		// Manda o charset=utf8
-		header ( 'Content-Type: text/html; charset=utf-8' );
-
-		// Constrói a classe normalmente
-		parent::__construct ( $file, $tpldir, $files, $mainblock, $autosetup );
+	
+	/**
+	 * 
+	 * @var array
+	 */
+	private $data;
+	
+	/**
+	 * 
+	 * @var string
+	 */
+	private $filename;
+	
+	public function __construct(string $folder) {
+		$this->filename = $filename;
+		parent::__construct ( new Twig_Loader_Filesystem ( $folder ) );
+	}
+	
+	public function assign(string $key, $data){
+		$this->data[$key] = $data;
+	}
+	
+	public function clearAssigns(){
+		$this->data = array();
+	}
+	
+	public function render(string $filename){
+		return parent::render($filename, $this->data);
 	}
 }
 ?>

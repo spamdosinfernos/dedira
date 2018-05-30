@@ -32,7 +32,7 @@ abstract class APage {
 	 * So just handle the request and give it
 	 * the result in json format
 	 */
-	public function __construct(string $templateFilePath, string $currentDir) {
+	public function __construct(string $templateFolder, string $currentDir) {
 		\I18n::init ( Configuration::$defaultLanguage, $currentDir . "/" . Configuration::$localeDirName );
 		
 		// If something fails on setup, just stops and show a message
@@ -54,7 +54,7 @@ abstract class APage {
 		
 		
 		// If we got here we have to show some html
-		$this->template = new \TemplateLoader ( $templateFilePath );
+		$this->template = new \TemplateLoader ( $templateFolder );
 
 		// If theres no "next page" in the template we are ok, that why the @ at the begin
 		@$this->template->assign ( "nextPage", $nextPage );
