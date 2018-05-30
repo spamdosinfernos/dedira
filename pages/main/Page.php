@@ -7,25 +7,18 @@ require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
-	
-	/**
-	 * Gerencia os templates
-	 *
-	 * @var \TemplateLoader
-	 */
-	protected $template;
 	public function __construct() {
-		parent::__construct ( Conf::getTemplateFolder(), __DIR__ );
+		parent::__construct ( Conf::getTemplateFolder (), __DIR__ );
 	}
-	public function generateHTML($object): string {
+	public function generateHTML($dataObject): string {
 		$this->template->assign ( "wellcomeMessage", __ ( "Hello" ) );
-		$this->template->assign ( "userName", $object->getName () . " " . $object->getLastName () );
+		$this->template->assign ( "userName", $dataObject->getName () . " " . $dataObject->getLastName () );
 		
 		$this->createMenu ();
 		
-		return $this->template->render(Conf::getTemplateFile());
+		return $this->template->render ( Conf::getTemplateFile () );
 	}
-	public function handleRequest() {
+	public function handleRequest(): object {
 		$auth = new \Authenticator ();
 		return $auth->getAutenticatedEntity ();
 	}
