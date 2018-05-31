@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../../lib/vendor/autoload.php';
 
 /**
  * Changes the default behavior of template class
