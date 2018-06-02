@@ -59,7 +59,7 @@ abstract class APage {
 		// If theres no "next page" in the template we are ok, that why the @ at the begin
 		@$this->template->assign ( "nextPage", $nextPage );
 		
-		echo $this->generateHTML ( $this->handleRequest () );
+		echo $this->generateOutput ( $this->handleRequest () );
 	}
 	
 	/**
@@ -92,13 +92,13 @@ abstract class APage {
 	 * @param object $dataObject        	
 	 * @return string
 	 */
-	protected abstract function generateHTML(object $dataObject): string;
+	protected abstract function generateOutput(object $dataObject): string;
 	
 	/**
 	 * Handles the client request and returns an result object
 	 *
-	 * @tutorial NOTE: This method is ALWAYS called before generateHTML
-	 * @see APage::generateHTML
+	 * @tutorial NOTE: This method is ALWAYS called before generateOutput
+	 * @see APage::generateOutput
 	 * @return object
 	 */
 	protected abstract function handleRequest() : object;

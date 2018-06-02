@@ -6,7 +6,7 @@
  * @author ensismoebius
  *
  */
-class Notification {
+class SystemNotification {
 	
 	// Indicates the type of notification
 	const FAIL = 0;
@@ -17,9 +17,9 @@ class Notification {
 	/**
 	 * The type of notification
 	 *
-	 * @var Notification::FAIL
-	 * @var Notification::SUCCESS
-	 * @var Notification::WARNNING
+	 * @var SystemNotification::FAIL
+	 * @var SystemNotification::SUCCESS
+	 * @var SystemNotification::WARNNING
 	 */
 	protected $type;
 	
@@ -52,9 +52,9 @@ class Notification {
 	 *
 	 * @param string $info
 	 * @param string $key
-	 * @return Notification
+	 * @return SystemNotification
 	 */
-	public function addInformation(string $key, string $info): Notification {
+	public function addInformation(string $key, string $info): SystemNotification {
 		$this->arrMoreInfomation [$key] = $info;
 		return $this;
 	}
@@ -63,7 +63,7 @@ class Notification {
 	 * Set more informations
 	 *
 	 * @param array $arrMoreInfomation
-	 * @return Notification
+	 * @return SystemNotification
 	 */
 	public function setArrMoreInfomation(array $arrMoreInfomation) {
 		$this->arrMoreInfomation = $arrMoreInfomation;
@@ -92,9 +92,9 @@ class Notification {
 	 * Sets the message
 	 *
 	 * @param string $message
-	 * @return Notification
+	 * @return SystemNotification
 	 */
-	public function setMessage(string $message): Notification {
+	public function setMessage(string $message): SystemNotification {
 		$this->message = $message;
 		return $this;
 	}
@@ -102,9 +102,9 @@ class Notification {
 	/**
 	 * Sets the type of notification
 	 *
-	 * @return Notification::FAIL
-	 * @return Notification::SUCCESS
-	 * @return Notification::WARNNING
+	 * @return SystemNotification::FAIL
+	 * @return SystemNotification::SUCCESS
+	 * @return SystemNotification::WARNNING
 	 */
 	public function getType() {
 		return $this->type;
@@ -115,7 +115,7 @@ class Notification {
 	 *
 	 * @param
 	 *        	FAIL | SUCCESS | WARNNING $type
-	 * @return Notification
+	 * @return SystemNotification
 	 */
 	public function setType($type) {
 		$this->type = $type;

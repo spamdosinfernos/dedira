@@ -161,7 +161,7 @@ class Page extends \APage {
 	public static function isRestricted(): bool {
 		return true;
 	}
-	protected function generateHTML($object): string {
+	protected function generateOutput($object): string {
 	}
 
 	protected function setup(): bool {

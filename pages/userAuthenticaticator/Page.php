@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/page/notification/Notification.php';
+require_once __DIR__ . '/../../class/page/notification/SystemNotification.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 /**
@@ -38,10 +38,10 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see \APage::generateHTML()
+	 * @see \APage::generateOutput()
 	 */
-	protected function generateHTML($object): string {
-		if ($object->getType () == \Notification::SUCCESS) {
+	protected function generateOutput($object): string {
+		if ($object->getType () == \SystemNotification::SUCCESS) {
 			return "";
 		}
 		
@@ -80,7 +80,7 @@ class Page extends \APage {
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
 		// Creates a notification that will be returned
-		$notification = new \Notification ();
+		$notification = new \SystemNotification ();
 		$notification->addInformation ( self::NEXT_PAGE_VAR_NAME, $nextPage );
 		
 		// Verifies the nullables

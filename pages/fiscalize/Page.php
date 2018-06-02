@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../class/database/Database.php';
 require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
-require_once __DIR__ . '/../../class/page/notification/Notification.php';
+require_once __DIR__ . '/../../class/page/notification/SystemNotification.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
 	
@@ -43,9 +43,9 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see \APage::generateHTML()
+	 * @see \APage::generateOutput()
 	 */
-	protected function generateHTML($object): string {
+	protected function generateOutput($object): string {
 		
 		// the "template" property comes from APage class
 		$this->template->assign ( "cssPath", Conf::$cssPath );
@@ -95,7 +95,7 @@ class Page extends \APage {
 		// Verifying if there is some errors
 		switch ($form->generateObject ()) {
 			case \Form::BAD_DATA :
-				return $this->createNotification ( __ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
+				return $this->createSystemNotification ( __ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
 			case \Form::NO_REQUEST_DETECTED :
 				return;
 		}
@@ -106,14 +106,14 @@ class Page extends \APage {
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
 		if (! \Database::execute ( $query )) {
-			return $this->createNotification ( __ ( "Fail to record the problem! Try again later." ) );
+			return $this->createSystemNotification ( __ ( "Fail to record the problem! Try again later." ) );
 		}
 		
 		// Yay!! Everithing worked!
-		return $this->createNotification ( __ ( "Problem succefully reported! Thank you!" ) );
+		return $this->createSystemNotification ( __ ( "Problem succefully reported! Thank you!" ) );
 	}
-	private function createNotification(string $message, array $moreInfo = array()) {
-		$notification = new \Notification ();
+	private function createSystemNotification(string $message, array $moreInfo = array()) {
+		$notification = new \SystemNotification ();
 		$notification->setMessage ( $message );
 		$notification->setArrMoreInfomation ( $moreInfo );
 		return $notification;

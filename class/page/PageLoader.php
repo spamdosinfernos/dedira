@@ -9,7 +9,7 @@ require_once __DIR__ . '/../security/authentication/Authenticator.php';
  * @author ensismoebius
  *        
  */
-class Page {
+class PageLoader {
 	/**
 	 * Executes the specified page
 	 *

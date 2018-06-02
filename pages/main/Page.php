@@ -10,7 +10,7 @@ class Page extends \APage {
 	public function __construct() {
 		parent::__construct ( Conf::getTemplateFolder (), __DIR__ );
 	}
-	public function generateHTML($dataObject): string {
+	public function generateOutput($dataObject): string {
 		$this->template->assign ( "wellcomeMessage", __ ( "Hello" ) );
 		$this->template->assign ( "userName", $dataObject->getName () . " " . $dataObject->getLastName () );
 		

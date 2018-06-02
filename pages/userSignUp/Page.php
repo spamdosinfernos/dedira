@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/protocols/mail/MailSender.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
-require_once __DIR__ . '/../../class/page/notification/Notification.php';
+require_once __DIR__ . '/../../class/page/notification/SystemNotification.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 
@@ -37,7 +37,7 @@ class Page extends \APage {
 	/**
 	 * Stores the nofication
 	 *
-	 * @var \Notification
+	 * @var \SystemNotification
 	 */
 	protected $notification;
 	public function __construct() {
@@ -52,7 +52,7 @@ class Page extends \APage {
 	 */
 	public function setup(): bool {
 		$this->httpRequest = new \HttpRequest ();
-		$this->notification = new \Notification ();
+		$this->notification = new \SystemNotification ();
 		return is_null ( $this->httpRequest ) || is_null ( $this->notification ) ? false : true;
 	}
 	
@@ -60,15 +60,15 @@ class Page extends \APage {
 	 *
 	 * {@inheritdoc}
 	 *
-	 * @see \APage::generateHTML()
+	 * @see \APage::generateOutput()
 	 */
-	public function generateHTML($object): string {
+	public function generateOutput($object): string {
 		
 		// Process a notification
-		if (is_a ( $object, "Notification" )) {
+		if (is_a ( $object, "SystemNotification" )) {
 			
 			// If nothing was posted so we just show the form and stops
-			if ($object->getType () == \Notification::NONE) {
+			if ($object->getType () == \SystemNotification::NONE) {
 				return $this->createEditionGui ();
 			}
 			
@@ -90,12 +90,12 @@ class Page extends \APage {
 		// otherwise warns that theres is not such user and stops
 		if ($this->isUserConfirmationRequest ()) {
 			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
-				$this->notification->setType ( \Notification::SUCCESS );
+				$this->notification->setType ( \SystemNotification::SUCCESS );
 				return $this->notification->setMessage ( sprintf ( __ ( "User %s activated!" ), $this->user->getLogin () ) );
 			}
 			
 			// FAIL!!
-			$this->notification->setType ( \Notification::FAIL );
+			$this->notification->setType ( \SystemNotification::FAIL );
 			return $this->notification->setMessage ( __ ( "Theres no such user on database!" ) );
 		}
 		
@@ -118,24 +118,24 @@ class Page extends \APage {
 				if (empty ( $email )) {
 					$this->deleteUser ();
 					
-					$this->notification->setType ( \Notification::FAIL );
+					$this->notification->setType ( \SystemNotification::FAIL );
 					return $this->notification->setMessage ( __ ( "None of your mail account is valid! Try another mail address!" ) );
 				}
 				
-				$this->notification->setType ( \Notification::SUCCESS );
+				$this->notification->setType ( \SystemNotification::SUCCESS );
 				return $this->notification->setMessage ( __ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
 			} else {
 				
-				$this->notification->setType ( \Notification::FAIL );
+				$this->notification->setType ( \SystemNotification::FAIL );
 				return $this->notification->setMessage ( __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->updateUser ( $this->user )) {
-				$this->notification->setType ( \Notification::SUCCESS );
+				$this->notification->setType ( \SystemNotification::SUCCESS );
 				return $this->notification->setMessage ( __ ( "User updated!" ) );
 			} else {
-				$this->notification->setType ( \Notification::SUCCESS );
+				$this->notification->setType ( \SystemNotification::SUCCESS );
 				return $this->notification->setMessage ( __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
