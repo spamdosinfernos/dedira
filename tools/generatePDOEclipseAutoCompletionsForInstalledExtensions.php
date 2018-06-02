@@ -758,7 +758,6 @@ function print_modifiers ($ref) {
 /**
  * Makes PHP Manual URL from the given ID
  * @param id PHP Element ID
- * @return URL
  */
 function make_url ($id) {
 	return "http://www.php.net/manual/en/{$id}.php";
@@ -862,7 +861,6 @@ function print_doccomment ($ref, $tabs = 0) {
 			print " */\n";
 		}
 	} else if ($ref instanceof ReflectionProperty) {
-		//TODO complete phpdoc for fields detected by reflection
 	}
 }
 
@@ -990,7 +988,6 @@ function load_entities()
         $names[] = '&' . $v . ';';
     }
 
-    // XXX: fill nested values
     for ($i = 0; $i < 80; $i++) {
         array_map(function ($val) use($names, $result)
         {
@@ -1032,4 +1029,3 @@ Where options are:
 EOF
 	);
 }
-
