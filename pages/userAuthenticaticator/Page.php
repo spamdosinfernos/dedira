@@ -69,7 +69,8 @@ class Page extends \APage {
 		
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
-		if ($authenticator->isAuthenticated ()) return;
+		if ($authenticator->isAuthenticated ())
+			return;
 		
 		// get login and password if any
 		$httpRequest = new \HttpRequest ();
@@ -85,7 +86,7 @@ class Page extends \APage {
 		
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
-			$notification->setType ( \Notification::FAIL );
+			$notification->setType ( \SystemNotification::FAIL );
 			return $notification;
 		}
 		
@@ -97,7 +98,7 @@ class Page extends \APage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \Page::loadPage ( $nextPage );
+			$ret = \PageLoader::loadPage ( $nextPage );
 			
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {

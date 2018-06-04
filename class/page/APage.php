@@ -15,7 +15,7 @@ abstract class APage {
 	
 	/**
 	 * Manges the http requests
-	 * 
+	 *
 	 * @var HttpRequest
 	 */
 	protected $httpRequest;
@@ -26,6 +26,13 @@ abstract class APage {
 	 * @var TemplateLoader
 	 */
 	protected $template;
+	
+	/**
+	 * Contains the next seed
+	 *
+	 * @var string
+	 */
+	protected $nextSeed;
 	
 	/**
 	 * If the client is NOT requesting an HTML
@@ -41,25 +48,52 @@ abstract class APage {
 			return;
 		}
 		
+		$this->httpRequest = new HttpRequest ();
+		
+		// The "seed" are used to ensure that no men(or woman)-in-the-middle
+		// attack happens, this is made by generating a new seed every time
+		// a request is made
+		if ($this->httpRequest->getGetRequest ( "seed" ) != $_SESSION ["seed"]) {
+			$au = new Authenticator ();
+			$au->unauthenticate ();
+			return;
+		}
+		
+		// Generates and stores the next seed for further verification
+		$this->nextSeed = $this->getNextSeed ();
+		$_SESSION ["seed"] = $this->nextSeed;
+		
 		// If we have to produce a Json statement, just do it and stop
 		if ($this->isJsonRequest ()) {
-			echo JSONGenerator::objectToJson ( $this->handleRequest () );
+			
+			echo JSONGenerator::objectToJson ( array (
+					"nextSeed" => $nextSeed,
+					"data" => $this->handleRequest () 
+			) );
+			
 			return;
 		}
 		
 		// get the page user wants
-		$this->httpRequest = new HttpRequest();
 		$gotVars = $this->httpRequest->getGetRequest ();
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
-		
 		// If we got here we have to show some html
 		$this->template = new \TemplateLoader ( $templateFolder );
-
+		
 		// If theres no "next page" in the template we are ok, that why the @ at the begin
 		@$this->template->assign ( "nextPage", $nextPage );
 		
 		echo $this->generateOutput ( $this->handleRequest () );
+	}
+	
+	/**
+	 * Generates a random seed with avoid man(or woman)-in-the-middle
+	 * attacks
+	 * @return number
+	 */
+	private function getNextSeed(){
+		return rand();
 	}
 	
 	/**
@@ -89,7 +123,7 @@ abstract class APage {
 	 * Gets an object from <b> handleRequest </b> and return the HTML
 	 *
 	 * @see APage:handleRequest
-	 * @param object $dataObject        	
+	 * @param object $dataObject
 	 * @return string
 	 */
 	protected abstract function generateOutput(object $dataObject): string;
@@ -101,7 +135,7 @@ abstract class APage {
 	 * @see APage::generateOutput
 	 * @return object
 	 */
-	protected abstract function handleRequest() : object;
+	protected abstract function handleRequest(): object;
 	
 	/**
 	 * Informs if the page is restricted or public
