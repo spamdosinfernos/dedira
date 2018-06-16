@@ -1,4 +1,8 @@
 <?php
+use MongoDB;
+
+require __DIR__ . '/../../../../lib/vendor/autoload.php';
+
 require_once __DIR__ . '/../../DatabaseConditions.php';
 require_once __DIR__ . '/../../DatabaseRequestedData.php';
 require_once __DIR__ . '/../../interfaces/IDatabaseDriver.php';
@@ -16,12 +20,12 @@ require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
  *
  * @author ensismoebius
  */
-class MongoDb implements IDatabaseDriver {
+class MongoDbDriver implements IDatabaseDriver {
 	
 	/**
 	 * The database connection
 	 *
-	 * @var MongoDB\Driver\Manager
+	 * @var MongoDB\Client
 	 */
 	private $connection;
 	
@@ -47,12 +51,6 @@ class MongoDb implements IDatabaseDriver {
 	private $entityName;
 	
 	/**
-	 *
-	 * @var MongoDB\Driver\WriteConcern
-	 */
-	private $writeConcern;
-	
-	/**
 	 * Publicitize all properties
 	 *
 	 * @var ClassPropertyPublicizator
@@ -70,27 +68,13 @@ class MongoDb implements IDatabaseDriver {
 	 * @see IDatabaseDriver::connect()
 	 */
 	public function connect(): bool {
-		
-		// Construct a write concern
-		$this->writeConcern = new MongoDB\Driver\WriteConcern ( 
-				// Guarantee that writes are acknowledged by a majority of our nodes
-				MongoDB\Driver\WriteConcern::MAJORITY, 
-				// But only wait 1000ms because we have an application to run!
-				1000 );
-		
 		try {
 			$url = Configuration::$databaseHostProtocol . "://" . Configuration::$databaseHostAddress . ":" . Configuration::$databasePort;
-			$this->connection = new MongoDB\Driver\Manager ( $url );
-			
-			// Execute an connection test, it may or may not throw an exception
-			$stats = new MongoDB\Driver\Command ( [ 
-					"dbstats" => 1 
-			] );
-			$this->connection->executeCommand ( "testdb", $stats );
+			$this->connection = new MongoDB\Client ( $url );
 			
 			// If nothing goes wrong so everything goes well ;)
 			return true;
-		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
@@ -168,21 +152,15 @@ class MongoDb implements IDatabaseDriver {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
 		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 		
-		// Create a bulk write object and add our update operation
-		$bulk = new MongoDB\Driver\BulkWrite ();
-		
-		$bulk->update ( $this->buildFilters (), $this->buildModifiers (), [ 
-				'multi' => true,
-				'upsert' => false 
-		] );
-		
-		// Retrieves the name of collection to insert
-		$collection = Configuration::$databaseNAme . "." . $this->entityName;
-		
 		try {
-			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			$collection = $this->connection->selectCollection ( Configuration::$databaseNAme, $this->entityName );
+			$collection->updateMany ( $this->buildFilters (), $this->buildModifiers (), [ 
+					'multi' => true,
+					'upsert' => false 
+			] );
+			
 			return true;
-		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -353,8 +331,10 @@ class MongoDb implements IDatabaseDriver {
 				}
 				
 				if (is_numeric ( $value )) {
-					if (is_int ( $value )) $value = intval ( $value );
-					if (is_float ( $value )) $value = floatval ( $value );
+					if (is_int ( $value ))
+						$value = intval ( $value );
+					if (is_float ( $value ))
+						$value = floatval ( $value );
 				}
 				
 				switch ($type) {
