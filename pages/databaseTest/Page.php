@@ -11,12 +11,14 @@ require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/database/DatabaseConditions.php';
 require_once __DIR__ . '/../../class/database/drivers/MongoDb.php';
 require_once __DIR__ . '/../../class/database/interfaces/IDatabaseDriver.php';
+
 class Page extends \APage {
+
 	public function __construct() {
 		// Initilizing the database
-		\Database::init ( new \MongoDb () );
+		\Database::init ( new \MongoDbDriver() );
 		\Database::connect ();
-		
+
 		$user = new \User ();
 		$user->set_Id ( 1 );
 		$user->setSex ( "masc" );
@@ -24,13 +26,13 @@ class Page extends \APage {
 		$user->setPassword ( \PasswordPreparer::messItUp ( "1234" ) );
 		$user->setName ( "André Furlan" );
 		$user->setArrEmail ( array (
-				"ensismoebius@gmail.com" 
+				"ensismoebius@gmail.com"
 		) );
 		$query = new \DatabaseQuery ();
 		$query->setObject ( $user );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		\Database::execute ( $query );
-		
+
 		// Retrieving objects
 		$c = new \DatabaseConditions ();
 		$c->addCondition ( \DatabaseConditions::AND, "_id", 1 );
@@ -47,7 +49,7 @@ class Page extends \APage {
 		while ( $res->next () ) {
 			echo $res->getRetrivedObject ()->getLogin ();
 		}
-		
+
 		// Updating objects
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
@@ -61,7 +63,7 @@ class Page extends \APage {
 		$query3->setObject ( $user );
 		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		\Database::execute ( $query3 );
-		
+
 		$user = new \User ();
 		$c2 = new \DatabaseConditions ();
 		$c2->addCondition ( \DatabaseConditions::AND, "_id", 1 );
@@ -72,7 +74,7 @@ class Page extends \APage {
 		$query3->setObject ( $user );
 		$query3->setOperationType ( \DatabaseQuery::OPERATION_UPDATE );
 		\Database::execute ( $query3 );
-		
+
 		// Deleting objects
 		$user = new \User ();
 		$c3 = new \DatabaseConditions ();
@@ -83,9 +85,11 @@ class Page extends \APage {
 		$query4->setOperationType ( \DatabaseQuery::OPERATION_ERASE );
 		\Database::execute ( $query4 );
 	}
+
 	public static function isRestricted(): bool {
 		return true;
 	}
+
 	protected function generateOutput($object): string {
 	}
 
@@ -95,6 +99,5 @@ class Page extends \APage {
 
 	protected function handleRequest() {
 	}
-
 }
 ?>
