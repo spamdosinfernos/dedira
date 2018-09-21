@@ -30,4 +30,11 @@ class DatabaseLimit {
 				throw new Exception ( "Invalid limit" );
 		}
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getArrLimits() {
+		return $this->arrLimits;
+	}
 }

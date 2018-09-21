@@ -1,6 +1,4 @@
 <?php
-use MongoDB;
-
 require __DIR__ . '/../../../../lib/vendor/autoload.php';
 
 require_once __DIR__ . '/../../DatabaseConditions.php';
@@ -50,6 +48,7 @@ class MongoDbDriver implements IDatabaseDriver {
 	 * @var ClassPropertyPublicizator
 	 */
 	private $classPublicizator;
+
 	public function __construct() {
 		$this->result = new DatabaseRequestedData ();
 		$this->entityName = "";
@@ -67,7 +66,8 @@ class MongoDbDriver implements IDatabaseDriver {
 
 			// If nothing goes wrong so everything goes well ;)
 			return true;
-		} catch ( MongoDB\Exception\Exception $e ) {
+		}
+		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
@@ -148,7 +148,8 @@ class MongoDbDriver implements IDatabaseDriver {
 			] );
 
 			return true;
-		} catch ( MongoDB\Exception\Exception $e ) {
+		}
+		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -169,7 +170,8 @@ class MongoDbDriver implements IDatabaseDriver {
 			// Inserts the data
 			$collection->insertMany ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
 			return true;
-		} catch ( MongoDB\Exception\Exception $e ) {
+		}
+		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -187,7 +189,8 @@ class MongoDbDriver implements IDatabaseDriver {
 			// Inserts the data
 			$collection->deleteMany ( $this->buildFilters () );
 			return true;
-		} catch ( MongoDB\Exception\Exception $e ) {
+		}
+		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -206,7 +209,14 @@ class MongoDbDriver implements IDatabaseDriver {
 		$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
 
 		try {
-			$cursor = $collection->find ( $this->buildFilters () );
+
+			$options = array ();
+			foreach ( $this->query->getLimits ()->getArrLimits () as $limitType => $limitValue ) {
+				if ($limitType == DatabaseLimit::LOWER_LIMIT) $options ["min"] = $limitValue;
+				if ($limitType == DatabaseLimit::UPPER_LIMIT) $options ["max"] = $limitValue;
+			}
+
+			$cursor = $collection->findOne ( $this->buildFilters (), $options );
 
 			// Stores all matched documents
 			$result = array ();
@@ -223,7 +233,8 @@ class MongoDbDriver implements IDatabaseDriver {
 			$this->result->setData ( $result );
 
 			return true;
-		} catch ( MongoDB\Exception\Exception $e ) {
+		}
+		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -286,6 +297,7 @@ class MongoDbDriver implements IDatabaseDriver {
 
 		return array_merge ( $setters, $adders, $removers );
 	}
+
 	/**
 	 * Builds the filter clause
 	 * @return array

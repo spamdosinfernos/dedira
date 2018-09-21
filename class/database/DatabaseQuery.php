@@ -41,6 +41,13 @@ class DatabaseQuery {
 	}
 
 	/**
+	 * @return DatabaseLimit
+	 */
+	public function getLimits() {
+		return $this->limits;
+	}
+
+	/**
 	 * @param DatabaseConditions $c
 	 */
 	public function setConditions(DatabaseConditions $c) {
