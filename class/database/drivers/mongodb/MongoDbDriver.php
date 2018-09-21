@@ -1,4 +1,6 @@
 <?php
+use MongoDB;
+
 require __DIR__ . '/../../../../lib/vendor/autoload.php';
 
 require_once __DIR__ . '/../../DatabaseConditions.php';
@@ -15,42 +17,36 @@ require_once __DIR__ . '/MongoDateToDatetimePublicizator.php';
 require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
 
 /**
- *
  * @author ensismoebius
  */
 class MongoDbDriver implements IDatabaseDriver {
-	
+
 	/**
 	 * The database connection
-	 *
 	 * @var MongoDB\Client
 	 */
 	private $connection;
-	
+
 	/**
 	 * Guarda resultado da consulta
-	 *
 	 * @var DatabaseRequestedData
 	 */
 	private $result;
-	
+
 	/**
 	 * Stores the query that will be executed
-	 *
 	 * @var DatabaseQuery
 	 */
 	private $query;
-	
+
 	/**
 	 * Stores the entity name manipulated in query
-	 *
 	 * @var string
 	 */
 	private $entityName;
-	
+
 	/**
 	 * Publicitize all properties
-	 *
 	 * @var ClassPropertyPublicizator
 	 */
 	private $classPublicizator;
@@ -58,9 +54,8 @@ class MongoDbDriver implements IDatabaseDriver {
 		$this->result = new DatabaseRequestedData ();
 		$this->entityName = "";
 	}
-	
+
 	/**
-	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::connect()
@@ -69,7 +64,7 @@ class MongoDbDriver implements IDatabaseDriver {
 		try {
 			$url = Configuration::$databaseHostProtocol . "://" . Configuration::$databaseHostAddress . ":" . Configuration::$databasePort;
 			$this->connection = new MongoDB\Client ( $url );
-			
+
 			// If nothing goes wrong so everything goes well ;)
 			return true;
 		} catch ( MongoDB\Exception\Exception $e ) {
@@ -78,9 +73,8 @@ class MongoDbDriver implements IDatabaseDriver {
 		}
 		return false;
 	}
-	
+
 	/**
-	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::disconnect()
@@ -89,29 +83,27 @@ class MongoDbDriver implements IDatabaseDriver {
 		// For some reason looks like we cant close the connection
 		return true;
 	}
-	
+
 	/**
-	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::execute()
 	 */
 	public function execute(DatabaseQuery $query): bool {
 		$this->query = $query;
-		
+
 		if (is_null ( $this->connection )) {
 			Log::recordEntry ( "Not connected to database!" );
 			return false;
 		}
-		
+
 		$reflection = new ReflectionClass ( $query->getObject () );
 		$this->entityName = $reflection->getName ();
-		
+
 		return $this->executeQuery ();
 	}
-	
+
 	/**
-	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::getResults()
@@ -119,10 +111,9 @@ class MongoDbDriver implements IDatabaseDriver {
 	public function getResults(): DatabaseRequestedData {
 		return $this->result;
 	}
-	
+
 	/**
 	 * Generates the query string
-	 *
 	 * @return bool
 	 */
 	private function executeQuery(): bool {
@@ -140,96 +131,83 @@ class MongoDbDriver implements IDatabaseDriver {
 				return false;
 		}
 	}
-	
+
 	/**
 	 * Generates the update query
-	 *
 	 * @return string
 	 */
 	private function doUpdate(): string {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
 		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
-		
+
 		try {
 			$collection = $this->connection->selectCollection ( Configuration::$databaseNAme, $this->entityName );
 			$collection->updateMany ( $this->buildFilters (), $this->buildModifiers (), [ 
 					'multi' => true,
-					'upsert' => false 
+					'upsert' => false
 			] );
-			
+
 			return true;
 		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Generates the insert query
-	 *
 	 * @return string
 	 */
 	private function doInsert(): bool {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
 		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
-		
-		// Create a bulk write object and add our insert operation
-		$bulk = new MongoDB\Driver\BulkWrite ();
-		
-		// To insert we need turn all properties as public
-		$bulk->insert ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
-		
-		// Retrieves the name of collection to insert
-		$collection = Configuration::$databaseNAme . "." . $this->entityName;
-		
+
 		try {
-			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			// Retrieves the collection to insert
+			$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
+
+			// Inserts the data
+			$collection->insertMany ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
 			return true;
-		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Generates the delete query
-	 *
 	 * @return string
 	 */
 	private function doDelete(): string {
-		// Create a bulk write object and add our update operation
-		$bulk = new MongoDB\Driver\BulkWrite ();
-		
-		$bulk->delete ( $this->buildFilters (), array (
-				'multi' => true 
-		) );
-		
-		// Retrieves the name of collection to insert
-		$collection = Configuration::$databaseNAme . "." . $this->entityName;
-		
 		try {
-			$this->connection->executeBulkWrite ( $collection, $bulk, $this->writeConcern );
+			// Retrieves the collection to delete
+			$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
+
+			// Inserts the data
+			$collection->deleteMany ( $this->buildFilters () );
 			return true;
-		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Generates the select query
-	 *
 	 * @return string
 	 */
 	private function doRead(): bool {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
 		$this->classPublicizator->addSpecialTypePublicizator ( new MongoDateToDatetimePublicizator () );
 		$this->classPublicizator->addSpecialTypePublicizator ( new MongoObjectIdPublicizatorToSimpleID () );
-		
-		$query = new MongoDB\Driver\Query ( $this->buildFilters () );
+
+		// Retrieves the collection to delete
+		$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
+
 		try {
-			$cursor = $this->connection->executeQuery ( Configuration::$databaseNAme . "." . $this->entityName, $query );
-			
+			$cursor = $collection->find ( $this->buildFilters () );
+
 			// Stores all matched documents
 			$result = array ();
 			foreach ( $cursor as $document ) {
@@ -238,124 +216,120 @@ class MongoDbDriver implements IDatabaseDriver {
 				$document = Caster::classToClassCast ( $document, $this->entityName );
 				$document = $this->classPublicizator->publicizise ( $document );
 				$document = Caster::classToClassCast ( $document, $this->entityName );
-				
+
 				$result [] = $document;
 			}
-			
+
 			$this->result->setData ( $result );
-			
+
 			return true;
-		} catch ( MongoDB\Driver\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Build the modifiers for updates
-	 *
 	 * @return array
 	 */
 	protected function buildModifiers(): array {
 		$arrChanges = $this->query->getObject ()->getArrChanges ();
-		
+
 		$adders = array ();
 		$setters = array ();
 		$removers = array ();
-		
+
 		foreach ( $arrChanges as $changeType => $arrFieldValues ) {
-			
+
 			if ($changeType == AStorableObject::UNITARY) {
-				
+
 				foreach ( $arrFieldValues as $key => $value ) {
-					
+
 					if (is_a ( $value, "DateTime" )) {
 						$value = $this->datetimeConverter->convert ( $value );
 					}
-					
+
 					@$setters ['$set']->$key = $value;
 				}
 				continue;
 			}
-			
+
 			if ($changeType == AStorableObject::COLLECTION_ADD) {
 				foreach ( $arrFieldValues as $key => $arrValues ) {
 					foreach ( $arrValues as $value ) {
-						
+
 						if (is_a ( $value, "DateTime" )) {
 							$value = $this->datetimeConverter->convert ( $value );
 						}
-						
+
 						$adders ['$addToSet']->$key ['$each'] [] = $value;
 					}
 				}
 				continue;
 			}
-			
+
 			if ($changeType == AStorableObject::COLLECTION_REMOVE) {
 				foreach ( $arrFieldValues as $key => $arrValues ) {
 					foreach ( $arrValues as $value ) {
-						
+
 						if (is_a ( $value, "DateTime" )) {
 							$value = $this->datetimeConverter->convert ( $value );
 						}
-						
+
 						$removers ['$pull']->$key ['$in'] [] = $value;
 					}
 				}
 				continue;
 			}
 		}
-		
+
 		return array_merge ( $setters, $adders, $removers );
 	}
 	/**
 	 * Builds the filter clause
-	 *
 	 * @return array
 	 */
 	protected function buildFilters(): array {
-		
+
 		// Filter for documents
 		$arrFilter = array ();
-		
+
 		// Creates the filter
 		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
-			
+
 			foreach ( $arrToken as $field => $value ) {
-				
+
 				if (is_a ( $value, "DateTime" )) {
 					$value = $this->datetimeConverter->convert ( $value );
 				}
-				
+
 				if (is_numeric ( $value )) {
-					if (is_int ( $value ))
-						$value = intval ( $value );
-					if (is_float ( $value ))
-						$value = floatval ( $value );
+					if (is_int ( $value )) $value = intval ( $value );
+					if (is_float ( $value )) $value = floatval ( $value );
 				}
-				
+
 				switch ($type) {
 					case DatabaseConditions::AND :
 						$arrFilter [$field] = $value;
 						continue;
 					case DatabaseConditions::AND_LIKE :
-						$arrFilter [$field] = new MongoDB\BSON\Regex ( ".*" . $value . ".*" );
+						$arrFilter [$field] = ".*" . $value . ".*";
 						continue;
 					case DatabaseConditions::OR :
 						$arrFilter ['$or'] [] = array (
-								$field => $value 
+								$field => $value
 						);
 						continue;
 					case DatabaseConditions::OR_LIKE :
 						$arrFilter ['$or'] [] = array (
-								$field => new MongoDB\BSON\Regex ( ".*" . $value . ".*" ) 
+								$field => ".*" . $value . ".*"
 						);
 						continue;
 				}
 			}
 		}
-		
+
 		return $arrFilter;
 	}
 }
