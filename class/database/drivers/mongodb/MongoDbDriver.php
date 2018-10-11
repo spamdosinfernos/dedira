@@ -138,7 +138,6 @@ class MongoDbDriver implements IDatabaseDriver {
 	 */
 	private function doUpdate(): string {
 		$this->classPublicizator = new ClassPropertyPublicizator ();
-		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
 
 		try {
 			$collection = $this->connection->selectCollection ( Configuration::$databaseNAme, $this->entityName );
@@ -211,9 +210,8 @@ class MongoDbDriver implements IDatabaseDriver {
 		try {
 
 			$options = array ();
-			foreach ( $this->query->getLimits ()->getArrLimits () as $limitType => $limitValue ) {
-				if ($limitType == DatabaseLimit::LOWER_LIMIT) $options ["min"] = $limitValue;
-				if ($limitType == DatabaseLimit::UPPER_LIMIT) $options ["max"] = $limitValue;
+			if ($this->query->getLimit () > 0) {
+				$options ["limit"] = $this->query->getLimit ();
 			}
 
 			$cursor = $collection->findOne ( $this->buildFilters (), $options );

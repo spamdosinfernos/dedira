@@ -25,7 +25,7 @@ class DatabaseQuery {
 	 * Holds query limits
 	 * @var DatabaseLimit
 	 */
-	private $limits;
+	private $limit;
 
 	/**
 	 * Holds the object involved in query
@@ -36,15 +36,15 @@ class DatabaseQuery {
 	/**
 	 * @param DatabaseLimit $l
 	 */
-	public function setLimits(DatabaseLimit $l) {
-		$this->limits = $l;
+	public function setLimit(DatabaseLimit $l) {
+		$this->limit = $l;
 	}
 
 	/**
 	 * @return DatabaseLimit
 	 */
-	public function getLimits() {
-		return $this->limits;
+	public function getLimit() {
+		return $this->limit;
 	}
 
 	/**
