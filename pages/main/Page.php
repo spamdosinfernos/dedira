@@ -42,8 +42,15 @@ class Page extends \APage {
 
 	public function generateTemplateData($data): array {
 		$this->createRateMenuEntry ();
-
 		return $this->arrData;
+	}
+
+	protected function returnTemplateFile(object $data): string {
+		return Conf::getTemplateFile ();
+	}
+
+	protected function returnTemplateFolder(): string {
+		return Conf::getTemplateFolder ();
 	}
 }
 ?>
