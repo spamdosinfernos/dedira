@@ -23,6 +23,11 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 	 * @see ISpecialTypesPublicizator::convert()
 	 */
 	public function convert($type) {
-		return new MongoDB\BSON\UTCDateTime ( $type->format ( "U" ) * 1000 );
+		if (! ($type instanceof DateTime)) {
+			throwException ( "The variable must be an instance of DateTime" );
+			return;
+		}
+
+		return $type->format ( "U" ) * 1000;
 	}
 }

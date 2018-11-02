@@ -53,7 +53,7 @@ abstract class APage {
 		// The "seed" are used to ensure that no men(or woman)-in-the-middle
 		// attack happens, this is made by generating a new seed every time
 		// a request is made
-		if ($this->httpRequest->getGetRequest ( "seed" ) != $_SESSION ["seed"]) {
+		if (!isset($_SESSION ["seed"]) || $this->httpRequest->getGetRequest ( "seed" ) != $_SESSION ["seed"]) {
 			$au = new Authenticator ();
 			$au->unauthenticate ();
 			return;

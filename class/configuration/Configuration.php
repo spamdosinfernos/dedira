@@ -209,7 +209,7 @@ class Configuration {
 	public static function init() {
 		
 		// Read the ini file
-		$arrValues = parse_ini_file ( "./class/configuration/config.ini", true );
+		$arrValues = parse_ini_file ( __DIR__ . "/config.ini", true );
 		
 		// Auto generated configuration values
 		self::$systemRootDirectory = realpath ( dirname ( __FILE__ ) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . ".." );

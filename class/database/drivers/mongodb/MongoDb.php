@@ -17,7 +17,7 @@ require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
 /**
  * @author ensismoebius
  */
-class MongoDbDriver implements IDatabaseDriver {
+class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * The database connection
@@ -59,12 +59,12 @@ class MongoDbDriver implements IDatabaseDriver {
 	 *
 	 * @see IDatabaseDriver::connect()
 	 */
-	public function connect(): bool {
+	public function connect(string $databaseHostProtocol, string $databaseHostAddress, int $databasePort, string $user, string $password): bool {
 		try {
-			$url = Configuration::$databaseHostProtocol . "://" . Configuration::$databaseHostAddress . ":" . Configuration::$databasePort;
+			$url = "$databaseHostProtocol://$databaseHostAddress:$databasePort";
 			$this->connection = new MongoDB\Client ( $url );
 
-			// If nothing goes wrong so everything goes well ;)
+			// If nothing went wrong so everything went well ;)
 			return true;
 		}
 		catch ( MongoDB\Exception\Exception $e ) {
@@ -167,7 +167,9 @@ class MongoDbDriver implements IDatabaseDriver {
 			$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
 
 			// Inserts the data
-			$collection->insertMany ( $this->classPublicizator->publicizise ( $this->query->getObject () ) );
+			$collection->insertMany ( array (
+					$this->classPublicizator->publicizise ( $this->query->getObject () )
+			) );
 			return true;
 		}
 		catch ( MongoDB\Exception\Exception $e ) {
