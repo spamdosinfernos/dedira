@@ -4,7 +4,6 @@ namespace userAuthenticaticator;
 
 require_once __DIR__ . '/class/Conf.php';
 require_once __DIR__ . '/../../class/log/Log.php';
-// require_once __DIR__ . '/../../class/page/Page.php';
 require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
@@ -22,7 +21,7 @@ class Page extends \APage {
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
 
 	public function __construct() {
-			parent::__construct ( Conf::getTemplate (), __DIR__ );
+		parent::__construct ();
 	}
 
 	/**
@@ -32,30 +31,6 @@ class Page extends \APage {
 	 */
 	protected function setup(): bool {
 		return true;
-	}
-
-	/**
-	 * {@inheritdoc}
-	 *
-	 * @see \APage::generateOutput()
-	 */
-	protected function generateOutput($object): string {
-		if ($object->getType () == \SystemNotification::SUCCESS) {
-			return "";
-		}
-
-		$arrInfo = $object->getArrMoreInfomation ();
-		$nextPage = $arrInfo [self::NEXT_PAGE_VAR_NAME];
-		$failToAuthenticate = isset ( $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] ) ? $arrInfo [self::FAIL_AUTHENTICATION_VAR_NAME] : false;
-
-		// the "template" property comes from APage class
-		$this->template->assign ( "systemMessage", $this->getTitle ( $failToAuthenticate ) );
-		$this->template->assign ( "signUpMessage", __ ( "Or signup!" ) );
-		$this->template->assign ( "login", __ ( "E-mail or login" ) );
-		$this->template->assign ( "password", __ ( "Password" ) );
-		$this->template->assign ( "nextPage", $nextPage );
-		$this->template->parse ( "main" );
-		return $this->template->text ( "main" );
 	}
 
 	/**
@@ -108,12 +83,26 @@ class Page extends \APage {
 		return $notification;
 	}
 
-	public function getTitle(bool $failToAuthenticate) {
-		return $failToAuthenticate ? __ ( "Login or password incorrect, or your account are inactive" ) : __ ( "Please, type your login and password" );
+	protected static function isRestricted(): bool {
+		return false;
 	}
 
-	public static function isRestricted(): bool {
-		return false;
+	protected function generateTemplateData($data): array {
+
+		// the "template" property comes from APage class
+		return array (
+				"signUpMessage" => gettext ( "Or signup!" ),
+				"login" => gettext ( "E-mail or login" ),
+				"password" => gettext ( "Password" )
+		);
+	}
+
+	protected function returnTemplateFile(object $data): string {
+		return Conf::getTemplateFile ();
+	}
+
+	protected function returnTemplateFolder(): string {
+		return Conf::getTemplateFolder ();
 	}
 }
 ?>

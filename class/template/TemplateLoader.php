@@ -12,18 +12,16 @@ class TemplateLoader extends Twig_Environment {
 	 */
 	private $data;
 
-	/**
-	 * @var string
-	 */
-	private $filename;
-
 	public function __construct(string $folder) {
-		$this->filename = $filename;
 		parent::__construct ( new Twig_Loader_Filesystem ( $folder ) );
 	}
 
 	public function assign(string $key, $data) {
 		$this->data [$key] = $data;
+	}
+	
+	public function mergeAssignments(array $data){
+		$this->data = array_merge($this->data, $data);
 	}
 
 	public function clearAssigns() {
