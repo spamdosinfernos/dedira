@@ -216,7 +216,7 @@ class MongoDb implements IDatabaseDriver {
 				$options ["limit"] = $this->query->getLimit ();
 			}
 
-			$cursor = $collection->findOne ( $this->buildFilters (), $options );
+			$cursor = $collection->find ( $this->buildFilters (), $options );
 
 			// Stores all matched documents
 			$result = array ();

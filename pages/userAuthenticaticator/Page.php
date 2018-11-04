@@ -38,7 +38,7 @@ class Page extends \APage {
 	 * otherwise show the authentication screen
 	 * @return void
 	 */
-	protected function handleRequest(): object {
+	protected function handleRequest(): \SystemNotification {
 
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
@@ -74,7 +74,7 @@ class Page extends \APage {
 
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {
-				\Log::recordEntry ( __ ( "Something very wrong happens: Fail to load the page!" ), true );
+				\Log::recordEntry ( gettext( "Something very wrong happens: Fail to load the page!" ), true );
 				exit ( 0 );
 			}
 		}
@@ -97,12 +97,16 @@ class Page extends \APage {
 		);
 	}
 
-	protected function returnTemplateFile(object $data): string {
+	protected function returnTemplateFile(\SystemNotification $data): string {
 		return Conf::getTemplateFile ();
 	}
 
 	protected function returnTemplateFolder(): string {
 		return Conf::getTemplateFolder ();
+	}
+
+	protected function returnCurrentDir(): string {
+		return __DIR__;
 	}
 }
 ?>

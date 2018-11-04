@@ -4,6 +4,7 @@ require_once __DIR__ . '/../template/TemplateLoader.php';
 require_once __DIR__ . '/../internationalization/i18n.php';
 require_once __DIR__ . '/../protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
+require_once __DIR__ . '/notification/SystemNotification.php';
 
 /**
  * The base for a page (or module if you prefer) in system
@@ -35,11 +36,11 @@ abstract class APage {
 	 * the result in json format
 	 */
 	public function __construct() {
-		\I18n::init ( Configuration::$defaultLanguage, $currentDir . "/" . Configuration::$localeDirName );
+		\I18n::init ( Configuration::$defaultLanguage, $this->returnCurrentDir () . "/" . Configuration::$localeDirName );
 
 		// If something fails on setup, just stops and show a message
 		if (! $this->setup ()) {
-			Log::recordEntry ( __ ( "Sorry, Fail on process your request" ), true );
+			Log::recordEntry ( gettext( "Sorry, Fail on process your request" ), true );
 			return;
 		}
 
@@ -47,7 +48,7 @@ abstract class APage {
 		if ($this->isJsonRequest ()) {
 
 			echo JSONGenerator::objectToJson ( array (
-					"nextSeed" => $nextSeed,
+					"nextSeed" => $_SESSION ["seed"],
 					"data" => $this->handleRequest ()
 			) );
 
@@ -81,21 +82,27 @@ abstract class APage {
 	}
 
 	/**
+	 * Gets an object from <b> handleRequest </b> and return the HTML
+	 * @see APage:handleRequest
+	 * @param object $dataObject
+	 * @return string
+	 */
+	protected function generateOutput(\SystemNotification $dataObject): string {
+		$this->template->mergeAssignments ( $this->generateTemplateData ( $dataObject ) );
+		return $this->template->render ( $this->returnTemplateFile ( $dataObject ) );
+	}
+
+	/**
 	 * Prepares the page to perform whatever task it should do
 	 * @return bool
 	 */
 	protected abstract function setup(): bool;
 
 	/**
-	 * Gets an object from <b> handleRequest </b> and return the HTML
-	 * @see APage:handleRequest
-	 * @param object $dataObject
+	 * Must return the path of current folder
 	 * @return string
 	 */
-	protected function generateOutput(object $dataObject): string {
-		$this->template->mergeAssignments ( $this->generateTemplateData ( $dataObject ) );
-		return $this->template->render ( $this->returnTemplateFile ( $dataObject ) );
-	}
+	protected abstract function returnCurrentDir(): string;
 
 	/**
 	 * Handles the client request and returns an result object
@@ -103,7 +110,7 @@ abstract class APage {
 	 * @see APage::generateOutput
 	 * @return object
 	 */
-	protected abstract function handleRequest(): object;
+	protected abstract function handleRequest(): \SystemNotification;
 
 	/**
 	 * Informs if the page is restricted or public
@@ -116,7 +123,7 @@ abstract class APage {
 	 * the data that must be send back to user
 	 * @return array
 	 */
-	protected abstract function generateTemplateData($data): array;
+	protected abstract function generateTemplateData(\SystemNotification $data): array;
 
 	/**
 	 * Must return the path of template folder
@@ -129,5 +136,5 @@ abstract class APage {
 	 * @param object $data
 	 * @return string
 	 */
-	protected abstract function returnTemplateFile(object $data): string;
+	protected abstract function returnTemplateFile(\SystemNotification $data): string;
 }

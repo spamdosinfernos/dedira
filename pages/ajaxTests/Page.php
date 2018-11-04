@@ -58,18 +58,18 @@ class Page extends \APage {
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 		
 		// Default message
-		$this->xTemplate->assign ( "message", __ ( "All fields marked with * are mandatory" ) );
+		$this->xTemplate->assign ( "message", gettext( "All fields marked with * are mandatory" ) );
 		
 		// If it is just a user confimation request, activate the user and stops
 		// otherwise warns that theres is not such user and stops
 		if ($this->isUserConfirmationRequest ()) {
 			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
-				$this->xTemplate->assign ( "message", sprintf ( __ ( "User %s activated!" ), $this->user->getLogin () ) );
+				$this->xTemplate->assign ( "message", sprintf ( gettext( "User %s activated!" ), $this->user->getLogin () ) );
 				$this->showMessageGui ();
 				return;
 			}
 			
-			$this->xTemplate->assign ( "message", __ ( "Theres no such user on database!" ) );
+			$this->xTemplate->assign ( "message", gettext( "Theres no such user on database!" ) );
 			$this->showMessageGui ();
 			return;
 		}
@@ -93,25 +93,25 @@ class Page extends \APage {
 				$email = $this->sendMail ();
 				if (empty ( $email )) {
 					$this->deleteUser ();
-					$this->xTemplate->assign ( "message", __ ( "None of your mail account is valid! Try another mail address!" ) );
+					$this->xTemplate->assign ( "message", gettext( "None of your mail account is valid! Try another mail address!" ) );
 					$this->showEditionGui ( $nextPage );
 					return;
 				}
 				
-				$this->xTemplate->assign ( "message", __ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
+				$this->xTemplate->assign ( "message", gettext( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
 				$this->showMessageGui ();
 				return;
 			} else {
-				$this->xTemplate->assign ( "message", __ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
+				$this->xTemplate->assign ( "message", gettext( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->updateUser ( $this->user )) {
-				$this->xTemplate->assign ( "message", __ ( "User updated!" ) );
+				$this->xTemplate->assign ( "message", gettext( "User updated!" ) );
 				$this->showMessageGui ();
 				return;
 			} else {
-				$this->xTemplate->assign ( "message", __ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
+				$this->xTemplate->assign ( "message", gettext( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
 		
@@ -127,10 +127,10 @@ class Page extends \APage {
 		$mailTemplate = new \TemplateLoader ( Conf::getMailTemplate () );
 		$mailTemplate->assign ( "hostAddress", Conf::$hostAddress );
 		$mailTemplate->assign ( "userId", $this->user->get_id () );
-		$mailTemplate->assign ( "message", __ ( "Click here to confirm your account" ) );
+		$mailTemplate->assign ( "message", gettext( "Click here to confirm your account" ) );
 		$mailTemplate->parse ( "main" );
 		
-		\MailSender::setSubject ( __ ( "Confirmation mail" ) );
+		\MailSender::setSubject ( gettext( "Confirmation mail" ) );
 		\MailSender::setFrom ( Conf::$mailFrom );
 		\MailSender::setPort ( Conf::$mailPort );
 		\MailSender::setCharset ( Conf::$charset );
@@ -309,35 +309,35 @@ class Page extends \APage {
 		return false;
 	}
 	private function showEditionGui(string $nextPage) {
-		$this->xTemplate->assign ( "tittle", __ ( "User sign up" ) );
-		$this->xTemplate->assign ( "lblActive", __ ( "Active user" ) );
-		$this->xTemplate->assign ( "lblLogin", __ ( "Login" ) );
-		$this->xTemplate->assign ( "lblPassword", __ ( "Password" ) );
-		$this->xTemplate->assign ( "lblName", __ ( "Name" ) );
-		$this->xTemplate->assign ( "lblLastName", __ ( "Last name" ) );
+		$this->xTemplate->assign ( "tittle", gettext( "User sign up" ) );
+		$this->xTemplate->assign ( "lblActive", gettext( "Active user" ) );
+		$this->xTemplate->assign ( "lblLogin", gettext( "Login" ) );
+		$this->xTemplate->assign ( "lblPassword", gettext( "Password" ) );
+		$this->xTemplate->assign ( "lblName", gettext( "Name" ) );
+		$this->xTemplate->assign ( "lblLastName", gettext( "Last name" ) );
 		
-		$this->xTemplate->assign ( "lblBirthday", __ ( "Birth day" ) );
-		$this->xTemplate->assign ( "lblBirthmonth", __ ( "Birth month" ) );
-		$this->xTemplate->assign ( "lblBirthyear", __ ( "Birth year" ) );
-		$this->xTemplate->assign ( "lblBirthDate", __ ( "Birthdate" ) );
+		$this->xTemplate->assign ( "lblBirthday", gettext( "Birth day" ) );
+		$this->xTemplate->assign ( "lblBirthmonth", gettext( "Birth month" ) );
+		$this->xTemplate->assign ( "lblBirthyear", gettext( "Birth year" ) );
+		$this->xTemplate->assign ( "lblBirthDate", gettext( "Birthdate" ) );
 		
-		$this->xTemplate->assign ( "lblEmail", __ ( "Email (going to be used for validation)" ) );
-		$this->xTemplate->assign ( "lblTelephone", __ ( "Telephone" ) );
+		$this->xTemplate->assign ( "lblEmail", gettext( "Email (going to be used for validation)" ) );
+		$this->xTemplate->assign ( "lblTelephone", gettext( "Telephone" ) );
 		
-		$this->xTemplate->assign ( "sendText", __ ( "Send" ) );
+		$this->xTemplate->assign ( "sendText", gettext( "Send" ) );
 		
-		$this->xTemplate->assign ( "lblSex", __ ( "Sex" ) );
+		$this->xTemplate->assign ( "lblSex", gettext( "Sex" ) );
 		
-		$this->xTemplate->assign ( "sexText", __ ( "Irrelevant" ) );
+		$this->xTemplate->assign ( "sexText", gettext( "Irrelevant" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_IRRELEVANT );
 		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Both" ) );
+		$this->xTemplate->assign ( "sexText", gettext( "Both" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_BOTH );
 		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Female" ) );
+		$this->xTemplate->assign ( "sexText", gettext( "Female" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_FEMALE );
 		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
-		$this->xTemplate->assign ( "sexText", __ ( "Male" ) );
+		$this->xTemplate->assign ( "sexText", gettext( "Male" ) );
 		$this->xTemplate->assign ( "sexValue", \User::SEX_MALE );
 		$this->xTemplate->parse ( "main.dataEditing.comboSex" );
 		

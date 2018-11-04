@@ -66,16 +66,18 @@ class PageLoader {
 
 			if ($auth->isAuthenticated () && self::providedSeedIsValid ()) {
 				// Generates and stores the next seed for further verification
-				$_SESSION ["seed"] = self::$nextSeed = self::getNextSeed ();
+				$_SESSION ["seed"] = $_SESSION ["nextseed"] = self::getNextSeed ();
 
 				return $pageId;
 			}
+
+			// Generates and stores the next seed for further verification
+			$_SESSION ["seed"] = $_SESSION ["nextseed"] = self::getNextSeed ();
 
 			// Otherwise go to authentication page
 			$pageId = Configuration::$authenticationPageName;
 			require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		}
-
 
 		// If is a open page, just open it
 		return $pageId;
@@ -97,7 +99,9 @@ class PageLoader {
 	 * @return bool
 	 */
 	private static function providedSeedIsValid(): bool {
-		return isset ( $_SESSION ["seed"] ) && self::$httpRequest->getGetRequest ( "seed" ) == $_SESSION ["seed"];
+		$a = 1;
+		$b = 2;
+		return isset ( $_SESSION ["seed"] ) && $_SESSION ["nextseed"] == $_SESSION ["seed"];
 	}
 
 	/**

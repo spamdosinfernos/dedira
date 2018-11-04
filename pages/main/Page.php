@@ -15,11 +15,7 @@ class Page extends \APage {
 	 */
 	private $arrData;
 
-	public function __construct() {
-		parent::__construct ( Conf::getTemplateFolder (), __DIR__ );
-	}
-
-	public function handleRequest(): object {
+	public function handleRequest(): \SystemNotification {
 		$auth = new \Authenticator ();
 		return $auth->getAutenticatedEntity ();
 	}
@@ -31,7 +27,7 @@ class Page extends \APage {
 	public function createRateMenuEntry() {
 		$i = new MenuItemData ();
 		$i->setMenuAddress ( "index.php?page=rate" );
-		$i->setMenuText ( __ ( "Rate" ) );
+		$i->setMenuText ( gettext( "Rate" ) );
 		$i->setUpdatesAmount ( 0 );
 		$this->data [] = $i;
 	}
@@ -45,12 +41,16 @@ class Page extends \APage {
 		return $this->arrData;
 	}
 
-	protected function returnTemplateFile(object $data): string {
+	protected function returnTemplateFile(\SystemNotification $data): string {
 		return Conf::getTemplateFile ();
 	}
 
 	protected function returnTemplateFolder(): string {
 		return Conf::getTemplateFolder ();
+	}
+
+	protected function returnCurrentDir(): string {
+		return __DIR__;
 	}
 }
 ?>
