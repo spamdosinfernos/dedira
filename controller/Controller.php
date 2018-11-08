@@ -23,12 +23,12 @@ class Controller {
 		Database::init ( Configuration::$databaseDriver );
 
 		if (! Database::connect ( Configuration::$databaseHostProtocol, Configuration::$databaseHostAddress, Configuration::$databasePort )) {
-			Log::recordEntry ( gettext ( "The system can't connect to database" ), true );
+			Log::recordEntry ( _ ( "The system can't connect to database" ), true );
 			return;
 		}
 
 		if (! PageLoader::loadPage ()) {
-			Log::recordEntry ( gettext ( "Fail on load the page!" ), true );
+			Log::recordEntry ( _ ( "Fail on load the page!" ), true );
 		}
 
 		Database::disconnect ();

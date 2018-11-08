@@ -67,12 +67,12 @@ class Page extends \APage {
 		if ($this->isUserConfirmationRequest ()) {
 			if ($this->activateUser ( $this->httpRequest->getGetRequest ( "_id" ) [0] )) {
 				$this->notification->setType ( \SystemNotification::SUCCESS );
-				return $this->notification->setMessage ( sprintf ( gettext ( "User %s activated!" ), $this->user->getLogin () ) );
+				return $this->notification->setMessage ( sprintf ( _ ( "User %s activated!" ), $this->user->getLogin () ) );
 			}
 
 			// FAIL!!
 			$this->notification->setType ( \SystemNotification::FAIL );
-			return $this->notification->setMessage ( gettext ( "Theres no such user on database!" ) );
+			return $this->notification->setMessage ( _ ( "Theres no such user on database!" ) );
 		}
 
 		// If nothing was posted so we just show the form and stops
@@ -93,24 +93,24 @@ class Page extends \APage {
 					$this->deleteUser ();
 
 					$this->notification->setType ( \SystemNotification::FAIL );
-					return $this->notification->setMessage ( gettext ( "None of your mail account is valid! Try another mail address!" ) );
+					return $this->notification->setMessage ( _ ( "None of your mail account is valid! Try another mail address!" ) );
 				}
 
 				$this->notification->setType ( \SystemNotification::SUCCESS );
-				return $this->notification->setMessage ( gettext ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
+				return $this->notification->setMessage ( _ ( "User created! a mail was sended to your mail box in order to confirm your account: " ) . $email );
 			} else {
 
 				$this->notification->setType ( \SystemNotification::FAIL );
-				return $this->notification->setMessage ( gettext ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
+				return $this->notification->setMessage ( _ ( "Fail to create a new user! Remeber: All fields with * are mandatory!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->updateUser ( $this->user )) {
 				$this->notification->setType ( \SystemNotification::SUCCESS );
-				return $this->notification->setMessage ( gettext ( "User updated!" ) );
+				return $this->notification->setMessage ( _ ( "User updated!" ) );
 			} else {
 				$this->notification->setType ( \SystemNotification::SUCCESS );
-				return $this->notification->setMessage ( gettext ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
+				return $this->notification->setMessage ( _ ( "Fail to update user! Remeber: All fields with * are mandatory!" ) );
 			}
 		}
 	}
@@ -122,7 +122,7 @@ class Page extends \APage {
 	private function sendMail(): string {
 		$this->sendMail = true;
 
-		\MailSender::setSubject ( gettext ( "Confirmation mail" ) );
+		\MailSender::setSubject ( _ ( "Confirmation mail" ) );
 		\MailSender::setFrom ( Conf::$mailFrom );
 		\MailSender::setPort ( Conf::$mailPort );
 		\MailSender::setCharset ( Conf::$charset );
@@ -174,7 +174,7 @@ class Page extends \APage {
 	 * Create a new user
 	 * @return bool
 	 */
-	private function saveNewUser(): bool {
+	private function saveNewUser(): string {
 		$this->user = $this->createUserObject ();
 
 		// Inserting object
@@ -182,7 +182,15 @@ class Page extends \APage {
 		$query->setObject ( $this->user );
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 
-		return \Database::execute ( $query );
+		if (\Database::execute ( $query )) {
+			$result = \Database::getResults ();
+			$result->first ();
+
+			$this->user->set_id ( (string)$result->getRetrivedObject () );
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -247,7 +255,7 @@ class Page extends \APage {
 		$user->setActive ( false );
 
 		// Creates the user to authenticate
-		$user->set_id ( dechex ( microtime ( true ) ) );
+		// $user->set_id ( dechex ( microtime ( true ) ) );
 		$user->setSex ( $postedVars ["sex"] );
 		$user->setName ( $postedVars ["name"] );
 		$user->setLogin ( $postedVars ["login"] );
@@ -289,47 +297,47 @@ class Page extends \APage {
 		if ($this->sendMail) {
 			$data ["userId"] = $this->user->get_id ();
 			$data ["hostAddress"] = Conf::$hostAddress;
-			$data ["message"] = gettext ( "Click here to confirm your account" );
+			$data ["message"] = _ ( "Click here to confirm your account" );
 			return $data;
 		}
 
-		$data ["tittle"] = gettext ( "User sign up" );
-		$data ["lblActive"] = gettext ( "Active user" );
-		$data ["lblLogin"] = gettext ( "Login" );
-		$data ["lblPassword"] = gettext ( "Password" );
-		$data ["lblName"] = gettext ( "Name" );
-		$data ["lblLastName"] = gettext ( "Last name" );
+		$data ["tittle"] = _ ( "User sign up" );
+		$data ["lblActive"] = _ ( "Active user" );
+		$data ["lblLogin"] = _ ( "Login" );
+		$data ["lblPassword"] = _ ( "Password" );
+		$data ["lblName"] = _ ( "Name" );
+		$data ["lblLastName"] = _ ( "Last name" );
 
-		$data ["lblBirthday"] = gettext ( "Birth day" );
-		$data ["lblBirthmonth"] = gettext ( "Birth month" );
-		$data ["lblBirthyear"] = gettext ( "Birth year" );
-		$data ["lblBirthDate"] = gettext ( "Birthdate" );
+		$data ["lblBirthday"] = _ ( "Birth day" );
+		$data ["lblBirthmonth"] = _ ( "Birth month" );
+		$data ["lblBirthyear"] = _ ( "Birth year" );
+		$data ["lblBirthDate"] = _ ( "Birthdate" );
 
-		$data ["lblEmail"] = gettext ( "Email (going to be used for validation)" );
-		$data ["lblTelephone"] = gettext ( "Telephone" );
+		$data ["lblEmail"] = _ ( "Email (going to be used for validation)" );
+		$data ["lblTelephone"] = _ ( "Telephone" );
 
-		$data ["sendText"] = gettext ( "Send" );
+		$data ["sendText"] = _ ( "Send" );
 
-		$data ["lblSex"] = gettext ( "Sex" );
+		$data ["lblSex"] = _ ( "Sex" );
 
 		$data ["sexValues"] [] = array (
 				"value" => \User::SEX_IRRELEVANT,
-				"text" => gettext ( "Irrelevant" )
+				"text" => _ ( "Irrelevant" )
 		);
 
 		$data ["sexValues"] [] = array (
 				"value" => \User::SEX_BOTH,
-				"text" => gettext ( "Both" )
+				"text" => _ ( "Both" )
 		);
 
 		$data ["sexValues"] [] = array (
 				"value" => \User::SEX_MALE,
-				"text" => gettext ( "Male" )
+				"text" => _ ( "Male" )
 		);
 
 		$data ["sexValues"] [] = array (
 				"value" => \User::SEX_FEMALE,
-				"text" => gettext ( "Female" )
+				"text" => _ ( "Female" )
 		);
 
 		return $data;

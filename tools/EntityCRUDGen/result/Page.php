@@ -59,16 +59,16 @@ class Page extends \APage {
 		// If it does not exists create a new one
 		if (is_null ( $id )) {
 			if ($this->save ()) {
-				$this->xTemplate->assign ( "message", gettext( "Saved!" ) );
+				$this->xTemplate->assign ( "message", _ ( "Saved!" ) );
 			} else {
-				$this->xTemplate->assign ( "message", gettext( "Fail to save!" ) );
+				$this->xTemplate->assign ( "message", _ ( "Fail to save!" ) );
 			}
 		} else {
 			// Otherwise just updates
 			if ($this->update ( $id )) {
-				$this->xTemplate->assign ( "message", gettext( "Saved!" ) );
+				$this->xTemplate->assign ( "message", _ ( "Saved!" ) );
 			} else {
-				$this->xTemplate->assign ( "message", gettext( "Fail on update!" ) );
+				$this->xTemplate->assign ( "message", _ ( "Fail on update!" ) );
 			}
 		}
 		

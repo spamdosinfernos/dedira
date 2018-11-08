@@ -1,18 +1,16 @@
-<!-- BEGIN: main -->
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>{title}</title>
+	<title>{{title}}</title>
 	<link rel="stylesheet" type="text/css" href="./pages/main/css/css.css">
 </head>
 <body>
 	<menu>
-		<!-- BEGIN: menu -->
-		<li><a href="{menuAddress}"><sup>{updatesAmount}</sup>{menuText}</a></li>
-		<!-- END: menu -->
+		{% for m in menuItens %}
+		<li><a href="{{m.menuAddress}}"><sup>{{m.updatesAmount}}</sup>{{m.menuText}}</a></li>
+		{% endfor %}
 	</menu>
 </body>
 </html>
-<!-- END: main -->

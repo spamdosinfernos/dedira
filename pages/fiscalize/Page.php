@@ -51,15 +51,15 @@ class Page extends \APage {
 		$this->template->assign ( "cssPath", Conf::$cssPath );
 		
 		// Creates the form
-		$this->template->assign ( "coordLabel", gettext( "GPS coordinates" ) );
-		$this->template->assign ( "addressLabel", gettext( "Type the address" ) );
-		$this->template->assign ( "numberLabel", gettext( "Address number" ) );
-		$this->template->assign ( "complementLabel", gettext( "Address complement" ) );
-		$this->template->assign ( "reportImageLabel", gettext( "Take a picture of the wrong thing" ) );
-		$this->template->assign ( "problemLabel", gettext( "Problem description please be polite" ) );
-		$this->template->assign ( "solvingLabel", gettext( "Describe how to solve the problem" ) );
+		$this->template->assign ( "coordLabel", _ ( "GPS coordinates" ) );
+		$this->template->assign ( "addressLabel", _ ( "Type the address" ) );
+		$this->template->assign ( "numberLabel", _ ( "Address number" ) );
+		$this->template->assign ( "complementLabel", _ ( "Address complement" ) );
+		$this->template->assign ( "reportImageLabel", _ ( "Take a picture of the wrong thing" ) );
+		$this->template->assign ( "problemLabel", _ ( "Problem description please be polite" ) );
+		$this->template->assign ( "solvingLabel", _ ( "Describe how to solve the problem" ) );
 		$this->template->assign ( "pageId", "fiscalize" );
-		$this->template->assign ( "sendText", gettext( "Send report" ) );
+		$this->template->assign ( "sendText", _ ( "Send report" ) );
 		$this->template->assign ( "pageParam", Conf::$pageParameterName );
 		$this->template->parse ( "main" );
 		return $this->template->text ( "main" );
@@ -95,7 +95,7 @@ class Page extends \APage {
 		// Verifying if there is some errors
 		switch ($form->generateObject ()) {
 			case \Form::BAD_DATA :
-				return $this->createSystemNotification ( gettext( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
+				return $this->createSystemNotification ( _ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
 			case \Form::NO_REQUEST_DETECTED :
 				return;
 		}
@@ -106,11 +106,11 @@ class Page extends \APage {
 		$query->setOperationType ( \DatabaseQuery::OPERATION_PUT );
 		
 		if (! \Database::execute ( $query )) {
-			return $this->createSystemNotification ( gettext( "Fail to record the problem! Try again later." ) );
+			return $this->createSystemNotification ( _ ( "Fail to record the problem! Try again later." ) );
 		}
 		
 		// Yay!! Everithing worked!
-		return $this->createSystemNotification ( gettext( "Problem succefully reported! Thank you!" ) );
+		return $this->createSystemNotification ( _ ( "Problem succefully reported! Thank you!" ) );
 	}
 	private function createSystemNotification(string $message, array $moreInfo = array()) {
 		$notification = new \SystemNotification ();

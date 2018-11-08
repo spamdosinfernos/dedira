@@ -21,9 +21,10 @@ interface IDatabaseDriver {
 	public function disconnect(): bool;
 
 	/**
-	 * The query that must be executed
+	 * The query that must be executed must
+	 * return the id of inserted data
 	 * @param DatabaseQuery $query
-	 * @return bool
+	 * @return string
 	 */
 	public function execute(DatabaseQuery $query): bool;
 

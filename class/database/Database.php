@@ -35,7 +35,7 @@ class Database {
 	/**
 	 * Execute a query
 	 */
-	public static function execute(DatabaseQuery $query): bool {
+	public static function execute(DatabaseQuery $query): string {
 		return self::$driver->execute ( $query );
 	}
 

@@ -40,7 +40,7 @@ abstract class APage {
 
 		// If something fails on setup, just stops and show a message
 		if (! $this->setup ()) {
-			Log::recordEntry ( gettext( "Sorry, Fail on process your request" ), true );
+			Log::recordEntry ( _ ( "Sorry, Fail on process your request" ), true );
 			return;
 		}
 

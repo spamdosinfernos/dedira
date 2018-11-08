@@ -13,6 +13,7 @@ require_once __DIR__ . '/../../../variable/ClassPropertyPublicizator.php';
 require_once __DIR__ . '/DatetimeToMongoDatePublicizator.php';
 require_once __DIR__ . '/MongoDateToDatetimePublicizator.php';
 require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
+require_once __DIR__ . '/MongoBSONArrayToArrayPublicizator.php';
 
 /**
  * @author ensismoebius
@@ -50,6 +51,11 @@ class MongoDb implements IDatabaseDriver {
 	private $classPublicizator;
 
 	public function __construct() {
+		$this->classPublicizator = new ClassPropertyPublicizator ();
+		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
+		$this->classPublicizator->addSpecialTypePublicizator ( new MongoBSONArrayToArrayPublicizator () );
+		$this->classPublicizator->addSpecialTypePublicizator ( new MongoObjectIdPublicizatorToSimpleID () );
+
 		$this->result = new DatabaseRequestedData ();
 		$this->entityName = "";
 	}
@@ -136,21 +142,24 @@ class MongoDb implements IDatabaseDriver {
 	 * Generates the update query
 	 * @return string
 	 */
-	private function doUpdate(): string {
-		$this->classPublicizator = new ClassPropertyPublicizator ();
-
+	private function doUpdate(): bool {
 		try {
 			$collection = $this->connection->selectCollection ( Configuration::$databaseNAme, $this->entityName );
-			$collection->updateMany ( $this->buildFilters (), $this->buildModifiers (), [ 
+			$updateResult = $collection->updateMany ( $this->buildFilters (), $this->buildModifiers (), [ 
 					'multi' => true,
 					'upsert' => false
 			] );
 
+			$this->result->setData ( array (
+					$updateResult->isAcknowledged()
+			) );
 			return true;
 		}
 		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
+
+		$this->result->setData ( array () );
 		return false;
 	}
 
@@ -159,22 +168,25 @@ class MongoDb implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doInsert(): bool {
-		$this->classPublicizator = new ClassPropertyPublicizator ();
-		$this->classPublicizator->addSpecialTypePublicizator ( new DatetimeToMongoDatePublicizator () );
-
 		try {
 			// Retrieves the collection to insert
 			$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
 
 			// Inserts the data
-			$collection->insertMany ( array (
+			$insertResult = $collection->insertMany ( array (
 					$this->classPublicizator->publicizise ( $this->query->getObject () )
+			) );
+
+			$this->result->setData ( array (
+					( string ) $insertResult->getInsertedIds () [0]
 			) );
 			return true;
 		}
 		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
+
+		$this->result->setData ( array () );
 		return false;
 	}
 
@@ -182,18 +194,26 @@ class MongoDb implements IDatabaseDriver {
 	 * Generates the delete query
 	 * @return string
 	 */
-	private function doDelete(): string {
+	private function doDelete(): bool {
 		try {
 			// Retrieves the collection to delete
 			$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
 
 			// Inserts the data
-			$collection->deleteMany ( $this->buildFilters () );
+			$deleteResult = $collection->deleteMany ( $this->buildFilters () );
+
+			$this->result->setData ( array (
+					$deleteResult->getDeletedCount ()
+			) );
 			return true;
 		}
 		catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
+
+		$this->result->setData ( array (
+				0
+		) );
 		return false;
 	}
 
@@ -202,9 +222,6 @@ class MongoDb implements IDatabaseDriver {
 	 * @return string
 	 */
 	private function doRead(): bool {
-		$this->classPublicizator = new ClassPropertyPublicizator ();
-		$this->classPublicizator->addSpecialTypePublicizator ( new MongoDateToDatetimePublicizator () );
-		$this->classPublicizator->addSpecialTypePublicizator ( new MongoObjectIdPublicizatorToSimpleID () );
 
 		// Retrieves the collection to delete
 		$collection = $this->connection->{Configuration::$databaseNAme}->{$this->entityName};
@@ -223,6 +240,9 @@ class MongoDb implements IDatabaseDriver {
 			foreach ( $cursor as $document ) {
 				// Even when all attributes are public we use the publicizator
 				// to convert some mongo types to native types
+
+				$document = ( object ) $document->getArrayCopy ();
+
 				$document = Caster::classToClassCast ( $document, $this->entityName );
 				$document = $this->classPublicizator->publicizise ( $document );
 				$document = Caster::classToClassCast ( $document, $this->entityName );
@@ -311,6 +331,10 @@ class MongoDb implements IDatabaseDriver {
 		foreach ( $this->query->getConditions ()->getTokens () as $type => $arrToken ) {
 
 			foreach ( $arrToken as $field => $value ) {
+
+				if ($field == "_id") {
+					$value = new MongoDB\BSON\ObjectID ( strtolower ( $value ) );
+				}
 
 				if (is_a ( $value, "DateTime" )) {
 					$value = $this->datetimeConverter->convert ( $value );

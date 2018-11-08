@@ -27,9 +27,9 @@ class Page extends \APage {
 	public function createRateMenuEntry() {
 		$i = new MenuItemData ();
 		$i->setMenuAddress ( "index.php?page=rate" );
-		$i->setMenuText ( gettext( "Rate" ) );
+		$i->setMenuText ( _ ( "Rate" ) );
 		$i->setUpdatesAmount ( 0 );
-		$this->data [] = $i;
+		$this->data ["menuItens"] [] = $i;
 	}
 
 	protected function setup(): bool {

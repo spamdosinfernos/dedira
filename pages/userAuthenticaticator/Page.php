@@ -20,10 +20,6 @@ class Page extends \APage {
 	const NEXT_PAGE_VAR_NAME = "nextPage";
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
 
-	public function __construct() {
-		parent::__construct ();
-	}
-
 	/**
 	 * {@inheritdoc}
 	 *
@@ -74,7 +70,7 @@ class Page extends \APage {
 
 			// Crashes if, for some reason, we cant load the main page
 			if (! $ret) {
-				\Log::recordEntry ( gettext( "Something very wrong happens: Fail to load the page!" ), true );
+				\Log::recordEntry ( _ ( "Something very wrong happens: Fail to load the page!" ), true );
 				exit ( 0 );
 			}
 		}
@@ -91,9 +87,9 @@ class Page extends \APage {
 
 		// the "template" property comes from APage class
 		return array (
-				"signUpMessage" => gettext ( "Or signup!" ),
-				"login" => gettext ( "E-mail or login" ),
-				"password" => gettext ( "Password" )
+				"signUpMessage" => _ ( "Or signup!" ),
+				"login" => _ ( "E-mail or login" ),
+				"password" => _ ( "Password" )
 		);
 	}
 
