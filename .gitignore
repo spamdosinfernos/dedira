@@ -1,5 +1,6 @@
 /uploadedFiles/
 /lib/
 *.swp
+*.phar
 /teste
 ./settings
