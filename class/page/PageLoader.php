@@ -99,8 +99,6 @@ class PageLoader {
 	 * @return bool
 	 */
 	private static function providedSeedIsValid(): bool {
-		$a = 1;
-		$b = 2;
 		return isset ( $_SESSION ["seed"] ) && $_SESSION ["nextseed"] == $_SESSION ["seed"];
 	}
 

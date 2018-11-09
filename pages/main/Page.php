@@ -3,6 +3,7 @@
 namespace main;
 
 require_once __DIR__ . '/class/Conf.php';
+require_once __DIR__ . '/class/MenuItemData.php';
 require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
@@ -17,7 +18,10 @@ class Page extends \APage {
 
 	public function handleRequest(): \SystemNotification {
 		$auth = new \Authenticator ();
-		return $auth->getAutenticatedEntity ();
+
+		$sn = new \SystemNotification ();
+		$sn->addInformation ( 0, $auth->getAutenticatedEntity () );
+		return $sn;
 	}
 
 	public static function isRestricted(): bool {
@@ -29,15 +33,16 @@ class Page extends \APage {
 		$i->setMenuAddress ( "index.php?page=rate" );
 		$i->setMenuText ( _ ( "Rate" ) );
 		$i->setUpdatesAmount ( 0 );
-		$this->data ["menuItens"] [] = $i;
+		$this->arrData ["menuItens"] [] = $i;
 	}
 
 	protected function setup(): bool {
 		return true;
 	}
 
-	public function generateTemplateData($data): array {
+	public function generateTemplateData(\SystemNotification $data): array {
 		$this->createRateMenuEntry ();
+		$this->arrData ["User"] = $data->getArrMoreInfomation () [0];
 		return $this->arrData;
 	}
 

@@ -28,6 +28,6 @@ class DatetimeToMongoDatePublicizator implements ISpecialTypesPublicizator {
 			return;
 		}
 
-		return $type->format ( "U" ) * 1000;
+		return new MongoDB\BSON\UTCDateTime ( $type );
 	}
 }

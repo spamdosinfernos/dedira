@@ -54,7 +54,7 @@ class SystemNotification {
 	 * @param string $key
 	 * @return SystemNotification
 	 */
-	public function addInformation(string $key, string $info): SystemNotification {
+	public function addInformation(string $key, $info): SystemNotification {
 		$this->arrMoreInfomation [$key] = $info;
 		return $this;
 	}
