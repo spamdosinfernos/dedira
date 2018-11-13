@@ -4,3 +4,4 @@
 *.phar
 /teste
 ./settings
+/.project
