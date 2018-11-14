@@ -14,13 +14,17 @@ require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthent
 
 /**
  * Authenticates the user on system and loads the main page
+ *
  * @author André Furlan
  */
 class Page extends \APage {
+
 	const NEXT_PAGE_VAR_NAME = "nextPage";
+
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
 
 	/**
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see \APage::setup()
@@ -32,13 +36,21 @@ class Page extends \APage {
 	/**
 	 * Handles authentication request If the authenticantion is successful keep executing the system
 	 * otherwise show the authentication screen
+	 *
 	 * @return void
 	 */
 	protected function handleRequest(): \SystemNotification {
 
+		// Creates a notification that will be returned
+		$notification = new \SystemNotification ();
+
 		// Already athenticated: continues
 		$authenticator = new \Authenticator ();
-		if ($authenticator->isAuthenticated ()) return null;
+
+		if ($authenticator->isAuthenticated ()) {
+			$notification->setType ( \SystemNotification::SUCCESS );
+			return $notification;
+		}
 
 		// get login and password if any
 		$httpRequest = new \HttpRequest ();
@@ -49,7 +61,6 @@ class Page extends \APage {
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 
 		// Creates a notification that will be returned
-		$notification = new \SystemNotification ();
 		$notification->addInformation ( self::NEXT_PAGE_VAR_NAME, $nextPage );
 
 		// Verifies the nullables
