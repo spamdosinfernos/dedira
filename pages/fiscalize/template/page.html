@@ -1,29 +1,28 @@
-<!-- BEGIN: main -->
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title}</title>
-<link rel="stylesheet" type="text/css" href="{cssPath}">
+<title>{{title}}</title>
+<link rel="stylesheet" type="text/css" href="{{cssPath}}">
 </head>
 <body>
 	<div class="container">
 		<br/>
 		<div class="alert alert-info" style="display: none" id="status">
-			<p>{messageLabel}</p>
+			<p>{{messageLabel}}</p>
 		</div>
-		<form enctype="multipart/form-data" action="index.php?{pageParam}={pageId}&json=1" method="post" name="problemForm">
-			<input type="text" name="coordinates" placeholder="{coordLabel}" class="form-control"/><br>
+		<form enctype="multipart/form-data" action="index.php?{{pageParam}}={{pageId}}&json=1" method="post" name="problemForm">
+			<input type="text" name="coordinates" placeholder="{{coordLabel}}" class="form-control"/><br>
 			<div id="address" class="form-group">
-				<input type="text" name="address" placeholder="{addressLabel}" class="form-control"/><br>
-				<input type="text" name="number" placeholder="{numberLabel}" class="form-control"/><br>
+				<input type="text" name="address" placeholder="{{addressLabel}}" class="form-control"/><br>
+				<input type="text" name="number" placeholder="{{numberLabel}}" class="form-control"/><br>
 			</div>
-			<input type="file" name="reportImage"  placeholder="{reportImageLabel}" value="{reportImageLabel}" class="form-control"/><br>
-			<textarea rows="5" cols="10" name="problemDescription"  placeholder="{problemLabel}" class="form-control"></textarea><br>
-			<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{solvingLabel}" class="form-control"></textarea><br>
+			<input type="file" name="reportImage"  placeholder="{{reportImageLabel}}" value="{{reportImageLabel}}" class="form-control"/><br>
+			<textarea rows="5" cols="10" name="problemDescription"  placeholder="{{problemLabel}}" class="form-control"></textarea><br>
+			<textarea rows="5" cols="10" name="solvingSuggestion"  placeholder="{{solvingLabel}}" class="form-control"></textarea><br>
 			<br/>
-			<input type="submit" value="{sendText}" class="btn btn-primary btn-lg btn-block"/>
+			<input type="submit" value="{{sendText}}" class="btn btn-primary btn-lg btn-block"/>
 		</form>
 		<script type="text/javascript" src="./js/Uploader.js"></script>
 		<script type="text/javascript" src="./js/FormOverwriter.js"></script>
@@ -123,10 +122,9 @@
 		
 		<!-- BEGIN: highlightField -->
 		<script>
-			document.problemForm.{fieldName}.style.background="yellow";
+			document.problemForm.{{fieldName}}.style.background="yellow";
 		</script>
 		<!-- END: highlightField -->
 	</div>
 </body>
 </html>
-<!-- END: main -->
