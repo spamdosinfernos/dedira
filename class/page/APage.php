@@ -5,6 +5,7 @@ require_once __DIR__ . '/../internationalization/i18n.php';
 require_once __DIR__ . '/../protocols/http/HttpRequest.php';
 require_once __DIR__ . '/../configuration/Configuration.php';
 require_once __DIR__ . '/notification/SystemNotification.php';
+require_once __DIR__ . '/../security/keyGenerators/SessionSeed.php';
 
 /**
  * The base for a page (or module if you prefer) in system
@@ -48,7 +49,7 @@ abstract class APage {
 		if ($this->isJsonRequest ()) {
 
 			echo JSONGenerator::objectToJson ( array (
-					"nextSeed" => $_SESSION ["seed"],
+					"nextSeed" => SessionSeed::genNextSeed(),
 					"data" => $this->handleRequest ()
 			) );
 

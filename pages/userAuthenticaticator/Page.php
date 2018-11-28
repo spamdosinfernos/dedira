@@ -100,7 +100,8 @@ class Page extends \APage {
 		return array (
 				"signUpMessage" => _ ( "Or signup!" ),
 				"login" => _ ( "E-mail or login" ),
-				"password" => _ ( "Password" )
+				"password" => _ ( "Password" ),
+				"seed" => $_SESSION["seed"]
 		);
 	}
 
