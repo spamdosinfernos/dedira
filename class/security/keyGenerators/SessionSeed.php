@@ -9,20 +9,29 @@ class SessionSeed {
 	 * @return bool
 	 */
 	public static function providedSeedIsValid(): bool {
-		return isset ( $_REQUEST ["seed"] ) && $_REQUEST ["seed"] == $_SESSION ["seed"];
+		if (! isset ( $_REQUEST ["seed"] )) {
+			return false;
+		}
+
+		if (! isset ( $_SESSION ["seed"] )) {
+			return false;
+		}
+		return $_REQUEST ["seed"] == $_SESSION ["seed"];
 	}
 
 	/**
-	 * Get next seed currrent value
+	 * Get seed currrent value
+	 * Returns an negative value if there is no seed
 	 *
 	 * @throws Exception
 	 * @return int
 	 */
 	public static function getSeed(): int {
 		if (! isset ( $_SESSION )) {
-			throw new Exception ( "session_start MUST be called before!" );
+			return - 1;
 		}
-		return $_SESSION ["seed"];
+
+		return isset ( $_SESSION ["seed"] ) ? $_SESSION ["seed"] : - 1;
 	}
 
 	/**
@@ -33,7 +42,7 @@ class SessionSeed {
 	 */
 	public static function genNextSeed(): void {
 		if (! isset ( $_SESSION )) {
-			throw new Exception ( "session_start MUST be called before!" );
+			session_start ();
 		}
 		$_SESSION ["seed"] = rand ();
 	}

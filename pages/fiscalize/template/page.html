@@ -12,7 +12,7 @@
 		<div class="alert alert-info" style="display: none" id="status">
 			<p>{{messageLabel}}</p>
 		</div>
-		<form enctype="multipart/form-data" action="index.php?{{pageParam}}={{pageId}}&json=1" method="post" name="problemForm">
+		<form enctype="multipart/form-data" action="index.php?{{pageParam}}={{pageId}}&seed={{seed}}" method="post" name="problemForm">
 			<input type="text" name="coordinates" placeholder="{{coordLabel}}" class="form-control"/><br>
 			<div id="address" class="form-group">
 				<input type="text" name="address" placeholder="{{addressLabel}}" class="form-control"/><br>
@@ -24,31 +24,6 @@
 			<br/>
 			<input type="submit" value="{{sendText}}" class="btn btn-primary btn-lg btn-block"/>
 		</form>
-		<script type="text/javascript" src="./js/Uploader.js"></script>
-		<script type="text/javascript" src="./js/FormOverwriter.js"></script>
-		<script type="text/javascript">
-			form = FormOverwriter.create();
-			
-			form.setOnProcessing(function(xhttp) {
-				document.getElementById("status").style.display = "block";
-				document.getElementById("status").innerHTML = "Processando sua requisição...";
-			});
-			
-			form.setOnConnection(function(xhttp) {
-				document.getElementById("status").style.display = "block";
-				document.getElementById("status").innerHTML = "Conectado!";
-			});
-			
-			form.setOnRequestSend(function(xhttp) {
-				document.getElementById("status").style.display = "block";
-				document.getElementById("status").innerHTML = "Dados enviados";
-			});
-			
-			form.setOnResponse(function(xhttp) {
-				document.getElementById("status").style.display = "block";
-				document.getElementById("status").innerHTML = xhttp.response;
-			});
-		</script>
 		<script>
 			var wpid = false, map, z, op, prev_lat, prev_long, min_speed = 0, max_speed = 0, min_altitude = 0, max_altitude = 0, distance_travelled = 0, min_accuracy = 150, date_pos_updated = "", info_string = "";
 			op = document.problemForm.coordinates;
@@ -108,7 +83,7 @@
 							});
 				} else {
 					document.getElementById("address").style.display = "block";
-					op.value = "ERROR: Your Browser doesnt support GPS";
+					op.value = "ERROR: Your Browser doesn't support GPS";
 				}
 				if (wpid) {
 					navigator.geolocation.clearWatch(wpid);
@@ -119,12 +94,6 @@
 			}
 			window.onload = get_pos;
 		</script>
-		
-		<!-- BEGIN: highlightField -->
-		<script>
-			document.problemForm.{{fieldName}}.style.background="yellow";
-		</script>
-		<!-- END: highlightField -->
 	</div>
 </body>
 </html>

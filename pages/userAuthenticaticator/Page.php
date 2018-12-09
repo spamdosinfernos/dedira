@@ -2,12 +2,11 @@
 
 namespace userAuthenticaticator;
 
-require_once __DIR__ . '/class/Conf.php';
-require_once __DIR__ . '/../../class/log/Log.php';
 require_once __DIR__ . '/../../class/page/APage.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/security/PasswordPreparer.php';
 require_once __DIR__ . '/../../class/protocols/http/HttpRequest.php';
+require_once __DIR__ . '/../../class/security/keyGenerators/SessionSeed.php';
 require_once __DIR__ . '/../../class/page/notification/SystemNotification.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthenticatorDriver.php';
@@ -18,8 +17,6 @@ require_once __DIR__ . '/../../class/security/authentication/drivers/UserAuthent
  * @author André Furlan
  */
 class Page extends \APage {
-
-	const NEXT_PAGE_VAR_NAME = "nextPage";
 
 	const FAIL_AUTHENTICATION_VAR_NAME = "failAuth";
 
@@ -61,7 +58,7 @@ class Page extends \APage {
 		$nextPage = isset ( $gotVars ["page"] ) ? $gotVars ["page"] : \Configuration::$mainPageName;
 
 		// Creates a notification that will be returned
-		$notification->addInformation ( self::NEXT_PAGE_VAR_NAME, $nextPage );
+		$notification->addInformation ( "nextPage", $nextPage );
 
 		// Verifies the nullables
 		if (! isset ( $postedVars ["login"] ) || ! isset ( $postedVars ["password"] )) {
@@ -77,13 +74,7 @@ class Page extends \APage {
 		// Authenticate
 		$authenticator->setAuthenticationRules ( new \UserAuthenticatorDriver ( $user ) );
 		if ($authenticator->authenticate ()) {
-			$ret = \PageLoader::loadPage ( $nextPage );
-
-			// Crashes if, for some reason, we cant load the main page
-			if (! $ret) {
-				\Log::recordEntry ( _ ( "Something very wrong happens: Fail to load the page!" ), true );
-				exit ( 0 );
-			}
+			$notification->setType ( \SystemNotification::SUCCESS );
 		}
 
 		// Success on authentication!!
@@ -94,23 +85,28 @@ class Page extends \APage {
 		return false;
 	}
 
-	protected function generateTemplateData($data): array {
+	protected function generateTemplateData(\SystemNotification $data): array {
+
+		// If authentication are succeed redirects to desired page
+		if ($data->getType () == \SystemNotification::SUCCESS) {
+			header ( "location: index.php?page=" . $data->getArrMoreInfomation () ["nextPage"] . "&seed=" . \SessionSeed::getSeed () );
+		}
 
 		// the "template" property comes from APage class
 		return array (
 				"signUpMessage" => _ ( "Or signup!" ),
 				"login" => _ ( "E-mail or login" ),
 				"password" => _ ( "Password" ),
-				"seed" => $_SESSION["seed"]
+				"seed" => \SessionSeed::getSeed ()
 		);
 	}
 
 	protected function returnTemplateFile(\SystemNotification $data): string {
-		return Conf::getTemplateFile ();
+		return "template.html";
 	}
 
 	protected function returnTemplateFolder(): string {
-		return Conf::getTemplateFolder ();
+		return __DIR__ . "/template";
 	}
 
 	protected function returnCurrentDir(): string {

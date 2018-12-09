@@ -358,7 +358,7 @@ class File {
 		}
 		
 		if ($qtdeDeArquivosNoArquivoCompactado > 1) {
-			unset ( $this );
+			//unset ( $this );
 		} else {
 			
 			$this->compressed = false;

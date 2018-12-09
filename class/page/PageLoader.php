@@ -11,8 +11,6 @@ require_once __DIR__ . '/../security/authentication/Authenticator.php';
  */
 class PageLoader {
 
-	private static $httpRequest;
-
 	private static $nextSeed;
 
 	/**
@@ -22,12 +20,18 @@ class PageLoader {
 	 * @return boolean
 	 */
 	public static function loadPage($pageId = null): bool {
-		self::$httpRequest = new HttpRequest ();
+		$httpRequest = new HttpRequest ();
+
+		// If no page id was informed retrieves one
+		if (is_null ( $pageId )) {
+			$pageId = $httpRequest->getGetRequest ( Configuration::$pageParameterName ) [0];
+			$pageId = is_null ( $pageId ) ? Configuration::$mainPageName : $pageId;
+		}
 
 		try {
 			$pageId = self::loadPageAndValidatePageId ( $pageId );
 		} catch ( Exception $error ) {
-			Log::recordEntry ( "There is not such page" );
+			Log::recordEntry ( "There is not such page: " . $error->getMessage () );
 			return false;
 		}
 		// it MUST implement the APage abstraction!
@@ -51,33 +55,29 @@ class PageLoader {
 	private static function loadPageAndValidatePageId($pageId = null) {
 		$auth = new Authenticator ();
 
-		// If no page id was informed retrieves one
-		if (is_null ( $pageId )) {
-			$pageId = self::$httpRequest->getGetRequest ( Configuration::$pageParameterName ) [0];
-			$pageId = is_null ( $pageId ) ? Configuration::$mainPageName : $pageId;
-		}
-
-		// Checks if the page exists throws an exception
+		// if the page do not exists throws an exception
 		if (! file_exists ( Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName )) {
 			throw new Exception ( "There is not such page" );
 		}
 
-		// Loads the page
-		require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
-
 		// If page is restricted we have to be authenticated to use it
+		require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		if (self::isRestrictedPage ( $pageId )) {
 
-			if ($auth->isAuthenticated () ) {
+			// Return the restricted page id if user are autheticated
+			if ($auth->isAuthenticated ()) {
+				SessionSeed::genNextSeed();
 				return $pageId;
 			}
 
 			// Otherwise go to authentication page
 			$pageId = Configuration::$authenticationPageName;
 			require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
+			return $pageId;
 		}
 
-		// If is a open page, just open it
+		// Loads the public page the page
+		require_once Configuration::$pagesDirectory . DIRECTORY_SEPARATOR . $pageId . DIRECTORY_SEPARATOR . Configuration::$defaultPageFileName;
 		return $pageId;
 	}
 
@@ -88,9 +88,7 @@ class PageLoader {
 	 * @return bool
 	 */
 	private static function isRestrictedPage($pageId): bool {
-		$restricted = true;
-		eval ( "\$restricted =  $pageId\\Page::isRestricted();" );
-		return $restricted;
+		return (new ReflectionClass ( "$pageId\\Page" ))->getMethod ( "isRestricted" )->invoke ( null );
 	}
 }
 ?>

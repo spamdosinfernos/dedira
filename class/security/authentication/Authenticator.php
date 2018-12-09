@@ -19,7 +19,7 @@ class Authenticator {
 	}
 
 	/**
-	 * Informa se o usário está autenticado no sistema
+	 * Informa se o usuário está autenticado no sistema
 	 *
 	 * @return bool
 	 */
@@ -27,8 +27,8 @@ class Authenticator {
 		if (! isset ( $_SESSION ))
 			session_start ();
 
-		if (! SessionSeed::providedSeedIsValid ()) {
-			SessionSeed::genNextSeed ();
+		if (! \SessionSeed::providedSeedIsValid ()) {
+			$this->unauthenticate();
 			return false;
 		}
 
@@ -68,8 +68,8 @@ class Authenticator {
 				// we must check if sent seed its equal the one stored on session, if
 				// it matches the request can go ahead, otherwise send the user to
 				// authentication screen, here we generate the first seed
-				// TODO I may have to erase this
-				// SessionSeed::genNextSeed ();
+
+				SessionSeed::genNextSeed ();
 				$_SESSION ['authData'] ['autenticatedEntity'] = serialize ( $this->authenticatorDriver->getAutenticatedEntity () );
 				return true;
 			}

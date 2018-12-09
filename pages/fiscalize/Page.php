@@ -12,6 +12,7 @@ require_once __DIR__ . '/../../class/database/DatabaseQuery.php';
 require_once __DIR__ . '/../../class/database/POPOs/user/User.php';
 require_once __DIR__ . '/../../class/database/POPOs/problem/Problem.php';
 require_once __DIR__ . '/../../class/page/notification/SystemNotification.php';
+require_once __DIR__ . '/../../class/security/keyGenerators/SessionSeed.php';
 require_once __DIR__ . '/../../class/security/authentication/Authenticator.php';
 class Page extends \APage {
 
@@ -22,30 +23,31 @@ class Page extends \APage {
 	 */
 	protected $user;
 
-	protected function returnTemplateFile(SystemNotification $data): string {
+	public function returnTemplateFile(SystemNotification $data): string {
 		return Conf::getTemplateFile ();
 	}
 
-	protected function generateTemplateData(SystemNotification $data): array {
+	public function generateTemplateData(SystemNotification $data): array {
 		$arrData = array ();
 
-		$arrData ["sendText"] = "Send report";
-		$arrData ["coordLabel"] = "GPS coordinates";
-		$arrData ["numberLabel"] = "Address number";
-		$arrData ["solvingLabel"] = "Describe how to solve the problem";
-		$arrData ["problemLabel"] = "Problem description please be polite";
-		$arrData ["addressLabel"] = "Type the address";
-		$arrData ["complementLabel"] = "Address complement";
-		$arrData ["reportImageLabel"] = "Take a picture of the wrong thing";
+		$arrData ["sendText"] = _ ( "Send report" );
+		$arrData ["coordLabel"] = _ ( "GPS coordinates" );
+		$arrData ["numberLabel"] = _ ( "Address number" );
+		$arrData ["solvingLabel"] = _ ( "Describe how to solve the problem" );
+		$arrData ["problemLabel"] = _ ( "Problem description please be polite" );
+		$arrData ["addressLabel"] = _ ( "Type the address" );
+		$arrData ["complementLabel"] = _ ( "Address complement" );
+		$arrData ["reportImageLabel"] = _ ( "Take a picture of the wrong thing" );
+		$arrData ["seed"] = \SessionSeed::getSeed ();
 
 		return $arrData;
 	}
 
-	protected function returnCurrentDir(): string {
+	public function returnCurrentDir(): string {
 		return __DIR__;
 	}
 
-	protected function setup(): bool {
+	public function setup(): bool {
 		try {
 			$auth = new \Authenticator ();
 			$this->user = $auth->getAutenticatedEntity ();
@@ -56,7 +58,7 @@ class Page extends \APage {
 		}
 	}
 
-	protected function handleRequest(): SystemNotification {
+	public function handleRequest(): SystemNotification {
 		// Creating the object generator
 		$form = new \Form ();
 		$form->setType ( \Form::TYPE_POST );
@@ -78,7 +80,7 @@ class Page extends \APage {
 			case \Form::BAD_DATA :
 				return $this->createSystemNotification ( _ ( "Incorrect data! Send it again. The fields in yellow must be properly filled!" ), $form->getAllInvalidFields () );
 			case \Form::NO_REQUEST_DETECTED :
-				return;
+				return $this->createSystemNotification ( _ ( "Provide some information!" ), $form->getAllInvalidFields () );
 		}
 
 		// Its ok, lets try to record the problem on database
@@ -94,11 +96,11 @@ class Page extends \APage {
 		return $this->createSystemNotification ( _ ( "Problem succefully reported! Thank you!" ) );
 	}
 
-	protected static function isRestricted(): bool {
+	public static function isRestricted(): bool {
 		return true;
 	}
 
-	protected function returnTemplateFolder(): string {
+	public function returnTemplateFolder(): string {
 		return Conf::getTemplateFolder ();
 	}
 

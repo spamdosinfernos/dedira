@@ -32,8 +32,8 @@ class Page extends \APage {
 		$seed = \SessionSeed::getSeed ();
 
 		$i = new MenuItemData ();
-		$i->setMenuAddress ( "index.php?page=rate&seed=$seed" );
-		$i->setMenuText ( _ ( "Rate" ) );
+		$i->setMenuAddress ( "index.php?page=fiscalize&seed=$seed" );
+		$i->setMenuText ( _ ( "Fiscalize" ) );
 		$i->setUpdatesAmount ( 0 );
 		$this->arrData ["menuItens"] [] = $i;
 	}
