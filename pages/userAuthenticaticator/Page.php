@@ -97,7 +97,8 @@ class Page extends \APage {
 				"signUpMessage" => _ ( "Or signup!" ),
 				"login" => _ ( "E-mail or login" ),
 				"password" => _ ( "Password" ),
-				"seed" => \SessionSeed::getSeed ()
+				"seed" => \SessionSeed::getSeed (),
+				"title" => _ ( "Authentication page" )
 		);
 	}
 

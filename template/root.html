@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="{{ language }}">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ title }}</title>
+</head>
+<body>
+	<menu>
+		<ul>
+			{% for m in menuItens %}
+			<li><a href="index.php?page={{ m.menuAddress }}&seed={{ seed }}">m.menuText<sup>{{ m.updatesAmount }}</sup></a></li>
+			{% endfor %}
+		</ul>
+	</menu>
+	{% block content %}
+	{% endblock %}
+</body>
+</html>

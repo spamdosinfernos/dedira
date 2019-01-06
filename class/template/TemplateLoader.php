@@ -12,8 +12,8 @@ class TemplateLoader extends Twig_Environment {
 	 */
 	private $data;
 
-	public function __construct(string $folder) {
-		parent::__construct ( new Twig_Loader_Filesystem ( $folder ) );
+	public function __construct(array $paths = array()) {
+		parent::__construct ( new Twig_Loader_Filesystem ( $paths ) );
 	}
 
 	public function assign(string $key, $data) {

@@ -16,36 +16,42 @@ require_once __DIR__ . '/MongoObjectIdPublicizatorToSimpleID.php';
 require_once __DIR__ . '/MongoBSONArrayToArrayPublicizator.php';
 
 /**
+ *
  * @author ensismoebius
  */
 class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * The database connection
+	 *
 	 * @var MongoDB\Client
 	 */
 	private $connection;
 
 	/**
 	 * Guarda resultado da consulta
+	 *
 	 * @var DatabaseRequestedData
 	 */
 	private $result;
 
 	/**
 	 * Stores the query that will be executed
+	 *
 	 * @var DatabaseQuery
 	 */
 	private $query;
 
 	/**
 	 * Stores the entity name manipulated in query
+	 *
 	 * @var string
 	 */
 	private $entityName;
 
 	/**
 	 * Publicitize all properties
+	 *
 	 * @var ClassPropertyPublicizator
 	 */
 	private $classPublicizator;
@@ -61,6 +67,7 @@ class MongoDb implements IDatabaseDriver {
 	}
 
 	/**
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::connect()
@@ -72,8 +79,7 @@ class MongoDb implements IDatabaseDriver {
 
 			// If nothing went wrong so everything went well ;)
 			return true;
-		}
-		catch ( MongoDB\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 			return false;
 		}
@@ -81,6 +87,7 @@ class MongoDb implements IDatabaseDriver {
 	}
 
 	/**
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::disconnect()
@@ -91,6 +98,7 @@ class MongoDb implements IDatabaseDriver {
 	}
 
 	/**
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::execute()
@@ -110,6 +118,7 @@ class MongoDb implements IDatabaseDriver {
 	}
 
 	/**
+	 *
 	 * {@inheritdoc}
 	 *
 	 * @see IDatabaseDriver::getResults()
@@ -120,6 +129,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Generates the query string
+	 *
 	 * @return bool
 	 */
 	private function executeQuery(): bool {
@@ -140,6 +150,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Generates the update query
+	 *
 	 * @return string
 	 */
 	private function doUpdate(): bool {
@@ -151,11 +162,10 @@ class MongoDb implements IDatabaseDriver {
 			] );
 
 			$this->result->setData ( array (
-					$updateResult->isAcknowledged()
+					$updateResult->isAcknowledged ()
 			) );
 			return true;
-		}
-		catch ( MongoDB\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 
@@ -165,6 +175,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Generates the insert query
+	 *
 	 * @return string
 	 */
 	private function doInsert(): bool {
@@ -181,8 +192,7 @@ class MongoDb implements IDatabaseDriver {
 					( string ) $insertResult->getInsertedIds () [0]
 			) );
 			return true;
-		}
-		catch ( MongoDB\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 
@@ -192,6 +202,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Generates the delete query
+	 *
 	 * @return string
 	 */
 	private function doDelete(): bool {
@@ -206,8 +217,7 @@ class MongoDb implements IDatabaseDriver {
 					$deleteResult->getDeletedCount ()
 			) );
 			return true;
-		}
-		catch ( MongoDB\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 
@@ -219,6 +229,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Generates the select query
+	 *
 	 * @return string
 	 */
 	private function doRead(): bool {
@@ -253,8 +264,7 @@ class MongoDb implements IDatabaseDriver {
 			$this->result->setData ( $result );
 
 			return true;
-		}
-		catch ( MongoDB\Exception\Exception $e ) {
+		} catch ( MongoDB\Exception\Exception $e ) {
 			Log::recordEntry ( $e->getMessage () );
 		}
 		return false;
@@ -262,6 +272,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Build the modifiers for updates
+	 *
 	 * @return array
 	 */
 	protected function buildModifiers(): array {
@@ -320,6 +331,7 @@ class MongoDb implements IDatabaseDriver {
 
 	/**
 	 * Builds the filter clause
+	 *
 	 * @return array
 	 */
 	protected function buildFilters(): array {
@@ -341,8 +353,10 @@ class MongoDb implements IDatabaseDriver {
 				}
 
 				if (is_numeric ( $value )) {
-					if (is_int ( $value )) $value = intval ( $value );
-					if (is_float ( $value )) $value = floatval ( $value );
+					if (is_int ( $value ))
+						$value = intval ( $value );
+					if (is_float ( $value ))
+						$value = floatval ( $value );
 				}
 
 				switch ($type) {

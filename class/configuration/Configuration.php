@@ -204,6 +204,14 @@ class Configuration {
 	public static $pagesDirectory;
 	
 	/**
+	 * The base template for all pages
+	 * here we will put things like menus
+	 * headers and stylesheets
+	 * @var string
+	 */
+	public static $rootTemplate;
+	
+	/**
 	 * Initializes the configuration of the system
 	 */
 	public static function init() {
@@ -225,6 +233,7 @@ class Configuration {
 		self::$pageParameterName = "page";
 		self::$defaultPageFileName = "Page.php";
 		self::$authenticationPageName = "userAuthenticaticator";
+		self::$rootTemplate = self::$systemRootDirectory . "/template";
 		
 		// Read and set the configurations
 		$reflection = new ReflectionClass ( "Configuration" );

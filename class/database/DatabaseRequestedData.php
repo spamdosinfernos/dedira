@@ -5,33 +5,42 @@
  *
  */
 class DatabaseRequestedData {
-	
+
 	/**
 	 * The data returned
 	 *
 	 * @var array
 	 */
 	private $arrData;
-	
+
 	/**
 	 * The dataset pointer
 	 *
 	 * @var int
 	 */
 	private $pointer = - 1;
-	
+
 	/**
 	 * Sets the data to be returned
 	 *
-	 * @param array $data        	
+	 * @param array $data
 	 */
 	public function setData(array $data) {
 		$this->arrData = $data;
-		
+
 		// Everytime a new data has been set we need to reset the pointer
 		$this->pointer = - 1;
 	}
-	
+
+	/**
+	 * Returns all data
+	 *
+	 * @return array
+	 */
+	public function getData(): array {
+		return $this->arrData;
+	}
+
 	/**
 	 * Gets the amount of objects returned
 	 *
@@ -40,7 +49,7 @@ class DatabaseRequestedData {
 	public function getObjectsAffectedCounting(): int {
 		return count ( $this->arrData );
 	}
-	
+
 	/**
 	 * Gets the current object
 	 *
@@ -49,7 +58,7 @@ class DatabaseRequestedData {
 	public function getRetrivedObject() {
 		return $this->arrData [$this->pointer];
 	}
-	
+
 	/**
 	 * Go to next object if exists
 	 *
@@ -62,7 +71,7 @@ class DatabaseRequestedData {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Go to next object if exists
 	 *
@@ -75,7 +84,7 @@ class DatabaseRequestedData {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Go to previous object if exists
 	 *

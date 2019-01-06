@@ -1,16 +1,5 @@
-<html>
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="./lib/purecss/base-min.css">
-	<link rel="stylesheet" type="text/css" href="./lib/purecss/pure-min.css">
-	<link rel="stylesheet" type="text/css" href="./lib/purecss/forms-min.css">
-	<link rel="stylesheet" type="text/css" href="./lib/purecss/grids-responsive-min.css">
-	<link rel="stylesheet" type="text/css" href="./pages/userAuthenticaticator/css/css.css">
-	<title>{{title}}</title>
-</head>
-<body class="pure-g">
-
+{% extends "root.html" %}
+{% block content %}
 	<form action="index.php?page={{nextPage}}&seed={{seed}}" method="post" class="pure-form pure-u-4-5 pure-u-md-1-3">
 		<p>{{systemMessage}}</p>
 		<fieldset class="pure-group">
@@ -20,6 +9,4 @@
 		<input type="submit" class="pure-button pure-button-primary">
 		<a href="index.php?page=userSignUp">{{signUpMessage}}</a>
 	</form>
-
-</body>
-</html>
+{% endblock %}

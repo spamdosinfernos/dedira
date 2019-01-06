@@ -1,25 +1,31 @@
 <?php
-
-namespace main;
-
-class MenuItemData {
+/**
+ * 
+ * @author ensismoebius
+ *
+ */
+class MenuItem {
 
 	/**
+	 *
 	 * @var string
 	 */
 	private $menuText;
 
 	/**
+	 *
 	 * @var string
 	 */
 	private $menuAddress;
 
 	/**
+	 *
 	 * @var int
 	 */
 	private $updatesAmount;
 
 	/**
+	 *
 	 * @return string
 	 */
 	public function getMenuText() {
@@ -27,6 +33,7 @@ class MenuItemData {
 	}
 
 	/**
+	 *
 	 * @return string
 	 */
 	public function getMenuAddress() {
@@ -34,6 +41,7 @@ class MenuItemData {
 	}
 
 	/**
+	 *
 	 * @return number
 	 */
 	public function getUpdatesAmount() {
@@ -41,6 +49,7 @@ class MenuItemData {
 	}
 
 	/**
+	 *
 	 * @param string $menuText
 	 */
 	public function setMenuText($menuText) {
@@ -48,6 +57,7 @@ class MenuItemData {
 	}
 
 	/**
+	 *
 	 * @param string $menuAddress
 	 */
 	public function setMenuAddress($menuAddress) {
@@ -55,6 +65,7 @@ class MenuItemData {
 	}
 
 	/**
+	 *
 	 * @param number $updatesAmount
 	 */
 	public function setUpdatesAmount($updatesAmount) {

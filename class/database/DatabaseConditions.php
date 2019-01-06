@@ -14,7 +14,7 @@ class DatabaseConditions {
 	 * Holds the conditions
 	 * @var array
 	 */
-	private $arrConditions;
+	private $arrConditions = array();
 
 	/**
 	 * Adds a condition to query

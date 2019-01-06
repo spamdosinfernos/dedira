@@ -4,36 +4,45 @@
  * @author ensismoebius
  */
 class DatabaseQuery {
+
 	const OPERATION_GET = 0;
+
 	const OPERATION_PUT = 1;
+
 	const OPERATION_ERASE = 2;
+
 	const OPERATION_UPDATE = 3;
 
 	/**
 	 * Holds the operation code
+	 *
 	 * @var int
 	 */
 	private $operation;
 
 	/**
 	 * Holds the conditions
+	 *
 	 * @var DatabaseConditions
 	 */
 	private $conditions;
 
 	/**
 	 * Holds query limits
+	 *
 	 * @var DatabaseLimit
 	 */
 	private $limit;
 
 	/**
 	 * Holds the object involved in query
+	 *
 	 * @var mixed
 	 */
 	private $object;
 
 	/**
+	 *
 	 * @param DatabaseLimit $l
 	 */
 	public function setLimit(DatabaseLimit $l) {
@@ -41,6 +50,7 @@ class DatabaseQuery {
 	}
 
 	/**
+	 *
 	 * @return DatabaseLimit
 	 */
 	public function getLimit() {
@@ -48,6 +58,7 @@ class DatabaseQuery {
 	}
 
 	/**
+	 *
 	 * @param DatabaseConditions $c
 	 */
 	public function setConditions(DatabaseConditions $c) {
@@ -56,14 +67,16 @@ class DatabaseQuery {
 
 	/**
 	 * Returns the conditions
+	 *
 	 * @return DatabaseConditions
 	 */
 	public function getConditions(): DatabaseConditions {
-		return $this->conditions;
+		return $this->conditions == null ? new DatabaseConditions() : $this->conditions;
 	}
 
 	/**
 	 * Sets the query type it must be one of the constants:
+	 *
 	 * @param DatabaseQuery::OPERATION_GET $type
 	 * @param DatabaseQuery::OPERATION_PUT $type
 	 * @param DatabaseQuery::OPERATION_ERASE $type
@@ -86,6 +99,7 @@ class DatabaseQuery {
 
 	/**
 	 * Gets the operation type
+	 *
 	 * @return int
 	 */
 	public function getOperationType(): int {
@@ -94,6 +108,7 @@ class DatabaseQuery {
 
 	/**
 	 * Sets the object involved in operation
+	 *
 	 * @param object $object
 	 */
 	public function setObject($object) {
@@ -102,6 +117,7 @@ class DatabaseQuery {
 
 	/**
 	 * Returns the object involved in operation
+	 *
 	 * @return object
 	 */
 	public function getObject() {
