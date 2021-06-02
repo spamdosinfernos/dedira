@@ -3,10 +3,10 @@ Dedida is a direct democracy system.
 The main goal of this software is to manage all aspects of the society, mainly the decisions of local and global laws and to allow all citizens to inspect all services and problems which may exist.  
 
 ## Install notes
-###### Instalation notes for users
+### Instalation notes for users
 
 ## Developer notes
-###### Source code notes for developers
+### Source code notes for developers
 For a better programming experience, you may want to clone the [PhpStorm stubs repository](https://github.com/JetBrains/phpstorm-stubs) to your local machine using the command `git clone https://github.com/JetBrains/phpstorm-stubs`.
 
 Then, if you are using the Eclipe IDE with PDT installed:  
